@@ -1893,7 +1893,126 @@ function showApp() {
             function() {
 
               loadStudents();
+/* =====================================
+   CARGAR ALUMNAS PARA RUTINAS
+===================================== */
 
+async function loadWorkoutStudents() {
+
+  workoutStudentList.innerHTML = `
+    <p class="workouts-loading">
+      CARGANDO ALUMNAS...
+    </p>
+  `;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(
+        "id, full_name, email"
+      )
+      .eq("role", "student")
+      .order(
+        "full_name",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Error cargando alumnas para rutinas:",
+      error
+    );
+
+
+    workoutStudentList.innerHTML = `
+      <p class="workouts-empty">
+        NO SE PUDIERON CARGAR LAS ALUMNAS.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  if (!data || data.length === 0) {
+
+    workoutStudentList.innerHTML = `
+      <p class="workouts-empty">
+        TODAVÍA NO HAY ALUMNAS CARGADAS.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  workoutStudentList.innerHTML = "";
+
+
+  data.forEach(
+    function(student) {
+
+      const card =
+        document.createElement("button");
+
+
+      card.type = "button";
+
+      card.className =
+        "workout-student-card";
+
+
+      card.innerHTML = `
+
+        <div class="workout-student-icon">
+          +
+        </div>
+
+        <div class="workout-student-info">
+
+          <span class="workout-student-name">
+            ${student.full_name || "SIN NOMBRE"}
+          </span>
+
+          <span class="workout-student-email">
+            ${student.email || "ALUMNA FORJA"}
+          </span>
+
+        </div>
+
+        <span class="workout-student-arrow">
+          →
+        </span>
+
+      `;
+
+
+      card.addEventListener(
+        "click",
+        function() {
+
+          openStudentWorkouts(student);
+
+        }
+      );
+
+
+      workoutStudentList.appendChild(card);
+
+    }
+  );
+
+}
             }
           );
 
