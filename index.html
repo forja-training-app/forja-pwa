@@ -410,7 +410,92 @@
       }
 
     }
+/* MIS ALUMNAS */
 
+.students-screen {
+  display: none;
+  position: relative;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 28px 22px 40px;
+}
+
+.students-header {
+  margin-bottom: 30px;
+}
+
+.students-header h1 {
+  margin-bottom: 15px;
+}
+
+.students-header p {
+  color: #777777;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: #777777;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 0;
+  margin-bottom: 35px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  color: #E60000;
+}
+
+.students-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.student-card {
+  position: relative;
+  background: #0b0b0b;
+  border: 1px solid #262626;
+  padding: 18px;
+}
+
+.student-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: #E60000;
+  left: 0;
+  top: 0;
+}
+
+.student-name {
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.student-email {
+  color: #777777;
+  font-size: 11px;
+  margin-top: 5px;
+}
+
+.students-loading,
+.students-empty {
+  color: #777777;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 20px 0;
+  }
   </style>
 
 
@@ -728,7 +813,44 @@
 
   </main>
 
+<!-- PANTALLA MIS ALUMNAS -->
 
+<section id="students-screen" class="students-screen">
+
+  <div class="students-header">
+
+    <button id="back-to-trainer" class="back-button">
+      ← VOLVER
+    </button>
+
+    <div class="eyebrow">
+      GESTIÓN
+    </div>
+
+    <h1>
+      MIS<br>
+      ALUMNAS
+    </h1>
+
+    <p>
+      Administrá las alumnas de FORJA.
+    </p>
+
+  </div>
+
+  <button id="add-student-button" class="button">
+    + AGREGAR ALUMNA
+  </button>
+
+  <div id="students-list" class="students-list">
+
+    <p class="students-loading">
+      CARGANDO ALUMNAS...
+    </p>
+
+  </div>
+
+</section>
 
   <!-- =====================================
        JAVASCRIPT
@@ -755,7 +877,90 @@
 
     const logoutButton =
       document.getElementById("logout-button");
+const studentsButton = document.getElementById("students-button");
+const studentsScreen = document.getElementById("students-screen");
+const backToTrainer = document.getElementById("back-to-trainer");
+const studentsList = document.getElementById("students-list");
 
+studentsButton.addEventListener("click", async () => {
+
+  appScreen.style.display = "none";
+  studentsScreen.style.display = "block";
+
+  await loadStudents();
+
+});
+
+
+async function loadStudents() {
+
+  studentsList.innerHTML = `
+    <p class="students-loading">
+      CARGANDO ALUMNAS...
+    </p>
+  `;
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("id, full_name")
+    .eq("role", "student")
+    .order("full_name", { ascending: true });
+
+  if (error) {
+
+    console.error(error);
+
+    studentsList.innerHTML = `
+      <p class="students-empty">
+        NO SE PUDIERON CARGAR LAS ALUMNAS.
+      </p>
+    `;
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    studentsList.innerHTML = `
+      <p class="students-empty">
+        TODAVÍA NO HAY ALUMNAS CARGADAS.
+      </p>
+    `;
+
+    return;
+  }
+
+  studentsList.innerHTML = "";
+
+  data.forEach(student => {
+
+    const card = document.createElement("div");
+
+    card.className = "student-card";
+
+    card.innerHTML = `
+      <div class="student-name">
+        ${student.full_name}
+      </div>
+
+      <div class="student-email">
+        ALUMNA FORJA
+      </div>
+    `;
+
+    studentsList.appendChild(card);
+
+  });
+
+}
+
+
+backToTrainer.addEventListener("click", () => {
+
+  studentsScreen.style.display = "none";
+  appScreen.style.display = "block";
+
+});
 
 
     /* =====================================
