@@ -411,13 +411,81 @@
 
   </main>
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js");
-      });
+    <script>
+
+  const loginScreen = document.getElementById("login-screen");
+  const appScreen = document.querySelector(".app");
+  const loginForm = document.getElementById("login-form");
+  const loginMessage = document.getElementById("login-message");
+
+
+  async function checkSession() {
+
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (session) {
+      loginScreen.style.display = "none";
+      appScreen.style.display = "block";
+    } else {
+      loginScreen.style.display = "block";
+      appScreen.style.display = "none";
     }
-  </script>
+
+  }
+
+
+  loginForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    loginMessage.textContent = "INGRESANDO...";
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+
+    if (error) {
+
+      loginMessage.textContent =
+        "EMAIL O CONTRASEÑA INCORRECTOS.";
+
+      return;
+
+    }
+
+
+    loginMessage.textContent = "";
+
+    await checkSession();
+
+  });
+
+
+  supabaseClient.auth.onAuthStateChange(() => {
+    checkSession();
+  });
+
+
+  checkSession();
+
+
+  if ("serviceWorker" in navigator) {
+
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js");
+    });
+
+  }
+
+</script>
 
 </body>
 </html>
