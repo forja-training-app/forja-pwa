@@ -1,25 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>FORJA Training</title>
-  
-  <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#E60000">
+
+  <link
+    rel="manifest"
+    href="manifest.webmanifest"
+  >
+
+  <meta
+    name="theme-color"
+    content="#E60000"
+  >
 
   <!-- Tipografías FORJA -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
 
     body {
       background: #000000;
@@ -27,6 +56,11 @@
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
+
+
+    /* =====================================
+       APP
+    ===================================== */
 
     .app {
       display: none;
@@ -38,13 +72,17 @@
       overflow: hidden;
     }
 
-    /* Gráficos rojos de fondo */
+
+    /* =====================================
+       GRÁFICOS DE FONDO
+    ===================================== */
 
     .graphic {
       position: absolute;
       pointer-events: none;
       z-index: 0;
     }
+
 
     .graphic-one {
       width: 180px;
@@ -56,6 +94,7 @@
       opacity: 0.35;
     }
 
+
     .graphic-two {
       width: 120px;
       height: 8px;
@@ -66,24 +105,32 @@
       opacity: 0.5;
     }
 
+
     .content {
       position: relative;
       z-index: 1;
     }
 
-    /* Logo */
+
+    /* =====================================
+       LOGO
+    ===================================== */
 
     .logo {
-  margin-bottom: 65px;
-}
+      margin-bottom: 65px;
+    }
 
-.logo img {
-  width: 150px;
-  height: auto;
-  display: block;
-}
 
-    /* Texto pequeño */
+    .logo img {
+      width: 150px;
+      height: auto;
+      display: block;
+    }
+
+
+    /* =====================================
+       TEXTOS
+    ===================================== */
 
     .eyebrow {
       color: #E60000;
@@ -94,31 +141,22 @@
       margin-bottom: 8px;
     }
 
-    /* Títulos */
 
-    h1,
-    h2 {
+    h1 {
+      color: #E60000;
       font-family: 'Anton', sans-serif;
       text-transform: uppercase;
       font-weight: 400;
       letter-spacing: 1px;
-    }
-
-    h1 {
-      color: #E60000;
       font-size: 48px;
       line-height: 0.95;
     }
 
-    h2 {
-      color: #E60000;
-      font-size: 34px;
-      line-height: 1;
-    }
 
     .welcome {
       margin-bottom: 42px;
     }
+
 
     .welcome p {
       color: #ffffff;
@@ -128,64 +166,83 @@
       margin-top: 14px;
     }
 
-    /* Tarjeta entrenamiento */
 
-    .training {
+    /* =====================================
+       LOGIN
+    ===================================== */
+
+    .login-screen {
+      display: none;
       position: relative;
-      background: #0b0b0b;
-      border: 1px solid #262626;
-      padding: 24px 20px;
+      z-index: 2;
+      min-height: 100vh;
+      padding: 60px 22px 40px;
+      max-width: 520px;
+      margin: auto;
     }
 
-    .training::before {
-      content: "";
-      position: absolute;
-      width: 5px;
-      height: 55px;
-      background: #E60000;
-      left: 0;
-      top: 24px;
+
+    .login-logo {
+      margin-bottom: 55px;
     }
 
-    .training-info {
-      color: #ffffff;
-      opacity: 0.55;
-      font-size: 12px;
-      font-weight: 600;
-      margin-top: 8px;
-      margin-bottom: 24px;
-    }
 
-    /* Datos */
-
-    .details {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 22px;
-    }
-
-    .detail {
-      flex: 1;
-      border: 1px solid #242424;
-      padding: 12px 8px;
-      background: #111111;
-    }
-
-    .detail small {
+    .login-logo img {
+      width: 150px;
+      height: auto;
       display: block;
+    }
+
+
+    .login-screen h1 {
+      margin-bottom: 35px;
+    }
+
+
+    #login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+
+    #login-form label {
       color: #777777;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin-top: 8px;
     }
 
-    .detail strong {
+
+    #login-form input {
+      width: 100%;
+      padding: 15px;
+      background: #111111;
+      border: 1px solid #292929;
       color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
       font-size: 14px;
+      outline: none;
     }
 
-    /* Botón */
+
+    #login-form input:focus {
+      border-color: #E60000;
+    }
+
+
+    #login-message {
+      color: #E60000;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
+
+    /* =====================================
+       BOTÓN GENERAL
+    ===================================== */
 
     .button {
       width: 100%;
@@ -201,7 +258,135 @@
       cursor: pointer;
     }
 
-    /* Frase */
+
+    .button:active {
+      transform: scale(0.99);
+    }
+
+
+    /* =====================================
+       PANEL DE ENTRENADORA
+    ===================================== */
+
+    .trainer-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+
+    .menu-card {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      text-align: left;
+      padding: 18px;
+      background: #0b0b0b;
+      border: 1px solid #262626;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+    }
+
+
+    .menu-card::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      background: #E60000;
+      left: 0;
+      top: 0;
+    }
+
+
+    .menu-card:hover {
+      border-color: #E60000;
+    }
+
+
+    .menu-icon {
+      min-width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #E60000;
+      color: #ffffff;
+      font-family: 'Anton', sans-serif;
+      font-size: 25px;
+    }
+
+
+    .menu-card > div:nth-child(2) {
+      flex: 1;
+    }
+
+
+    .menu-label {
+      display: block;
+      color: #E60000;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+    }
+
+
+    .menu-card strong {
+      display: block;
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+
+    .menu-card p {
+      margin-top: 4px;
+      color: #777777;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+
+    .menu-arrow {
+      color: #E60000;
+      font-size: 22px;
+    }
+
+
+    /* =====================================
+       CERRAR SESIÓN
+    ===================================== */
+
+    .logout-button {
+      width: 100%;
+      margin-top: 35px;
+      padding: 14px;
+      background: transparent;
+      border: 1px solid #292929;
+      color: #777777;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+    }
+
+
+    .logout-button:hover {
+      color: #ffffff;
+      border-color: #E60000;
+    }
+
+
+    /* =====================================
+       FRASE
+    ===================================== */
 
     .quote {
       margin-top: 38px;
@@ -213,205 +398,90 @@
       line-height: 1.7;
     }
 
+
+    /* =====================================
+       DESKTOP
+    ===================================== */
+
     @media (min-width: 700px) {
+
       .app {
         padding-top: 45px;
       }
-    }
-        /* LOGIN */
 
-    .login-screen {
-      display: none;
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      padding: 60px 22px 40px;
-      max-width: 520px;
-      margin: auto;
     }
 
-    .login-logo {
-      margin-bottom: 55px;
-    }
-
-    .login-logo img {
-      width: 150px;
-      height: auto;
-      display: block;
-    }
-
-    .login-screen h1 {
-      margin-bottom: 35px;
-    }
-
-    #login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    #login-form label {
-      color: #777777;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      margin-top: 8px;
-    }
-
-    #login-form input {
-      width: 100%;
-      padding: 15px;
-      background: #111111;
-      border: 1px solid #292929;
-      color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      outline: none;
-    }
-
-    #login-form input:focus {
-      border-color: #E60000;
-    }
-
-    #login-message {
-      color: #E60000;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 10px;
-    }
-    /* PANEL DE ENTRENADORA */
-
-.trainer-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 30px;
-}
-
-.menu-card {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  position: relative;
-  text-align: left;
-  padding: 18px;
-  background: #0b0b0b;
-  border: 1px solid #262626;
-  color: #ffffff;
-  font-family: 'Montserrat', sans-serif;
-  cursor: pointer;
-}
-
-.menu-card::before {
-  content: "";
-  position: absolute;
-  width: 4px;
-  height: 100%;
-  background: #E60000;
-  left: 0;
-  top: 0;
-}
-
-.menu-card:hover {
-  border-color: #E60000;
-}
-
-.menu-icon {
-  min-width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #E60000;
-  color: #ffffff;
-  font-family: 'Anton', sans-serif;
-  font-size: 25px;
-}
-
-.menu-card > div:nth-child(2) {
-  flex: 1;
-}
-
-.menu-label {
-  display: block;
-  color: #E60000;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  margin-bottom: 4px;
-}
-
-.menu-card strong {
-  display: block;
-  font-family: 'Anton', sans-serif;
-  font-size: 22px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-}
-
-.menu-card p {
-  margin-top: 4px;
-  color: #777777;
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.menu-arrow {
-  color: #E60000;
-  font-size: 22px;
-}
-
-.logout-button {
-  width: 100%;
-  margin-top: 35px;
-  padding: 14px;
-  background: transparent;
-  border: 1px solid #292929;
-  color: #777777;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  cursor: pointer;
-}
-
-.logout-button:hover {
-  color: #ffffff;
-  border-color: #E60000;
-  }
   </style>
-    <!-- Supabase -->
+
+
+  <!-- =====================================
+       SUPABASE
+  ====================================== -->
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    const SUPABASE_URL = "https://mjrdhybwaovnrzlzfxcw.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_KnKdmC7svdn8w_SB6-R2fg_E8pTbxUN";
 
-    const supabaseClient = supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+  <script>
+
+    const SUPABASE_URL =
+      "https://mjrdhybwaovnrzlzfxcw.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_KnKdmC7svdn8w_SB6-R2fg_E8pTbxUN";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
   </script>
+
 </head>
-  
+
+
 <body>
-  <!-- LOGIN -->
-  <section id="login-screen" class="login-screen">
+
+
+  <!-- =====================================
+       LOGIN
+  ====================================== -->
+
+  <section
+    id="login-screen"
+    class="login-screen"
+  >
 
     <div class="login-logo">
-      <img src="./logo-forja.png" alt="FORJA Training">
+
+      <img
+        src="./logo-forja.png"
+        alt="FORJA Training"
+      >
+
     </div>
+
 
     <div class="eyebrow">
       FORJANDO ATLETAS
     </div>
 
-    <h1>INICIAR<br>SESIÓN</h1>
+
+    <h1>
+      INICIAR<br>
+      SESIÓN
+    </h1>
+
 
     <form id="login-form">
 
-      <label for="email">EMAIL</label>
+
+      <label for="email">
+        EMAIL
+      </label>
+
+
       <input
         type="email"
         id="email"
@@ -419,7 +489,12 @@
         required
       >
 
-      <label for="password">CONTRASEÑA</label>
+
+      <label for="password">
+        CONTRASEÑA
+      </label>
+
+
       <input
         type="password"
         id="password"
@@ -427,246 +502,474 @@
         required
       >
 
-      <button type="submit" class="button">
+
+      <button
+        type="submit"
+        class="button"
+      >
         INGRESAR →
       </button>
 
+
       <p id="login-message"></p>
+
 
     </form>
 
   </section>
+
+
+
+  <!-- =====================================
+       PANEL DE ENTRENADORA
+  ====================================== -->
+
   <main class="app">
 
+
     <div class="graphic graphic-one"></div>
+
     <div class="graphic graphic-two"></div>
+
 
     <div class="content">
 
+
+      <!-- LOGO -->
+
       <div class="logo">
-  <img src="./logo-forja.png" alt="FORJA Training">
+
+        <img
+          src="./logo-forja.png"
+          alt="FORJA Training"
+        >
+
       </div>
 
+
+
+      <!-- BIENVENIDA -->
+
       <section class="welcome">
+
 
         <div class="eyebrow">
           FORJANDO ATLETAS
         </div>
 
+
         <h1>
-          BIENVENIDA<br>
-<main class="app">
+          PANEL DE<br>
+          ENTRENADORA
+        </h1>
 
-  <div class="graphic graphic-one"></div>
-  <div class="graphic graphic-two"></div>
 
-  <div class="content">
+        <p>
+          Gestioná tus alumnas y sus entrenamientos.
+        </p>
 
-    <div class="logo">
-      <img src="./logo-forja.png" alt="FORJA Training">
-    </div>
 
-    <section class="welcome">
+      </section>
 
-      <div class="eyebrow">
-        FORJANDO ATLETAS
+
+
+      <!-- MENÚ -->
+
+      <section class="trainer-menu">
+
+
+        <!-- ALUMNAS -->
+
+        <button
+          class="menu-card"
+          id="students-button"
+          type="button"
+        >
+
+          <div class="menu-icon">
+            +
+          </div>
+
+
+          <div>
+
+            <span class="menu-label">
+              GESTIÓN
+            </span>
+
+
+            <strong>
+              MIS ALUMNAS
+            </strong>
+
+
+            <p>
+              Agregar y administrar alumnas.
+            </p>
+
+          </div>
+
+
+          <span class="menu-arrow">
+            →
+          </span>
+
+        </button>
+
+
+
+        <!-- RUTINAS -->
+
+        <button
+          class="menu-card"
+          id="workouts-button"
+          type="button"
+        >
+
+          <div class="menu-icon">
+            +
+          </div>
+
+
+          <div>
+
+            <span class="menu-label">
+              ENTRENAMIENTOS
+            </span>
+
+
+            <strong>
+              RUTINAS
+            </strong>
+
+
+            <p>
+              Crear y editar entrenamientos.
+            </p>
+
+          </div>
+
+
+          <span class="menu-arrow">
+            →
+          </span>
+
+        </button>
+
+
+
+        <!-- PROGRESO -->
+
+        <button
+          class="menu-card"
+          id="progress-button"
+          type="button"
+        >
+
+          <div class="menu-icon">
+            ↗
+          </div>
+
+
+          <div>
+
+            <span class="menu-label">
+              SEGUIMIENTO
+            </span>
+
+
+            <strong>
+              PROGRESO
+            </strong>
+
+
+            <p>
+              Revisar el progreso de tus alumnas.
+            </p>
+
+          </div>
+
+
+          <span class="menu-arrow">
+            →
+          </span>
+
+        </button>
+
+
+      </section>
+
+
+
+      <!-- CERRAR SESIÓN -->
+
+      <button
+        id="logout-button"
+        class="logout-button"
+        type="button"
+      >
+        CERRAR SESIÓN
+      </button>
+
+
+
+      <!-- FRASE -->
+
+      <div class="quote">
+
+        Entrená con propósito.<br>
+        Forjá tu mejor versión.
+
       </div>
 
-      <h1>
-        PANEL DE<br>
-        ENTRENADORA
-      </h1>
 
-      <p>
-        Gestioná tus alumnas y sus entrenamientos.
-      </p>
-
-    </section>
-
-
-    <section class="trainer-menu">
-
-      <button class="menu-card" id="students-button">
-
-        <div class="menu-icon">
-          +
-        </div>
-
-        <div>
-          <span class="menu-label">
-            GESTIÓN
-          </span>
-
-          <strong>
-            MIS ALUMNAS
-          </strong>
-
-          <p>
-            Agregar y administrar alumnas.
-          </p>
-        </div>
-
-        <span class="menu-arrow">
-          →
-        </span>
-
-      </button>
-
-
-      <button class="menu-card">
-
-        <div class="menu-icon">
-          +
-        </div>
-
-        <div>
-          <span class="menu-label">
-            ENTRENAMIENTOS
-          </span>
-
-          <strong>
-            RUTINAS
-          </strong>
-
-          <p>
-            Crear y editar entrenamientos.
-          </p>
-        </div>
-
-        <span class="menu-arrow">
-          →
-        </span>
-
-      </button>
-
-
-      <button class="menu-card">
-
-        <div class="menu-icon">
-          ↗
-        </div>
-
-        <div>
-          <span class="menu-label">
-            SEGUIMIENTO
-          </span>
-
-          <strong>
-            PROGRESO
-          </strong>
-
-          <p>
-            Revisar el progreso de tus alumnas.
-          </p>
-        </div>
-
-        <span class="menu-arrow">
-          →
-        </span>
-
-      </button>
-
-    </section>
-
-
-    <button id="logout-button" class="logout-button">
-      CERRAR SESIÓN
-    </button>
-
-
-    <div class="quote">
-      Entrená con propósito.<br>
-      Forjá tu mejor versión.
     </div>
 
-  </div>
 
-</main>
-
-    <script>
-
-  const loginScreen = document.getElementById("login-screen");
-  const appScreen = document.querySelector(".app");
-  const loginForm = document.getElementById("login-form");
-  const loginMessage = document.getElementById("login-message");
+  </main>
 
 
-  async function checkSession() {
 
-    const {
-      data: { session }
-    } = await supabaseClient.auth.getSession();
+  <!-- =====================================
+       JAVASCRIPT
+  ====================================== -->
 
-    if (session) {
-      loginScreen.style.display = "none";
-      appScreen.style.display = "block";
-    } else {
+  <script>
+
+
+    const loginScreen =
+      document.getElementById("login-screen");
+
+
+    const appScreen =
+      document.querySelector(".app");
+
+
+    const loginForm =
+      document.getElementById("login-form");
+
+
+    const loginMessage =
+      document.getElementById("login-message");
+
+
+    const logoutButton =
+      document.getElementById("logout-button");
+
+
+
+    /* =====================================
+       MOSTRAR LOGIN / APP
+    ====================================== */
+
+    function showLogin() {
+
       loginScreen.style.display = "block";
+
       appScreen.style.display = "none";
-    }
-
-  }
-
-
-  loginForm.addEventListener("submit", async (event) => {
-
-    event.preventDefault();
-
-    loginMessage.textContent = "INGRESANDO...";
-
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-
-
-    if (error) {
-
-      loginMessage.textContent =
-        "EMAIL O CONTRASEÑA INCORRECTOS.";
-
-      return;
 
     }
 
 
-    loginMessage.textContent = "";
+    function showApp() {
 
-    await checkSession();
+      loginScreen.style.display = "none";
 
-  });
+      appScreen.style.display = "block";
+
+    }
 
 
-  supabaseClient.auth.onAuthStateChange(() => {
+
+    /* =====================================
+       COMPROBAR SESIÓN
+    ====================================== */
+
+    async function checkSession() {
+
+
+      const {
+        data: { session }
+      } =
+        await supabaseClient.auth.getSession();
+
+
+      if (session) {
+
+        showApp();
+
+      } else {
+
+        showLogin();
+
+      }
+
+    }
+
+
+
+    /* =====================================
+       LOGIN
+    ====================================== */
+
+    loginForm.addEventListener(
+      "submit",
+      async function(event) {
+
+
+        event.preventDefault();
+
+
+        loginMessage.textContent =
+          "INGRESANDO...";
+
+
+        const email =
+          document
+            .getElementById("email")
+            .value;
+
+
+        const password =
+          document
+            .getElementById("password")
+            .value;
+
+
+
+        const { error } =
+          await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+
+        if (error) {
+
+          loginMessage.textContent =
+            "EMAIL O CONTRASEÑA INCORRECTOS.";
+
+          return;
+
+        }
+
+
+        loginMessage.textContent = "";
+
+
+        showApp();
+
+      }
+    );
+
+
+
+    /* =====================================
+       CAMBIO DE SESIÓN
+    ====================================== */
+
+    supabaseClient.auth.onAuthStateChange(
+      function(event, session) {
+
+
+        if (session) {
+
+          showApp();
+
+        } else {
+
+          showLogin();
+
+        }
+
+      }
+    );
+
+
+
+    /* =====================================
+       CERRAR SESIÓN
+    ====================================== */
+
+    logoutButton.addEventListener(
+      "click",
+      async function() {
+
+
+        await supabaseClient.auth.signOut();
+
+
+        showLogin();
+
+      }
+    );
+
+
+
+    /* =====================================
+       BOTONES TEMPORALES
+    ====================================== */
+
+    document
+      .getElementById("students-button")
+      .addEventListener("click", function() {
+
+        alert("Próximamente: gestión de alumnas.");
+
+      });
+
+
+    document
+      .getElementById("workouts-button")
+      .addEventListener("click", function() {
+
+        alert("Próximamente: creación de rutinas.");
+
+      });
+
+
+    document
+      .getElementById("progress-button")
+      .addEventListener("click", function() {
+
+        alert("Próximamente: seguimiento de progreso.");
+
+      });
+
+
+
+    /* =====================================
+       INICIAR APP
+    ====================================== */
+
     checkSession();
-  });
 
 
-  checkSession();
 
-const logoutButton = document.getElementById("logout-button");
+    /* =====================================
+       SERVICE WORKER
+    ====================================== */
 
-logoutButton.addEventListener("click", async () => {
+    if ("serviceWorker" in navigator) {
 
-  await supabaseClient.auth.signOut();
+      window.addEventListener(
+        "load",
+        function() {
 
-  await checkSession();
+          navigator.serviceWorker.register("./sw.js");
 
-});
-      
-  if ("serviceWorker" in navigator) {
+        }
+      );
 
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js");
-    });
+    }
 
-  }
+  </script>
 
-</script>
 
 </body>
-</html>
+
+  </html>
