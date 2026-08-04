@@ -1,0 +1,11 @@
+{
+  "name": "FORJA Training",
+  "short_name": "FORJA",
+  "description": "Entrenamiento personalizado FORJA Training",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#E60000",
+  "orientation": "portrait",
+  "lang": "es"
+}
