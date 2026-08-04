@@ -505,7 +505,61 @@
       line-height: 1.7;
     }
 
+/* =====================================
+   FORMULARIO NUEVA ALUMNA
+===================================== */
 
+.student-form {
+  padding-bottom: 40px;
+}
+
+.student-form h2 {
+  color: #E60000;
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 0.95;
+  margin-bottom: 30px;
+}
+
+#new-student-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#new-student-form label {
+  color: #777777;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-top: 8px;
+}
+
+#new-student-form input,
+#new-student-form select {
+  width: 100%;
+  padding: 15px;
+  background: #111111;
+  border: 1px solid #292929;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+
+#new-student-form input:focus,
+#new-student-form select:focus {
+  border-color: #E60000;
+}
+
+#new-student-form select {
+  appearance: auto;
+}
+
+#cancel-student {
+  margin-top: 5px;
+}
     /* =====================================
        DESKTOP
     ====================================== */
@@ -1197,20 +1251,271 @@
     }
 
 
+  /* =====================================
+   AGREGAR ALUMNA
+===================================== */
+
+addStudentButton.addEventListener(
+  "click",
+  function() {
+
+    studentsList.innerHTML = `
+
+      <div class="student-form">
+
+        <div class="eyebrow">
+          NUEVA ALUMNA
+        </div>
+
+        <h2>
+          AGREGAR<br>
+          ALUMNA
+        </h2>
+
+
+        <form id="new-student-form">
+
+
+          <label for="student-name">
+            NOMBRE Y APELLIDO
+          </label>
+
+          <input
+            type="text"
+            id="student-name"
+            placeholder="Nombre y apellido"
+            required
+          >
+
+
+          <label for="student-email">
+            EMAIL
+          </label>
+
+          <input
+            type="email"
+            id="student-email"
+            placeholder="Email de la alumna"
+            required
+          >
+
+
+          <label for="student-password">
+            CONTRASEÑA INICIAL
+          </label>
+
+          <input
+            type="password"
+            id="student-password"
+            placeholder="Contraseña inicial"
+            minlength="6"
+            required
+          >
+
+
+          <label for="student-objective">
+            OBJETIVO
+          </label>
+
+          <select
+            id="student-objective"
+            required
+          >
+
+            <option value="">
+              Seleccionar objetivo
+            </option>
+
+            <option value="fuerza">
+              Fuerza
+            </option>
+
+            <option value="hipertrofia">
+              Hipertrofia
+            </option>
+
+            <option value="resistencia">
+              Resistencia
+            </option>
+
+            <option value="rendimiento">
+              Rendimiento deportivo
+            </option>
+
+            <option value="general">
+              Acondicionamiento general
+            </option>
+
+          </select>
+
+
+          <label for="student-days">
+            DÍAS DE ENTRENAMIENTO
+          </label>
+
+          <select
+            id="student-days"
+            required
+          >
+
+            <option value="">
+              Seleccionar días
+            </option>
+
+            <option value="2">
+              2 días
+            </option>
+
+            <option value="3">
+              3 días
+            </option>
+
+            <option value="4">
+              4 días
+            </option>
+
+            <option value="5">
+              5 días
+            </option>
+
+          </select>
+
+
+          <label for="student-start">
+            FECHA DE INICIO
+          </label>
+
+          <input
+            type="date"
+            id="student-start"
+            required
+          >
+
+
+          <button
+            type="submit"
+            class="button"
+          >
+            CREAR ALUMNA →
+          </button>
+
+
+          <button
+            type="button"
+            id="cancel-student"
+            class="logout-button"
+          >
+            ← CANCELAR
+          </button>
+
+
+          <p
+            id="student-form-message"
+            class="students-empty"
+          ></p>
+
+
+        </form>
+
+      </div>
+
+    `;
+
+
     /* =====================================
-       AGREGAR ALUMNA
+       CANCELAR
     ====================================== */
 
-    addStudentButton.addEventListener(
-      "click",
-      function() {
+    document
+      .getElementById("cancel-student")
+      .addEventListener(
+        "click",
+        function() {
 
-        alert(
-          "En el próximo paso vamos a crear el formulario para agregar una alumna."
-        );
+          loadStudents();
 
-      }
-    );
+        }
+      );
+
+
+    /* =====================================
+       ENVIAR FORMULARIO
+    ====================================== */
+
+    document
+      .getElementById("new-student-form")
+      .addEventListener(
+        "submit",
+        function(event) {
+
+          event.preventDefault();
+
+
+          const name =
+            document
+              .getElementById("student-name")
+              .value
+              .trim();
+
+
+          const email =
+            document
+              .getElementById("student-email")
+              .value
+              .trim();
+
+
+          const password =
+            document
+              .getElementById("student-password")
+              .value;
+
+
+          const objective =
+            document
+              .getElementById("student-objective")
+              .value;
+
+
+          const days =
+            document
+              .getElementById("student-days")
+              .value;
+
+
+          const startDate =
+            document
+              .getElementById("student-start")
+              .value;
+
+
+          const message =
+            document.getElementById(
+              "student-form-message"
+            );
+
+
+          console.log(
+            "Nueva alumna:",
+            {
+              name,
+              email,
+              password,
+              objective,
+              days,
+              startDate
+            }
+          );
+
+
+          message.textContent =
+            "FORMULARIO CORRECTO. EN EL PRÓXIMO PASO CONECTAMOS LA CREACIÓN CON SUPABASE.";
+
+        }
+      );
+
+  }
+);
 
 
     /* =====================================
