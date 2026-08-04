@@ -7,5 +7,13 @@
   "background_color": "#000000",
   "theme_color": "#E60000",
   "orientation": "portrait",
-  "lang": "es"
+  "lang": "es",
+  "icons": [
+    {
+      "src": "./logo-forja.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
