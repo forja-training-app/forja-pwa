@@ -581,6 +581,36 @@
       }
 
     }
+    /* =====================================
+   FICHA DE ALUMNA
+===================================== */
+
+#student-detail-screen {
+  display: none;
+}
+
+#detail-student-name {
+  font-size: 48px;
+  line-height: 0.95;
+  margin-bottom: 12px;
+}
+
+#detail-student-email {
+  color: #777777;
+  font-size: 13px;
+}
+
+#student-detail-screen .student-card {
+  margin-bottom: 10px;
+}
+
+#student-detail-screen .student-card .menu-label {
+  margin-bottom: 8px;
+}
+
+#student-detail-screen .student-name {
+  font-size: 25px;
+}
 
   </style>
 
@@ -954,7 +984,98 @@
 
   </section>
 
+<!-- =====================================
+     FICHA DE ALUMNA
+====================================== -->
 
+<section
+  id="student-detail-screen"
+  class="students-screen"
+>
+
+  <div class="students-header">
+
+    <button
+      id="back-to-students"
+      class="back-button"
+      type="button"
+    >
+      ← VOLVER A MIS ALUMNAS
+    </button>
+
+    <div class="eyebrow">
+      ALUMNA FORJA
+    </div>
+
+    <h1 id="detail-student-name">
+      ALUMNA
+    </h1>
+
+    <p id="detail-student-email">
+      EMAIL
+    </p>
+
+  </div>
+
+
+  <div class="student-card">
+
+    <div class="menu-label">
+      OBJETIVO
+    </div>
+
+    <div
+      id="detail-student-objective"
+      class="student-name"
+    >
+      —
+    </div>
+
+  </div>
+
+
+  <div class="student-card">
+
+    <div class="menu-label">
+      ENTRENAMIENTO
+    </div>
+
+    <div
+      id="detail-student-days"
+      class="student-name"
+    >
+      —
+    </div>
+
+  </div>
+
+
+  <div class="student-card">
+
+    <div class="menu-label">
+      FECHA DE INICIO
+    </div>
+
+    <div
+      id="detail-student-start"
+      class="student-name"
+    >
+      —
+    </div>
+
+  </div>
+
+
+  <button
+    id="edit-student-button"
+    class="button"
+    type="button"
+    style="margin-top:20px;"
+  >
+    EDITAR DATOS
+  </button>
+
+</section>
 
   <!-- =====================================
        JAVASCRIPT
