@@ -22,7 +22,9 @@
     content="#E60000"
   >
 
-  <!-- Tipografías FORJA -->
+  <!-- =====================================
+       TIPOGRAFÍAS
+  ====================================== -->
 
   <link
     rel="preconnect"
@@ -43,6 +45,10 @@
 
   <style>
 
+    /* =====================================
+       BASE
+    ====================================== */
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -60,7 +66,7 @@
 
     /* =====================================
        APP
-    ===================================== */
+    ====================================== */
 
     .app {
       display: none;
@@ -75,7 +81,7 @@
 
     /* =====================================
        GRÁFICOS DE FONDO
-    ===================================== */
+    ====================================== */
 
     .graphic {
       position: absolute;
@@ -114,7 +120,7 @@
 
     /* =====================================
        LOGO
-    ===================================== */
+    ====================================== */
 
     .logo {
       margin-bottom: 65px;
@@ -130,7 +136,7 @@
 
     /* =====================================
        TEXTOS
-    ===================================== */
+    ====================================== */
 
     .eyebrow {
       color: #E60000;
@@ -168,8 +174,32 @@
 
 
     /* =====================================
+       BOTÓN GENERAL
+    ====================================== */
+
+    .button {
+      width: 100%;
+      border: none;
+      padding: 17px;
+      background: #E60000;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+
+    .button:active {
+      transform: scale(0.99);
+    }
+
+
+    /* =====================================
        LOGIN
-    ===================================== */
+    ====================================== */
 
     .login-screen {
       display: none;
@@ -241,32 +271,8 @@
 
 
     /* =====================================
-       BOTÓN GENERAL
-    ===================================== */
-
-    .button {
-      width: 100%;
-      border: none;
-      padding: 17px;
-      background: #E60000;
-      color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-
-
-    .button:active {
-      transform: scale(0.99);
-    }
-
-
-    /* =====================================
-       PANEL DE ENTRENADORA
-    ===================================== */
+       PANEL ENTRENADORA
+    ====================================== */
 
     .trainer-menu {
       display: flex;
@@ -361,7 +367,7 @@
 
     /* =====================================
        CERRAR SESIÓN
-    ===================================== */
+    ====================================== */
 
     .logout-button {
       width: 100%;
@@ -385,8 +391,109 @@
 
 
     /* =====================================
+       MIS ALUMNAS
+    ====================================== */
+
+    .students-screen {
+      display: none;
+      position: relative;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: auto;
+      padding: 28px 22px 40px;
+    }
+
+
+    .students-header {
+      margin-bottom: 30px;
+    }
+
+
+    .back-button {
+      background: transparent;
+      border: none;
+      color: #777777;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      padding: 0;
+      margin-bottom: 35px;
+      cursor: pointer;
+    }
+
+
+    .back-button:hover {
+      color: #E60000;
+    }
+
+
+    .students-header h1 {
+      margin-bottom: 15px;
+    }
+
+
+    .students-header p {
+      color: #777777;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+
+    .students-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+
+    .student-card {
+      position: relative;
+      background: #0b0b0b;
+      border: 1px solid #262626;
+      padding: 18px;
+    }
+
+
+    .student-card::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      background: #E60000;
+      left: 0;
+      top: 0;
+    }
+
+
+    .student-name {
+      color: #ffffff;
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+
+    .student-email {
+      color: #777777;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+
+    .students-loading,
+    .students-empty {
+      color: #777777;
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 20px 0;
+    }
+
+
+    /* =====================================
        FRASE
-    ===================================== */
+    ====================================== */
 
     .quote {
       margin-top: 38px;
@@ -401,7 +508,7 @@
 
     /* =====================================
        DESKTOP
-    ===================================== */
+    ====================================== */
 
     @media (min-width: 700px) {
 
@@ -410,92 +517,7 @@
       }
 
     }
-/* MIS ALUMNAS */
 
-.students-screen {
-  display: none;
-  position: relative;
-  max-width: 520px;
-  min-height: 100vh;
-  margin: auto;
-  padding: 28px 22px 40px;
-}
-
-.students-header {
-  margin-bottom: 30px;
-}
-
-.students-header h1 {
-  margin-bottom: 15px;
-}
-
-.students-header p {
-  color: #777777;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.back-button {
-  background: transparent;
-  border: none;
-  color: #777777;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  padding: 0;
-  margin-bottom: 35px;
-  cursor: pointer;
-}
-
-.back-button:hover {
-  color: #E60000;
-}
-
-.students-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.student-card {
-  position: relative;
-  background: #0b0b0b;
-  border: 1px solid #262626;
-  padding: 18px;
-}
-
-.student-card::before {
-  content: "";
-  position: absolute;
-  width: 4px;
-  height: 100%;
-  background: #E60000;
-  left: 0;
-  top: 0;
-}
-
-.student-name {
-  color: #ffffff;
-  font-family: 'Anton', sans-serif;
-  font-size: 22px;
-  text-transform: uppercase;
-}
-
-.student-email {
-  color: #777777;
-  font-size: 11px;
-  margin-top: 5px;
-}
-
-.students-loading,
-.students-empty {
-  color: #777777;
-  font-size: 12px;
-  line-height: 1.6;
-  padding: 20px 0;
-  }
   </style>
 
 
@@ -561,11 +583,9 @@
 
     <form id="login-form">
 
-
       <label for="email">
         EMAIL
       </label>
-
 
       <input
         type="email"
@@ -578,7 +598,6 @@
       <label for="password">
         CONTRASEÑA
       </label>
-
 
       <input
         type="password"
@@ -598,7 +617,6 @@
 
       <p id="login-message"></p>
 
-
     </form>
 
   </section>
@@ -609,8 +627,10 @@
        PANEL DE ENTRENADORA
   ====================================== -->
 
-  <main class="app">
-
+  <main
+    class="app"
+    id="trainer-panel"
+  >
 
     <div class="graphic graphic-one"></div>
 
@@ -632,11 +652,9 @@
       </div>
 
 
-
       <!-- BIENVENIDA -->
 
       <section class="welcome">
-
 
         <div class="eyebrow">
           FORJANDO ATLETAS
@@ -653,9 +671,7 @@
           Gestioná tus alumnas y sus entrenamientos.
         </p>
 
-
       </section>
-
 
 
       <!-- MENÚ -->
@@ -663,7 +679,7 @@
       <section class="trainer-menu">
 
 
-        <!-- ALUMNAS -->
+        <!-- MIS ALUMNAS -->
 
         <button
           class="menu-card"
@@ -700,7 +716,6 @@
           </span>
 
         </button>
-
 
 
         <!-- RUTINAS -->
@@ -742,7 +757,6 @@
         </button>
 
 
-
         <!-- PROGRESO -->
 
         <button
@@ -781,9 +795,7 @@
 
         </button>
 
-
       </section>
-
 
 
       <!-- CERRAR SESIÓN -->
@@ -796,46 +808,6 @@
         CERRAR SESIÓN
       </button>
 
-<!-- PANTALLA MIS ALUMNAS -->
-
-<section id="students-screen" class="students-screen">
-
-  <div class="eyebrow">
-    GESTIÓN
-  </div>
-
-  <h1>
-    MIS<br>
-    ALUMNAS
-  </h1>
-
-  <p class="students-description">
-    Administrá las alumnas de FORJA.
-  </p>
-
-  <button
-    id="add-student-button"
-    class="button"
-    type="button"
-  >
-    + AGREGAR ALUMNA
-  </button>
-
-  <div id="students-list">
-    <p class="empty-students">
-      Todavía no hay alumnas cargadas.
-    </p>
-  </div>
-
-  <button
-    id="back-to-panel"
-    class="logout-button"
-    type="button"
-  >
-    ← VOLVER AL PANEL
-  </button>
-
-</section>
 
       <!-- FRASE -->
 
@@ -849,47 +821,73 @@
 
     </div>
 
-
   </main>
 
-<!-- PANTALLA MIS ALUMNAS -->
 
-<section id="students-screen" class="students-screen">
 
-  <div class="students-header">
+  <!-- =====================================
+       PANTALLA MIS ALUMNAS
+  ====================================== -->
 
-    <button id="back-to-trainer" class="back-button">
-      ← VOLVER
-    </button>
+  <section
+    id="students-screen"
+    class="students-screen"
+  >
 
-    <div class="eyebrow">
-      GESTIÓN
+
+    <div class="students-header">
+
+
+      <button
+        id="back-to-panel"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER AL PANEL
+      </button>
+
+
+      <div class="eyebrow">
+        GESTIÓN
+      </div>
+
+
+      <h1>
+        MIS<br>
+        ALUMNAS
+      </h1>
+
+
+      <p>
+        Administrá las alumnas de FORJA.
+      </p>
+
     </div>
 
-    <h1>
-      MIS<br>
-      ALUMNAS
-    </h1>
 
-    <p>
-      Administrá las alumnas de FORJA.
-    </p>
+    <button
+      id="add-student-button"
+      class="button"
+      type="button"
+    >
+      + AGREGAR ALUMNA
+    </button>
 
-  </div>
 
-  <button id="add-student-button" class="button">
-    + AGREGAR ALUMNA
-  </button>
+    <div
+      id="students-list"
+      class="students-list"
+    >
 
-  <div id="students-list" class="students-list">
+      <p class="students-loading">
+        CARGANDO ALUMNAS...
+      </p>
 
-    <p class="students-loading">
-      CARGANDO ALUMNAS...
-    </p>
+    </div>
 
-  </div>
+  </section>
 
-</section>
+
 
   <!-- =====================================
        JAVASCRIPT
@@ -898,12 +896,16 @@
   <script>
 
 
+    /* =====================================
+       ELEMENTOS
+    ====================================== */
+
     const loginScreen =
       document.getElementById("login-screen");
 
 
     const appScreen =
-      document.querySelector(".app");
+      document.getElementById("trainer-panel");
 
 
     const loginForm =
@@ -915,145 +917,31 @@
 
 
     const logoutButton =
-  document.getElementById("logout-button");
-
-const studentsButton =
-  document.getElementById("students-button");
-
-const studentsScreen =
-  document.getElementById("students-screen");
-
-const backToPanel =
-  document.getElementById("back-to-panel");
-
-const studentsList =
-  document.getElementById("students-list");
-
-const addStudentButton =
-  document.getElementById("add-student-button");
+      document.getElementById("logout-button");
 
 
-// ===============================
-// ABRIR MIS ALUMNAS
-// ===============================
-
-studentsButton.addEventListener("click", async () => {
-
-  appScreen.style.display = "none";
-
-  studentsScreen.style.display = "block";
-
-  await loadStudents();
-
-});
+    const studentsButton =
+      document.getElementById("students-button");
 
 
-// ===============================
-// VOLVER AL PANEL
-// ===============================
-
-backToPanel.addEventListener("click", () => {
-
-  studentsScreen.style.display = "none";
-
-  appScreen.style.display = "block";
-
-});
+    const studentsScreen =
+      document.getElementById("students-screen");
 
 
-// ===============================
-// AGREGAR ALUMNA
-// ===============================
-
-addStudentButton.addEventListener("click", () => {
-
-  alert("Acá vamos a crear la nueva alumna.");
-
-});
-
-studentsButton.addEventListener("click", async () => {
-
-  appScreen.style.display = "none";
-  studentsScreen.style.display = "block";
-
-  await loadStudents();
-
-});
+    const backToPanel =
+      document.getElementById("back-to-panel");
 
 
-async function loadStudents() {
-
-  studentsList.innerHTML = `
-    <p class="students-loading">
-      CARGANDO ALUMNAS...
-    </p>
-  `;
-
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("id, full_name")
-    .eq("role", "student")
-    .order("full_name", { ascending: true });
-
-  if (error) {
-
-    console.error(error);
-
-    studentsList.innerHTML = `
-      <p class="students-empty">
-        NO SE PUDIERON CARGAR LAS ALUMNAS.
-      </p>
-    `;
-
-    return;
-  }
-
-  if (!data || data.length === 0) {
-
-    studentsList.innerHTML = `
-      <p class="students-empty">
-        TODAVÍA NO HAY ALUMNAS CARGADAS.
-      </p>
-    `;
-
-    return;
-  }
-
-  studentsList.innerHTML = "";
-
-  data.forEach(student => {
-
-    const card = document.createElement("div");
-
-    card.className = "student-card";
-
-    card.innerHTML = `
-      <div class="student-name">
-        ${student.full_name}
-      </div>
-
-      <div class="student-email">
-        ALUMNA FORJA
-      </div>
-    `;
-
-    studentsList.appendChild(card);
-
-  });
-
-}
+    const studentsList =
+      document.getElementById("students-list");
 
 
-backToTrainer.addEventListener("click", () => {
-
-  studentsScreen.style.display = "none";
-  appScreen.style.display = "block";
-
-});
+    const addStudentButton =
+      document.getElementById("add-student-button");
 
 
     /* =====================================
-       MOSTRAR LOGIN / APP
+       MOSTRAR LOGIN
     ====================================== */
 
     function showLogin() {
@@ -1062,8 +950,14 @@ backToTrainer.addEventListener("click", () => {
 
       appScreen.style.display = "none";
 
+      studentsScreen.style.display = "none";
+
     }
 
+
+    /* =====================================
+       MOSTRAR PANEL
+    ====================================== */
 
     function showApp() {
 
@@ -1071,8 +965,9 @@ backToTrainer.addEventListener("click", () => {
 
       appScreen.style.display = "block";
 
-    }
+      studentsScreen.style.display = "none";
 
+    }
 
 
     /* =====================================
@@ -1081,11 +976,9 @@ backToTrainer.addEventListener("click", () => {
 
     async function checkSession() {
 
-
       const {
         data: { session }
-      } =
-        await supabaseClient.auth.getSession();
+      } = await supabaseClient.auth.getSession();
 
 
       if (session) {
@@ -1101,7 +994,6 @@ backToTrainer.addEventListener("click", () => {
     }
 
 
-
     /* =====================================
        LOGIN
     ====================================== */
@@ -1109,7 +1001,6 @@ backToTrainer.addEventListener("click", () => {
     loginForm.addEventListener(
       "submit",
       async function(event) {
-
 
         event.preventDefault();
 
@@ -1119,185 +1010,284 @@ backToTrainer.addEventListener("click", () => {
 
 
         const email =
-          document
-            .getElementById("email")
+          document.getElementById("email").value.trim();
 
-/* =====================================
-   BOTONES Y PANTALLAS
-===================================== */
 
-const logoutButton =
-  document.getElementById("logout-button");
+        const password =
+          document.getElementById("password").value;
 
-const studentsButton =
-  document.getElementById("students-button");
 
-const studentsScreen =
-  document.getElementById("students-screen");
+        const {
+          error
+        } =
+          await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+          });
 
-const backToPanel =
-  document.getElementById("back-to-panel");
 
-const studentsList =
-  document.getElementById("students-list");
+        if (error) {
 
-const addStudentButton =
-  document.getElementById("add-student-button");
+          console.error(error);
 
+          loginMessage.textContent =
+            "EMAIL O CONTRASEÑA INCORRECTOS.";
 
-/* =====================================
-   MOSTRAR PANTALLA DE ALUMNAS
-===================================== */
+          return;
 
-studentsButton.addEventListener("click", async function() {
+        }
 
-  appScreen.style.display = "none";
-  studentsScreen.style.display = "block";
 
-  await loadStudents();
+        loginMessage.textContent = "";
 
-});
+        showApp();
 
+      }
+    );
 
-/* =====================================
-   VOLVER AL PANEL
-===================================== */
 
-backToPanel.addEventListener("click", function() {
+    /* =====================================
+       CAMBIO DE SESIÓN
+    ====================================== */
 
-  studentsScreen.style.display = "none";
-  appScreen.style.display = "block";
+    supabaseClient.auth.onAuthStateChange(
+      function(event, session) {
 
-});
+        if (session) {
 
+          showApp();
 
-/* =====================================
-   CARGAR ALUMNAS
-===================================== */
+        } else {
 
-async function loadStudents() {
+          showLogin();
 
-  studentsList.innerHTML = `
-    <p class="students-loading">
-      CARGANDO ALUMNAS...
-    </p>
-  `;
+        }
 
+      }
+    );
 
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("id, full_name, role")
-    .eq("role", "student")
-    .order("full_name");
 
+    /* =====================================
+       ABRIR MIS ALUMNAS
+    ====================================== */
 
-  if (error) {
+    studentsButton.addEventListener(
+      "click",
+      async function() {
 
-    console.error(error);
+        appScreen.style.display = "none";
 
-    studentsList.innerHTML = `
-      <p class="students-empty">
-        NO SE PUDIERON CARGAR LAS ALUMNAS.
-      </p>
-    `;
+        studentsScreen.style.display = "block";
 
-    return;
+        await loadStudents();
 
-  }
+      }
+    );
 
 
-  if (!data || data.length === 0) {
+    /* =====================================
+       VOLVER AL PANEL
+    ====================================== */
 
-    studentsList.innerHTML = `
-      <p class="students-empty">
-        TODAVÍA NO HAY ALUMNAS CARGADAS.
-      </p>
-    `;
+    backToPanel.addEventListener(
+      "click",
+      function() {
 
-    return;
+        studentsScreen.style.display = "none";
 
-  }
+        appScreen.style.display = "block";
 
+      }
+    );
 
-  studentsList.innerHTML = "";
 
+    /* =====================================
+       CARGAR ALUMNAS
+    ====================================== */
 
-  data.forEach(function(student) {
+    async function loadStudents() {
 
-    const card = document.createElement("div");
+      studentsList.innerHTML = `
+        <p class="students-loading">
+          CARGANDO ALUMNAS...
+        </p>
+      `;
 
-    card.className = "student-card";
 
-    card.innerHTML = `
-      <div class="student-name">
-        ${student.full_name || "Sin nombre"}
-      </div>
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select("id, full_name, role")
+          .eq("role", "student")
+          .order("full_name", {
+            ascending: true
+          });
 
-      <div class="student-email">
-        Alumna FORJA
-      </div>
-    `;
 
-    studentsList.appendChild(card);
+      if (error) {
 
-  });
+        console.error(
+          "Error cargando alumnas:",
+          error
+        );
 
-}
 
+        studentsList.innerHTML = `
+          <p class="students-empty">
+            NO SE PUDIERON CARGAR LAS ALUMNAS.
+          </p>
+        `;
 
-/* =====================================
-   AGREGAR ALUMNA
-===================================== */
 
-addStudentButton.addEventListener("click", function() {
+        return;
 
-  alert("Acá vamos a crear el formulario para agregar una alumna.");
+      }
 
-});
 
+      if (!data || data.length === 0) {
 
-/* =====================================
-   CERRAR SESIÓN
-===================================== */
+        studentsList.innerHTML = `
+          <p class="students-empty">
+            TODAVÍA NO HAY ALUMNAS CARGADAS.
+          </p>
+        `;
 
-logoutButton.addEventListener(
-  "click",
-  async function() {
 
-    await supabaseClient.auth.signOut();
+        return;
 
-    showLogin();
+      }
 
-  }
-);
 
+      studentsList.innerHTML = "";
 
-/* =====================================
-   INICIAR APP
-===================================== */
 
-checkSession();
+      data.forEach(
+        function(student) {
 
 
-/* =====================================
-   SERVICE WORKER
-===================================== */
+          const card =
+            document.createElement("div");
 
-if ("serviceWorker" in navigator) {
 
-  window.addEventListener(
-    "load",
-    function() {
+          card.className =
+            "student-card";
 
-      navigator.serviceWorker.register("./sw.js");
+
+          card.innerHTML = `
+
+            <div class="student-name">
+              ${student.full_name || "SIN NOMBRE"}
+            </div>
+
+            <div class="student-email">
+              ALUMNA FORJA
+            </div>
+
+          `;
+
+
+          studentsList.appendChild(card);
+
+        }
+      );
 
     }
-  );
 
-}
+
+    /* =====================================
+       AGREGAR ALUMNA
+    ====================================== */
+
+    addStudentButton.addEventListener(
+      "click",
+      function() {
+
+        alert(
+          "En el próximo paso vamos a crear el formulario para agregar una alumna."
+        );
+
+      }
+    );
+
+
+    /* =====================================
+       CERRAR SESIÓN
+    ====================================== */
+
+    logoutButton.addEventListener(
+      "click",
+      async function() {
+
+        await supabaseClient.auth.signOut();
+
+        showLogin();
+
+      }
+    );
+
+
+    =====================================
+       BOTONES RUTINAS Y PROGRESO
+    ====================================== */
+
+    document
+      .getElementById("workouts-button")
+      .addEventListener(
+        "click",
+        function() {
+
+          alert(
+            "La sección RUTINAS la vamos a conectar después."
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("progress-button")
+      .addEventListener(
+        "click",
+        function() {
+
+          alert(
+            "La sección PROGRESO la vamos a conectar después."
+          );
+
+        }
+      );
+
+
+    /* =====================================
+       INICIAR APP
+    ====================================== */
+
+    checkSession();
+
+
+    /* =====================================
+       SERVICE WORKER
+    ====================================== */
+
+    if ("serviceWorker" in navigator) {
+
+      window.addEventListener(
+        "load",
+        function() {
+
+          navigator.serviceWorker.register("./sw.js");
+
+        }
+      );
+
+    }
+
   </script>
 
 
 </body>
 
-  </html>
+</html>
