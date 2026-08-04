@@ -505,61 +505,71 @@
       line-height: 1.7;
     }
 
-/* =====================================
-   FORMULARIO NUEVA ALUMNA
-===================================== */
 
-.student-form {
-  padding-bottom: 40px;
-}
+    /* =====================================
+       FORMULARIO NUEVA ALUMNA
+    ====================================== */
 
-.student-form h2 {
-  color: #E60000;
-  font-family: 'Anton', sans-serif;
-  font-size: 42px;
-  font-weight: 400;
-  line-height: 0.95;
-  margin-bottom: 30px;
-}
+    .student-form {
+      padding-bottom: 40px;
+    }
 
-#new-student-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
-#new-student-form label {
-  color: #777777;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  margin-top: 8px;
-}
+    .student-form h2 {
+      color: #E60000;
+      font-family: 'Anton', sans-serif;
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 0.95;
+      margin-bottom: 30px;
+    }
 
-#new-student-form input,
-#new-student-form select {
-  width: 100%;
-  padding: 15px;
-  background: #111111;
-  border: 1px solid #292929;
-  color: #ffffff;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  outline: none;
-}
 
-#new-student-form input:focus,
-#new-student-form select:focus {
-  border-color: #E60000;
-}
+    #new-student-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-#new-student-form select {
-  appearance: auto;
-}
 
-#cancel-student {
-  margin-top: 5px;
-}
+    #new-student-form label {
+      color: #777777;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin-top: 8px;
+    }
+
+
+    #new-student-form input,
+    #new-student-form select {
+      width: 100%;
+      padding: 15px;
+      background: #111111;
+      border: 1px solid #292929;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      outline: none;
+    }
+
+
+    #new-student-form input:focus,
+    #new-student-form select:focus {
+      border-color: #E60000;
+    }
+
+
+    #new-student-form select {
+      appearance: auto;
+    }
+
+
+    #cancel-student {
+      margin-top: 5px;
+    }
+
+
     /* =====================================
        DESKTOP
     ====================================== */
@@ -586,6 +596,7 @@
 
     const SUPABASE_URL =
       "https://mjrdhybwaovnrzlzfxcw.supabase.co";
+
 
     const SUPABASE_KEY =
       "sb_publishable_KnKdmC7svdn8w_SB6-R2fg_E8pTbxUN";
@@ -641,6 +652,7 @@
         EMAIL
       </label>
 
+
       <input
         type="email"
         id="email"
@@ -652,6 +664,7 @@
       <label for="password">
         CONTRASEÑA
       </label>
+
 
       <input
         type="password"
@@ -1032,7 +1045,8 @@
 
       const {
         data: { session }
-      } = await supabaseClient.auth.getSession();
+      } =
+        await supabaseClient.auth.getSession();
 
 
       if (session) {
@@ -1064,11 +1078,16 @@
 
 
         const email =
-          document.getElementById("email").value.trim();
+          document
+            .getElementById("email")
+            .value
+            .trim();
 
 
         const password =
-          document.getElementById("password").value;
+          document
+            .getElementById("password")
+            .value;
 
 
         const {
@@ -1174,7 +1193,9 @@
       } =
         await supabaseClient
           .from("profiles")
-          .select("id, full_name, role")
+          .select(
+            "id, full_name, role, email, objective, training_days, start_date"
+          )
           .eq("role", "student")
           .order("full_name", {
             ascending: true
@@ -1221,7 +1242,6 @@
       data.forEach(
         function(student) {
 
-
           const card =
             document.createElement("div");
 
@@ -1237,7 +1257,7 @@
             </div>
 
             <div class="student-email">
-              ALUMNA FORJA
+              ${student.email || "ALUMNA FORJA"}
             </div>
 
           `;
@@ -1251,550 +1271,536 @@
     }
 
 
- /* =====================================
-   AGREGAR ALUMNA
-===================================== */
+    /* =====================================
+       AGREGAR ALUMNA
+    ====================================== */
 
-addStudentButton.addEventListener(
-  "click",
-  function() {
+    addStudentButton.addEventListener(
+      "click",
+      function() {
 
-    studentsList.innerHTML = `
+        studentsList.innerHTML = `
 
-      <div class="student-form">
+          <div class="student-form">
 
-        <div class="eyebrow">
-          NUEVA ALUMNA
-        </div>
+            <div class="eyebrow">
+              NUEVA ALUMNA
+            </div>
 
-        <h2>
-          AGREGAR<br>
-          ALUMNA
-        </h2>
-
-
-        <form id="new-student-form">
+            <h2>
+              AGREGAR<br>
+              ALUMNA
+            </h2>
 
 
-          <label for="student-name">
-            NOMBRE Y APELLIDO
-          </label>
-
-          <input
-            type="text"
-            id="student-name"
-            placeholder="Nombre y apellido"
-            required
-          >
+            <form id="new-student-form">
 
 
-          <label for="student-email">
-            EMAIL
-          </label>
-
-          <input
-            type="email"
-            id="student-email"
-            placeholder="Email de la alumna"
-            required
-          >
+              <label for="student-name">
+                NOMBRE Y APELLIDO
+              </label>
 
 
-          <label for="student-password">
-            CONTRASEÑA INICIAL
-          </label>
-
-          <input
-            type="password"
-            id="student-password"
-            placeholder="Contraseña inicial"
-            minlength="6"
-            required
-          >
+              <input
+                type="text"
+                id="student-name"
+                placeholder="Nombre y apellido"
+                required
+              >
 
 
-          <label for="student-objective">
-            OBJETIVO
-          </label>
-
-          <select
-            id="student-objective"
-            required
-          >
-
-            <option value="">
-              Seleccionar objetivo
-            </option>
-
-            <option value="fuerza">
-              Fuerza
-            </option>
-
-            <option value="hipertrofia">
-              Hipertrofia
-            </option>
-
-            <option value="resistencia">
-              Resistencia
-            </option>
-
-            <option value="rendimiento">
-              Rendimiento deportivo
-            </option>
-
-            <option value="general">
-              Acondicionamiento general
-            </option>
-
-          </select>
+              <label for="student-email">
+                EMAIL
+              </label>
 
 
-          <label for="student-days">
-            DÍAS DE ENTRENAMIENTO
-          </label>
-
-          <select
-            id="student-days"
-            required
-          >
-
-            <option value="">
-              Seleccionar días
-            </option>
-
-            <option value="2">
-              2 días
-            </option>
-
-            <option value="3">
-              3 días
-            </option>
-
-            <option value="4">
-              4 días
-            </option>
-
-            <option value="5">
-              5 días
-            </option>
-
-          </select>
+              <input
+                type="email"
+                id="student-email"
+                placeholder="Email de la alumna"
+                required
+              >
 
 
-          <label for="student-start">
-            FECHA DE INICIO
-          </label>
-
-          <input
-            type="date"
-            id="student-start"
-            required
-          >
+              <label for="student-password">
+                CONTRASEÑA INICIAL
+              </label>
 
 
-          <button
-            type="submit"
-            class="button"
-          >
-            CREAR ALUMNA →
-          </button>
+              <input
+                type="password"
+                id="student-password"
+                placeholder="Contraseña inicial"
+                minlength="6"
+                required
+              >
 
 
-          <button
-            type="button"
-            id="cancel-student"
-            class="logout-button"
-          >
-            ← CANCELAR
-          </button>
+              <label for="student-objective">
+                OBJETIVO
+              </label>
 
 
-          <p
-            id="student-form-message"
-            class="students-empty"
-          ></p>
+              <select
+                id="student-objective"
+                required
+              >
+
+                <option value="">
+                  Seleccionar objetivo
+                </option>
+
+                <option value="fuerza">
+                  Fuerza
+                </option>
+
+                <option value="hipertrofia">
+                  Hipertrofia
+                </option>
+
+                <option value="resistencia">
+                  Resistencia
+                </option>
+
+                <option value="rendimiento">
+                  Rendimiento deportivo
+                </option>
+
+                <option value="general">
+                  Acondicionamiento general
+                </option>
+
+              </select>
 
 
-        </form>
+              <label for="student-days">
+                DÍAS DE ENTRENAMIENTO
+              </label>
 
-      </div>
 
-    `;
+              <select
+                id="student-days"
+                required
+              >
+
+                <option value="">
+                  Seleccionar días
+                </option>
+
+                <option value="2">
+                  2 días
+                </option>
+
+                <option value="3">
+                  3 días
+                </option>
+
+                <option value="4">
+                  4 días
+                </option>
+
+                <option value="5">
+                  5 días
+                </option>
+
+              </select>
+
+
+              <label for="student-start">
+                FECHA DE INICIO
+              </label>
+
+
+              <input
+                type="date"
+                id="student-start"
+                required
+              >
+
+
+              <button
+                type="submit"
+                class="button"
+              >
+                CREAR ALUMNA →
+              </button>
+
+
+              <button
+                type="button"
+                id="cancel-student"
+                class="logout-button"
+              >
+                ← CANCELAR
+              </button>
+
+
+              <p
+                id="student-form-message"
+                class="students-empty"
+              ></p>
+
+
+            </form>
+
+          </div>
+
+        `;
+
+
+        /* =====================================
+           CANCELAR
+        ====================================== */
+
+        document
+          .getElementById("cancel-student")
+          .addEventListener(
+            "click",
+            function() {
+
+              loadStudents();
+
+            }
+          );
+
+
+        /* =====================================
+           ENVIAR FORMULARIO
+        ====================================== */
+
+        document
+          .getElementById("new-student-form")
+          .addEventListener(
+            "submit",
+            async function(event) {
+
+              event.preventDefault();
+
+
+              const name =
+                document
+                  .getElementById("student-name")
+                  .value
+                  .trim();
+
+
+              const email =
+                document
+                  .getElementById("student-email")
+                  .value
+                  .trim();
+
+
+              const password =
+                document
+                  .getElementById("student-password")
+                  .value;
+
+
+              const objective =
+                document
+                  .getElementById("student-objective")
+                  .value;
+
+
+              const trainingDays =
+                document
+                  .getElementById("student-days")
+                  .value;
+
+
+              const startDate =
+                document
+                  .getElementById("student-start")
+                  .value;
+
+
+              const message =
+                document.getElementById(
+                  "student-form-message"
+                );
+
+
+              message.textContent =
+                "CREANDO ALUMNA...";
+
+
+              try {
+
+                /* =====================================
+                   LLAMAR EDGE FUNCTION
+                ====================================== */
+
+                const {
+                  data,
+                  error
+                } =
+                  await supabaseClient.functions.invoke(
+                    "create-student",
+                    {
+                      body: {
+
+                        name: name,
+
+                        email: email,
+
+                        password: password,
+
+                        objective: objective,
+
+                        training_days:
+                          trainingDays,
+
+                        start_date:
+                          startDate
+
+                      }
+                    }
+                  );
+
+
+                console.log(
+                  "Respuesta create-student:",
+                  data
+                );
+
+
+                console.log(
+                  "Error create-student:",
+                  error
+                );
+
+
+                /* =====================================
+                   ERROR
+                ====================================== */
+
+                if (error) {
+
+                  console.error(
+                    "Error de Edge Function:",
+                    error
+                  );
+
+
+                  let errorMessage =
+                    "NO SE PUDO CREAR LA ALUMNA.";
+
+
+                  /*
+                   * Intentamos leer la respuesta
+                   * real enviada por la Edge Function.
+                   */
+
+                  if (error.context) {
+
+                    try {
+
+                      const errorBody =
+                        await error.context.json();
+
+
+                      console.error(
+                        "Respuesta del servidor:",
+                        errorBody
+                      );
+
+
+                      if (
+                        errorBody &&
+                        errorBody.error
+                      ) {
+
+                        errorMessage =
+                          errorBody.error;
+
+                      }
+
+
+                      if (
+                        errorBody &&
+                        errorBody.details
+                      ) {
+
+                        errorMessage +=
+                          " " +
+                          errorBody.details;
+
+                      }
+
+                    } catch (
+                      parseError
+                    ) {
+
+                      console.error(
+                        "No se pudo leer el error del servidor:",
+                        parseError
+                      );
+
+                    }
+
+                  }
+
+
+                  message.textContent =
+                    errorMessage;
+
+                  return;
+
+                }
+
+
+                /* =====================================
+                   VALIDAR RESPUESTA
+                ====================================== */
+
+                if (
+                  !data ||
+                  !data.success
+                ) {
+
+                  console.error(
+                    "Respuesta inesperada:",
+                    data
+                  );
+
+
+                  message.textContent =
+                    (
+                      data &&
+                      data.error
+                    )
+                      ?
+                      data.error
+                      :
+                      "NO SE PUDO CREAR LA ALUMNA.";
+
+                  return;
+
+                }
+
+
+                /* =====================================
+                   ÉXITO
+                ====================================== */
+
+                message.textContent =
+                  "✓ ALUMNA CREADA CORRECTAMENTE.";
+
+
+                console.log(
+                  "Alumna creada:",
+                  data.student
+                );
+
+
+                /*
+                 * Volvemos al listado después
+                 * de mostrar el mensaje.
+                 */
+
+                setTimeout(
+                  async function() {
+
+                    await loadStudents();
+
+                  },
+                  1200
+                );
+
+
+              } catch (error) {
+
+                console.error(
+                  "Error inesperado:",
+                  error
+                );
+
+
+                message.textContent =
+                  "OCURRIÓ UN ERROR AL CREAR LA ALUMNA.";
+
+              }
+
+            }
+          );
+
+      }
+    );
 
 
     /* =====================================
-       CANCELAR
+       CERRAR SESIÓN
+    ====================================== */
+
+    logoutButton.addEventListener(
+      "click",
+      async function() {
+
+        await supabaseClient.auth.signOut();
+
+        showLogin();
+
+      }
+    );
+
+
+    /* =====================================
+       BOTONES RUTINAS Y PROGRESO
     ====================================== */
 
     document
-      .getElementById("cancel-student")
+      .getElementById("workouts-button")
       .addEventListener(
         "click",
         function() {
 
-          loadStudents();
+          alert(
+            "Próximamente: creación y edición de rutinas."
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("progress-button")
+      .addEventListener(
+        "click",
+        function() {
+
+          alert(
+            "Próximamente: seguimiento del progreso de tus alumnas."
+          );
 
         }
       );
 
 
     /* =====================================
-       ENVIAR FORMULARIO
+       INICIAR APP
     ====================================== */
 
-   document
-  .getElementById("new-student-form")
-  .addEventListener(
-    "submit",
-    async function(event) {
-
-      event.preventDefault();
+    checkSession();
 
 
-      const name =
-        document
-          .getElementById("student-name")
-          .value
-          .trim();
+    /* =====================================
+       SERVICE WORKER
+    ====================================== */
 
+    if ("serviceWorker" in navigator) {
 
-      const email =
-        document
-          .getElementById("student-email")
-          .value
-          .trim();
+      window.addEventListener(
+        "load",
+        function() {
 
-
-      const password =
-        document
-          .getElementById("student-password")
-          .value;
-
-
-      const objective =
-        document
-          .getElementById("student-objective")
-          .value;
-
-
-      const trainingDays =
-        document
-          .getElementById("student-days")
-          .value;
-
-
-      const startDate =
-        document
-          .getElementById("student-start")
-          .value;
-
-
-      const message =
-        document.getElementById(
-          "student-form-message"
-        );
-
-
-      message.textContent =
-        "CREANDO ALUMNA...";
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.functions.invoke(
-            "create-student",
-            {
-              body: {
-
-                name: name,
-
-                email: email,
-
-                password: password,
-
-                objective: objective,
-
-                training_days:
-                  trainingDays,
-
-                start_date:
-                  startDate
-
-              }
-            }
-          );
-
-
-        console.log(
-          "Respuesta create-student:",
-          data
-        );
-
-
-        console.log(
-          "Error create-student:",
-          error
-        );
-
-
-        if (error) {
-
-          console.error(
-            "Error de Edge Function:",
-            error
-          );
-
-
-          let errorMessage =
-            "NO SE PUDO CREAR LA ALUMNA.";
-
-
-          if (
-            error.context
-          ) {
-
-            try {
-
-              const errorBody =
-                await error.context.json();
-
-              console.error(
-                "Respuesta del servidor:",
-                errorBody
-              );
-
-
-              if (
-                errorBody &&
-                errorBody.error
-              ) {
-
-                errorMessage =
-                  errorBody.error;
-
-              }
-
-              if (
-                errorBody &&
-                errorBody.details
-              ) {
-
-                errorMessage +=
-                  " " +
-                  errorBody.details;
-
-              }
-
-            } catch (
-              parseError
-            ) {
-
-              console.error(
-                "No se pudo leer el error:",
-                parseError
-              );
-
-            }
-
-          }
-
-
-          message.textContent =
-            errorMessage;
-
-          return;
+          navigator.serviceWorker.register("./sw.js");
 
         }
-
-
-        if (
-          !data ||
-          !data.success
-        ) {
-
-          message.textContent =
-            "NO SE PUDO CREAR LA ALUMNA.";
-
-          console.error(
-            "Respuesta inesperada:",
-            data
-          );
-
-          return;
-
-        }
-
-
-        /* =====================================
-           ÉXITO
-        ====================================== */
-
-        message.textContent =
-          "✓ ALUMNA CREADA CORRECTAMENTE.";
-
-
-        console.log(
-          "Alumna creada:",
-          data.student
-        );
-
-
-        setTimeout(
-          async function() {
-
-            await loadStudents();
-
-          },
-          1200
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Error inesperado:",
-          error
-        );
-
-
-        message.textContent =
-          "OCURRIÓ UN ERROR AL CREAR LA ALUMNA.";
-
-      }
-
-    }
-  );
-
-            console.log(
-              "Respuesta create-student:",
-              data
-            );
-
-
-            if (error) {
-
-              console.error(
-                "Error create-student:",
-                error
-              );
-
-
-              message.textContent =
-                "NO SE PUDO CREAR LA ALUMNA.";
-
-              return;
-
-            }
-
-
-            message.textContent =
-              "ALUMNA CREADA CORRECTAMENTE.";
-
-
-            setTimeout(
-              async function() {
-
-                await loadStudents();
-
-              },
-              1000
-            );
-
-
-          } catch (error) {
-
-            console.error(
-              "Error inesperado:",
-              error
-            );
-
-
-            message.textContent =
-              "OCURRIÓ UN ERROR AL CREAR LA ALUMNA.";
-
-          }
-
-  }
-);
-
-
-/* =====================================
-   CERRAR SESIÓN
-===================================== */
-
-logoutButton.addEventListener(
-  "click",
-  async function() {
-
-    await supabaseClient.auth.signOut();
-
-    showLogin();
-
-  }
-);
-
-
-/* =====================================
-   BOTONES RUTINAS Y PROGRESO
-===================================== */
-
-document
-  .getElementById("workouts-button")
-  .addEventListener(
-    "click",
-    function() {
-
-      alert(
-        "Próximamente: creación y edición de rutinas."
       );
 
     }
-  );
 
-
-document
-  .getElementById("progress-button")
-  .addEventListener(
-    "click",
-    function() {
-
-      alert(
-        "Próximamente: seguimiento del progreso de tus alumnas."
-      );
-
-    }
-  );
-
-
-/* =====================================
-   INICIAR APP
-===================================== */
-
-checkSession();
-
-
-/* =====================================
-   SERVICE WORKER
-===================================== */
-
-if ("serviceWorker" in navigator) {
-
-  window.addEventListener(
-    "load",
-    function() {
-
-      navigator.serviceWorker.register("./sw.js");
-
-    }
-  );
-
-}
-
-</script>
   </script>
 
 
