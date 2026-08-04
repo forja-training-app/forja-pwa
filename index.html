@@ -567,6 +567,108 @@
       }
 
     }
+    /* =====================================
+   PANTALLA RUTINAS
+===================================== */
+
+#workouts-screen {
+  display: none;
+}
+
+.workouts-header {
+  margin-bottom: 30px;
+}
+
+.workouts-header h1 {
+  margin-bottom: 15px;
+}
+
+.workouts-header p {
+  color: #777777;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.workout-student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.workout-student-card {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: #0b0b0b;
+  border: 1px solid #262626;
+  color: #ffffff;
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+}
+
+.workout-student-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: #E60000;
+  left: 0;
+  top: 0;
+}
+
+.workout-student-card:hover {
+  border-color: #E60000;
+}
+
+.workout-student-icon {
+  min-width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E60000;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+}
+
+.workout-student-info {
+  flex: 1;
+}
+
+.workout-student-name {
+  display: block;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.workout-student-email {
+  display: block;
+  color: #777777;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.workout-student-arrow {
+  color: #E60000;
+  font-size: 22px;
+}
+
+.workouts-loading,
+.workouts-empty {
+  color: #777777;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 20px 0;
+}
 
   </style>
 
