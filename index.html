@@ -279,6 +279,107 @@
       line-height: 1.5;
       margin-top: 10px;
     }
+    /* PANEL DE ENTRENADORA */
+
+.trainer-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.menu-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  text-align: left;
+  padding: 18px;
+  background: #0b0b0b;
+  border: 1px solid #262626;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+}
+
+.menu-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: #E60000;
+  left: 0;
+  top: 0;
+}
+
+.menu-card:hover {
+  border-color: #E60000;
+}
+
+.menu-icon {
+  min-width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E60000;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 25px;
+}
+
+.menu-card > div:nth-child(2) {
+  flex: 1;
+}
+
+.menu-label {
+  display: block;
+  color: #E60000;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.menu-card strong {
+  display: block;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.menu-card p {
+  margin-top: 4px;
+  color: #777777;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.menu-arrow {
+  color: #E60000;
+  font-size: 22px;
+}
+
+.logout-button {
+  width: 100%;
+  margin-top: 35px;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid #292929;
+  color: #777777;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  color: #ffffff;
+  border-color: #E60000;
+  }
   </style>
     <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -354,62 +455,133 @@
 
         <h1>
           BIENVENIDA<br>
-          A FORJA
-        </h1>
+<main class="app">
 
-        <p>
-          Tu entrenamiento. Tu progreso. Tu proceso.
-        </p>
+  <div class="graphic graphic-one"></div>
+  <div class="graphic graphic-two"></div>
 
-      </section>
+  <div class="content">
 
-      <section class="training">
-
-        <div class="eyebrow">
-          ENTRENAMIENTO DE HOY
-        </div>
-
-        <h2>
-          TREN INFERIOR
-        </h2>
-
-        <div class="training-info">
-          SEMANA 1 · DÍA 1
-        </div>
-
-        <div class="details">
-
-          <div class="detail">
-            <small>EJERCICIOS</small>
-            <strong>6</strong>
-          </div>
-
-          <div class="detail">
-            <small>DURACIÓN</small>
-            <strong>60 MIN</strong>
-          </div>
-
-          <div class="detail">
-            <small>RPE</small>
-            <strong>8</strong>
-          </div>
-
-        </div>
-
-        <button class="button">
-          COMENZAR ENTRENAMIENTO →
-        </button>
-
-      </section>
-
-      <div class="quote">
-        Entrená con propósito.<br>
-        Forjá tu mejor versión.
-      </div>
-
+    <div class="logo">
+      <img src="./logo-forja.png" alt="FORJA Training">
     </div>
 
-  </main>
+    <section class="welcome">
+
+      <div class="eyebrow">
+        FORJANDO ATLETAS
+      </div>
+
+      <h1>
+        PANEL DE<br>
+        ENTRENADORA
+      </h1>
+
+      <p>
+        Gestioná tus alumnas y sus entrenamientos.
+      </p>
+
+    </section>
+
+
+    <section class="trainer-menu">
+
+      <button class="menu-card" id="students-button">
+
+        <div class="menu-icon">
+          +
+        </div>
+
+        <div>
+          <span class="menu-label">
+            GESTIÓN
+          </span>
+
+          <strong>
+            MIS ALUMNAS
+          </strong>
+
+          <p>
+            Agregar y administrar alumnas.
+          </p>
+        </div>
+
+        <span class="menu-arrow">
+          →
+        </span>
+
+      </button>
+
+
+      <button class="menu-card">
+
+        <div class="menu-icon">
+          +
+        </div>
+
+        <div>
+          <span class="menu-label">
+            ENTRENAMIENTOS
+          </span>
+
+          <strong>
+            RUTINAS
+          </strong>
+
+          <p>
+            Crear y editar entrenamientos.
+          </p>
+        </div>
+
+        <span class="menu-arrow">
+          →
+        </span>
+
+      </button>
+
+
+      <button class="menu-card">
+
+        <div class="menu-icon">
+          ↗
+        </div>
+
+        <div>
+          <span class="menu-label">
+            SEGUIMIENTO
+          </span>
+
+          <strong>
+            PROGRESO
+          </strong>
+
+          <p>
+            Revisar el progreso de tus alumnas.
+          </p>
+        </div>
+
+        <span class="menu-arrow">
+          →
+        </span>
+
+      </button>
+
+    </section>
+
+
+    <button id="logout-button" class="logout-button">
+      CERRAR SESIÓN
+    </button>
+
+
+    <div class="quote">
+      Entrená con propósito.<br>
+      Forjá tu mejor versión.
+    </div>
+
+  </div>
+
+</main>
 
     <script>
 
@@ -476,7 +648,16 @@
 
   checkSession();
 
+const logoutButton = document.getElementById("logout-button");
 
+logoutButton.addEventListener("click", async () => {
+
+  await supabaseClient.auth.signOut();
+
+  await checkSession();
+
+});
+      
   if ("serviceWorker" in navigator) {
 
     window.addEventListener("load", () => {
