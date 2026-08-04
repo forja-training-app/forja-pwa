@@ -1,4 +1,4 @@
-const CACHE_NAME = "forja-v1";
+const CACHE_NAME = "forja-v2";
 
 const FILES_TO_CACHE = [
   "./",
