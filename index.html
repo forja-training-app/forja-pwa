@@ -1700,7 +1700,20 @@ function showApp() {
         showStudents();
 
         loadStudents();
+/* =====================================
+   VOLVER DESDE RUTINAS
+===================================== */
 
+backFromWorkouts.addEventListener(
+  "click",
+  function() {
+
+    workoutsScreen.style.display = "none";
+
+    appScreen.style.display = "block";
+
+  }
+);
       }
     );
 
