@@ -43,11 +43,11 @@
   >
 
 
-  <style>
+  <!-- =====================================
+       CSS
+  ====================================== -->
 
-    /* =====================================
-       BASE
-    ====================================== */
+  <style>
 
     * {
       box-sizing: border-box;
@@ -55,12 +55,14 @@
       padding: 0;
     }
 
+
     body {
       background: #000000;
       color: #ffffff;
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
+
 
     button,
     input,
@@ -70,7 +72,7 @@
 
 
     /* =====================================
-       APP GENERAL
+       APP
     ====================================== */
 
     .app {
@@ -82,6 +84,7 @@
       padding: 28px 22px 40px;
       overflow: hidden;
     }
+
 
     .content {
       position: relative;
@@ -99,6 +102,7 @@
       z-index: 0;
     }
 
+
     .graphic-one {
       width: 180px;
       height: 180px;
@@ -108,6 +112,7 @@
       right: -90px;
       opacity: 0.35;
     }
+
 
     .graphic-two {
       width: 120px;
@@ -127,6 +132,7 @@
     .logo {
       margin-bottom: 65px;
     }
+
 
     .logo img {
       width: 150px;
@@ -148,6 +154,7 @@
       margin-bottom: 8px;
     }
 
+
     h1 {
       color: #E60000;
       font-family: 'Anton', sans-serif;
@@ -158,9 +165,11 @@
       line-height: 0.95;
     }
 
+
     .welcome {
       margin-bottom: 42px;
     }
+
 
     .welcome p {
       color: #ffffff;
@@ -172,7 +181,7 @@
 
 
     /* =====================================
-       BOTÓN
+       BOTÓN GENERAL
     ====================================== */
 
     .button {
@@ -187,6 +196,12 @@
       text-transform: uppercase;
       cursor: pointer;
     }
+
+
+    .button:hover {
+      background: #ff1a1a;
+    }
+
 
     .button:active {
       transform: scale(0.99);
@@ -207,9 +222,11 @@
       margin: auto;
     }
 
+
     .login-logo {
       margin-bottom: 55px;
     }
+
 
     .login-logo img {
       width: 150px;
@@ -217,15 +234,18 @@
       display: block;
     }
 
+
     .login-screen h1 {
       margin-bottom: 35px;
     }
+
 
     #login-form {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+
 
     #login-form label,
     #new-student-form label,
@@ -236,6 +256,7 @@
       letter-spacing: 1.5px;
       margin-top: 8px;
     }
+
 
     #login-form input,
     #new-student-form input,
@@ -251,6 +272,7 @@
       outline: none;
     }
 
+
     #login-form input:focus,
     #new-student-form input:focus,
     #new-student-form select:focus,
@@ -258,6 +280,7 @@
     #edit-student-form select:focus {
       border-color: #E60000;
     }
+
 
     #login-message {
       color: #E60000;
@@ -278,6 +301,7 @@
       margin-top: 30px;
     }
 
+
     .menu-card {
       width: 100%;
       display: flex;
@@ -292,6 +316,7 @@
       cursor: pointer;
     }
 
+
     .menu-card::before {
       content: "";
       position: absolute;
@@ -302,9 +327,11 @@
       top: 0;
     }
 
+
     .menu-card:hover {
       border-color: #E60000;
     }
+
 
     .menu-icon {
       min-width: 42px;
@@ -318,9 +345,11 @@
       font-size: 25px;
     }
 
+
     .menu-card > div:nth-child(2) {
       flex: 1;
     }
+
 
     .menu-label {
       display: block;
@@ -331,6 +360,7 @@
       margin-bottom: 4px;
     }
 
+
     .menu-card strong {
       display: block;
       font-family: 'Anton', sans-serif;
@@ -339,12 +369,14 @@
       letter-spacing: 0.5px;
     }
 
+
     .menu-card p {
       margin-top: 4px;
       color: #777777;
       font-size: 11px;
       line-height: 1.4;
     }
+
 
     .menu-arrow {
       color: #E60000;
@@ -353,7 +385,7 @@
 
 
     /* =====================================
-       CERRAR SESIÓN
+       LOGOUT
     ====================================== */
 
     .logout-button {
@@ -369,6 +401,7 @@
       cursor: pointer;
     }
 
+
     .logout-button:hover {
       color: #ffffff;
       border-color: #E60000;
@@ -376,7 +409,7 @@
 
 
     /* =====================================
-       PANTALLA ALUMNAS
+       PANTALLAS GENERALES
     ====================================== */
 
     .students-screen {
@@ -388,9 +421,11 @@
       padding: 28px 22px 40px;
     }
 
+
     .students-header {
       margin-bottom: 30px;
     }
+
 
     .back-button {
       background: transparent;
@@ -404,13 +439,16 @@
       cursor: pointer;
     }
 
+
     .back-button:hover {
       color: #E60000;
     }
 
+
     .students-header h1 {
       margin-bottom: 15px;
     }
+
 
     .students-header p {
       color: #777777;
@@ -430,12 +468,14 @@
       margin-top: 20px;
     }
 
+
     .student-card {
       position: relative;
       background: #0b0b0b;
       border: 1px solid #262626;
       padding: 18px;
     }
+
 
     .student-card::before {
       content: "";
@@ -447,13 +487,16 @@
       top: 0;
     }
 
+
     .student-card.clickable {
       cursor: pointer;
     }
 
+
     .student-card.clickable:hover {
       border-color: #E60000;
     }
+
 
     .student-name {
       color: #ffffff;
@@ -462,11 +505,13 @@
       text-transform: uppercase;
     }
 
+
     .student-email {
       color: #777777;
       font-size: 11px;
       margin-top: 5px;
     }
+
 
     .student-mini-data {
       color: #777777;
@@ -475,8 +520,11 @@
       text-transform: uppercase;
     }
 
+
     .students-loading,
-    .students-empty {
+    .students-empty,
+    .workouts-loading,
+    .workouts-empty {
       color: #777777;
       font-size: 12px;
       line-height: 1.6;
@@ -492,6 +540,7 @@
       padding-bottom: 40px;
     }
 
+
     .student-form h2 {
       color: #E60000;
       font-family: 'Anton', sans-serif;
@@ -501,6 +550,7 @@
       margin-bottom: 30px;
     }
 
+
     #new-student-form,
     #edit-student-form {
       display: flex;
@@ -508,64 +558,21 @@
       gap: 10px;
     }
 
+
     #cancel-student,
-    #cancel-edit {
+    #cancel-edit-student {
       margin-top: 5px;
     }
-<!-- =====================================
-     PANTALLA RUTINAS
-====================================== -->
 
-<section
-  id="workouts-screen"
-  class="students-screen"
->
-
-  <div class="workouts-header">
-
-    <button
-      id="back-from-workouts"
-      class="back-button"
-      type="button"
-    >
-      ← VOLVER AL PANEL
-    </button>
-
-    <div class="eyebrow">
-      ENTRENAMIENTOS
-    </div>
-
-    <h1>
-      RUTINAS
-    </h1>
-
-    <p>
-      Seleccioná una alumna para administrar sus entrenamientos.
-    </p>
-
-  </div>
-
-
-  <div
-    id="workout-student-list"
-    class="workout-student-list"
-  >
-
-    <p class="workouts-loading">
-      CARGANDO ALUMNAS...
-    </p>
-
-  </div>
-
-</section>
 
     /* =====================================
-       FICHA DE ALUMNA
+       FICHA ALUMNA
     ====================================== */
 
     #student-detail-screen {
       display: none;
     }
+
 
     #detail-student-name {
       font-size: 48px;
@@ -573,16 +580,125 @@
       margin-bottom: 12px;
     }
 
+
     #detail-student-email {
       color: #777777;
       font-size: 13px;
     }
+
 
     .detail-value {
       color: #ffffff;
       font-family: 'Anton', sans-serif;
       font-size: 25px;
       text-transform: uppercase;
+    }
+
+
+    /* =====================================
+       RUTINAS
+    ====================================== */
+
+    #workouts-screen {
+      display: none;
+    }
+
+
+    .workouts-header {
+      margin-bottom: 30px;
+    }
+
+
+    .workouts-header h1 {
+      margin-bottom: 15px;
+    }
+
+
+    .workouts-header p {
+      color: #777777;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+
+    .workout-student-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+
+    .workout-student-card {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px;
+      background: #0b0b0b;
+      border: 1px solid #262626;
+      color: #ffffff;
+      text-align: left;
+      cursor: pointer;
+    }
+
+
+    .workout-student-card::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      background: #E60000;
+      left: 0;
+      top: 0;
+    }
+
+
+    .workout-student-card:hover {
+      border-color: #E60000;
+    }
+
+
+    .workout-student-icon {
+      min-width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #E60000;
+      color: #ffffff;
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+    }
+
+
+    .workout-student-info {
+      flex: 1;
+    }
+
+
+    .workout-student-name {
+      display: block;
+      color: #ffffff;
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+
+    .workout-student-email {
+      display: block;
+      color: #777777;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+
+    .workout-student-arrow {
+      color: #E60000;
+      font-size: 22px;
     }
 
 
@@ -612,108 +728,6 @@
       }
 
     }
-    /* =====================================
-   PANTALLA RUTINAS
-===================================== */
-
-#workouts-screen {
-  display: none;
-}
-
-.workouts-header {
-  margin-bottom: 30px;
-}
-
-.workouts-header h1 {
-  margin-bottom: 15px;
-}
-
-.workouts-header p {
-  color: #777777;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.workout-student-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.workout-student-card {
-  width: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px;
-  background: #0b0b0b;
-  border: 1px solid #262626;
-  color: #ffffff;
-  text-align: left;
-  font-family: 'Montserrat', sans-serif;
-  cursor: pointer;
-}
-
-.workout-student-card::before {
-  content: "";
-  position: absolute;
-  width: 4px;
-  height: 100%;
-  background: #E60000;
-  left: 0;
-  top: 0;
-}
-
-.workout-student-card:hover {
-  border-color: #E60000;
-}
-
-.workout-student-icon {
-  min-width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #E60000;
-  color: #ffffff;
-  font-family: 'Anton', sans-serif;
-  font-size: 22px;
-}
-
-.workout-student-info {
-  flex: 1;
-}
-
-.workout-student-name {
-  display: block;
-  color: #ffffff;
-  font-family: 'Anton', sans-serif;
-  font-size: 22px;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.workout-student-email {
-  display: block;
-  color: #777777;
-  font-size: 11px;
-  margin-top: 4px;
-}
-
-.workout-student-arrow {
-  color: #E60000;
-  font-size: 22px;
-}
-
-.workouts-loading,
-.workouts-empty {
-  color: #777777;
-  font-size: 12px;
-  line-height: 1.6;
-  padding: 20px 0;
-}
 
   </style>
 
@@ -724,13 +738,16 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
   <script>
 
     const SUPABASE_URL =
       "https://mjrdhybwaovnrzlzfxcw.supabase.co";
 
+
     const SUPABASE_KEY =
       "sb_publishable_KnKdmC7svdn8w_SB6-R2fg_E8pTbxUN";
+
 
     const supabaseClient =
       supabase.createClient(
@@ -764,20 +781,24 @@
 
     </div>
 
+
     <div class="eyebrow">
       FORJANDO ATLETAS
     </div>
+
 
     <h1>
       INICIAR<br>
       SESIÓN
     </h1>
 
+
     <form id="login-form">
 
       <label for="email">
         EMAIL
       </label>
+
 
       <input
         type="email"
@@ -786,9 +807,11 @@
         required
       >
 
+
       <label for="password">
         CONTRASEÑA
       </label>
+
 
       <input
         type="password"
@@ -797,12 +820,14 @@
         required
       >
 
+
       <button
         type="submit"
         class="button"
       >
         INGRESAR →
       </button>
+
 
       <p id="login-message"></p>
 
@@ -825,6 +850,7 @@
 
     <div class="graphic graphic-two"></div>
 
+
     <div class="content">
 
       <div class="logo">
@@ -843,10 +869,12 @@
           FORJANDO ATLETAS
         </div>
 
+
         <h1>
           PANEL DE<br>
           ENTRENADORA
         </h1>
+
 
         <p>
           Gestioná tus alumnas y sus entrenamientos.
@@ -858,8 +886,6 @@
       <section class="trainer-menu">
 
 
-        <!-- MIS ALUMNAS -->
-
         <button
           class="menu-card"
           id="students-button"
@@ -870,21 +896,25 @@
             +
           </div>
 
+
           <div>
 
             <span class="menu-label">
               GESTIÓN
             </span>
 
+
             <strong>
               MIS ALUMNAS
             </strong>
+
 
             <p>
               Agregar y administrar alumnas.
             </p>
 
           </div>
+
 
           <span class="menu-arrow">
             →
@@ -893,7 +923,6 @@
         </button>
 
 
-        <!-- RUTINAS -->
 
         <button
           class="menu-card"
@@ -905,21 +934,25 @@
             +
           </div>
 
+
           <div>
 
             <span class="menu-label">
               ENTRENAMIENTOS
             </span>
 
+
             <strong>
               RUTINAS
             </strong>
+
 
             <p>
               Crear y editar entrenamientos.
             </p>
 
           </div>
+
 
           <span class="menu-arrow">
             →
@@ -928,7 +961,6 @@
         </button>
 
 
-        <!-- PROGRESO -->
 
         <button
           class="menu-card"
@@ -940,21 +972,25 @@
             ↗
           </div>
 
+
           <div>
 
             <span class="menu-label">
               SEGUIMIENTO
             </span>
 
+
             <strong>
               PROGRESO
             </strong>
+
 
             <p>
               Revisar el progreso de tus alumnas.
             </p>
 
           </div>
+
 
           <span class="menu-arrow">
             →
@@ -1006,14 +1042,17 @@
         ← VOLVER AL PANEL
       </button>
 
+
       <div class="eyebrow">
         GESTIÓN
       </div>
+
 
       <h1>
         MIS<br>
         ALUMNAS
       </h1>
+
 
       <p>
         Administrá las alumnas de FORJA.
@@ -1065,13 +1104,16 @@
         ← VOLVER A MIS ALUMNAS
       </button>
 
+
       <div class="eyebrow">
         ALUMNA FORJA
       </div>
 
+
       <h1 id="detail-student-name">
         ALUMNA
       </h1>
+
 
       <p id="detail-student-email">
         EMAIL
@@ -1085,6 +1127,7 @@
       <div class="menu-label">
         OBJETIVO
       </div>
+
 
       <div
         id="detail-student-objective"
@@ -1102,6 +1145,7 @@
         ENTRENAMIENTO
       </div>
 
+
       <div
         id="detail-student-days"
         class="detail-value"
@@ -1117,6 +1161,7 @@
       <div class="menu-label">
         FECHA DE INICIO
       </div>
+
 
       <div
         id="detail-student-start"
@@ -1142,6 +1187,386 @@
 
 
   <!-- =====================================
+       PANTALLA AGREGAR ALUMNA
+  ====================================== -->
+
+  <section
+    id="new-student-screen"
+    class="students-screen"
+  >
+
+    <div class="student-form">
+
+      <button
+        id="cancel-new-student-top"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER
+      </button>
+
+
+      <div class="eyebrow">
+        GESTIÓN
+      </div>
+
+
+      <h2>
+        NUEVA<br>
+        ALUMNA
+      </h2>
+
+
+      <form id="new-student-form">
+
+        <label for="student-name">
+          NOMBRE COMPLETO
+        </label>
+
+
+        <input
+          type="text"
+          id="student-name"
+          placeholder="Nombre y apellido"
+          required
+        >
+
+
+        <label for="student-email">
+          EMAIL
+        </label>
+
+
+        <input
+          type="email"
+          id="student-email"
+          placeholder="Email de la alumna"
+          required
+        >
+
+
+        <label for="student-password">
+          CONTRASEÑA
+        </label>
+
+
+        <input
+          type="password"
+          id="student-password"
+          placeholder="Contraseña inicial"
+          required
+        >
+
+
+        <label for="student-objective">
+          OBJETIVO
+        </label>
+
+
+        <select id="student-objective">
+
+          <option value="FUERZA">
+            FUERZA
+          </option>
+
+          <option value="HIPERTROFIA">
+            HIPERTROFIA
+          </option>
+
+          <option value="RESISTENCIA">
+            RESISTENCIA
+          </option>
+
+          <option value="RENDIMIENTO">
+            RENDIMIENTO
+          </option>
+
+          <option value="SALUD">
+            SALUD
+          </option>
+
+          <option value="OTRO">
+            OTRO
+          </option>
+
+        </select>
+
+
+        <label for="student-days">
+          DÍAS DE ENTRENAMIENTO
+        </label>
+
+
+        <select id="student-days">
+
+          <option value="2">
+            2 DÍAS
+          </option>
+
+          <option value="3">
+            3 DÍAS
+          </option>
+
+          <option value="4">
+            4 DÍAS
+          </option>
+
+          <option value="5">
+            5 DÍAS
+          </option>
+
+        </select>
+
+
+        <label for="student-start">
+          FECHA DE INICIO
+        </label>
+
+
+        <input
+          type="date"
+          id="student-start"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="button"
+        >
+          CREAR ALUMNA →
+        </button>
+
+
+        <button
+          type="button"
+          id="cancel-student"
+          class="logout-button"
+        >
+          ← CANCELAR
+        </button>
+
+
+        <p
+          id="student-form-message"
+          class="students-empty"
+        ></p>
+
+      </form>
+
+    </div>
+
+  </section>
+  <!-- =====================================
+       EDITAR ALUMNA
+  ====================================== -->
+
+  <section
+    id="edit-student-screen"
+    class="students-screen"
+  >
+
+    <div class="student-form">
+
+      <button
+        id="cancel-edit-student-top"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER
+      </button>
+
+
+      <div class="eyebrow">
+        ALUMNA FORJA
+      </div>
+
+
+      <h2>
+        EDITAR<br>
+        DATOS
+      </h2>
+
+
+      <form id="edit-student-form">
+
+        <label for="edit-student-name">
+          NOMBRE COMPLETO
+        </label>
+
+
+        <input
+          type="text"
+          id="edit-student-name"
+          required
+        >
+
+
+        <label for="edit-student-email">
+          EMAIL
+        </label>
+
+
+        <input
+          type="email"
+          id="edit-student-email"
+          required
+        >
+
+
+        <label for="edit-student-objective">
+          OBJETIVO
+        </label>
+
+
+        <select id="edit-student-objective">
+
+          <option value="FUERZA">
+            FUERZA
+          </option>
+
+          <option value="HIPERTROFIA">
+            HIPERTROFIA
+          </option>
+
+          <option value="RESISTENCIA">
+            RESISTENCIA
+          </option>
+
+          <option value="RENDIMIENTO">
+            RENDIMIENTO
+          </option>
+
+          <option value="SALUD">
+            SALUD
+          </option>
+
+          <option value="OTRO">
+            OTRO
+          </option>
+
+        </select>
+
+
+        <label for="edit-student-days">
+          DÍAS DE ENTRENAMIENTO
+        </label>
+
+
+        <select id="edit-student-days">
+
+          <option value="2">
+            2 DÍAS
+          </option>
+
+          <option value="3">
+            3 DÍAS
+          </option>
+
+          <option value="4">
+            4 DÍAS
+          </option>
+
+          <option value="5">
+            5 DÍAS
+          </option>
+
+        </select>
+
+
+        <label for="edit-student-start">
+          FECHA DE INICIO
+        </label>
+
+
+        <input
+          type="date"
+          id="edit-student-start"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="button"
+        >
+          GUARDAR CAMBIOS →
+        </button>
+
+
+        <button
+          type="button"
+          id="cancel-edit-student"
+          class="logout-button"
+        >
+          ← CANCELAR
+        </button>
+
+
+        <p
+          id="edit-student-message"
+          class="students-empty"
+        ></p>
+
+      </form>
+
+    </div>
+
+  </section>
+  
+<!-- =====================================
+       PANTALLA RUTINAS
+  ====================================== -->
+
+  <section
+    id="workouts-screen"
+    class="students-screen"
+  >
+
+    <div class="workouts-header">
+
+      <button
+        id="back-from-workouts"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER AL PANEL
+      </button>
+
+
+      <div class="eyebrow">
+        ENTRENAMIENTOS
+      </div>
+
+
+      <h1>
+        RUTINAS
+      </h1>
+
+
+      <p>
+        Seleccioná una alumna para administrar sus entrenamientos.
+      </p>
+
+    </div>
+
+
+    <div
+      id="workout-student-list"
+      class="workout-student-list"
+    >
+
+      <p class="workouts-loading">
+        CARGANDO ALUMNAS...
+      </p>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================
        JAVASCRIPT
   ====================================== -->
 
@@ -1155,56 +1580,93 @@
     const loginScreen =
       document.getElementById("login-screen");
 
+
     const appScreen =
       document.getElementById("trainer-panel");
+
 
     const studentsScreen =
       document.getElementById("students-screen");
 
+
     const studentDetailScreen =
       document.getElementById("student-detail-screen");
+
+
+    const newStudentScreen =
+      document.getElementById("new-student-screen");
+
+
+    const editStudentScreen =
+      document.getElementById("edit-student-screen");
+
+
+    const workoutsScreen =
+      document.getElementById("workouts-screen");
+
 
     const loginForm =
       document.getElementById("login-form");
 
+
     const loginMessage =
       document.getElementById("login-message");
+
 
     const logoutButton =
       document.getElementById("logout-button");
 
+
     const studentsButton =
       document.getElementById("students-button");
+
+
+    const workoutsButton =
+      document.getElementById("workouts-button");
+
+
+    const progressButton =
+      document.getElementById("progress-button");
+
 
     const backToPanel =
       document.getElementById("back-to-panel");
 
+
     const backToStudents =
       document.getElementById("back-to-students");
 
-    const studentsList =
-      document.getElementById("students-list");
+
+    const backFromWorkouts =
+      document.getElementById("back-from-workouts");
+
 
     const addStudentButton =
       document.getElementById("add-student-button");
-const workoutsButton =
-  document.getElementById("workouts-button");
 
-const workoutsScreen =
-  document.getElementById("workouts-screen");
 
-const backFromWorkouts =
-  document.getElementById("back-from-workouts");
-
-const workoutStudentList =
-  document.getElementById("workout-student-list");
-    
     const editStudentButton =
       document.getElementById("edit-student-button");
 
 
+    const studentsList =
+      document.getElementById("students-list");
+
+
+    const workoutStudentList =
+      document.getElementById("workout-student-list");
+
+
+    const newStudentForm =
+      document.getElementById("new-student-form");
+
+
+    const editStudentForm =
+      document.getElementById("edit-student-form");
+
+
     /* =====================================
-       ALUMNA ACTUAL
+       VARIABLES
     ====================================== */
 
     let currentStudent = null;
@@ -1216,46 +1678,51 @@ const workoutStudentList =
 
     function showLogin() {
 
-  loginScreen.style.display = "block";
+      loginScreen.style.display = "block";
 
-  appScreen.style.display = "none";
+      appScreen.style.display = "none";
 
-  studentsScreen.style.display = "none";
+      studentsScreen.style.display = "none";
+
       studentDetailScreen.style.display = "none";
 
-  workoutsScreen.style.display = "none";
+      newStudentScreen.style.display = "none";
 
-  document.getElementById("student-detail-screen").style.display = "none";
+      editStudentScreen.style.display = "none";
+
+      workoutsScreen.style.display = "none";
 
     }
-
 
 
     /* =====================================
        MOSTRAR PANEL
     ====================================== */
-function showApp() {
 
-  loginScreen.style.display = "none";
+    function showApp() {
 
-  appScreen.style.display = "block";
+      loginScreen.style.display = "none";
 
-  studentsScreen.style.display = "none";
+      appScreen.style.display = "block";
 
-  workoutsScreen.style.display = "none";
+      studentsScreen.style.display = "none";
 
-  document.getElementById("student-detail-screen").style.display = "none";
+      studentDetailScreen.style.display = "none";
 
-}
+      newStudentScreen.style.display = "none";
+
+      editStudentScreen.style.display = "none";
+
+      workoutsScreen.style.display = "none";
 
     }
 
 
     /* =====================================
-       MOSTRAR ALUMNAS
+       MOSTRAR MIS ALUMNAS
     ====================================== */
 
-    function showStudents() {
+    async function showStudents() {
 
       loginScreen.style.display = "none";
 
@@ -1264,6 +1731,14 @@ function showApp() {
       studentsScreen.style.display = "block";
 
       studentDetailScreen.style.display = "none";
+
+      newStudentScreen.style.display = "none";
+
+      editStudentScreen.style.display = "none";
+
+      workoutsScreen.style.display = "none";
+
+      await loadStudents();
 
     }
 
@@ -1282,17 +1757,48 @@ function showApp() {
 
       studentDetailScreen.style.display = "block";
 
+      newStudentScreen.style.display = "none";
+
+      editStudentScreen.style.display = "none";
+
+      workoutsScreen.style.display = "none";
+
+    }
+ /* =====================================
+       MOSTRAR RUTINAS
+    ====================================== */
+
+    async function showWorkouts() {
+
+      loginScreen.style.display = "none";
+
+      appScreen.style.display = "none";
+
+      studentsScreen.style.display = "none";
+
+      studentDetailScreen.style.display = "none";
+
+      newStudentScreen.style.display = "none";
+
+      editStudentScreen.style.display = "none";
+
+      workoutsScreen.style.display = "block";
+
+      await loadWorkoutStudents();
+
     }
 
 
-  /* =====================================
+    /* =====================================
        COMPROBAR SESIÓN
     ====================================== */
 
     async function checkSession() {
 
       const {
-        data: { session },
+        data: {
+          session
+        },
         error
       } =
         await supabaseClient.auth.getSession();
@@ -1411,36 +1917,6 @@ function showApp() {
 
 
     /* =====================================
-       ABRIR MIS ALUMNAS
-    ====================================== */
-
-    studentsButton.addEventListener(
-      "click",
-      async function() {
-
-        showStudents();
-
-        await loadStudents();
-
-      }
-    );
-
-
-    /* =====================================
-       VOLVER AL PANEL
-    ====================================== */
-
-    backToPanel.addEventListener(
-      "click",
-      function() {
-
-        showApp();
-
-      }
-    );
-
-
-    /* =====================================
        CARGAR ALUMNAS
     ====================================== */
 
@@ -1459,15 +1935,9 @@ function showApp() {
       } =
         await supabaseClient
           .from("profiles")
-          .select(`
-            id,
-            full_name,
-            role,
-            email,
-            objective,
-            training_days,
-            start_date
-          `)
+          .select(
+            "id, full_name, email, objective, training_days, start_date"
+          )
           .eq("role", "student")
           .order(
             "full_name",
@@ -1516,40 +1986,28 @@ function showApp() {
         function(student) {
 
           const card =
-            document.createElement("button");
+            document.createElement("div");
 
-
-          card.type = "button";
 
           card.className =
-            "menu-card";
+            "student-card clickable";
 
 
           card.innerHTML = `
 
-            <div class="menu-icon">
-              →
+            <div class="student-name">
+              ${student.full_name || "SIN NOMBRE"}
             </div>
 
-            <div>
-
-              <span class="menu-label">
-                ALUMNA FORJA
-              </span>
-
-              <strong>
-                ${student.full_name || "SIN NOMBRE"}
-              </strong>
-
-              <p>
-                ${student.email || "EMAIL NO DISPONIBLE"}
-              </p>
-
+            <div class="student-email">
+              ${student.email || "EMAIL NO DISPONIBLE"}
             </div>
 
-            <span class="menu-arrow">
-              →
-            </span>
+            <div class="student-mini-data">
+              ${student.objective || "SIN OBJETIVO"}
+              ·
+              ${student.training_days || "—"} DÍAS
+            </div>
 
           `;
 
@@ -1573,50 +2031,51 @@ function showApp() {
 
 
     /* =====================================
-       ABRIR FICHA DE ALUMNA
+       ABRIR FICHA ALUMNA
     ====================================== */
 
     function openStudentDetail(student) {
 
-      currentStudent = student;
+      currentStudent =
+        student;
 
 
-      document.getElementById(
-        "detail-student-name"
-      ).textContent =
-        student.full_name ||
-        "SIN NOMBRE";
+      document
+        .getElementById("detail-student-name")
+        .textContent =
+          student.full_name ||
+          "ALUMNA";
 
 
-      document.getElementById(
-        "detail-student-email"
-      ).textContent =
-        student.email ||
-        "EMAIL NO DISPONIBLE";
+      document
+        .getElementById("detail-student-email")
+        .textContent =
+          student.email ||
+          "EMAIL NO DISPONIBLE";
 
 
-      document.getElementById(
-        "detail-student-objective"
-      ).textContent =
-        formatObjective(
-          student.objective
-        );
+      document
+        .getElementById("detail-student-objective")
+        .textContent =
+          student.objective ||
+          "—";
 
 
-      document.getElementById(
-        "detail-student-days"
-      ).textContent =
-        student.training_days
-          ? student.training_days + " DÍAS POR SEMANA"
-          : "NO ESPECIFICADO";
+      document
+        .getElementById("detail-student-days")
+        .textContent =
+          student.training_days
+            ?
+            student.training_days + " DÍAS"
+            :
+            "—";
 
 
-      document.getElementById(
-        "detail-student-start"
-      ).textContent =
-        formatDate(
-          student.start_date
-        );
+      document
+        .getElementById("detail-student-start")
+        .textContent =
+          student.start_date ||
+          "—";
 
 
       showStudentDetail();
@@ -1625,95 +2084,666 @@ function showApp() {
 
 
     /* =====================================
-       FORMATEAR OBJETIVO
+       ABRIR NUEVA ALUMNA
     ====================================== */
 
-    function formatObjective(objective) {
+    function openNewStudentForm() {
 
-      const objectives = {
-
-        fuerza: "FUERZA",
-
-        hipertrofia: "HIPERTROFIA",
-
-        resistencia: "RESISTENCIA",
-
-        rendimiento:
-          "RENDIMIENTO DEPORTIVO",
-
-        general:
-          "ACONDICIONAMIENTO GENERAL"
-
-      };
+      document
+        .getElementById("student-name")
+        .value = "";
 
 
-      return objectives[objective] ||
-        objective ||
-        "NO ESPECIFICADO";
+      document
+        .getElementById("student-email")
+        .value = "";
+
+
+      document
+        .getElementById("student-password")
+        .value = "";
+
+
+      document
+        .getElementById("student-objective")
+        .value = "FUERZA";
+
+
+      document
+        .getElementById("student-days")
+        .value = "3";
+
+
+      document
+        .getElementById("student-start")
+        .value = "";
+
+
+      document
+        .getElementById("student-form-message")
+        .textContent = "";
+
+
+      loginScreen.style.display = "none";
+
+      appScreen.style.display = "none";
+
+      studentsScreen.style.display = "none";
+
+      studentDetailScreen.style.display = "none";
+
+      editStudentScreen.style.display = "none";
+
+      workoutsScreen.style.display = "none";
+
+      newStudentScreen.style.display = "block";
+
+    }
+
+     /* =====================================
+       CREAR ALUMNA
+    ====================================== */
+
+    newStudentForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+
+        const message =
+          document.getElementById(
+            "student-form-message"
+          );
+
+
+        message.textContent =
+          "CREANDO ALUMNA...";
+
+
+        const name =
+          document
+            .getElementById("student-name")
+            .value
+            .trim();
+
+
+        const email =
+          document
+            .getElementById("student-email")
+            .value
+            .trim();
+
+
+        const password =
+          document
+            .getElementById("student-password")
+            .value;
+
+
+        const objective =
+          document
+            .getElementById("student-objective")
+            .value;
+
+
+        const trainingDays =
+          document
+            .getElementById("student-days")
+            .value;
+
+
+        const startDate =
+          document
+            .getElementById("student-start")
+            .value;
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.functions.invoke(
+              "create-student",
+              {
+                body: {
+
+                  name: name,
+
+                  email: email,
+
+                  password: password,
+
+                  objective: objective,
+
+                  training_days: trainingDays,
+
+                  start_date: startDate
+
+                }
+              }
+            );
+
+
+          console.log(
+            "Respuesta create-student:",
+            data
+          );
+
+
+          console.log(
+            "Error create-student:",
+            error
+          );
+
+
+          if (error) {
+
+            console.error(
+              "Error creando alumna:",
+              error
+            );
+
+
+            message.textContent =
+              "NO SE PUDO CREAR LA ALUMNA.";
+
+            return;
+
+          }
+
+
+          if (
+            !data ||
+            !data.success
+          ) {
+
+            message.textContent =
+              data && data.error
+                ?
+                data.error
+                :
+                "NO SE PUDO CREAR LA ALUMNA.";
+
+            return;
+
+          }
+
+
+          message.textContent =
+            "✓ ALUMNA CREADA CORRECTAMENTE.";
+
+
+          setTimeout(
+            function() {
+
+              showStudents();
+
+            },
+            800
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Error inesperado creando alumna:",
+            error
+          );
+
+
+          message.textContent =
+            "OCURRIÓ UN ERROR AL CREAR LA ALUMNA.";
+
+        }
+
+      }
+    );
+
+
+    /* =====================================
+       ABRIR EDICIÓN
+    ====================================== */
+
+    function openEditStudent() {
+
+      if (!currentStudent) {
+
+        return;
+
+      }
+
+
+      document
+        .getElementById("edit-student-name")
+        .value =
+          currentStudent.full_name ||
+          "";
+
+
+      document
+        .getElementById("edit-student-email")
+        .value =
+          currentStudent.email ||
+          "";
+
+
+      document
+        .getElementById("edit-student-objective")
+        .value =
+          currentStudent.objective ||
+          "FUERZA";
+
+
+      document
+        .getElementById("edit-student-days")
+        .value =
+          currentStudent.training_days ||
+          "3";
+
+
+      document
+        .getElementById("edit-student-start")
+        .value =
+          currentStudent.start_date ||
+          "";
+
+
+      document
+        .getElementById("edit-student-message")
+        .textContent = "";
+
+
+      loginScreen.style.display = "none";
+
+      appScreen.style.display = "none";
+
+      studentsScreen.style.display = "none";
+
+      studentDetailScreen.style.display = "none";
+
+      newStudentScreen.style.display = "none";
+
+      workoutsScreen.style.display = "none";
+
+      editStudentScreen.style.display = "block";
 
     }
 
 
     /* =====================================
-       FORMATEAR FECHA
+       GUARDAR EDICIÓN
     ====================================== */
 
-    function formatDate(date) {
+    editStudentForm.addEventListener(
+      "submit",
+      async function(event) {
 
-      if (!date) {
+        event.preventDefault();
 
-        return "NO ESPECIFICADA";
+
+        if (!currentStudent) {
+
+          return;
+
+        }
+
+
+        const message =
+          document.getElementById(
+            "edit-student-message"
+          );
+
+
+        message.textContent =
+          "GUARDANDO CAMBIOS...";
+
+
+        const updatedName =
+          document
+            .getElementById("edit-student-name")
+            .value
+            .trim();
+
+
+        const updatedEmail =
+          document
+            .getElementById("edit-student-email")
+            .value
+            .trim();
+
+
+        const updatedObjective =
+          document
+            .getElementById("edit-student-objective")
+            .value;
+
+
+        const updatedDays =
+          document
+            .getElementById("edit-student-days")
+            .value;
+
+
+        const updatedStart =
+          document
+            .getElementById("edit-student-start")
+            .value;
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.functions.invoke(
+              "update-student",
+              {
+                body: {
+
+                  student_id:
+                    currentStudent.id,
+
+                  name:
+                    updatedName,
+
+                  email:
+                    updatedEmail,
+
+                  objective:
+                    updatedObjective,
+
+                  training_days:
+                    updatedDays,
+
+                  start_date:
+                    updatedStart
+
+                }
+              }
+            );
+
+
+          console.log(
+            "Respuesta update-student:",
+            data
+          );
+
+
+          console.log(
+            "Error update-student:",
+            error
+          );
+
+
+          if (error) {
+
+            console.error(
+              "Error actualizando alumna:",
+              error
+            );
+
+
+            message.textContent =
+              "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
+
+            return;
+
+          }
+
+
+          if (
+            !data ||
+            !data.success
+          ) {
+
+            message.textContent =
+              data && data.error
+                ?
+                data.error
+                :
+                "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
+
+            return;
+
+          }
+
+
+          currentStudent = {
+
+            ...currentStudent,
+
+            full_name:
+              updatedName,
+
+            email:
+              updatedEmail,
+
+            objective:
+              updatedObjective,
+
+            training_days:
+              updatedDays,
+
+            start_date:
+              updatedStart
+
+          };
+
+
+          message.textContent =
+            "✓ CAMBIOS GUARDADOS.";
+
+
+          setTimeout(
+            function() {
+
+              openStudentDetail(
+                currentStudent
+              );
+
+            },
+            800
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Error inesperado actualizando:",
+            error
+          );
+
+
+          message.textContent =
+            "OCURRIÓ UN ERROR AL GUARDAR LOS CAMBIOS.";
+
+        }
+
+      }
+    );
+
+
+    /* =====================================
+       CARGAR ALUMNAS PARA RUTINAS
+    ====================================== */
+
+    async function loadWorkoutStudents() {
+
+      workoutStudentList.innerHTML = `
+        <p class="workouts-loading">
+          CARGANDO ALUMNAS...
+        </p>
+      `;
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select(
+            "id, full_name, email"
+          )
+          .eq("role", "student")
+          .order(
+            "full_name",
+            {
+              ascending: true
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          "Error cargando alumnas para rutinas:",
+          error
+        );
+
+
+        workoutStudentList.innerHTML = `
+          <p class="workouts-empty">
+            NO SE PUDIERON CARGAR LAS ALUMNAS.
+          </p>
+        `;
+
+        return;
 
       }
 
 
-      const parts =
-        date.split("-");
+      if (
+        !data ||
+        data.length === 0
+      ) {
 
+        workoutStudentList.innerHTML = `
+          <p class="workouts-empty">
+            TODAVÍA NO HAY ALUMNAS CARGADAS.
+          </p>
+        `;
 
-      if (parts.length !== 3) {
-
-        return date;
+        return;
 
       }
 
 
-      return (
-        parts[2] +
-        "/" +
-        parts[1] +
-        "/" +
-        parts[0]
+      workoutStudentList.innerHTML = "";
+
+
+      data.forEach(
+        function(student) {
+
+          const card =
+            document.createElement("button");
+
+
+          card.type = "button";
+
+
+          card.className =
+            "workout-student-card";
+
+
+          card.innerHTML = `
+
+            <div class="workout-student-icon">
+              +
+            </div>
+
+            <div class="workout-student-info">
+
+              <span class="workout-student-name">
+                ${student.full_name || "SIN NOMBRE"}
+              </span>
+
+              <span class="workout-student-email">
+                ${student.email || "ALUMNA FORJA"}
+              </span>
+
+            </div>
+
+            <span class="workout-student-arrow">
+              →
+            </span>
+
+          `;
+
+
+          card.addEventListener(
+            "click",
+            function() {
+
+              openStudentWorkouts(
+                student
+              );
+
+            }
+          );
+
+
+          workoutStudentList.appendChild(
+            card
+          );
+
+        }
       );
 
     }
 
 
     /* =====================================
-       VOLVER A MIS ALUMNAS
+       ABRIR RUTINAS DE ALUMNA
     ====================================== */
 
-    backToStudents.addEventListener(
+    function openStudentWorkouts(student) {
+
+      console.log(
+        "Alumna seleccionada para rutinas:",
+        student
+      );
+
+
+      /*
+       * POR AHORA SOLO GUARDAMOS
+       * LA ALUMNA SELECCIONADA.
+       *
+       * EL SIGUIENTE PASO SERÁ:
+       *
+       * RUTINAS DE [NOMBRE]
+       *
+       * Y CONECTAR LA TABLA workouts.
+       */
+
+
+      currentStudent =
+        student;
+
+
+      alert(
+        "Alumna seleccionada: " +
+        (
+          student.full_name ||
+          "Sin nombre"
+        )
+      );
+
+    }
+/* =====================================
+       MIS ALUMNAS
+    ====================================== */
+
+    studentsButton.addEventListener(
       "click",
       function() {
 
         showStudents();
 
-        loadStudents();
-/* =====================================
-   VOLVER DESDE RUTINAS
-===================================== */
-
-backFromWorkouts.addEventListener(
-  "click",
-  function() {
-
-    workoutsScreen.style.display = "none";
-
-    appScreen.style.display = "block";
-
-  }
-);
       }
     );
 
@@ -1726,749 +2756,80 @@ backFromWorkouts.addEventListener(
       "click",
       function() {
 
-        studentsList.innerHTML = `
-
-          <div class="student-form">
-
-            <div class="eyebrow">
-              NUEVA ALUMNA
-            </div>
-
-            <h2>
-              AGREGAR<br>
-              ALUMNA
-            </h2>
-
-
-            <form id="new-student-form">
-
-
-              <label for="student-name">
-                NOMBRE Y APELLIDO
-              </label>
-
-
-              <input
-                type="text"
-                id="student-name"
-                placeholder="Nombre y apellido"
-                required
-              >
-
-
-              <label for="student-email">
-                EMAIL
-              </label>
-
-
-              <input
-                type="email"
-                id="student-email"
-                placeholder="Email de la alumna"
-                required
-              >
-
-
-              <label for="student-password">
-                CONTRASEÑA INICIAL
-              </label>
-
-
-              <input
-                type="password"
-                id="student-password"
-                placeholder="Contraseña inicial"
-                minlength="6"
-                required
-              >
-
-
-              <label for="student-objective">
-                OBJETIVO
-              </label>
-
-
-              <select
-                id="student-objective"
-                required
-              >
-
-                <option value="">
-                  Seleccionar objetivo
-                </option>
-
-                <option value="fuerza">
-                  Fuerza
-                </option>
-
-                <option value="hipertrofia">
-                  Hipertrofia
-                </option>
-
-                <option value="resistencia">
-                  Resistencia
-                </option>
-
-                <option value="rendimiento">
-                  Rendimiento deportivo
-                </option>
-
-                <option value="general">
-                  Acondicionamiento general
-                </option>
-
-              </select>
-
-
-              <label for="student-days">
-                DÍAS DE ENTRENAMIENTO
-              </label>
-
-
-              <select
-                id="student-days"
-                required
-              >
-
-                <option value="">
-                  Seleccionar días
-                </option>
-
-                <option value="2">
-                  2 días
-                </option>
-
-                <option value="3">
-                  3 días
-                </option>
-
-                <option value="4">
-                  4 días
-                </option>
-
-                <option value="5">
-                  5 días
-                </option>
-
-              </select>
-
-
-              <label for="student-start">
-                FECHA DE INICIO
-              </label>
-
-
-              <input
-                type="date"
-                id="student-start"
-                required
-              >
-
-
-              <button
-                type="submit"
-                class="button"
-              >
-                CREAR ALUMNA →
-              </button>
-
-
-              <button
-                type="button"
-                id="cancel-student"
-                class="logout-button"
-              >
-                ← CANCELAR
-              </button>
-
-
-              <p
-                id="student-form-message"
-                class="students-empty"
-              ></p>
-
-
-            </form>
-
-          </div>
-
-        `;
-
-
-        /* =====================================
-           CANCELAR
-        ====================================== */
-
-        document
-          .getElementById("cancel-student")
-          .addEventListener(
-            "click",
-            function() {
-
-              loadStudents();
-/* =====================================
-   CARGAR ALUMNAS PARA RUTINAS
-===================================== */
-
-async function loadWorkoutStudents() {
-
-  workoutStudentList.innerHTML = `
-    <p class="workouts-loading">
-      CARGANDO ALUMNAS...
-    </p>
-  `;
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select(
-        "id, full_name, email"
-      )
-      .eq("role", "student")
-      .order(
-        "full_name",
-        {
-          ascending: true
-        }
-      );
-
-
-  if (error) {
-
-    console.error(
-      "Error cargando alumnas para rutinas:",
-      error
-    );
-
-
-    workoutStudentList.innerHTML = `
-      <p class="workouts-empty">
-        NO SE PUDIERON CARGAR LAS ALUMNAS.
-      </p>
-    `;
-
-    return;
-
-  }
-
-
-  if (!data || data.length === 0) {
-
-    workoutStudentList.innerHTML = `
-      <p class="workouts-empty">
-        TODAVÍA NO HAY ALUMNAS CARGADAS.
-      </p>
-    `;
-
-    return;
-
-  }
-
-
-  workoutStudentList.innerHTML = "";
-
-
-  data.forEach(
-    function(student) {
-
-      const card =
-        document.createElement("button");
-
-
-      card.type = "button";
-
-      card.className =
-        "workout-student-card";
-
-
-      card.innerHTML = `
-
-        <div class="workout-student-icon">
-          +
-        </div>
-
-        <div class="workout-student-info">
-
-          <span class="workout-student-name">
-            ${student.full_name || "SIN NOMBRE"}
-          </span>
-
-          <span class="workout-student-email">
-            ${student.email || "ALUMNA FORJA"}
-          </span>
-
-        </div>
-
-        <span class="workout-student-arrow">
-          →
-        </span>
-
-      `;
-
-
-      card.addEventListener(
-        "click",
-        function() {
-
-          openStudentWorkouts(student);
-
-        }
-      );
-
-
-      workoutStudentList.appendChild(card);
-
-    }
-  );
-
-}/* =====================================
-   SELECCIONAR ALUMNA PARA RUTINAS
-===================================== */
-
-function openStudentWorkouts(student) {
-
-  console.log(
-    "Alumna seleccionada para rutinas:",
-    student
-  );
-
-
-  alert(
-    "Seleccionaste a " +
-    (student.full_name || "la alumna") +
-    ".\n\nEn el próximo paso vamos a mostrar sus rutinas."
-  );
-
-}
-            }
-          );
-
-
-        /* =====================================
-           ENVIAR NUEVA ALUMNA
-        ====================================== */
-
-        document
-          .getElementById("new-student-form")
-          .addEventListener(
-            "submit",
-            async function(event) {
-
-              event.preventDefault();
-
-
-              const name =
-                document
-                  .getElementById("student-name")
-                  .value
-                  .trim();
-
-
-              const email =
-                document
-                  .getElementById("student-email")
-                  .value
-                  .trim();
-
-
-              const password =
-                document
-                  .getElementById("student-password")
-                  .value;
-
-
-              const objective =
-                document
-                  .getElementById("student-objective")
-                  .value;
-
-
-              const trainingDays =
-                document
-                  .getElementById("student-days")
-                  .value;
-
-
-              const startDate =
-                document
-                  .getElementById("student-start")
-                  .value;
-
-
-              const message =
-                document.getElementById(
-                  "student-form-message"
-                );
-
-
-              message.textContent =
-                "CREANDO ALUMNA...";
-
-
-              try {
-
-                const {
-                  data,
-                  error
-                } =
-                  await supabaseClient.functions.invoke(
-                    "create-student",
-                    {
-                      body: {
-
-                        name: name,
-
-                        email: email,
-
-                        password: password,
-
-                        objective: objective,
-
-                        training_days:
-                          trainingDays,
-
-                        start_date:
-                          startDate
-
-                      }
-                    }
-                  );
-
-
-                console.log(
-                  "Respuesta create-student:",
-                  data
-                );
-
-
-                console.log(
-                  "Error create-student:",
-                  error
-                );
-
-
-                if (error) {
-
-                  console.error(
-                    "Error de Edge Function:",
-                    error
-                  );
-
-
-                  let errorMessage =
-                    "NO SE PUDO CREAR LA ALUMNA.";
-
-
-                  if (error.context) {
-
-                    try {
-
-                      const errorBody =
-                        await error.context.json();
-
-
-                      console.error(
-                        "Respuesta del servidor:",
-                        errorBody
-                      );
-
-
-                      if (
-                        errorBody &&
-                        errorBody.error
-                      ) {
-
-                        errorMessage =
-                          errorBody.error;
-
-                      }
-
-
-                      if (
-                        errorBody &&
-                        errorBody.details
-                      ) {
-
-                        errorMessage +=
-                          " " +
-                          errorBody.details;
-
-                      }
-
-                    } catch (parseError) {
-
-                      console.error(
-                        "No se pudo leer el error:",
-                        parseError
-                      );
-
-                    }
-
-                  }
-
-
-                  message.textContent =
-                    errorMessage;
-
-                  return;
-
-                }
-
-
-                if (
-                  !data ||
-                  !data.success
-                ) {
-
-                  console.error(
-                    "Respuesta inesperada:",
-                    data
-                  );
-
-
-                  message.textContent =
-                    (
-                      data &&
-                      data.error
-                    )
-                      ?
-                      data.error
-                      :
-                      "NO SE PUDO CREAR LA ALUMNA.";
-
-                  return;
-
-                }
-
-
-                message.textContent =
-                  "✓ ALUMNA CREADA CORRECTAMENTE.";
-
-
-                setTimeout(
-                  async function() {
-
-                    await loadStudents();
-
-                  },
-                  1200
-                );
-
-              } catch (error) {
-
-                console.error(
-                  "Error inesperado:",
-                  error
-                );
-
-
-                message.textContent =
-                  "OCURRIÓ UN ERROR AL CREAR LA ALUMNA.";
-
-              }
-
-            }
-          );
+        openNewStudentForm();
 
       }
     );
-/* =====================================
-   EDITAR ALUMNA
-===================================== */
-
-editStudentButton.addEventListener(
-  "click",
-  function() {
-
-    if (!currentStudent) {
-
-      alert("No se encontró la alumna.");
-
-      return;
-
-    }
 
 
-    const student =
-      currentStudent;
+    /* =====================================
+       VOLVER AL PANEL
+    ====================================== */
+
+    backToPanel.addEventListener(
+      "click",
+      function() {
+
+        showApp();
+
+      }
+    );
 
 
-    studentsList.innerHTML = `
+    /* =====================================
+       VOLVER A ALUMNAS
+    ====================================== */
 
-      <div class="student-form">
+    backToStudents.addEventListener(
+      "click",
+      function() {
 
-        <div class="eyebrow">
-          EDITAR ALUMNA
-        </div>
+        showStudents();
 
-        <h2>
-          EDITAR<br>
-          DATOS
-        </h2>
-
-
-        <form id="edit-student-form">
+      }
+    );
 
 
-          <label for="edit-student-name">
-            NOMBRE Y APELLIDO
-          </label>
+    /* =====================================
+       CANCELAR NUEVA ALUMNA
+    ====================================== */
 
-          <input
-            type="text"
-            id="edit-student-name"
-            value="${student.full_name || ""}"
-            required
-          >
+    document
+      .getElementById("cancel-student")
+      .addEventListener(
+        "click",
+        function() {
 
+          showStudents();
 
-          <label for="edit-student-email">
-            EMAIL
-          </label>
-
-          <input
-            type="email"
-            id="edit-student-email"
-            value="${student.email || ""}"
-            required
-          >
+        }
+      );
 
 
-          <label for="edit-student-objective">
-            OBJETIVO
-          </label>
+    document
+      .getElementById("cancel-new-student-top")
+      .addEventListener(
+        "click",
+        function() {
 
-          <select
-            id="edit-student-objective"
-            required
-          >
+          showStudents();
 
-            <option value="">
-              Seleccionar objetivo
-            </option>
-
-            <option
-              value="fuerza"
-              ${student.objective === "fuerza" ? "selected" : ""}
-            >
-              Fuerza
-            </option>
-
-            <option
-              value="hipertrofia"
-              ${student.objective === "hipertrofia" ? "selected" : ""}
-            >
-              Hipertrofia
-            </option>
-
-            <option
-              value="resistencia"
-              ${student.objective === "resistencia" ? "selected" : ""}
-            >
-              Resistencia
-            </option>
-
-            <option
-              value="rendimiento"
-              ${student.objective === "rendimiento" ? "selected" : ""}
-            >
-              Rendimiento deportivo
-            </option>
-
-            <option
-              value="general"
-              ${student.objective === "general" ? "selected" : ""}
-            >
-              Acondicionamiento general
-            </option>
-
-          </select>
+        }
+      );
 
 
-          <label for="edit-student-days">
-            DÍAS DE ENTRENAMIENTO
-          </label>
+    /* =====================================
+       EDITAR ALUMNA
+    ====================================== */
 
-          <select
-            id="edit-student-days"
-            required
-          >
+    editStudentButton.addEventListener(
+      "click",
+      function() {
 
-            <option
-              value="2"
-              ${String(student.training_days) === "2" ? "selected" : ""}
-            >
-              2 días
-            </option>
+        openEditStudent();
 
-            <option
-              value="3"
-              ${String(student.training_days) === "3" ? "selected" : ""}
-            >
-              3 días
-            </option>
-
-            <option
-              value="4"
-              ${String(student.training_days) === "4" ? "selected" : ""}
-            >
-              4 días
-            </option>
-
-            <option
-              value="5"
-              ${String(student.training_days) === "5" ? "selected" : ""}
-            >
-              5 días
-            </option>
-
-          </select>
-
-
-          <label for="edit-student-start">
-            FECHA DE INICIO
-          </label>
-
-          <input
-            type="date"
-            id="edit-student-start"
-            value="${student.start_date || ""}"
-            required
-          >
-
-
-          <button
-            type="submit"
-            class="button"
-          >
-            GUARDAR CAMBIOS →
-          </button>
-
-
-          <button
-            type="button"
-            id="cancel-edit-student"
-            class="logout-button"
-          >
-            ← CANCELAR
-          </button>
-
-
-          <p
-            id="edit-student-message"
-            class="students-empty"
-          ></p>
-
-
-        </form>
-
-      </div>
-
-    `;
+      }
+    );
 
 
     /* =====================================
@@ -2481,207 +2842,86 @@ editStudentButton.addEventListener(
         "click",
         function() {
 
-          openStudentDetail(
-            currentStudent
-          );
+          if (currentStudent) {
 
-        }
-      );
-
-
-    /* =====================================
-       GUARDAR CAMBIOS
-    ====================================== */
-
-    document
-      .getElementById("edit-student-form")
-      .addEventListener(
-        "submit",
-        async function(event) {
-
-          event.preventDefault();
-
-
-          const message =
-            document.getElementById(
-              "edit-student-message"
+            openStudentDetail(
+              currentStudent
             );
 
+          } else {
 
-          message.textContent =
-            "GUARDANDO CAMBIOS...";
-
-
-          const updatedName =
-            document
-              .getElementById("edit-student-name")
-              .value
-              .trim();
-
-
-          const updatedEmail =
-            document
-              .getElementById("edit-student-email")
-              .value
-              .trim();
-
-
-          const updatedObjective =
-            document
-              .getElementById("edit-student-objective")
-              .value;
-
-
-          const updatedDays =
-            document
-              .getElementById("edit-student-days")
-              .value;
-
-
-          const updatedStart =
-            document
-              .getElementById("edit-student-start")
-              .value;
-
-
-          try {
-
-            const {
-              data,
-              error
-            } =
-              await supabaseClient.functions.invoke(
-                "update-student",
-                {
-                  body: {
-
-                    student_id:
-                      currentStudent.id,
-
-                    name:
-                      updatedName,
-
-                    email:
-                      updatedEmail,
-
-                    objective:
-                      updatedObjective,
-
-                    training_days:
-                      updatedDays,
-
-                    start_date:
-                      updatedStart
-
-                  }
-                }
-              );
-
-
-            console.log(
-              "Respuesta update-student:",
-              data
-            );
-
-
-            console.log(
-              "Error update-student:",
-              error
-            );
-
-
-            if (error) {
-
-              console.error(
-                "Error actualizando alumna:",
-                error
-              );
-
-
-              message.textContent =
-                "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
-
-              return;
-
-            }
-
-
-            if (
-              !data ||
-              !data.success
-            ) {
-
-              message.textContent =
-                data && data.error
-                  ?
-                  data.error
-                  :
-                  "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
-
-              return;
-
-            }
-
-
-            /* =====================================
-               ACTUALIZAR ALUMNA EN MEMORIA
-            ====================================== */
-
-            currentStudent = {
-
-              ...currentStudent,
-
-              full_name:
-                updatedName,
-
-              email:
-                updatedEmail,
-
-              objective:
-                updatedObjective,
-
-              training_days:
-                updatedDays,
-
-              start_date:
-                updatedStart
-
-            };
-
-
-            message.textContent =
-              "✓ CAMBIOS GUARDADOS.";
-
-
-            setTimeout(
-              function() {
-
-                openStudentDetail(
-                  currentStudent
-                );
-
-              },
-              800
-            );
-
-          } catch (error) {
-
-            console.error(
-              "Error inesperado:",
-              error
-            );
-
-
-            message.textContent =
-              "OCURRIÓ UN ERROR AL GUARDAR LOS CAMBIOS.";
+            showStudents();
 
           }
 
         }
       );
 
-  }
-);
+
+    document
+      .getElementById("cancel-edit-student-top")
+      .addEventListener(
+        "click",
+        function() {
+
+          if (currentStudent) {
+
+            openStudentDetail(
+              currentStudent
+            );
+
+          } else {
+
+            showStudents();
+
+          }
+
+        }
+      );
+
+
+    /* =====================================
+       ABRIR RUTINAS
+    ====================================== */
+
+    workoutsButton.addEventListener(
+      "click",
+      function() {
+
+        showWorkouts();
+
+      }
+    );
+
+
+    /* =====================================
+       VOLVER DESDE RUTINAS
+    ====================================== */
+
+    backFromWorkouts.addEventListener(
+      "click",
+      function() {
+
+        showApp();
+
+      }
+    );
+
+
+    /* =====================================
+       PROGRESO
+    ====================================== */
+
+    progressButton.addEventListener(
+      "click",
+      function() {
+
+        alert(
+          "Próximamente: seguimiento del progreso de tus alumnas."
+        );
+
+      }
+    );
 
 
     /* =====================================
@@ -2700,44 +2940,6 @@ editStudentButton.addEventListener(
     );
 
 
-/* =====================================
-   ABRIR RUTINAS
-===================================== */
-
-workoutsButton.addEventListener(
-  "click",
-  async function() {
-
-    appScreen.style.display = "none";
-
-    studentsScreen.style.display = "none";
-
-    workoutsScreen.style.display = "block";
-
-    await loadWorkoutStudents();
-
-  }
-);
-
-
-    /* =====================================
-       BOTÓN PROGRESO
-    ====================================== */
-
-    document
-      .getElementById("progress-button")
-      .addEventListener(
-        "click",
-        function() {
-
-          alert(
-            "Próximamente: seguimiento del progreso de tus alumnas."
-          );
-
-        }
-      );
-
-
     /* =====================================
        INICIAR APP
     ====================================== */
@@ -2749,7 +2951,9 @@ workoutsButton.addEventListener(
        SERVICE WORKER
     ====================================== */
 
-    if ("serviceWorker" in navigator) {
+    if (
+      "serviceWorker" in navigator
+    ) {
 
       window.addEventListener(
         "load",
@@ -2778,3 +2982,6 @@ workoutsButton.addEventListener(
 </body>
 
 </html>
+    
+    
+  
