@@ -2,12 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="theme-color" content="#000000">
-
   <title>FORJA Training</title>
+
+  <!-- Tipografías FORJA -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -19,124 +21,200 @@
     body {
       background: #000000;
       color: #ffffff;
-      font-family: Arial, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
 
     .app {
-      max-width: 500px;
-      margin: auto;
+      position: relative;
+      max-width: 520px;
       min-height: 100vh;
-      padding: 30px 22px;
+      margin: auto;
+      padding: 28px 22px 40px;
+      overflow: hidden;
     }
 
+    /* Gráficos rojos de fondo */
+
+    .graphic {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .graphic-one {
+      width: 180px;
+      height: 180px;
+      border: 2px solid #E60000;
+      transform: rotate(45deg);
+      top: -100px;
+      right: -90px;
+      opacity: 0.35;
+    }
+
+    .graphic-two {
+      width: 120px;
+      height: 8px;
+      background: #E60000;
+      transform: rotate(-35deg);
+      bottom: 80px;
+      left: -55px;
+      opacity: 0.5;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Logo */
+
     .logo {
-      font-size: 32px;
-      font-weight: 900;
+      font-family: 'Anton', sans-serif;
+      font-size: 38px;
       letter-spacing: 2px;
-      margin-bottom: 60px;
+      color: #E60000;
+      margin-bottom: 65px;
     }
 
     .logo span {
-      color: #dc2626;
+      color: #ffffff;
+    }
+
+    /* Texto pequeño */
+
+    .eyebrow {
+      color: #E60000;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* Títulos */
+
+    h1,
+    h2 {
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      color: #E60000;
+      font-size: 48px;
+      line-height: 0.95;
+    }
+
+    h2 {
+      color: #E60000;
+      font-size: 34px;
+      line-height: 1;
     }
 
     .welcome {
-      margin-bottom: 35px;
-    }
-
-    .welcome small {
-      color: #dc2626;
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .welcome h1 {
-      font-size: 38px;
-      line-height: 1;
-      margin-top: 10px;
-      text-transform: uppercase;
+      margin-bottom: 42px;
     }
 
     .welcome p {
-      color: #999999;
-      margin-top: 12px;
-      line-height: 1.5;
+      color: #ffffff;
+      opacity: 0.7;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 14px;
     }
+
+    /* Tarjeta entrenamiento */
 
     .training {
-      background: #111111;
-      border: 1px solid #292929;
-      border-radius: 18px;
-      padding: 22px;
+      position: relative;
+      background: #0b0b0b;
+      border: 1px solid #262626;
+      padding: 24px 20px;
     }
 
-    .training-title {
-      color: #dc2626;
+    .training::before {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 55px;
+      background: #E60000;
+      left: 0;
+      top: 24px;
+    }
+
+    .training-info {
+      color: #ffffff;
+      opacity: 0.55;
       font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
+      font-weight: 600;
+      margin-top: 8px;
+      margin-bottom: 24px;
     }
 
-    .training h2 {
-      font-size: 27px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .training p {
-      color: #999999;
-      margin-bottom: 22px;
-    }
+    /* Datos */
 
     .details {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 22px;
     }
 
     .detail {
       flex: 1;
-      background: #1b1b1b;
-      border-radius: 10px;
-      padding: 12px;
+      border: 1px solid #242424;
+      padding: 12px 8px;
+      background: #111111;
     }
 
     .detail small {
       display: block;
       color: #777777;
-      font-size: 11px;
-      margin-bottom: 5px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
     }
 
     .detail strong {
-      font-size: 15px;
-    }
-
-    .button {
-      display: block;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      padding: 16px;
-      background: #dc2626;
-      color: white;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      color: #ffffff;
       font-size: 14px;
     }
 
+    /* Botón */
+
+    .button {
+      width: 100%;
+      border: none;
+      padding: 17px;
+      background: #E60000;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* Frase */
+
     .quote {
-      margin-top: 35px;
-      border-left: 3px solid #dc2626;
-      padding-left: 15px;
-      color: #888888;
-      font-size: 13px;
-      line-height: 1.5;
+      margin-top: 38px;
+      padding-left: 14px;
+      border-left: 3px solid #E60000;
+      color: #ffffff;
+      opacity: 0.55;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (min-width: 700px) {
+      .app {
+        padding-top: 45px;
+      }
     }
   </style>
 </head>
@@ -145,67 +223,76 @@
 
   <main class="app">
 
-    <div class="logo">
-      FORJA<span>.</span>
-    </div>
+    <div class="graphic graphic-one"></div>
+    <div class="graphic graphic-two"></div>
 
-    <section class="welcome">
+    <div class="content">
 
-      <small>Forjando atletas</small>
-
-      <h1>
-        Bienvenida<br>
-        a FORJA
-      </h1>
-
-      <p>
-        Tu entrenamiento. Tu progreso. Tu proceso.
-      </p>
-
-    </section>
-
-    <section class="training">
-
-      <div class="training-title">
-        ENTRENAMIENTO DE HOY
+      <div class="logo">
+        FORJA<span>.</span>
       </div>
 
-      <h2>
-        Tren inferior
-      </h2>
+      <section class="welcome">
 
-      <p>
-        Semana 1 · Día 1
-      </p>
-
-      <div class="details">
-
-        <div class="detail">
-          <small>EJERCICIOS</small>
-          <strong>6</strong>
+        <div class="eyebrow">
+          FORJANDO ATLETAS
         </div>
 
-        <div class="detail">
-          <small>DURACIÓN</small>
-          <strong>60 min</strong>
+        <h1>
+          BIENVENIDA<br>
+          A FORJA
+        </h1>
+
+        <p>
+          Tu entrenamiento. Tu progreso. Tu proceso.
+        </p>
+
+      </section>
+
+      <section class="training">
+
+        <div class="eyebrow">
+          ENTRENAMIENTO DE HOY
         </div>
 
-        <div class="detail">
-          <small>RPE</small>
-          <strong>8</strong>
+        <h2>
+          TREN INFERIOR
+        </h2>
+
+        <div class="training-info">
+          SEMANA 1 · DÍA 1
         </div>
 
+        <div class="details">
+
+          <div class="detail">
+            <small>EJERCICIOS</small>
+            <strong>6</strong>
+          </div>
+
+          <div class="detail">
+            <small>DURACIÓN</small>
+            <strong>60 MIN</strong>
+          </div>
+
+          <div class="detail">
+            <small>RPE</small>
+            <strong>8</strong>
+          </div>
+
+        </div>
+
+        <button class="button">
+          COMENZAR ENTRENAMIENTO →
+        </button>
+
+      </section>
+
+      <div class="quote">
+        Entrená con propósito.<br>
+        Forjá tu mejor versión.
       </div>
 
-      <button class="button">
-        Comenzar entrenamiento
-      </button>
-
-    </section>
-
-    <div class="quote">
-      Entrená con propósito.<br>
-      Forjá tu mejor versión.
     </div>
 
   </main>
