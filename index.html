@@ -1442,83 +1442,232 @@ addStudentButton.addEventListener(
        ENVIAR FORMULARIO
     ====================================== */
 
-    document
-      .getElementById("new-student-form")
-      .addEventListener(
-        "submit",
-        async function(event) {
+   document
+  .getElementById("new-student-form")
+  .addEventListener(
+    "submit",
+    async function(event) {
 
-          event.preventDefault();
-
-
-          const name =
-            document
-              .getElementById("student-name")
-              .value
-              .trim();
+      event.preventDefault();
 
 
-          const email =
-            document
-              .getElementById("student-email")
-              .value
-              .trim();
+      const name =
+        document
+          .getElementById("student-name")
+          .value
+          .trim();
 
 
-          const password =
-            document
-              .getElementById("student-password")
-              .value;
+      const email =
+        document
+          .getElementById("student-email")
+          .value
+          .trim();
 
 
-          const objective =
-            document
-              .getElementById("student-objective")
-              .value;
+      const password =
+        document
+          .getElementById("student-password")
+          .value;
 
 
-          const days =
-            document
-              .getElementById("student-days")
-              .value;
+      const objective =
+        document
+          .getElementById("student-objective")
+          .value;
 
 
-          const startDate =
-            document
-              .getElementById("student-start")
-              .value;
+      const trainingDays =
+        document
+          .getElementById("student-days")
+          .value;
 
 
-          const message =
-            document.getElementById(
-              "student-form-message"
-            );
+      const startDate =
+        document
+          .getElementById("student-start")
+          .value;
+
+
+      const message =
+        document.getElementById(
+          "student-form-message"
+        );
+
+
+      message.textContent =
+        "CREANDO ALUMNA...";
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.functions.invoke(
+            "create-student",
+            {
+              body: {
+
+                name: name,
+
+                email: email,
+
+                password: password,
+
+                objective: objective,
+
+                training_days:
+                  trainingDays,
+
+                start_date:
+                  startDate
+
+              }
+            }
+          );
+
+
+        console.log(
+          "Respuesta create-student:",
+          data
+        );
+
+
+        console.log(
+          "Error create-student:",
+          error
+        );
+
+
+        if (error) {
+
+          console.error(
+            "Error de Edge Function:",
+            error
+          );
+
+
+          let errorMessage =
+            "NO SE PUDO CREAR LA ALUMNA.";
+
+
+          if (
+            error.context
+          ) {
+
+            try {
+
+              const errorBody =
+                await error.context.json();
+
+              console.error(
+                "Respuesta del servidor:",
+                errorBody
+              );
+
+
+              if (
+                errorBody &&
+                errorBody.error
+              ) {
+
+                errorMessage =
+                  errorBody.error;
+
+              }
+
+              if (
+                errorBody &&
+                errorBody.details
+              ) {
+
+                errorMessage +=
+                  " " +
+                  errorBody.details;
+
+              }
+
+            } catch (
+              parseError
+            ) {
+
+              console.error(
+                "No se pudo leer el error:",
+                parseError
+              );
+
+            }
+
+          }
 
 
           message.textContent =
-            "CREANDO ALUMNA...";
+            errorMessage;
+
+          return;
+
+        }
 
 
-          try {
+        if (
+          !data ||
+          !data.success
+        ) {
 
-            const {
-              data,
-              error
-            } =
-              await supabaseClient.functions.invoke(
-                "create-student",
-                {
-                  body: {
-                    name: name,
-                    email: email,
-                    password: password,
-                    objective: objective,
-                    days: days,
-                    start_date: startDate
-                  }
-                }
-              );
+          message.textContent =
+            "NO SE PUDO CREAR LA ALUMNA.";
 
+          console.error(
+            "Respuesta inesperada:",
+            data
+          );
+
+          return;
+
+        }
+
+
+        /* =====================================
+           ÉXITO
+        ====================================== */
+
+        message.textContent =
+          "✓ ALUMNA CREADA CORRECTAMENTE.";
+
+
+        console.log(
+          "Alumna creada:",
+          data.student
+        );
+
+
+        setTimeout(
+          async function() {
+
+            await loadStudents();
+
+          },
+          1200
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Error inesperado:",
+          error
+        );
+
+
+        message.textContent =
+          "OCURRIÓ UN ERROR AL CREAR LA ALUMNA.";
+
+      }
+
+    }
+  );
 
             console.log(
               "Respuesta create-student:",
