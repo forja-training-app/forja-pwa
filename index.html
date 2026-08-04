@@ -1251,7 +1251,7 @@
     }
 
 
-  /* =====================================
+ /* =====================================
    AGREGAR ALUMNA
 ===================================== */
 
@@ -1446,7 +1446,7 @@ addStudentButton.addEventListener(
       .getElementById("new-student-form")
       .addEventListener(
         "submit",
-        function(event) {
+        async function(event) {
 
           event.preventDefault();
 
@@ -1495,21 +1495,79 @@ addStudentButton.addEventListener(
             );
 
 
-          console.log(
-            "Nueva alumna:",
-            {
-              name,
-              email,
-              password,
-              objective,
-              days,
-              startDate
-            }
-          );
-
-
           message.textContent =
-            "FORMULARIO CORRECTO. EN EL PRÓXIMO PASO CONECTAMOS LA CREACIÓN CON SUPABASE.";
+            "CREANDO ALUMNA...";
+
+
+          try {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.functions.invoke(
+                "create-student",
+                {
+                  body: {
+                    name: name,
+                    email: email,
+                    password: password,
+                    objective: objective,
+                    days: days,
+                    start_date: startDate
+                  }
+                }
+              );
+
+
+            console.log(
+              "Respuesta create-student:",
+              data
+            );
+
+
+            if (error) {
+
+              console.error(
+                "Error create-student:",
+                error
+              );
+
+
+              message.textContent =
+                "NO SE PUDO CREAR LA ALUMNA.";
+
+              return;
+
+            }
+
+
+            message.textContent =
+              "ALUMNA CREADA CORRECTAMENTE.";
+
+
+            setTimeout(
+              async function() {
+
+                await loadStudents();
+
+              },
+              1000
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              "Error inesperado:",
+              error
+            );
+
+
+            message.textContent =
+              "OCURRIÓ UN ERROR AL CREAR LA ALUMNA.";
+
+          }
 
         }
       );
@@ -1518,78 +1576,79 @@ addStudentButton.addEventListener(
 );
 
 
-    /* =====================================
-       CERRAR SESIÓN
-    ====================================== */
+/* =====================================
+   CERRAR SESIÓN
+===================================== */
 
-    logoutButton.addEventListener(
-      "click",
-      async function() {
+logoutButton.addEventListener(
+  "click",
+  async function() {
 
-        await supabaseClient.auth.signOut();
+    await supabaseClient.auth.signOut();
 
-        showLogin();
+    showLogin();
 
-      }
-    );
-
-
-        /* =====================================
-       BOTONES RUTINAS Y PROGRESO
-    ====================================== */
-
-    document
-      .getElementById("workouts-button")
-      .addEventListener(
-        "click",
-        function() {
-
-          alert(
-            "Próximamente: creación y edición de rutinas."
-          );
-
-        }
-      );
+  }
+);
 
 
-    document
-      .getElementById("progress-button")
-      .addEventListener(
-        "click",
-        function() {
+/* =====================================
+   BOTONES RUTINAS Y PROGRESO
+===================================== */
 
-          alert(
-            "Próximamente: seguimiento del progreso de tus alumnas."
-          );
+document
+  .getElementById("workouts-button")
+  .addEventListener(
+    "click",
+    function() {
 
-        }
-      );
-
-
-    /* =====================================
-       INICIAR APP
-    ====================================== */
-
-    checkSession();
-
-
-    /* =====================================
-       SERVICE WORKER
-    ====================================== */
-
-    if ("serviceWorker" in navigator) {
-
-      window.addEventListener(
-        "load",
-        function() {
-
-          navigator.serviceWorker.register("./sw.js");
-
-        }
+      alert(
+        "Próximamente: creación y edición de rutinas."
       );
 
     }
+  );
 
+
+document
+  .getElementById("progress-button")
+  .addEventListener(
+    "click",
+    function() {
+
+      alert(
+        "Próximamente: seguimiento del progreso de tus alumnas."
+      );
+
+    }
+  );
+
+
+/* =====================================
+   INICIAR APP
+===================================== */
+
+checkSession();
+
+
+/* =====================================
+   SERVICE WORKER
+===================================== */
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener(
+    "load",
+    function() {
+
+      navigator.serviceWorker.register("./sw.js");
+
+    }
+  );
+
+}
+
+</script>
   </script>
 
 
