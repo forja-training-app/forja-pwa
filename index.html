@@ -55,7 +55,6 @@
       padding: 0;
     }
 
-
     body {
       background: #000000;
       color: #ffffff;
@@ -63,9 +62,15 @@
       min-height: 100vh;
     }
 
+    button,
+    input,
+    select {
+      font-family: 'Montserrat', sans-serif;
+    }
+
 
     /* =====================================
-       APP
+       APP GENERAL
     ====================================== */
 
     .app {
@@ -78,9 +83,14 @@
       overflow: hidden;
     }
 
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
 
     /* =====================================
-       GRÁFICOS DE FONDO
+       GRÁFICOS
     ====================================== */
 
     .graphic {
@@ -88,7 +98,6 @@
       pointer-events: none;
       z-index: 0;
     }
-
 
     .graphic-one {
       width: 180px;
@@ -99,7 +108,6 @@
       right: -90px;
       opacity: 0.35;
     }
-
 
     .graphic-two {
       width: 120px;
@@ -112,12 +120,6 @@
     }
 
 
-    .content {
-      position: relative;
-      z-index: 1;
-    }
-
-
     /* =====================================
        LOGO
     ====================================== */
@@ -125,7 +127,6 @@
     .logo {
       margin-bottom: 65px;
     }
-
 
     .logo img {
       width: 150px;
@@ -147,7 +148,6 @@
       margin-bottom: 8px;
     }
 
-
     h1 {
       color: #E60000;
       font-family: 'Anton', sans-serif;
@@ -158,11 +158,9 @@
       line-height: 0.95;
     }
 
-
     .welcome {
       margin-bottom: 42px;
     }
-
 
     .welcome p {
       color: #ffffff;
@@ -174,7 +172,7 @@
 
 
     /* =====================================
-       BOTÓN GENERAL
+       BOTÓN
     ====================================== */
 
     .button {
@@ -183,14 +181,12 @@
       padding: 17px;
       background: #E60000;
       color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
     }
-
 
     .button:active {
       transform: scale(0.99);
@@ -211,11 +207,9 @@
       margin: auto;
     }
 
-
     .login-logo {
       margin-bottom: 55px;
     }
-
 
     .login-logo img {
       width: 150px;
@@ -223,11 +217,9 @@
       display: block;
     }
 
-
     .login-screen h1 {
       margin-bottom: 35px;
     }
-
 
     #login-form {
       display: flex;
@@ -235,8 +227,9 @@
       gap: 10px;
     }
 
-
-    #login-form label {
+    #login-form label,
+    #new-student-form label,
+    #edit-student-form label {
       color: #777777;
       font-size: 10px;
       font-weight: 800;
@@ -244,23 +237,27 @@
       margin-top: 8px;
     }
 
-
-    #login-form input {
+    #login-form input,
+    #new-student-form input,
+    #new-student-form select,
+    #edit-student-form input,
+    #edit-student-form select {
       width: 100%;
       padding: 15px;
       background: #111111;
       border: 1px solid #292929;
       color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
       font-size: 14px;
       outline: none;
     }
 
-
-    #login-form input:focus {
+    #login-form input:focus,
+    #new-student-form input:focus,
+    #new-student-form select:focus,
+    #edit-student-form input:focus,
+    #edit-student-form select:focus {
       border-color: #E60000;
     }
-
 
     #login-message {
       color: #E60000;
@@ -271,7 +268,7 @@
 
 
     /* =====================================
-       PANEL ENTRENADORA
+       MENÚ ENTRENADORA
     ====================================== */
 
     .trainer-menu {
@@ -280,7 +277,6 @@
       gap: 12px;
       margin-top: 30px;
     }
-
 
     .menu-card {
       width: 100%;
@@ -293,10 +289,8 @@
       background: #0b0b0b;
       border: 1px solid #262626;
       color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
       cursor: pointer;
     }
-
 
     .menu-card::before {
       content: "";
@@ -308,11 +302,9 @@
       top: 0;
     }
 
-
     .menu-card:hover {
       border-color: #E60000;
     }
-
 
     .menu-icon {
       min-width: 42px;
@@ -326,11 +318,9 @@
       font-size: 25px;
     }
 
-
     .menu-card > div:nth-child(2) {
       flex: 1;
     }
-
 
     .menu-label {
       display: block;
@@ -341,7 +331,6 @@
       margin-bottom: 4px;
     }
 
-
     .menu-card strong {
       display: block;
       font-family: 'Anton', sans-serif;
@@ -350,14 +339,12 @@
       letter-spacing: 0.5px;
     }
 
-
     .menu-card p {
       margin-top: 4px;
       color: #777777;
       font-size: 11px;
       line-height: 1.4;
     }
-
 
     .menu-arrow {
       color: #E60000;
@@ -376,13 +363,11 @@
       background: transparent;
       border: 1px solid #292929;
       color: #777777;
-      font-family: 'Montserrat', sans-serif;
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 1.5px;
       cursor: pointer;
     }
-
 
     .logout-button:hover {
       color: #ffffff;
@@ -391,7 +376,7 @@
 
 
     /* =====================================
-       MIS ALUMNAS
+       PANTALLA ALUMNAS
     ====================================== */
 
     .students-screen {
@@ -403,17 +388,14 @@
       padding: 28px 22px 40px;
     }
 
-
     .students-header {
       margin-bottom: 30px;
     }
-
 
     .back-button {
       background: transparent;
       border: none;
       color: #777777;
-      font-family: 'Montserrat', sans-serif;
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 1.5px;
@@ -422,16 +404,13 @@
       cursor: pointer;
     }
 
-
     .back-button:hover {
       color: #E60000;
     }
 
-
     .students-header h1 {
       margin-bottom: 15px;
     }
-
 
     .students-header p {
       color: #777777;
@@ -440,6 +419,10 @@
     }
 
 
+    /* =====================================
+       LISTADO ALUMNAS
+    ====================================== */
+
     .students-list {
       display: flex;
       flex-direction: column;
@@ -447,14 +430,12 @@
       margin-top: 20px;
     }
 
-
     .student-card {
       position: relative;
       background: #0b0b0b;
       border: 1px solid #262626;
       padding: 18px;
     }
-
 
     .student-card::before {
       content: "";
@@ -466,6 +447,13 @@
       top: 0;
     }
 
+    .student-card.clickable {
+      cursor: pointer;
+    }
+
+    .student-card.clickable:hover {
+      border-color: #E60000;
+    }
 
     .student-name {
       color: #ffffff;
@@ -474,13 +462,18 @@
       text-transform: uppercase;
     }
 
-
     .student-email {
       color: #777777;
       font-size: 11px;
       margin-top: 5px;
     }
 
+    .student-mini-data {
+      color: #777777;
+      font-size: 10px;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
 
     .students-loading,
     .students-empty {
@@ -488,6 +481,63 @@
       font-size: 12px;
       line-height: 1.6;
       padding: 20px 0;
+    }
+
+
+    /* =====================================
+       FORMULARIOS
+    ====================================== */
+
+    .student-form {
+      padding-bottom: 40px;
+    }
+
+    .student-form h2 {
+      color: #E60000;
+      font-family: 'Anton', sans-serif;
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 0.95;
+      margin-bottom: 30px;
+    }
+
+    #new-student-form,
+    #edit-student-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #cancel-student,
+    #cancel-edit {
+      margin-top: 5px;
+    }
+
+
+    /* =====================================
+       FICHA DE ALUMNA
+    ====================================== */
+
+    #student-detail-screen {
+      display: none;
+    }
+
+    #detail-student-name {
+      font-size: 48px;
+      line-height: 0.95;
+      margin-bottom: 12px;
+    }
+
+    #detail-student-email {
+      color: #777777;
+      font-size: 13px;
+    }
+
+    .detail-value {
+      color: #ffffff;
+      font-family: 'Anton', sans-serif;
+      font-size: 25px;
+      text-transform: uppercase;
     }
 
 
@@ -507,70 +557,6 @@
 
 
     /* =====================================
-       FORMULARIO NUEVA ALUMNA
-    ====================================== */
-
-    .student-form {
-      padding-bottom: 40px;
-    }
-
-
-    .student-form h2 {
-      color: #E60000;
-      font-family: 'Anton', sans-serif;
-      font-size: 42px;
-      font-weight: 400;
-      line-height: 0.95;
-      margin-bottom: 30px;
-    }
-
-
-    #new-student-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-
-    #new-student-form label {
-      color: #777777;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      margin-top: 8px;
-    }
-
-
-    #new-student-form input,
-    #new-student-form select {
-      width: 100%;
-      padding: 15px;
-      background: #111111;
-      border: 1px solid #292929;
-      color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      outline: none;
-    }
-
-
-    #new-student-form input:focus,
-    #new-student-form select:focus {
-      border-color: #E60000;
-    }
-
-
-    #new-student-form select {
-      appearance: auto;
-    }
-
-
-    #cancel-student {
-      margin-top: 5px;
-    }
-
-
-    /* =====================================
        DESKTOP
     ====================================== */
 
@@ -581,36 +567,6 @@
       }
 
     }
-    /* =====================================
-   FICHA DE ALUMNA
-===================================== */
-
-#student-detail-screen {
-  display: none;
-}
-
-#detail-student-name {
-  font-size: 48px;
-  line-height: 0.95;
-  margin-bottom: 12px;
-}
-
-#detail-student-email {
-  color: #777777;
-  font-size: 13px;
-}
-
-#student-detail-screen .student-card {
-  margin-bottom: 10px;
-}
-
-#student-detail-screen .student-card .menu-label {
-  margin-bottom: 8px;
-}
-
-#student-detail-screen .student-name {
-  font-size: 25px;
-}
 
   </style>
 
@@ -621,16 +577,13 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
   <script>
 
     const SUPABASE_URL =
       "https://mjrdhybwaovnrzlzfxcw.supabase.co";
 
-
     const SUPABASE_KEY =
       "sb_publishable_KnKdmC7svdn8w_SB6-R2fg_E8pTbxUN";
-
 
     const supabaseClient =
       supabase.createClient(
@@ -664,24 +617,20 @@
 
     </div>
 
-
     <div class="eyebrow">
       FORJANDO ATLETAS
     </div>
-
 
     <h1>
       INICIAR<br>
       SESIÓN
     </h1>
 
-
     <form id="login-form">
 
       <label for="email">
         EMAIL
       </label>
-
 
       <input
         type="email"
@@ -690,11 +639,9 @@
         required
       >
 
-
       <label for="password">
         CONTRASEÑA
       </label>
-
 
       <input
         type="password"
@@ -703,14 +650,12 @@
         required
       >
 
-
       <button
         type="submit"
         class="button"
       >
         INGRESAR →
       </button>
-
 
       <p id="login-message"></p>
 
@@ -721,7 +666,7 @@
 
 
   <!-- =====================================
-       PANEL DE ENTRENADORA
+       PANEL ENTRENADORA
   ====================================== -->
 
   <main
@@ -733,11 +678,7 @@
 
     <div class="graphic graphic-two"></div>
 
-
     <div class="content">
-
-
-      <!-- LOGO -->
 
       <div class="logo">
 
@@ -749,20 +690,16 @@
       </div>
 
 
-      <!-- BIENVENIDA -->
-
       <section class="welcome">
 
         <div class="eyebrow">
           FORJANDO ATLETAS
         </div>
 
-
         <h1>
           PANEL DE<br>
           ENTRENADORA
         </h1>
-
 
         <p>
           Gestioná tus alumnas y sus entrenamientos.
@@ -770,8 +707,6 @@
 
       </section>
 
-
-      <!-- MENÚ -->
 
       <section class="trainer-menu">
 
@@ -788,25 +723,21 @@
             +
           </div>
 
-
           <div>
 
             <span class="menu-label">
               GESTIÓN
             </span>
 
-
             <strong>
               MIS ALUMNAS
             </strong>
-
 
             <p>
               Agregar y administrar alumnas.
             </p>
 
           </div>
-
 
           <span class="menu-arrow">
             →
@@ -827,25 +758,21 @@
             +
           </div>
 
-
           <div>
 
             <span class="menu-label">
               ENTRENAMIENTOS
             </span>
 
-
             <strong>
               RUTINAS
             </strong>
-
 
             <p>
               Crear y editar entrenamientos.
             </p>
 
           </div>
-
 
           <span class="menu-arrow">
             →
@@ -866,25 +793,21 @@
             ↗
           </div>
 
-
           <div>
 
             <span class="menu-label">
               SEGUIMIENTO
             </span>
 
-
             <strong>
               PROGRESO
             </strong>
-
 
             <p>
               Revisar el progreso de tus alumnas.
             </p>
 
           </div>
-
 
           <span class="menu-arrow">
             →
@@ -895,8 +818,6 @@
       </section>
 
 
-      <!-- CERRAR SESIÓN -->
-
       <button
         id="logout-button"
         class="logout-button"
@@ -906,15 +827,12 @@
       </button>
 
 
-      <!-- FRASE -->
-
       <div class="quote">
 
         Entrená con propósito.<br>
         Forjá tu mejor versión.
 
       </div>
-
 
     </div>
 
@@ -923,7 +841,7 @@
 
 
   <!-- =====================================
-       PANTALLA MIS ALUMNAS
+       MIS ALUMNAS
   ====================================== -->
 
   <section
@@ -931,9 +849,7 @@
     class="students-screen"
   >
 
-
     <div class="students-header">
-
 
       <button
         id="back-to-panel"
@@ -943,17 +859,14 @@
         ← VOLVER AL PANEL
       </button>
 
-
       <div class="eyebrow">
         GESTIÓN
       </div>
-
 
       <h1>
         MIS<br>
         ALUMNAS
       </h1>
-
 
       <p>
         Administrá las alumnas de FORJA.
@@ -984,98 +897,102 @@
 
   </section>
 
-<!-- =====================================
-     FICHA DE ALUMNA
-====================================== -->
 
-<section
-  id="student-detail-screen"
-  class="students-screen"
->
 
-  <div class="students-header">
+  <!-- =====================================
+       FICHA DE ALUMNA
+  ====================================== -->
+
+  <section
+    id="student-detail-screen"
+    class="students-screen"
+  >
+
+    <div class="students-header">
+
+      <button
+        id="back-to-students"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER A MIS ALUMNAS
+      </button>
+
+      <div class="eyebrow">
+        ALUMNA FORJA
+      </div>
+
+      <h1 id="detail-student-name">
+        ALUMNA
+      </h1>
+
+      <p id="detail-student-email">
+        EMAIL
+      </p>
+
+    </div>
+
+
+    <div class="student-card">
+
+      <div class="menu-label">
+        OBJETIVO
+      </div>
+
+      <div
+        id="detail-student-objective"
+        class="detail-value"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="student-card">
+
+      <div class="menu-label">
+        ENTRENAMIENTO
+      </div>
+
+      <div
+        id="detail-student-days"
+        class="detail-value"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="student-card">
+
+      <div class="menu-label">
+        FECHA DE INICIO
+      </div>
+
+      <div
+        id="detail-student-start"
+        class="detail-value"
+      >
+        —
+      </div>
+
+    </div>
+
 
     <button
-      id="back-to-students"
-      class="back-button"
+      id="edit-student-button"
+      class="button"
       type="button"
+      style="margin-top:20px;"
     >
-      ← VOLVER A MIS ALUMNAS
+      EDITAR DATOS
     </button>
 
-    <div class="eyebrow">
-      ALUMNA FORJA
-    </div>
-
-    <h1 id="detail-student-name">
-      ALUMNA
-    </h1>
-
-    <p id="detail-student-email">
-      EMAIL
-    </p>
-
-  </div>
+  </section>
 
 
-  <div class="student-card">
-
-    <div class="menu-label">
-      OBJETIVO
-    </div>
-
-    <div
-      id="detail-student-objective"
-      class="student-name"
-    >
-      —
-    </div>
-
-  </div>
-
-
-  <div class="student-card">
-
-    <div class="menu-label">
-      ENTRENAMIENTO
-    </div>
-
-    <div
-      id="detail-student-days"
-      class="student-name"
-    >
-      —
-    </div>
-
-  </div>
-
-
-  <div class="student-card">
-
-    <div class="menu-label">
-      FECHA DE INICIO
-    </div>
-
-    <div
-      id="detail-student-start"
-      class="student-name"
-    >
-      —
-    </div>
-
-  </div>
-
-
-  <button
-    id="edit-student-button"
-    class="button"
-    type="button"
-    style="margin-top:20px;"
-  >
-    EDITAR DATOS
-  </button>
-
-</section>
 
   <!-- =====================================
        JAVASCRIPT
@@ -1091,41 +1008,48 @@
     const loginScreen =
       document.getElementById("login-screen");
 
-
     const appScreen =
       document.getElementById("trainer-panel");
-
-
-    const loginForm =
-      document.getElementById("login-form");
-
-
-    const loginMessage =
-      document.getElementById("login-message");
-
-
-    const logoutButton =
-      document.getElementById("logout-button");
-
-
-    const studentsButton =
-      document.getElementById("students-button");
-
 
     const studentsScreen =
       document.getElementById("students-screen");
 
+    const studentDetailScreen =
+      document.getElementById("student-detail-screen");
+
+    const loginForm =
+      document.getElementById("login-form");
+
+    const loginMessage =
+      document.getElementById("login-message");
+
+    const logoutButton =
+      document.getElementById("logout-button");
+
+    const studentsButton =
+      document.getElementById("students-button");
 
     const backToPanel =
       document.getElementById("back-to-panel");
 
+    const backToStudents =
+      document.getElementById("back-to-students");
 
     const studentsList =
       document.getElementById("students-list");
 
-
     const addStudentButton =
       document.getElementById("add-student-button");
+
+    const editStudentButton =
+      document.getElementById("edit-student-button");
+
+
+    /* =====================================
+       ALUMNA ACTUAL
+    ====================================== */
+
+    let currentStudent = null;
 
 
     /* =====================================
@@ -1139,6 +1063,8 @@
       appScreen.style.display = "none";
 
       studentsScreen.style.display = "none";
+
+      studentDetailScreen.style.display = "none";
 
     }
 
@@ -1155,19 +1081,70 @@
 
       studentsScreen.style.display = "none";
 
+      studentDetailScreen.style.display = "none";
+
     }
 
 
     /* =====================================
+       MOSTRAR ALUMNAS
+    ====================================== */
+
+    function showStudents() {
+
+      loginScreen.style.display = "none";
+
+      appScreen.style.display = "none";
+
+      studentsScreen.style.display = "block";
+
+      studentDetailScreen.style.display = "none";
+
+    }
+
+
+    /* =====================================
+       MOSTRAR FICHA
+    ====================================== */
+
+    function showStudentDetail() {
+
+      loginScreen.style.display = "none";
+
+      appScreen.style.display = "none";
+
+      studentsScreen.style.display = "none";
+
+      studentDetailScreen.style.display = "block";
+
+    }
+
+
+  /* =====================================
        COMPROBAR SESIÓN
     ====================================== */
 
     async function checkSession() {
 
       const {
-        data: { session }
+        data: { session },
+        error
       } =
         await supabaseClient.auth.getSession();
+
+
+      if (error) {
+
+        console.error(
+          "Error comprobando sesión:",
+          error
+        );
+
+        showLogin();
+
+        return;
+
+      }
 
 
       if (session) {
@@ -1215,14 +1192,21 @@
           error
         } =
           await supabaseClient.auth.signInWithPassword({
+
             email: email,
+
             password: password
+
           });
 
 
         if (error) {
 
-          console.error(error);
+          console.error(
+            "Error de login:",
+            error
+          );
+
 
           loginMessage.textContent =
             "EMAIL O CONTRASEÑA INCORRECTOS.";
@@ -1269,9 +1253,7 @@
       "click",
       async function() {
 
-        appScreen.style.display = "none";
-
-        studentsScreen.style.display = "block";
+        showStudents();
 
         await loadStudents();
 
@@ -1287,9 +1269,7 @@
       "click",
       function() {
 
-        studentsScreen.style.display = "none";
-
-        appScreen.style.display = "block";
+        showApp();
 
       }
     );
@@ -1314,13 +1294,22 @@
       } =
         await supabaseClient
           .from("profiles")
-          .select(
-            "id, full_name, role, email, objective, training_days, start_date"
-          )
+          .select(`
+            id,
+            full_name,
+            role,
+            email,
+            objective,
+            training_days,
+            start_date
+          `)
           .eq("role", "student")
-          .order("full_name", {
-            ascending: true
-          });
+          .order(
+            "full_name",
+            {
+              ascending: true
+            }
+          );
 
 
       if (error) {
@@ -1337,7 +1326,6 @@
           </p>
         `;
 
-
         return;
 
       }
@@ -1351,7 +1339,6 @@
           </p>
         `;
 
-
         return;
 
       }
@@ -1364,24 +1351,52 @@
         function(student) {
 
           const card =
-            document.createElement("div");
+            document.createElement("button");
 
+
+          card.type = "button";
 
           card.className =
-            "student-card";
+            "menu-card";
 
 
           card.innerHTML = `
 
-            <div class="student-name">
-              ${student.full_name || "SIN NOMBRE"}
+            <div class="menu-icon">
+              →
             </div>
 
-            <div class="student-email">
-              ${student.email || "ALUMNA FORJA"}
+            <div>
+
+              <span class="menu-label">
+                ALUMNA FORJA
+              </span>
+
+              <strong>
+                ${student.full_name || "SIN NOMBRE"}
+              </strong>
+
+              <p>
+                ${student.email || "EMAIL NO DISPONIBLE"}
+              </p>
+
             </div>
+
+            <span class="menu-arrow">
+              →
+            </span>
 
           `;
+
+
+          card.addEventListener(
+            "click",
+            function() {
+
+              openStudentDetail(student);
+
+            }
+          );
 
 
           studentsList.appendChild(card);
@@ -1390,6 +1405,139 @@
       );
 
     }
+
+
+    /* =====================================
+       ABRIR FICHA DE ALUMNA
+    ====================================== */
+
+    function openStudentDetail(student) {
+
+      currentStudent = student;
+
+
+      document.getElementById(
+        "detail-student-name"
+      ).textContent =
+        student.full_name ||
+        "SIN NOMBRE";
+
+
+      document.getElementById(
+        "detail-student-email"
+      ).textContent =
+        student.email ||
+        "EMAIL NO DISPONIBLE";
+
+
+      document.getElementById(
+        "detail-student-objective"
+      ).textContent =
+        formatObjective(
+          student.objective
+        );
+
+
+      document.getElementById(
+        "detail-student-days"
+      ).textContent =
+        student.training_days
+          ? student.training_days + " DÍAS POR SEMANA"
+          : "NO ESPECIFICADO";
+
+
+      document.getElementById(
+        "detail-student-start"
+      ).textContent =
+        formatDate(
+          student.start_date
+        );
+
+
+      showStudentDetail();
+
+    }
+
+
+    /* =====================================
+       FORMATEAR OBJETIVO
+    ====================================== */
+
+    function formatObjective(objective) {
+
+      const objectives = {
+
+        fuerza: "FUERZA",
+
+        hipertrofia: "HIPERTROFIA",
+
+        resistencia: "RESISTENCIA",
+
+        rendimiento:
+          "RENDIMIENTO DEPORTIVO",
+
+        general:
+          "ACONDICIONAMIENTO GENERAL"
+
+      };
+
+
+      return objectives[objective] ||
+        objective ||
+        "NO ESPECIFICADO";
+
+    }
+
+
+    /* =====================================
+       FORMATEAR FECHA
+    ====================================== */
+
+    function formatDate(date) {
+
+      if (!date) {
+
+        return "NO ESPECIFICADA";
+
+      }
+
+
+      const parts =
+        date.split("-");
+
+
+      if (parts.length !== 3) {
+
+        return date;
+
+      }
+
+
+      return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+      );
+
+    }
+
+
+    /* =====================================
+       VOLVER A MIS ALUMNAS
+    ====================================== */
+
+    backToStudents.addEventListener(
+      "click",
+      function() {
+
+        showStudents();
+
+        loadStudents();
+
+      }
+    );
 
 
     /* =====================================
@@ -1586,7 +1734,7 @@
 
 
         /* =====================================
-           ENVIAR FORMULARIO
+           ENVIAR NUEVA ALUMNA
         ====================================== */
 
         document
@@ -1648,10 +1796,6 @@
 
               try {
 
-                /* =====================================
-                   LLAMAR EDGE FUNCTION
-                ====================================== */
-
                 const {
                   data,
                   error
@@ -1692,10 +1836,6 @@
                 );
 
 
-                /* =====================================
-                   ERROR
-                ====================================== */
-
                 if (error) {
 
                   console.error(
@@ -1707,11 +1847,6 @@
                   let errorMessage =
                     "NO SE PUDO CREAR LA ALUMNA.";
 
-
-                  /*
-                   * Intentamos leer la respuesta
-                   * real enviada por la Edge Function.
-                   */
 
                   if (error.context) {
 
@@ -1749,12 +1884,10 @@
 
                       }
 
-                    } catch (
-                      parseError
-                    ) {
+                    } catch (parseError) {
 
                       console.error(
-                        "No se pudo leer el error del servidor:",
+                        "No se pudo leer el error:",
                         parseError
                       );
 
@@ -1770,10 +1903,6 @@
 
                 }
 
-
-                /* =====================================
-                   VALIDAR RESPUESTA
-                ====================================== */
 
                 if (
                   !data ||
@@ -1801,24 +1930,9 @@
                 }
 
 
-                /* =====================================
-                   ÉXITO
-                ====================================== */
-
                 message.textContent =
                   "✓ ALUMNA CREADA CORRECTAMENTE.";
 
-
-                console.log(
-                  "Alumna creada:",
-                  data.student
-                );
-
-
-                /*
-                 * Volvemos al listado después
-                 * de mostrar el mensaje.
-                 */
 
                 setTimeout(
                   async function() {
@@ -1828,7 +1942,6 @@
                   },
                   1200
                 );
-
 
               } catch (error) {
 
@@ -1851,6 +1964,22 @@
 
 
     /* =====================================
+       EDITAR ALUMNA
+    ====================================== */
+
+    editStudentButton.addEventListener(
+      "click",
+      function() {
+
+        alert(
+          "Próximamente: editar datos de la alumna."
+        );
+
+      }
+    );
+
+
+    /* =====================================
        CERRAR SESIÓN
     ====================================== */
 
@@ -1867,7 +1996,7 @@
 
 
     /* =====================================
-       BOTONES RUTINAS Y PROGRESO
+       BOTÓN RUTINAS
     ====================================== */
 
     document
@@ -1883,6 +2012,10 @@
         }
       );
 
+
+    /* =====================================
+       BOTÓN PROGRESO
+    ====================================== */
 
     document
       .getElementById("progress-button")
@@ -1915,7 +2048,18 @@
         "load",
         function() {
 
-          navigator.serviceWorker.register("./sw.js");
+          navigator.serviceWorker
+            .register("./sw.js")
+            .catch(
+              function(error) {
+
+                console.error(
+                  "Error registrando Service Worker:",
+                  error
+                );
+
+              }
+            );
 
         }
       );
@@ -1923,7 +2067,6 @@
     }
 
   </script>
-
 
 </body>
 
