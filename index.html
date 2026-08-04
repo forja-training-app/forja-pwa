@@ -1961,22 +1961,412 @@
 
       }
     );
+/* =====================================
+   EDITAR ALUMNA
+===================================== */
+
+editStudentButton.addEventListener(
+  "click",
+  function() {
+
+    if (!currentStudent) {
+
+      alert("No se encontró la alumna.");
+
+      return;
+
+    }
+
+
+    const student =
+      currentStudent;
+
+
+    studentsList.innerHTML = `
+
+      <div class="student-form">
+
+        <div class="eyebrow">
+          EDITAR ALUMNA
+        </div>
+
+        <h2>
+          EDITAR<br>
+          DATOS
+        </h2>
+
+
+        <form id="edit-student-form">
+
+
+          <label for="edit-student-name">
+            NOMBRE Y APELLIDO
+          </label>
+
+          <input
+            type="text"
+            id="edit-student-name"
+            value="${student.full_name || ""}"
+            required
+          >
+
+
+          <label for="edit-student-email">
+            EMAIL
+          </label>
+
+          <input
+            type="email"
+            id="edit-student-email"
+            value="${student.email || ""}"
+            required
+          >
+
+
+          <label for="edit-student-objective">
+            OBJETIVO
+          </label>
+
+          <select
+            id="edit-student-objective"
+            required
+          >
+
+            <option value="">
+              Seleccionar objetivo
+            </option>
+
+            <option
+              value="fuerza"
+              ${student.objective === "fuerza" ? "selected" : ""}
+            >
+              Fuerza
+            </option>
+
+            <option
+              value="hipertrofia"
+              ${student.objective === "hipertrofia" ? "selected" : ""}
+            >
+              Hipertrofia
+            </option>
+
+            <option
+              value="resistencia"
+              ${student.objective === "resistencia" ? "selected" : ""}
+            >
+              Resistencia
+            </option>
+
+            <option
+              value="rendimiento"
+              ${student.objective === "rendimiento" ? "selected" : ""}
+            >
+              Rendimiento deportivo
+            </option>
+
+            <option
+              value="general"
+              ${student.objective === "general" ? "selected" : ""}
+            >
+              Acondicionamiento general
+            </option>
+
+          </select>
+
+
+          <label for="edit-student-days">
+            DÍAS DE ENTRENAMIENTO
+          </label>
+
+          <select
+            id="edit-student-days"
+            required
+          >
+
+            <option
+              value="2"
+              ${String(student.training_days) === "2" ? "selected" : ""}
+            >
+              2 días
+            </option>
+
+            <option
+              value="3"
+              ${String(student.training_days) === "3" ? "selected" : ""}
+            >
+              3 días
+            </option>
+
+            <option
+              value="4"
+              ${String(student.training_days) === "4" ? "selected" : ""}
+            >
+              4 días
+            </option>
+
+            <option
+              value="5"
+              ${String(student.training_days) === "5" ? "selected" : ""}
+            >
+              5 días
+            </option>
+
+          </select>
+
+
+          <label for="edit-student-start">
+            FECHA DE INICIO
+          </label>
+
+          <input
+            type="date"
+            id="edit-student-start"
+            value="${student.start_date || ""}"
+            required
+          >
+
+
+          <button
+            type="submit"
+            class="button"
+          >
+            GUARDAR CAMBIOS →
+          </button>
+
+
+          <button
+            type="button"
+            id="cancel-edit-student"
+            class="logout-button"
+          >
+            ← CANCELAR
+          </button>
+
+
+          <p
+            id="edit-student-message"
+            class="students-empty"
+          ></p>
+
+
+        </form>
+
+      </div>
+
+    `;
 
 
     /* =====================================
-       EDITAR ALUMNA
+       CANCELAR EDICIÓN
     ====================================== */
 
-    editStudentButton.addEventListener(
-      "click",
-      function() {
+    document
+      .getElementById("cancel-edit-student")
+      .addEventListener(
+        "click",
+        function() {
 
-        alert(
-          "Próximamente: editar datos de la alumna."
-        );
+          openStudentDetail(
+            currentStudent
+          );
 
-      }
-    );
+        }
+      );
+
+
+    /* =====================================
+       GUARDAR CAMBIOS
+    ====================================== */
+
+    document
+      .getElementById("edit-student-form")
+      .addEventListener(
+        "submit",
+        async function(event) {
+
+          event.preventDefault();
+
+
+          const message =
+            document.getElementById(
+              "edit-student-message"
+            );
+
+
+          message.textContent =
+            "GUARDANDO CAMBIOS...";
+
+
+          const updatedName =
+            document
+              .getElementById("edit-student-name")
+              .value
+              .trim();
+
+
+          const updatedEmail =
+            document
+              .getElementById("edit-student-email")
+              .value
+              .trim();
+
+
+          const updatedObjective =
+            document
+              .getElementById("edit-student-objective")
+              .value;
+
+
+          const updatedDays =
+            document
+              .getElementById("edit-student-days")
+              .value;
+
+
+          const updatedStart =
+            document
+              .getElementById("edit-student-start")
+              .value;
+
+
+          try {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.functions.invoke(
+                "update-student",
+                {
+                  body: {
+
+                    student_id:
+                      currentStudent.id,
+
+                    name:
+                      updatedName,
+
+                    email:
+                      updatedEmail,
+
+                    objective:
+                      updatedObjective,
+
+                    training_days:
+                      updatedDays,
+
+                    start_date:
+                      updatedStart
+
+                  }
+                }
+              );
+
+
+            console.log(
+              "Respuesta update-student:",
+              data
+            );
+
+
+            console.log(
+              "Error update-student:",
+              error
+            );
+
+
+            if (error) {
+
+              console.error(
+                "Error actualizando alumna:",
+                error
+              );
+
+
+              message.textContent =
+                "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
+
+              return;
+
+            }
+
+
+            if (
+              !data ||
+              !data.success
+            ) {
+
+              message.textContent =
+                data && data.error
+                  ?
+                  data.error
+                  :
+                  "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
+
+              return;
+
+            }
+
+
+            /* =====================================
+               ACTUALIZAR ALUMNA EN MEMORIA
+            ====================================== */
+
+            currentStudent = {
+
+              ...currentStudent,
+
+              full_name:
+                updatedName,
+
+              email:
+                updatedEmail,
+
+              objective:
+                updatedObjective,
+
+              training_days:
+                updatedDays,
+
+              start_date:
+                updatedStart
+
+            };
+
+
+            message.textContent =
+              "✓ CAMBIOS GUARDADOS.";
+
+
+            setTimeout(
+              function() {
+
+                openStudentDetail(
+                  currentStudent
+                );
+
+              },
+              800
+            );
+
+          } catch (error) {
+
+            console.error(
+              "Error inesperado:",
+              error
+            );
+
+
+            message.textContent =
+              "OCURRIÓ UN ERROR AL GUARDAR LOS CAMBIOS.";
+
+          }
+
+        }
+      );
+
+  }
+);
 
 
     /* =====================================
