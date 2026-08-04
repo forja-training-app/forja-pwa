@@ -29,6 +29,7 @@
     }
 
     .app {
+      display: none;
       position: relative;
       max-width: 520px;
       min-height: 100vh;
@@ -217,6 +218,67 @@
         padding-top: 45px;
       }
     }
+        /* LOGIN */
+
+    .login-screen {
+      display: none;
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      padding: 60px 22px 40px;
+      max-width: 520px;
+      margin: auto;
+    }
+
+    .login-logo {
+      margin-bottom: 55px;
+    }
+
+    .login-logo img {
+      width: 150px;
+      height: auto;
+      display: block;
+    }
+
+    .login-screen h1 {
+      margin-bottom: 35px;
+    }
+
+    #login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #login-form label {
+      color: #777777;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin-top: 8px;
+    }
+
+    #login-form input {
+      width: 100%;
+      padding: 15px;
+      background: #111111;
+      border: 1px solid #292929;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      outline: none;
+    }
+
+    #login-form input:focus {
+      border-color: #E60000;
+    }
+
+    #login-message {
+      color: #E60000;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
   </style>
     <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -233,7 +295,46 @@
 </head>
   
 <body>
+  <!-- LOGIN -->
+  <section id="login-screen" class="login-screen">
 
+    <div class="login-logo">
+      <img src="./logo-forja.png" alt="FORJA Training">
+    </div>
+
+    <div class="eyebrow">
+      FORJANDO ATLETAS
+    </div>
+
+    <h1>INICIAR<br>SESIÓN</h1>
+
+    <form id="login-form">
+
+      <label for="email">EMAIL</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Tu email"
+        required
+      >
+
+      <label for="password">CONTRASEÑA</label>
+      <input
+        type="password"
+        id="password"
+        placeholder="Tu contraseña"
+        required
+      >
+
+      <button type="submit" class="button">
+        INGRESAR →
+      </button>
+
+      <p id="login-message"></p>
+
+    </form>
+
+  </section>
   <main class="app">
 
     <div class="graphic graphic-one"></div>
