@@ -2550,22 +2550,24 @@ editStudentButton.addEventListener(
     );
 
 
-    /* =====================================
-       BOTÓN RUTINAS
-    ====================================== */
+/* =====================================
+   ABRIR RUTINAS
+===================================== */
 
-    document
-      .getElementById("workouts-button")
-      .addEventListener(
-        "click",
-        function() {
+workoutsButton.addEventListener(
+  "click",
+  async function() {
 
-          alert(
-            "Próximamente: creación y edición de rutinas."
-          );
+    appScreen.style.display = "none";
 
-        }
-      );
+    studentsScreen.style.display = "none";
+
+    workoutsScreen.style.display = "block";
+
+    await loadWorkoutStudents();
+
+  }
+);
 
 
     /* =====================================
