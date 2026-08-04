@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>FORJA Training</title>
+  
+  <link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#E60000">
 
   <!-- Tipografías FORJA -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -218,7 +221,7 @@
     }
   </style>
 </head>
-
+  
 <body>
 
   <main class="app">
@@ -296,6 +299,14 @@
     </div>
 
   </main>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js");
+      });
+    }
+  </script>
 
 </body>
 </html>
