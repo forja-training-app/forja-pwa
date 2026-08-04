@@ -1,9 +1,11 @@
-const CACHE_NAME = "forja-v2";
+const CACHE_NAME = "forja-v3";
 
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",
+  "./logo-forja.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", event => {
