@@ -2025,6 +2025,24 @@ async function loadWorkoutStudents() {
     }
   );
 
+}/* =====================================
+   SELECCIONAR ALUMNA PARA RUTINAS
+===================================== */
+
+function openStudentWorkouts(student) {
+
+  console.log(
+    "Alumna seleccionada para rutinas:",
+    student
+  );
+
+
+  alert(
+    "Seleccionaste a " +
+    (student.full_name || "la alumna") +
+    ".\n\nEn el próximo paso vamos a mostrar sus rutinas."
+  );
+
 }
             }
           );
