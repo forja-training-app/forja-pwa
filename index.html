@@ -4237,6 +4237,31 @@
       }
     }
 
+    function openWorkoutEditor(workout) {
+      if (!currentStudent) {
+        console.error("No hay alumna seleccionada para abrir la rutina.");
+        return;
+      }
+
+      if (!workoutBuilderScreen) {
+        workoutBuilderScreen = document.createElement("section");
+        workoutBuilderScreen.id = "workout-builder-screen";
+        workoutBuilderScreen.className = "students-screen";
+        document.body.appendChild(workoutBuilderScreen);
+      }
+
+      if (workoutsScreen) {
+        workoutsScreen.style.display = "none";
+      }
+
+      workoutBuilderScreen.style.display = "block";
+
+      const state = getWorkoutEditorState(workout);
+      state.workout = workout;
+      saveWorkoutEditorState(workout, state);
+      renderWorkoutEditor(workout, state);
+    }
+
     function renderWorkoutEditor(workout, state) {
       state = normalizeWorkoutState(state, workout);
       workoutBuilderScreen.innerHTML = `
