@@ -5305,43 +5305,35 @@ function renderWorkoutEditor(
         + AGREGAR DÍA
       </button>
 
-      <div class="workout-editor-actions">
+    <div class="workout-editor-actions">
 
-        <button
-          id="save-workout-draft-button"
-          class="button"
-          type="button"
-        >
-          GUARDAR CAMBIOS
-        </button>
+  <button
+    id="save-workout-draft-button"
+    class="button"
+    type="button"
+  >
+    GUARDAR CAMBIOS
+  </button>
 
-        <button
-          id="publish-workout-button"
-          class="button"
-          type="button"
-        >
-          PUBLICAR RUTINA →
-        </button>
+  <button
+    id="publish-workout-button"
+    class="button"
+    type="button"
+  >
+    PUBLICAR RUTINA →
+  </button>
 
-        ${
-          workout.status === "active"
+  ${workout.status === "active" ? `
+    <button
+      id="view-published-workout-button"
+      class="button"
+      type="button"
+    >
+      VER RUTINA PUBLICADA
+    </button>
+  ` : ""}
 
-            ?
-
-            `
-            <button
-              id="view-published-workout-button"
-              class="button"
-              type="button"
-            >
-              VER RUTINA PUBLICADA
-            </button>
-            `
-
-            :
-
-            ""
-        }
+</div>
 
       </div>
 
