@@ -5305,7 +5305,7 @@ function renderWorkoutEditor(
         + AGREGAR DÍA
       </button>
 
-   <div class="workout-editor-actions">
+  <div class="workout-editor-actions">
 
   <button
     id="save-workout-draft-button"
@@ -5323,125 +5323,28 @@ function renderWorkoutEditor(
     PUBLICAR RUTINA →
   </button>
 
-  <button
-    id="edit-workout-button"
-    class="button"
-    type="button"
-  >
-    EDITAR RUTINA
-  </button>
-
-  <button
-    id="delete-workout-button"
-    class="button"
-    type="button"
-    style="border-color:#E60000;color:#E60000;"
-  >
-    ELIMINAR RUTINA
-  </button>
-
-  ${
-    workout.status === "active"
-      ? `
-        <button
-          id="view-published-workout-button"
-          class="button"
-          type="button"
-        >
-          VER RUTINA PUBLICADA
-        </button>
-      `
-      : ""
-  }
+  ${workout.status === "active" ? `
+    <button
+      id="view-published-workout-button"
+      class="button"
+      type="button"
+    >
+      VER RUTINA PUBLICADA
+    </button>
+  ` : ""}
 
 </div>
 
-  /* VOLVER A LA LISTA DE RUTINAS */
+      </div>
 
-  document
-    .getElementById(
-      "back-from-workout-editor"
-    )
-    .addEventListener(
-      "click",
-      function() {
+      <p
+        id="workout-editor-message"
+        class="workout-editor-message"
+      ></p>
 
-        showStudentWorkoutList(
-          currentStudent
-        );
+    </div>
 
-      }
-    );
-
-
-  /* AGREGAR DÍA */
-
-  document
-    .getElementById(
-      "add-workout-day-button"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        state.days.push({
-
-          id:
-            createWorkoutId("day"),
-
-          name:
-            "DÍA " +
-            (
-              state.days.length + 1
-            ),
-
-          exercises: []
-
-        });
-
-        saveWorkoutEditorState(
-          workout,
-          state
-        );
-
-        renderWorkoutEditor(
-          workout,
-          state
-        );
-
-      }
-    );
-
-
-  /* GUARDAR */
-
-  document
-    .getElementById(
-      "save-workout-draft-button"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        const saved =
-          saveWorkoutEditorState(
-            workout,
-            state
-          );
-
-        document
-          .getElementById(
-            "workout-editor-message"
-          )
-          .textContent =
-            saved
-              ?
-              "✓ CAMBIOS GUARDADOS EN ESTE DISPOSITIVO."
-              :
-              "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
-
-      }
-    );
+  `;
 
 
   /* PUBLICAR */
