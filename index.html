@@ -3766,23 +3766,22 @@
        SELECCIONAR ALUMNA PARA RUTINAS
     ====================================== */
 
-    function openStudentWorkouts(student) {
+    async function openStudentWorkouts(student) {
 
-      currentStudent =
-        student;
+  selectedWorkoutStudent = student;
 
+  loginScreen.style.display = "none";
+  appScreen.style.display = "none";
+  studentsScreen.style.display = "none";
+  workoutsScreen.style.display = "none";
+  studentDetailScreen.style.display = "none";
 
-      if (workoutsScreen) {
+  studentWorkoutsScreen.style.display = "block";
 
-        workoutsScreen.style.display =
-          "none";
+  studentWorkoutsName.textContent =
+    student.full_name || "ALUMNA";
 
-      }
-
-
-      createWorkoutBuilder(
-        student
-      );
+  await loadStudentWorkouts();
 
     }
 
