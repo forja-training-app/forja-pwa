@@ -5452,7 +5452,14 @@ function renderWorkoutEditor(
 
       }
     );
+  
+document.getElementById("edit-workout-button").addEventListener("click", function(){
+  renderWorkoutEditor(workout,state);
+});
 
+document.getElementById("delete-workout-button").addEventListener("click", function(){
+  deleteWorkout(workout);
+});
 
   /* VER PUBLICADA */
 
@@ -6126,7 +6133,60 @@ function bindWorkoutDayEvents(
     );
 
 }
+async function deleteWorkout(workout) {
 
+  const confirmDelete = confirm(
+    "¿ESTÁS SEGURA DE QUE QUERÉS ELIMINAR ESTA RUTINA?\n\nESTA ACCIÓN NO SE PUEDE DESHACER."
+  );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  try {
+
+    const { error } = await supabaseClient
+      .from("workouts")
+      .delete()
+      .eq("id", workout.id);
+
+    if (error) {
+
+      console.error(
+        "Error eliminando rutina:",
+        error
+      );
+
+      alert(
+        "NO SE PUDO ELIMINAR LA RUTINA.\n\n" +
+        (error.message || "Error desconocido")
+      );
+
+      return;
+    }
+
+    localStorage.removeItem(
+      getWorkoutBuilderStorageKey(workout)
+    );
+
+    workoutBuilderScreen.style.display = "none";
+
+    showWorkouts();
+
+  } catch (error) {
+
+    console.error(
+      "Error inesperado eliminando rutina:",
+      error
+    );
+
+    alert(
+      "OCURRIÓ UN ERROR AL ELIMINAR LA RUTINA."
+    );
+
+  }
+
+}
 
 /* =====================================
    AGREGAR EJERCICIO
