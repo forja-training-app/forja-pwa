@@ -5305,7 +5305,7 @@ function renderWorkoutEditor(
         + AGREGAR DÍA
       </button>
 
-    <div class="workout-editor-actions">
+   <div class="workout-editor-actions">
 
   <button
     id="save-workout-draft-button"
@@ -5323,29 +5323,38 @@ function renderWorkoutEditor(
     PUBLICAR RUTINA →
   </button>
 
-  ${workout.status === "active" ? `
-    <button
-      id="view-published-workout-button"
-      class="button"
-      type="button"
-    >
-      VER RUTINA PUBLICADA
-    </button>
-  ` : ""}
+  <button
+    id="edit-workout-button"
+    class="button"
+    type="button"
+  >
+    EDITAR RUTINA
+  </button>
+
+  <button
+    id="delete-workout-button"
+    class="button"
+    type="button"
+    style="border-color:#E60000;color:#E60000;"
+  >
+    ELIMINAR RUTINA
+  </button>
+
+  ${
+    workout.status === "active"
+      ? `
+        <button
+          id="view-published-workout-button"
+          class="button"
+          type="button"
+        >
+          VER RUTINA PUBLICADA
+        </button>
+      `
+      : ""
+  }
 
 </div>
-
-      </div>
-
-      <p
-        id="workout-editor-message"
-        class="workout-editor-message"
-      ></p>
-
-    </div>
-
-  `;
-
 
   /* VOLVER A LA LISTA DE RUTINAS */
 
