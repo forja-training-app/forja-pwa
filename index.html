@@ -1064,7 +1064,7 @@
   line-height: 1.6;
   margin-top: 12px;
 }
-
+  
 /* =====================================
    CONSTRUCTOR DE RUTINA
 ===================================== */
@@ -2104,7 +2104,7 @@
     </div>
 
   </section>
-
+  
 <!-- =====================================
        PANTALLA RUTINAS
   ====================================== -->
@@ -4105,20 +4105,8 @@
 
 
       message.textContent =
-        "✓ RUTINA CREADA CORRECTAMENTE.";
         "✓ RUTINA CREADA CORRECTAMENTE. ABRIENDO CONSTRUCTOR...";
 
-
-      setTimeout(
-        function() {
-
-          openWorkoutEditor(
-            data
-          );
-
-        },
-        500
-      );
       // Abrimos el constructor de forma inmediata y con diagnóstico visible.
       // Así, si algo falla al renderizarlo, no queda la pantalla bloqueada
       // mostrando solamente el mensaje de rutina creada.
@@ -4268,10 +4256,6 @@
 
       workoutBuilderScreen.style.display = "block";
 
-      const state = getWorkoutEditorState(workout);
-      state.workout = workout;
-      saveWorkoutEditorState(workout, state);
-      renderWorkoutEditor(workout, state);
       try {
         const state = getWorkoutEditorState(workout);
         state.workout = workout;
@@ -4471,4 +4455,6 @@
 </body>
 
 </html>
-
+    
+    
+  
