@@ -69,7 +69,73 @@
     select {
       font-family: 'Montserrat', sans-serif;
     }
+/* =====================================
+   RUTINAS DE ALUMNA
+===================================== */
 
+#student-workouts-screen {
+  display: none;
+}
+
+.student-workout-card {
+  position: relative;
+  width: 100%;
+  background: #0b0b0b;
+  border: 1px solid #262626;
+  padding: 18px;
+  text-align: left;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.student-workout-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: #E60000;
+  left: 0;
+  top: 0;
+}
+
+.student-workout-card:hover {
+  border-color: #E60000;
+}
+
+.student-workout-name {
+  display: block;
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.student-workout-objective {
+  color: #E60000;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+.student-workout-info {
+  color: #777777;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+.workout-status {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 8px;
+  border: 1px solid #292929;
+  color: #777777;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
 
     /* =====================================
        APP
@@ -1563,7 +1629,61 @@
     </div>
 
   </section>
+<!-- =====================================
+     RUTINAS DE UNA ALUMNA
+====================================== -->
 
+<section
+  id="student-workouts-screen"
+  class="students-screen"
+>
+
+  <div class="students-header">
+
+    <button
+      id="back-to-workouts"
+      class="back-button"
+      type="button"
+    >
+      ← VOLVER A RUTINAS
+    </button>
+
+    <div class="eyebrow">
+      ENTRENAMIENTOS
+    </div>
+
+    <h1 id="student-workouts-name">
+      ALUMNA
+    </h1>
+
+    <p>
+      Administrá las rutinas de esta alumna.
+    </p>
+
+  </div>
+
+
+  <button
+    id="create-workout-button"
+    class="button"
+    type="button"
+  >
+    + CREAR NUEVA RUTINA
+  </button>
+
+
+  <div
+    id="student-workouts-list"
+    class="students-list"
+  >
+
+    <p class="students-loading">
+      CARGANDO RUTINAS...
+    </p>
+
+  </div>
+
+</section>
 
 
   <!-- =====================================
@@ -1663,8 +1783,220 @@
 
     const editStudentForm =
       document.getElementById("edit-student-form");
+const studentWorkoutsScreen =
+  document.getElementById("student-workouts-screen");
+
+const studentWorkoutsName =
+  document.getElementById("student-workouts-name");
+
+const studentWorkoutsList =
+  document.getElementById("student-workouts-list");
+
+const backToWorkouts =
+  document.getElementById("back-to-workouts");
+
+const createWorkoutButton =
+  document.getElementById("create-workout-button");
+
+let selectedWorkoutStudent = null;
+    
+/* =====================================
+   ABRIR RUTINAS DE ALUMNA
+===================================== */
+
+async function openStudentWorkouts(student) {
+
+  selectedWorkoutStudent = student;
+
+  loginScreen.style.display = "none";
+  appScreen.style.display = "none";
+  studentsScreen.style.display = "none";
+  workoutsScreen.style.display = "none";
+  studentDetailScreen.style.display = "none";
+
+  studentWorkoutsScreen.style.display = "block";
+
+  studentWorkoutsName.textContent =
+    student.full_name || "ALUMNA";
+
+  await loadStudentWorkouts();
+
+}
+    /* =====================================
+   CARGAR RUTINAS DE ALUMNA
+===================================== */
+
+async function loadStudentWorkouts() {
+
+  studentWorkoutsList.innerHTML = `
+    <p class="students-loading">
+      CARGANDO RUTINAS...
+    </p>
+  `;
 
 
+  if (!selectedWorkoutStudent) {
+
+    studentWorkoutsList.innerHTML = `
+      <p class="students-empty">
+        NO SE SELECCIONÓ NINGUNA ALUMNA.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("workouts")
+      .select(`
+        id,
+        name,
+        objective,
+        weeks,
+        status,
+        created_at
+      `)
+      .eq(
+        "student_id",
+        selectedWorkoutStudent.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Error cargando rutinas:",
+      error
+    );
+
+
+    studentWorkoutsList.innerHTML = `
+      <p class="students-empty">
+        NO SE PUDIERON CARGAR LAS RUTINAS.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  if (!data || data.length === 0) {
+
+    studentWorkoutsList.innerHTML = `
+      <p class="students-empty">
+        ESTA ALUMNA TODAVÍA NO TIENE RUTINAS.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  studentWorkoutsList.innerHTML = "";
+
+
+  data.forEach(
+    function(workout) {
+
+      const card =
+        document.createElement("button");
+
+
+      card.type = "button";
+
+      card.className =
+        "student-workout-card";
+
+
+      card.innerHTML = `
+
+        <span class="student-workout-name">
+          ${workout.name || "RUTINA SIN NOMBRE"}
+        </span>
+
+        <span class="student-workout-objective">
+          ${workout.objective || "SIN OBJETIVO"}
+        </span>
+
+        <div class="student-workout-info">
+
+          ${workout.weeks || 0}
+          SEMANAS
+
+        </div>
+
+        <span class="workout-status">
+
+          ${workout.status || "ACTIVA"}
+
+        </span>
+
+      `;
+
+
+      card.addEventListener(
+        "click",
+        function() {
+
+          openWorkout(workout);
+
+        }
+      );
+
+
+      studentWorkoutsList.appendChild(card);
+
+    }
+  );
+
+}
+    /* =====================================
+   ABRIR RUTINA
+===================================== */
+
+function openWorkout(workout) {
+
+  console.log(
+    "Rutina seleccionada:",
+    workout
+  );
+
+  alert(
+    "Rutina seleccionada: " +
+    workout.name
+  );
+
+}
+    /* =====================================
+   VOLVER A LISTADO DE RUTINAS
+===================================== */
+
+backToWorkouts.addEventListener(
+  "click",
+  function() {
+
+    studentWorkoutsScreen.style.display = "none";
+
+    workoutsScreen.style.display = "block";
+
+    loadWorkoutStudents();
+
+  }
+);
     /* =====================================
        VARIABLES
     ====================================== */
