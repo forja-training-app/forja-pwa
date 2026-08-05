@@ -1064,7 +1064,263 @@
   line-height: 1.6;
   margin-top: 12px;
 }
-  </style>
+  
+/* =====================================
+   CONSTRUCTOR DE RUTINA
+===================================== */
+
+.workout-editor {
+  padding-bottom: 50px;
+}
+
+.workout-editor-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.workout-meta-card {
+  background: #0b0b0b;
+  border: 1px solid #262626;
+  padding: 15px;
+}
+
+.workout-meta-label,
+.workout-section-label {
+  color: #777777;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.workout-meta-value {
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 20px;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+.workout-days {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.workout-day-card {
+  position: relative;
+  background: #0b0b0b;
+  border: 1px solid #292929;
+  padding: 18px;
+}
+
+.workout-day-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: #E60000;
+  left: 0;
+  top: 0;
+}
+
+.workout-day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.workout-day-title {
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 27px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.workout-day-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.workout-small-button {
+  border: 1px solid #292929;
+  background: #111111;
+  color: #ffffff;
+  padding: 8px 10px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.workout-small-button:hover {
+  border-color: #E60000;
+}
+
+.workout-small-button.danger {
+  color: #E60000;
+}
+
+.workout-exercises {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.workout-empty-day {
+  color: #666666;
+  font-size: 11px;
+  line-height: 1.6;
+  padding: 10px 0 14px;
+}
+
+.workout-exercise-card {
+  background: #111111;
+  border: 1px solid #242424;
+  padding: 13px;
+}
+
+.workout-exercise-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.workout-exercise-name {
+  color: #ffffff;
+  font-family: 'Anton', sans-serif;
+  font-size: 19px;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.workout-exercise-delete {
+  border: none;
+  background: transparent;
+  color: #666666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.workout-exercise-delete:hover {
+  color: #E60000;
+}
+
+.workout-exercise-data {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.workout-exercise-data span {
+  display: block;
+  color: #777777;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.workout-exercise-data strong {
+  display: block;
+  color: #ffffff;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.workout-exercise-notes {
+  color: #777777;
+  font-size: 10px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.workout-exercise-form {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #242424;
+}
+
+.workout-exercise-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.workout-exercise-field.full {
+  grid-column: 1 / -1;
+}
+
+.workout-exercise-field label {
+  display: block;
+  color: #777777;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.workout-exercise-field input,
+.workout-exercise-field textarea,
+.workout-day-name-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #0b0b0b;
+  border: 1px solid #292929;
+  color: #ffffff;
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  outline: none;
+}
+
+.workout-exercise-field textarea {
+  min-height: 58px;
+  resize: vertical;
+}
+
+.workout-exercise-field input:focus,
+.workout-exercise-field textarea:focus,
+.workout-day-name-input:focus {
+  border-color: #E60000;
+}
+
+.workout-editor-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.workout-editor-message {
+  color: #777777;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+
+@media (max-width: 500px) {
+  .workout-editor-meta,
+  .workout-editor-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .workout-exercise-data {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+</style>
 
 
   <!-- =====================================
@@ -3585,7 +3841,7 @@
           <p>
             Alumna:
             <strong>
-              ${student.full_name || "SIN NOMBRE"}
+              ${escapeWorkoutHtml(student.full_name || "SIN NOMBRE")}
             </strong>
           </p>
 
@@ -3599,11 +3855,11 @@
           </div>
 
           <div class="detail-value">
-            ${student.full_name || "SIN NOMBRE"}
+            ${escapeWorkoutHtml(student.full_name || "SIN NOMBRE")}
           </div>
 
           <div class="student-email">
-            ${student.email || "EMAIL NO DISPONIBLE"}
+            ${escapeWorkoutHtml(student.email || "EMAIL NO DISPONIBLE")}
           </div>
 
         </div>
@@ -3620,45 +3876,9 @@
             <input
               type="text"
               id="workout-name"
-              placeholder="Ej: Fuerza Base"
+              placeholder="Ej: Plan de entrenamiento"
               required
             >
-
-
-            <label for="workout-objective">
-              OBJETIVO
-            </label>
-
-            <select
-              id="workout-objective"
-              required
-            >
-
-              <option value="">
-                SELECCIONAR
-              </option>
-
-              <option value="FUERZA">
-                FUERZA
-              </option>
-
-              <option value="HIPERTROFIA">
-                HIPERTROFIA
-              </option>
-
-              <option value="RENDIMIENTO">
-                RENDIMIENTO
-              </option>
-
-              <option value="RECOMPOSICIÓN">
-                RECOMPOSICIÓN
-              </option>
-
-              <option value="GENERAL">
-                GENERAL
-              </option>
-
-            </select>
 
 
             <label for="workout-weeks">
@@ -3788,12 +4008,6 @@
           .trim();
 
 
-      const objective =
-        document
-          .getElementById("workout-objective")
-          .value;
-
-
       const weeks =
         Number(
           document
@@ -3843,8 +4057,13 @@
             name:
               name,
 
+            /*
+             * Se conserva el campo para no romper la
+             * estructura actual de Supabase, pero ya no
+             * se muestra ni se pide en la interfaz.
+             */
             objective:
-              objective,
+              "",
 
             weeks:
               weeks,
@@ -3891,122 +4110,307 @@
           );
 
         },
-        700
+        500
       );
 
     }
 
 
     /* =====================================
-       EDITOR DE RUTINA
+       UTILIDADES CONSTRUCTOR
     ====================================== */
 
-    function openWorkoutEditor(workout) {
+    function escapeWorkoutHtml(value) {
+
+      return String(
+        value == null
+          ? ""
+          : value
+      )
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function getWorkoutBuilderStorageKey(workout) {
+
+      return "forja_workout_builder_" +
+        String(workout.id);
+
+    }
+
+
+    function createWorkoutId(prefix) {
+
+      if (
+        window.crypto &&
+        typeof window.crypto.randomUUID === "function"
+      ) {
+
+        return prefix + "_" +
+          window.crypto.randomUUID();
+
+      }
+
+
+      return prefix + "_" +
+        Date.now() + "_" +
+        Math.random()
+          .toString(36)
+          .slice(2);
+
+    }
+
+
+    function getWorkoutEditorState(workout) {
+
+      const key =
+        getWorkoutBuilderStorageKey(
+          workout
+        );
+
+
+      try {
+
+        const saved =
+          localStorage.getItem(
+            key
+          );
+
+
+        if (saved) {
+
+          const parsed =
+            JSON.parse(
+              saved
+            );
+
+
+          if (
+            parsed &&
+            Array.isArray(parsed.days)
+          ) {
+
+            return parsed;
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Error leyendo rutina local:",
+          error
+        );
+
+      }
+
+
+      return {
+
+        workout:
+          workout,
+
+        days:
+          []
+
+      };
+
+    }
+
+
+    function saveWorkoutEditorState(
+      workout,
+      state
+    ) {
+
+      try {
+
+        localStorage.setItem(
+          getWorkoutBuilderStorageKey(
+            workout
+          ),
+          JSON.stringify(
+            state
+          )
+        );
+
+
+        return true;
+
+      } catch (error) {
+
+        console.error(
+          "Error guardando rutina local:",
+          error
+        );
+
+
+        return false;
+
+      }
+
+    }
+
+
+    function renderWorkoutEditor(
+      workout,
+      state
+    ) {
 
       workoutBuilderScreen.innerHTML = `
 
-        <div class="students-header">
+        <div class="workout-editor">
+
+          <div class="students-header">
+
+            <button
+              id="back-from-workout-editor"
+              class="back-button"
+              type="button"
+            >
+              ← VOLVER
+            </button>
+
+            <div class="eyebrow">
+              CONSTRUCTOR DE RUTINA
+            </div>
+
+            <h1>
+              ${escapeWorkoutHtml(workout.name || "RUTINA")}
+            </h1>
+
+            <p>
+              ${escapeWorkoutHtml(currentStudent.full_name || "ALUMNA")}
+            </p>
+
+          </div>
+
+
+          <div class="workout-editor-meta">
+
+            <div class="workout-meta-card">
+
+              <div class="workout-meta-label">
+                DURACIÓN
+              </div>
+
+              <div class="workout-meta-value">
+                ${workout.weeks || "-"} SEMANAS
+              </div>
+
+            </div>
+
+
+            <div class="workout-meta-card">
+
+              <div class="workout-meta-label">
+                ESTADO
+              </div>
+
+              <div
+                class="workout-meta-value"
+                id="workout-editor-status"
+              >
+                ${workout.status === "active"
+                  ? "ACTIVA"
+                  : "BORRADOR"}
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="workout-section-label">
+            DÍAS DE LA RUTINA
+          </div>
+
+
+          <div
+            id="workout-days"
+            class="workout-days"
+          >
+
+            ${
+              state.days.length === 0
+                ? `
+                  <div class="student-card">
+                    <div class="detail-value">
+                      TODAVÍA NO HAY DÍAS
+                    </div>
+                    <p
+                      style="
+                        color:#777;
+                        font-size:11px;
+                        line-height:1.6;
+                        margin-top:8px;
+                      "
+                    >
+                      Agregá el primer día y después incorporá
+                      los ejercicios que quieras.
+                    </p>
+                  </div>
+                `
+                : state.days
+                    .map(
+                      function(day, dayIndex) {
+
+                        return renderWorkoutDay(
+                          day,
+                          dayIndex
+                        );
+
+                      }
+                    )
+                    .join("")
+            }
+
+          </div>
+
 
           <button
-            id="back-from-workout-editor"
-            class="back-button"
+            id="add-workout-day-button"
+            class="button"
             type="button"
+            style="margin-top:16px;"
           >
-            ← VOLVER
+            + AGREGAR DÍA
           </button>
 
-          <div class="eyebrow">
-            RUTINA CREADA
+
+          <div class="workout-editor-actions">
+
+            <button
+              id="save-workout-draft-button"
+              class="button"
+              type="button"
+            >
+              GUARDAR CAMBIOS
+            </button>
+
+            <button
+              id="publish-workout-button"
+              class="button"
+              type="button"
+            >
+              PUBLICAR RUTINA →
+            </button>
+
           </div>
 
-          <h1>
-            ${workout.name || "RUTINA"}
-          </h1>
-
-          <p>
-            ${currentStudent.full_name || "ALUMNA"}
-          </p>
-
-        </div>
-
-
-        <div class="student-card">
-
-          <div class="menu-label">
-            OBJETIVO
-          </div>
-
-          <div class="detail-value">
-            ${workout.objective || "GENERAL"}
-          </div>
-
-        </div>
-
-
-        <div class="student-card">
-
-          <div class="menu-label">
-            DURACIÓN
-          </div>
-
-          <div class="detail-value">
-            ${workout.weeks || "-"} SEMANAS
-          </div>
-
-        </div>
-
-
-        <div class="student-card">
-
-          <div class="menu-label">
-            ESTADO
-          </div>
-
-          <div class="detail-value">
-            ${workout.status === "active"
-              ? "ACTIVA"
-              : "BORRADOR"}
-          </div>
-
-        </div>
-
-
-        <div
-          class="student-card"
-          style="margin-top:20px;"
-        >
-
-          <div class="menu-label">
-            PRÓXIMO PASO
-          </div>
-
-          <div class="detail-value">
-            AGREGAR DÍAS
-          </div>
 
           <p
-            style="
-              color:#777;
-              font-size:12px;
-              line-height:1.6;
-              margin-top:8px;
-            "
-          >
-            Acá vamos a construir los días de entrenamiento
-            y después agregar los ejercicios.
-          </p>
+            id="workout-editor-message"
+            class="workout-editor-message"
+          ></p>
 
         </div>
-
-
-        <button
-          id="add-workout-day-button"
-          class="button"
-          type="button"
-          style="margin-top:20px;"
-        >
-          + AGREGAR DÍA
-        </button>
 
       `;
 
@@ -4035,12 +4439,915 @@
           "click",
           function() {
 
-            alert(
-              "El próximo paso será crear los días y agregar los ejercicios."
+            state.days.push({
+
+              id:
+                createWorkoutId("day"),
+
+              name:
+                "DÍA " +
+                (
+                  state.days.length +
+                  1
+                ),
+
+              exercises:
+                []
+
+            });
+
+
+            saveWorkoutEditorState(
+              workout,
+              state
+            );
+
+
+            renderWorkoutEditor(
+              workout,
+              state
             );
 
           }
         );
+
+
+      document
+        .getElementById(
+          "save-workout-draft-button"
+        )
+        .addEventListener(
+          "click",
+          function() {
+
+            const saved =
+              saveWorkoutEditorState(
+                workout,
+                state
+              );
+
+
+            const msg =
+              document.getElementById(
+                "workout-editor-message"
+              );
+
+
+            msg.textContent =
+              saved
+                ? "✓ CAMBIOS GUARDADOS EN ESTE DISPOSITIVO."
+                : "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
+
+          }
+        );
+
+
+      document
+        .getElementById(
+          "publish-workout-button"
+        )
+        .addEventListener(
+          "click",
+          function() {
+
+            publishWorkout(
+              workout,
+              state
+            );
+
+          }
+        );
+
+
+      bindWorkoutDayEvents(
+        workout,
+        state
+      );
+
+    }
+
+
+    function renderWorkoutDay(
+      day,
+      dayIndex
+    ) {
+
+      return `
+
+        <div
+          class="workout-day-card"
+          data-day-id="${escapeWorkoutHtml(day.id)}"
+        >
+
+          <div class="workout-day-head">
+
+            <div style="flex:1;">
+
+              <div
+                class="workout-day-title"
+                id="workout-day-title-${escapeWorkoutHtml(day.id)}"
+              >
+                ${escapeWorkoutHtml(day.name || "DÍA " + (dayIndex + 1))}
+              </div>
+
+            </div>
+
+
+            <div class="workout-day-actions">
+
+              <button
+                type="button"
+                class="workout-small-button edit-day-button"
+                data-day-id="${escapeWorkoutHtml(day.id)}"
+              >
+                EDITAR
+              </button>
+
+              <button
+                type="button"
+                class="workout-small-button danger delete-day-button"
+                data-day-id="${escapeWorkoutHtml(day.id)}"
+              >
+                ELIMINAR
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="workout-exercises"
+            id="workout-exercises-${escapeWorkoutHtml(day.id)}"
+          >
+
+            ${
+              !day.exercises ||
+              day.exercises.length === 0
+                ? `
+                  <div class="workout-empty-day">
+                    TODAVÍA NO HAY EJERCICIOS EN ESTE DÍA.
+                  </div>
+                `
+                :
+                  day.exercises
+                    .map(
+                      function(exercise) {
+
+                        return renderWorkoutExercise(
+                          day,
+                          exercise
+                        );
+
+                      }
+                    )
+                    .join("")
+            }
+
+          </div>
+
+
+          <button
+            type="button"
+            class="workout-small-button add-exercise-button"
+            data-day-id="${escapeWorkoutHtml(day.id)}"
+            style="
+              width:100%;
+              margin-top:10px;
+              border-color:#E60000;
+              color:#ffffff;
+            "
+          >
+            + AGREGAR EJERCICIO
+          </button>
+
+        </div>
+
+      `;
+
+    }
+
+
+    function renderWorkoutExercise(
+      day,
+      exercise
+    ) {
+
+      return `
+
+        <div
+          class="workout-exercise-card"
+          data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
+        >
+
+          <div class="workout-exercise-head">
+
+            <div class="workout-exercise-name">
+              ${escapeWorkoutHtml(exercise.name || "EJERCICIO")}
+            </div>
+
+            <button
+              type="button"
+              class="workout-exercise-delete"
+              data-day-id="${escapeWorkoutHtml(day.id)}"
+              data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
+              title="Eliminar ejercicio"
+            >
+              ✕
+            </button>
+
+          </div>
+
+
+          <div class="workout-exercise-data">
+
+            <div>
+              <span>Series</span>
+              <strong>${escapeWorkoutHtml(exercise.series || "-")}</strong>
+            </div>
+
+            <div>
+              <span>Reps</span>
+              <strong>${escapeWorkoutHtml(exercise.reps || "-")}</strong>
+            </div>
+
+            <div>
+              <span>RPE</span>
+              <strong>${escapeWorkoutHtml(exercise.rpe || "-")}</strong>
+            </div>
+
+            <div>
+              <span>Carga</span>
+              <strong>${escapeWorkoutHtml(exercise.load || "-")}</strong>
+            </div>
+
+            <div>
+              <span>Descanso</span>
+              <strong>${escapeWorkoutHtml(exercise.rest || "-")}</strong>
+            </div>
+
+            <div>
+              <span>Tempo</span>
+              <strong>${escapeWorkoutHtml(exercise.tempo || "-")}</strong>
+            </div>
+
+          </div>
+
+
+          ${
+            exercise.notes
+              ? `
+                <div class="workout-exercise-notes">
+                  ${escapeWorkoutHtml(exercise.notes)}
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+
+      `;
+
+    }
+
+
+    function bindWorkoutDayEvents(
+      workout,
+      state
+    ) {
+
+      document
+        .querySelectorAll(
+          ".add-exercise-button"
+        )
+        .forEach(
+          function(button) {
+
+            button.addEventListener(
+              "click",
+              function() {
+
+                openExerciseForm(
+                  workout,
+                  state,
+                  button.dataset.dayId
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+      document
+        .querySelectorAll(
+          ".delete-day-button"
+        )
+        .forEach(
+          function(button) {
+
+            button.addEventListener(
+              "click",
+              function() {
+
+                const dayId =
+                  button.dataset.dayId;
+
+
+                state.days =
+                  state.days.filter(
+                    function(day) {
+
+                      return day.id !== dayId;
+
+                    }
+                  );
+
+
+                saveWorkoutEditorState(
+                  workout,
+                  state
+                );
+
+
+                renderWorkoutEditor(
+                  workout,
+                  state
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+      document
+        .querySelectorAll(
+          ".edit-day-button"
+        )
+        .forEach(
+          function(button) {
+
+            button.addEventListener(
+              "click",
+              function() {
+
+                const day =
+                  state.days.find(
+                    function(item) {
+
+                      return item.id ===
+                        button.dataset.dayId;
+
+                    }
+                  );
+
+
+                if (!day) {
+                  return;
+                }
+
+
+                const currentName =
+                  prompt(
+                    "Nombre del día:",
+                    day.name
+                  );
+
+
+                if (
+                  currentName === null
+                ) {
+
+                  return;
+
+                }
+
+
+                const cleanName =
+                  currentName.trim();
+
+
+                if (!cleanName) {
+
+                  return;
+
+                }
+
+
+                day.name =
+                  cleanName;
+
+
+                saveWorkoutEditorState(
+                  workout,
+                  state
+                );
+
+
+                renderWorkoutEditor(
+                  workout,
+                  state
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+      document
+        .querySelectorAll(
+          ".workout-exercise-delete"
+        )
+        .forEach(
+          function(button) {
+
+            button.addEventListener(
+              "click",
+              function() {
+
+                const day =
+                  state.days.find(
+                    function(item) {
+
+                      return item.id ===
+                        button.dataset.dayId;
+
+                    }
+                  );
+
+
+                if (!day) {
+                  return;
+                }
+
+
+                day.exercises =
+                  (
+                    day.exercises || []
+                  )
+                    .filter(
+                      function(exercise) {
+
+                        return exercise.id !==
+                          button.dataset.exerciseId;
+
+                      }
+                    );
+
+
+                saveWorkoutEditorState(
+                  workout,
+                  state
+                );
+
+
+                renderWorkoutEditor(
+                  workout,
+                  state
+                );
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    function openExerciseForm(
+      workout,
+      state,
+      dayId
+    ) {
+
+      const day =
+        state.days.find(
+          function(item) {
+
+            return item.id ===
+              dayId;
+
+          }
+        );
+
+
+      if (!day) {
+        return;
+      }
+
+
+      const existing =
+        document.getElementById(
+          "workout-exercise-form-" +
+          dayId
+        );
+
+
+      if (existing) {
+
+        existing.remove();
+
+        return;
+
+      }
+
+
+      const container =
+        document.getElementById(
+          "workout-exercises-" +
+          dayId
+        );
+
+
+      const form =
+        document.createElement("form");
+
+
+      form.id =
+        "workout-exercise-form-" +
+        dayId;
+
+
+      form.className =
+        "workout-exercise-form";
+
+
+      form.innerHTML = `
+
+        <div class="workout-exercise-form-grid">
+
+          <div class="workout-exercise-field full">
+
+            <label>
+              EJERCICIO
+            </label>
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Ej: Sentadilla"
+              required
+            >
+
+          </div>
+
+
+          <div class="workout-exercise-field">
+
+            <label>
+              SERIES
+            </label>
+
+            <input
+              type="text"
+              name="series"
+              placeholder="4"
+            >
+
+          </div>
+
+
+          <div class="workout-exercise-field">
+
+            <label>
+              REPETICIONES
+            </label>
+
+            <input
+              type="text"
+              name="reps"
+              placeholder="8-10"
+            >
+
+          </div>
+
+
+          <div class="workout-exercise-field">
+
+            <label>
+              RPE
+            </label>
+
+            <input
+              type="text"
+              name="rpe"
+              placeholder="8"
+            >
+
+          </div>
+
+
+          <div class="workout-exercise-field">
+
+            <label>
+              CARGA
+            </label>
+
+            <input
+              type="text"
+              name="load"
+              placeholder="70 kg"
+            >
+
+          </div>
+
+
+          <div class="workout-exercise-field">
+
+            <label>
+              DESCANSO
+            </label>
+
+            <input
+              type="text"
+              name="rest"
+              placeholder="2 min"
+            >
+
+          </div>
+
+
+          <div class="workout-exercise-field">
+
+            <label>
+              TEMPO
+            </label>
+
+            <input
+              type="text"
+              name="tempo"
+              placeholder="3-1-1"
+            >
+
+          </div>
+
+
+          <div class="workout-exercise-field full">
+
+            <label>
+              NOTAS
+            </label>
+
+            <textarea
+              name="notes"
+              placeholder="Indicaciones para la alumna..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="button"
+          style="margin-top:10px;"
+        >
+          GUARDAR EJERCICIO
+        </button>
+
+      `;
+
+
+      container.appendChild(
+        form
+      );
+
+
+      form
+        .addEventListener(
+          "submit",
+          function(event) {
+
+            event.preventDefault();
+
+
+            const formData =
+              new FormData(
+                form
+              );
+
+
+            day.exercises =
+              day.exercises || [];
+
+
+            day.exercises.push({
+
+              id:
+                createWorkoutId(
+                  "exercise"
+                ),
+
+              name:
+                String(
+                  formData.get("name") ||
+                  ""
+                ).trim(),
+
+              series:
+                String(
+                  formData.get("series") ||
+                  ""
+                ).trim(),
+
+              reps:
+                String(
+                  formData.get("reps") ||
+                  ""
+                ).trim(),
+
+              rpe:
+                String(
+                  formData.get("rpe") ||
+                  ""
+                ).trim(),
+
+              load:
+                String(
+                  formData.get("load") ||
+                  ""
+                ).trim(),
+
+              rest:
+                String(
+                  formData.get("rest") ||
+                  ""
+                ).trim(),
+
+              tempo:
+                String(
+                  formData.get("tempo") ||
+                  ""
+                ).trim(),
+
+              notes:
+                String(
+                  formData.get("notes") ||
+                  ""
+                ).trim()
+
+            });
+
+
+            saveWorkoutEditorState(
+              workout,
+              state
+            );
+
+
+            renderWorkoutEditor(
+              workout,
+              state
+            );
+
+          }
+        );
+
+    }
+
+
+    async function publishWorkout(
+      workout,
+      state
+    ) {
+
+      const message =
+        document.getElementById(
+          "workout-editor-message"
+        );
+
+
+      if (
+        !state.days.length
+      ) {
+
+        message.textContent =
+          "AGREGÁ AL MENOS UN DÍA ANTES DE PUBLICAR.";
+
+        return;
+
+      }
+
+
+      for (
+        const day of state.days
+      ) {
+
+        if (
+          !day.exercises ||
+          !day.exercises.length
+        ) {
+
+          message.textContent =
+            "CADA DÍA DEBE TENER AL MENOS UN EJERCICIO.";
+
+          return;
+
+        }
+
+      }
+
+
+      message.textContent =
+        "PUBLICANDO RUTINA...";
+
+
+      const {
+        data: updatedWorkout,
+        error
+      } =
+        await supabaseClient
+          .from("workouts")
+          .update({
+
+            status:
+              "active"
+
+          })
+          .eq(
+            "id",
+            workout.id
+          )
+          .select()
+          .single();
+
+
+      if (error) {
+
+        console.error(
+          "Error publicando rutina:",
+          error
+        );
+
+
+        message.textContent =
+          "NO SE PUDO PUBLICAR LA RUTINA.";
+
+        return;
+
+      }
+
+
+      saveWorkoutEditorState(
+        workout,
+        {
+
+          ...state,
+
+          workout:
+            updatedWorkout
+
+        }
+      );
+
+
+      message.textContent =
+        "✓ RUTINA PUBLICADA.";
+
+
+      const statusElement =
+        document.getElementById(
+          "workout-editor-status"
+        );
+
+
+      if (statusElement) {
+
+        statusElement.textContent =
+          "ACTIVA";
+
+      }
+
+    }
+
+
+    /* =====================================
+       EDITOR DE RUTINA
+    ====================================== */
+
+    function openWorkoutEditor(workout) {
+
+      const state =
+        getWorkoutEditorState(
+          workout
+        );
+
+
+      state.workout =
+        workout;
+
+
+      renderWorkoutEditor(
+        workout,
+        state
+      );
 
     }
 
