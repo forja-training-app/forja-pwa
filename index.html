@@ -1064,7 +1064,7 @@
   line-height: 1.6;
   margin-top: 12px;
 }
-  
+
 /* =====================================
    CONSTRUCTOR DE RUTINA
 ===================================== */
@@ -2104,7 +2104,7 @@
     </div>
 
   </section>
-  
+
 <!-- =====================================
        PANTALLA RUTINAS
   ====================================== -->
@@ -3765,66 +3765,24 @@
     /* =====================================
        SELECCIONAR ALUMNA PARA RUTINAS
     ====================================== */
-<!-- =====================================
-     RUTINAS DE ALUMNA
-===================================== -->
 
-<div
-  id="student-workouts-screen"
-  class="students-screen"
->
+    function openStudentWorkouts(student) {
 
-  <button
-    id="back-to-workouts"
-    class="back-button"
-    type="button"
-  >
-    ← VOLVER A RUTINAS
-  </button>
+      currentStudent =
+        student;
 
-  <div class="students-header">
 
-    <h1>
-      RUTINAS
-    </h1>
+      if (workoutsScreen) {
 
-    <p>
-      Rutinas de
-      <strong id="student-workouts-name">
-        ALUMNA
-      </strong>
-    </p>
+        workoutsScreen.style.display =
+          "none";
 
-  </div>
+      }
 
-  <div
-    id="student-workouts-list"
-    class="students-list"
-  >
 
-    <p class="students-loading">
-      CARGANDO RUTINAS...
-    </p>
-
-  </div>
-
-</div>
-    async function openStudentWorkouts(student) {
-
-  selectedWorkoutStudent = student;
-
-  loginScreen.style.display = "none";
-  appScreen.style.display = "none";
-  studentsScreen.style.display = "none";
-  workoutsScreen.style.display = "none";
-  studentDetailScreen.style.display = "none";
-
-  studentWorkoutsScreen.style.display = "block";
-
-  studentWorkoutsName.textContent =
-    student.full_name || "ALUMNA";
-
-  await loadStudentWorkouts();
+      createWorkoutBuilder(
+        student
+      );
 
     }
 
@@ -4147,8 +4105,20 @@
 
 
       message.textContent =
+        "✓ RUTINA CREADA CORRECTAMENTE.";
         "✓ RUTINA CREADA CORRECTAMENTE. ABRIENDO CONSTRUCTOR...";
 
+
+      setTimeout(
+        function() {
+
+          openWorkoutEditor(
+            data
+          );
+
+        },
+        500
+      );
       // Abrimos el constructor de forma inmediata y con diagnóstico visible.
       // Así, si algo falla al renderizarlo, no queda la pantalla bloqueada
       // mostrando solamente el mensaje de rutina creada.
@@ -4298,6 +4268,10 @@
 
       workoutBuilderScreen.style.display = "block";
 
+      const state = getWorkoutEditorState(workout);
+      state.workout = workout;
+      saveWorkoutEditorState(workout, state);
+      renderWorkoutEditor(workout, state);
       try {
         const state = getWorkoutEditorState(workout);
         state.workout = workout;
@@ -4497,6 +4471,4 @@
 </body>
 
 </html>
-    
-    
-  
+
