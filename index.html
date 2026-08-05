@@ -3765,7 +3765,50 @@
     /* =====================================
        SELECCIONAR ALUMNA PARA RUTINAS
     ====================================== */
+<!-- =====================================
+     RUTINAS DE ALUMNA
+===================================== -->
 
+<div
+  id="student-workouts-screen"
+  class="students-screen"
+>
+
+  <button
+    id="back-to-workouts"
+    class="back-button"
+    type="button"
+  >
+    ← VOLVER A RUTINAS
+  </button>
+
+  <div class="students-header">
+
+    <h1>
+      RUTINAS
+    </h1>
+
+    <p>
+      Rutinas de
+      <strong id="student-workouts-name">
+        ALUMNA
+      </strong>
+    </p>
+
+  </div>
+
+  <div
+    id="student-workouts-list"
+    class="students-list"
+  >
+
+    <p class="students-loading">
+      CARGANDO RUTINAS...
+    </p>
+
+  </div>
+
+</div>
     async function openStudentWorkouts(student) {
 
   selectedWorkoutStudent = student;
