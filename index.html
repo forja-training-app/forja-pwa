@@ -4105,19 +4105,19 @@
 
 
       message.textContent =
-        "✓ RUTINA CREADA CORRECTAMENTE.";
+        "✓ RUTINA CREADA CORRECTAMENTE. ABRIENDO CONSTRUCTOR...";
 
-
-      setTimeout(
-        function() {
-
-          openWorkoutEditor(
-            data
-          );
-
-        },
-        500
-      );
+      // Abrimos el constructor de forma inmediata y con diagnóstico visible.
+      // Así, si algo falla al renderizarlo, no queda la pantalla bloqueada
+      // mostrando solamente el mensaje de rutina creada.
+      try {
+        openWorkoutEditor(data);
+      } catch (editorError) {
+        console.error("Error abriendo constructor:", editorError);
+        message.textContent =
+          "RUTINA CREADA, PERO NO SE PUDO ABRIR EL CONSTRUCTOR: " +
+          (editorError && editorError.message ? editorError.message : String(editorError));
+      }
 
     }
 
@@ -4256,10 +4256,23 @@
 
       workoutBuilderScreen.style.display = "block";
 
-      const state = getWorkoutEditorState(workout);
-      state.workout = workout;
-      saveWorkoutEditorState(workout, state);
-      renderWorkoutEditor(workout, state);
+      try {
+        const state = getWorkoutEditorState(workout);
+        state.workout = workout;
+        saveWorkoutEditorState(workout, state);
+        renderWorkoutEditor(workout, state);
+      } catch (editorError) {
+        console.error("Error renderizando constructor:", editorError);
+        workoutBuilderScreen.innerHTML = `
+          <div class="student-form">
+            <div class="eyebrow">CONSTRUCTOR DE RUTINA</div>
+            <h1>NO SE PUDO ABRIR</h1>
+            <p style="color:#aaa;line-height:1.6;">La rutina se creó correctamente, pero hubo un error al abrir el constructor.</p>
+            <p style="color:#E60000;font-size:12px;line-height:1.6;word-break:break-word;">${escapeWorkoutHtml(editorError && editorError.message ? editorError.message : String(editorError))}</p>
+            <button id="retry-workout-editor" class="button" type="button">REINTENTAR</button>
+          </div>`;
+        document.getElementById("retry-workout-editor").addEventListener("click", function(){ openWorkoutEditor(workout); });
+      }
     }
 
     function renderWorkoutEditor(workout, state) {
