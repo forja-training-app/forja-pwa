@@ -3473,849 +3473,3017 @@
     }
 
 
-    /* =====================================
-       RUTINAS
-    ====================================== */
+/* =====================================
+   RUTINAS
+===================================== */
 
-    workoutsButton.addEventListener(
+workoutsButton.addEventListener(
+  "click",
+  function() {
+    showWorkouts();
+  }
+);
+
+
+/* =====================================
+   MOSTRAR PANTALLA RUTINAS
+===================================== */
+
+function showWorkouts() {
+
+  loginScreen.style.display = "none";
+  appScreen.style.display = "none";
+  studentsScreen.style.display = "none";
+
+  if (studentDetailScreen) {
+    studentDetailScreen.style.display = "none";
+  }
+
+  if (workoutBuilderScreen) {
+    workoutBuilderScreen.style.display = "none";
+  }
+
+  workoutsScreen =
+    document.getElementById("workouts-screen");
+
+  if (!workoutsScreen) {
+    createWorkoutsScreen();
+  }
+
+  workoutsScreen =
+    document.getElementById("workouts-screen");
+
+  workoutStudentList =
+    document.getElementById("workout-student-list");
+
+  workoutsScreen.style.display = "block";
+
+  loadWorkoutStudents();
+}
+
+
+/* =====================================
+   CREAR PANTALLA RUTINAS
+===================================== */
+
+function createWorkoutsScreen() {
+
+  const screen =
+    document.createElement("section");
+
+  screen.id = "workouts-screen";
+  screen.className = "students-screen";
+
+  screen.innerHTML = `
+
+    <div class="workouts-header">
+
+      <button
+        id="back-from-workouts"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER AL PANEL
+      </button>
+
+      <div class="eyebrow">
+        ENTRENAMIENTOS
+      </div>
+
+      <h1>
+        RUTINAS
+      </h1>
+
+      <p>
+        Seleccioná una alumna para administrar sus entrenamientos.
+      </p>
+
+    </div>
+
+    <div
+      id="workout-student-list"
+      class="workout-student-list"
+    >
+
+      <p class="workouts-loading">
+        CARGANDO ALUMNAS...
+      </p>
+
+    </div>
+
+  `;
+
+  document.body.appendChild(screen);
+
+  workoutsScreen = screen;
+
+  workoutStudentList =
+    document.getElementById(
+      "workout-student-list"
+    );
+
+  document
+    .getElementById("back-from-workouts")
+    .addEventListener(
       "click",
-      async function() {
+      function() {
+        showApp();
+      }
+    );
+}
+
+
+/* =====================================
+   CARGAR ALUMNAS PARA RUTINAS
+===================================== */
+
+async function loadWorkoutStudents() {
+
+  workoutStudentList.innerHTML = `
+
+    <p class="workouts-loading">
+      CARGANDO ALUMNAS...
+    </p>
+
+  `;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(
+        "id, full_name, email, objective, training_days"
+      )
+      .eq("role", "student")
+      .order(
+        "full_name",
+        {
+          ascending: true
+        }
+      );
+
+  if (error) {
+
+    console.error(
+      "Error cargando alumnas para rutinas:",
+      error
+    );
+
+    workoutStudentList.innerHTML = `
+
+      <p class="workouts-empty">
+        NO SE PUDIERON CARGAR LAS ALUMNAS.
+      </p>
+
+    `;
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    workoutStudentList.innerHTML = `
+
+      <p class="workouts-empty">
+        TODAVÍA NO HAY ALUMNAS CARGADAS.
+      </p>
+
+    `;
+
+    return;
+  }
+
+  workoutStudentList.innerHTML = "";
+
+  data.forEach(
+    function(student) {
+
+      const card =
+        document.createElement("button");
+
+      card.type = "button";
+
+      card.className =
+        "workout-student-card";
+
+      card.innerHTML = `
+
+        <div class="workout-student-icon">
+          +
+        </div>
+
+        <div class="workout-student-info">
+
+          <span class="workout-student-name">
+            ${escapeWorkoutHtml(
+              student.full_name || "SIN NOMBRE"
+            )}
+          </span>
+
+          <span class="workout-student-email">
+            ${escapeWorkoutHtml(
+              student.email || "ALUMNA FORJA"
+            )}
+          </span>
+
+        </div>
+
+        <span class="workout-student-arrow">
+          →
+        </span>
+
+      `;
+
+      card.addEventListener(
+        "click",
+        function() {
+
+          openStudentWorkouts(student);
+
+        }
+      );
+
+      workoutStudentList.appendChild(card);
+
+    }
+  );
+}
+
+
+/* =====================================
+   SELECCIONAR ALUMNA PARA RUTINAS
+===================================== */
+
+async function openStudentWorkouts(student) {
+
+  currentStudent = student;
+
+  if (workoutsScreen) {
+    workoutsScreen.style.display = "none";
+  }
+
+  showStudentWorkoutList(student);
+}
+
+
+/* =====================================
+   MOSTRAR RUTINAS DE UNA ALUMNA
+===================================== */
+
+async function showStudentWorkoutList(student) {
+
+  if (!workoutBuilderScreen) {
+
+    workoutBuilderScreen =
+      document.createElement("section");
+
+    workoutBuilderScreen.id =
+      "workout-builder-screen";
+
+    workoutBuilderScreen.className =
+      "students-screen";
+
+    document.body.appendChild(
+      workoutBuilderScreen
+    );
+
+  }
+
+  workoutBuilderScreen.style.display =
+    "block";
+
+  workoutBuilderScreen.innerHTML = `
+
+    <div class="students-header">
+
+      <button
+        id="back-to-workouts-list"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER A RUTINAS
+      </button>
+
+      <div class="eyebrow">
+        ENTRENAMIENTOS
+      </div>
+
+      <h1>
+        ${escapeWorkoutHtml(
+          student.full_name || "ALUMNA"
+        )}
+      </h1>
+
+      <p>
+        ADMINISTRACIÓN DE RUTINAS
+      </p>
+
+    </div>
+
+    <div
+      id="student-workouts-container"
+      class="workout-days"
+    >
+
+      <p class="workouts-loading">
+        CARGANDO RUTINAS...
+      </p>
+
+    </div>
+
+    <button
+      id="create-new-workout-from-list"
+      class="button"
+      type="button"
+      style="margin-top:16px;"
+    >
+      + NUEVA RUTINA
+    </button>
+
+  `;
+
+  document
+    .getElementById(
+      "back-to-workouts-list"
+    )
+    .addEventListener(
+      "click",
+      function() {
+
+        workoutBuilderScreen.style.display =
+          "none";
 
         showWorkouts();
 
       }
     );
 
+  document
+    .getElementById(
+      "create-new-workout-from-list"
+    )
+    .addEventListener(
+      "click",
+      function() {
 
-    function showWorkouts() {
-
-      loginScreen.style.display = "none";
-
-      appScreen.style.display = "none";
-
-      studentsScreen.style.display = "none";
-
-      if (studentDetailScreen) {
-        studentDetailScreen.style.display =
-          "none";
-      }
-
-      if (workoutBuilderScreen) {
-        workoutBuilderScreen.style.display =
-          "none";
-      }
-
-
-      workoutsScreen =
-        document.getElementById(
-          "workouts-screen"
-        );
-
-
-      if (!workoutsScreen) {
-
-        createWorkoutsScreen();
+        createWorkoutBuilder(student);
 
       }
+    );
+
+  await loadStudentWorkouts(student);
+}
 
 
-      workoutsScreen =
-        document.getElementById(
-          "workouts-screen"
-        );
+/* =====================================
+   CARGAR RUTINAS DE UNA ALUMNA
+===================================== */
 
+async function loadStudentWorkouts(student) {
 
-      workoutStudentList =
-        document.getElementById(
-          "workout-student-list"
-        );
+  const container =
+    document.getElementById(
+      "student-workouts-container"
+    );
 
+  if (!container) {
+    return;
+  }
 
-      workoutsScreen.style.display =
-        "block";
+  container.innerHTML = `
 
+    <p class="workouts-loading">
+      CARGANDO RUTINAS...
+    </p>
 
-      loadWorkoutStudents();
+  `;
 
-    }
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("workouts")
+      .select("*")
+      .eq("student_id", student.id)
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
+  if (error) {
 
-    /* =====================================
-       CREAR PANTALLA RUTINAS
-    ====================================== */
+    console.error(
+      "Error cargando rutinas:",
+      error
+    );
 
-    function createWorkoutsScreen() {
+    container.innerHTML = `
 
-      const screen =
-        document.createElement("section");
+      <div class="student-card">
 
-
-      screen.id =
-        "workouts-screen";
-
-
-      screen.className =
-        "students-screen";
-
-
-      screen.innerHTML = `
-
-        <div class="workouts-header">
-
-          <button
-            id="back-from-workouts"
-            class="back-button"
-            type="button"
-          >
-            ← VOLVER AL PANEL
-          </button>
-
-          <div class="eyebrow">
-            ENTRENAMIENTOS
-          </div>
-
-          <h1>
-            RUTINAS
-          </h1>
-
-          <p>
-            Seleccioná una alumna para administrar sus entrenamientos.
-          </p>
-
+        <div class="detail-value">
+          NO SE PUDIERON CARGAR LAS RUTINAS.
         </div>
 
-
-        <div
-          id="workout-student-list"
-          class="workout-student-list"
-        >
-
-          <p class="workouts-loading">
-            CARGANDO ALUMNAS...
-          </p>
-
-        </div>
-
-      `;
-
-
-      document
-        .body
-        .appendChild(screen);
-
-
-      workoutsScreen =
-        screen;
-
-
-      workoutStudentList =
-        document.getElementById(
-          "workout-student-list"
-        );
-
-
-      document
-        .getElementById("back-from-workouts")
-        .addEventListener(
-          "click",
-          function() {
-
-            showApp();
-
-          }
-        );
-
-    }
-
-
-    /* =====================================
-       CARGAR ALUMNAS PARA RUTINAS
-    ====================================== */
-
-    async function loadWorkoutStudents() {
-
-      workoutStudentList.innerHTML = `
-
-        <p class="workouts-loading">
-          CARGANDO ALUMNAS...
+        <p style="color:#777;margin-top:8px;">
+          ${escapeWorkoutHtml(
+            error.message || "Error desconocido"
+          )}
         </p>
 
+      </div>
+
+    `;
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="menu-label">
+          RUTINAS
+        </div>
+
+        <div class="detail-value">
+          TODAVÍA NO HAY RUTINAS
+        </div>
+
+        <p style="color:#777;font-size:11px;line-height:1.6;margin-top:8px;">
+          Creá la primera rutina para esta alumna.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  data.forEach(
+    function(workout) {
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "student-card";
+
+      const statusText =
+        workout.status === "active"
+          ? "ACTIVA"
+          : "BORRADOR";
+
+      const statusClass =
+        workout.status === "active"
+          ? "active"
+          : "";
+
+      card.innerHTML = `
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            gap:12px;
+          "
+        >
+
+          <div>
+
+            <div class="menu-label">
+              RUTINA
+            </div>
+
+            <div class="detail-value">
+              ${escapeWorkoutHtml(
+                workout.name || "SIN NOMBRE"
+              )}
+            </div>
+
+            <div
+              style="
+                color:#777;
+                font-size:11px;
+                margin-top:6px;
+              "
+            >
+              ${Number(workout.weeks) || 1}
+              SEMANAS
+            </div>
+
+          </div>
+
+          <div
+            style="
+              font-size:10px;
+              font-weight:800;
+              color:${workout.status === "active" ? "#E60000" : "#777"};
+              white-space:nowrap;
+            "
+          >
+            ${statusText}
+          </div>
+
+        </div>
+
+        <div
+          style="
+            display:flex;
+            gap:8px;
+            margin-top:16px;
+            flex-wrap:wrap;
+          "
+        >
+
+          <button
+            type="button"
+            class="button workout-open-existing-button"
+            data-workout-id="${escapeWorkoutHtml(workout.id)}"
+          >
+            ${workout.status === "active"
+              ? "VER RUTINA"
+              : "EDITAR RUTINA"}
+          </button>
+
+        </div>
+
       `;
 
+      container.appendChild(card);
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(
-            "id, full_name, email, objective, training_days"
-          )
-          .eq("role", "student")
-          .order(
-            "full_name",
-            {
-              ascending: true
-            }
-          );
-
-
-      if (error) {
-
-        console.error(
-          "Error cargando alumnas para rutinas:",
-          error
+      const button =
+        card.querySelector(
+          ".workout-open-existing-button"
         );
 
+      button.addEventListener(
+        "click",
+        async function() {
 
-        workoutStudentList.innerHTML = `
+          await openExistingWorkout(
+            workout
+          );
 
-          <p class="workouts-empty">
-            NO SE PUDIERON CARGAR LAS ALUMNAS.
-          </p>
+        }
+      );
+
+    }
+  );
+}
+
+
+/* =====================================
+   ABRIR RUTINA EXISTENTE
+===================================== */
+
+async function openExistingWorkout(workout) {
+
+  currentStudent =
+    currentStudent || {
+      id: workout.student_id,
+      full_name: "ALUMNA"
+    };
+
+  if (
+    !currentStudent ||
+    !currentStudent.id
+  ) {
+
+    alert(
+      "NO SE PUDO IDENTIFICAR LA ALUMNA."
+    );
+
+    return;
+
+  }
+
+  if (workout.status === "active") {
+
+    await openPublishedWorkoutFromDatabase(
+      workout
+    );
+
+    return;
+  }
+
+  openWorkoutEditor(
+    workout
+  );
+}
+
+
+/* =====================================
+   ABRIR RUTINA PUBLICADA DESDE SUPABASE
+===================================== */
+
+async function openPublishedWorkoutFromDatabase(workout) {
+
+  if (!workoutBuilderScreen) {
+
+    workoutBuilderScreen =
+      document.createElement("section");
+
+    workoutBuilderScreen.id =
+      "workout-builder-screen";
+
+    workoutBuilderScreen.className =
+      "students-screen";
+
+    document.body.appendChild(
+      workoutBuilderScreen
+    );
+
+  }
+
+  if (workoutsScreen) {
+    workoutsScreen.style.display =
+      "none";
+  }
+
+  workoutBuilderScreen.style.display =
+    "block";
+
+  workoutBuilderScreen.innerHTML = `
+
+    <div class="workout-editor">
+
+      <div class="students-header">
+
+        <button
+          id="back-from-published-workout"
+          class="back-button"
+          type="button"
+        >
+          ← VOLVER A RUTINAS
+        </button>
+
+        <div class="eyebrow">
+          RUTINA PUBLICADA
+        </div>
+
+        <h1>
+          ${escapeWorkoutHtml(
+            workout.name || "RUTINA"
+          )}
+        </h1>
+
+        <p>
+          ${escapeWorkoutHtml(
+            currentStudent.full_name || "ALUMNA"
+          )}
+          ·
+          ${Number(workout.weeks) || 1}
+          SEMANAS
+        </p>
+
+      </div>
+
+      <div
+        id="published-workout-content"
+        class="workout-days"
+      >
+
+        <p class="workouts-loading">
+          CARGANDO RUTINA...
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+  document
+    .getElementById(
+      "back-from-published-workout"
+    )
+    .addEventListener(
+      "click",
+      function() {
+
+        showStudentWorkoutList(
+          currentStudent
+        );
+
+      }
+    );
+
+  const container =
+    document.getElementById(
+      "published-workout-content"
+    );
+
+  let days = [];
+
+  if (
+    workout.plan &&
+    Array.isArray(workout.plan.days)
+  ) {
+
+    days =
+      workout.plan.days;
+
+  } else {
+
+    days = [];
+
+  }
+
+  if (!days.length) {
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          LA RUTINA ESTÁ PUBLICADA PERO NO TIENE DÍAS CARGADOS.
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    days.map(
+      function(day, dayIndex) {
+
+        return `
+
+          <div class="workout-day-card">
+
+            <div class="workout-day-head">
+
+              <div class="workout-day-title">
+                ${escapeWorkoutHtml(
+                  day.name ||
+                  "DÍA " + (dayIndex + 1)
+                )}
+              </div>
+
+            </div>
+
+            ${
+              Array.isArray(day.exercises) &&
+              day.exercises.length
+
+                ?
+
+                day.exercises.map(
+                  function(exercise) {
+
+                    return renderPublishedExercise(
+                      exercise,
+                      workout
+                    );
+
+                  }
+                ).join("")
+
+                :
+
+                `
+                <div class="workout-empty-day">
+                  ESTE DÍA NO TIENE EJERCICIOS.
+                </div>
+                `
+            }
+
+          </div>
 
         `;
 
-        return;
-
       }
+    ).join("");
+}
 
 
-      if (!data || data.length === 0) {
+/* =====================================
+   MOSTRAR EJERCICIO PUBLICADO
+===================================== */
 
-        workoutStudentList.innerHTML = `
+function renderPublishedExercise(
+  exercise,
+  workout
+) {
 
-          <p class="workouts-empty">
-            TODAVÍA NO HAY ALUMNAS CARGADAS.
-          </p>
+  const weeks =
+    Number(workout.weeks) || 1;
 
-        `;
+  return `
 
-        return;
+    <div class="workout-exercise-card">
 
-      }
+      <div class="workout-exercise-head">
 
+        <div class="workout-exercise-name">
+          ${escapeWorkoutHtml(
+            exercise.name || "EJERCICIO"
+          )}
+        </div>
 
-      workoutStudentList.innerHTML = "";
+      </div>
 
+      ${Array.from(
+        {
+          length: weeks
+        },
+        function(_, index) {
 
-      data.forEach(
-        function(student) {
+          const week =
+            exercise.weeks &&
+            exercise.weeks[index]
+              ?
+              exercise.weeks[index]
+              :
+              {};
 
-          const card =
-            document.createElement("button");
+          return `
 
+            <div
+              style="
+                margin-top:12px;
+                padding:12px;
+                background:#111;
+                border:1px solid #262626;
+              "
+            >
 
-          card.type =
-            "button";
+              <strong>
+                SEMANA ${index + 1}
+              </strong>
 
+              <div
+                class="workout-exercise-data"
+                style="margin-top:8px;"
+              >
 
-          card.className =
-            "workout-student-card";
+                <div>
+                  <span>Series</span>
+                  <strong>
+                    ${escapeWorkoutHtml(
+                      week.series || "-"
+                    )}
+                  </strong>
+                </div>
 
+                <div>
+                  <span>Reps</span>
+                  <strong>
+                    ${escapeWorkoutHtml(
+                      week.reps || "-"
+                    )}
+                  </strong>
+                </div>
 
-          card.innerHTML = `
+                <div>
+                  <span>RPE/RIR</span>
+                  <strong>
+                    ${escapeWorkoutHtml(
+                      week.rpe || "-"
+                    )}
+                  </strong>
+                </div>
 
-            <div class="workout-student-icon">
-              +
+                <div>
+                  <span>Carga/%</span>
+                  <strong>
+                    ${escapeWorkoutHtml(
+                      week.load || "-"
+                    )}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>Descanso</span>
+                  <strong>
+                    ${escapeWorkoutHtml(
+                      week.rest || "-"
+                    )}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>Tempo</span>
+                  <strong>
+                    ${escapeWorkoutHtml(
+                      week.tempo || "-"
+                    )}
+                  </strong>
+                </div>
+
+              </div>
+
+              ${
+                week.notes
+                  ?
+                  `
+                  <div
+                    class="workout-exercise-notes"
+                  >
+                    ${escapeWorkoutHtml(
+                      week.notes
+                    )}
+                  </div>
+                  `
+                  :
+                  ""
+              }
+
             </div>
-
-            <div class="workout-student-info">
-
-              <span class="workout-student-name">
-                ${student.full_name || "SIN NOMBRE"}
-              </span>
-
-              <span class="workout-student-email">
-                ${student.email || "ALUMNA FORJA"}
-              </span>
-
-            </div>
-
-            <span class="workout-student-arrow">
-              →
-            </span>
 
           `;
 
+        }
+      ).join("")}
 
-          card.addEventListener(
-            "click",
-            function() {
+    </div>
 
-              openStudentWorkouts(
-                student
-              );
+  `;
+}
+
+
+/* =====================================
+   CREAR NUEVA RUTINA
+===================================== */
+
+function createWorkoutBuilder(student) {
+
+  if (!workoutBuilderScreen) {
+
+    workoutBuilderScreen =
+      document.createElement("section");
+
+    workoutBuilderScreen.id =
+      "workout-builder-screen";
+
+    workoutBuilderScreen.className =
+      "students-screen";
+
+    document.body.appendChild(
+      workoutBuilderScreen
+    );
+
+  }
+
+  workoutBuilderScreen.style.display =
+    "block";
+
+  workoutBuilderScreen.innerHTML = `
+
+    <div class="students-header">
+
+      <button
+        id="back-from-workout-builder"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER A RUTINAS
+      </button>
+
+      <div class="eyebrow">
+        NUEVO ENTRENAMIENTO
+      </div>
+
+      <h1>
+        NUEVA<br>
+        RUTINA
+      </h1>
+
+      <p>
+        Alumna:
+        <strong>
+          ${escapeWorkoutHtml(
+            student.full_name || "SIN NOMBRE"
+          )}
+        </strong>
+      </p>
+
+    </div>
+
+    <div class="student-card">
+
+      <div class="menu-label">
+        ALUMNA
+      </div>
+
+      <div class="detail-value">
+        ${escapeWorkoutHtml(
+          student.full_name || "SIN NOMBRE"
+        )}
+      </div>
+
+      <div class="student-email">
+        ${escapeWorkoutHtml(
+          student.email || "EMAIL NO DISPONIBLE"
+        )}
+      </div>
+
+    </div>
+
+    <div class="student-form">
+
+      <form id="new-workout-form">
+
+        <label for="workout-name">
+          NOMBRE DE LA RUTINA
+        </label>
+
+        <input
+          type="text"
+          id="workout-name"
+          placeholder="Ej: Plan de entrenamiento"
+          required
+        >
+
+        <label for="workout-weeks">
+          DURACIÓN
+        </label>
+
+        <select
+          id="workout-weeks"
+          required
+        >
+
+          <option value="">
+            SELECCIONAR
+          </option>
+
+          <option value="4">
+            4 SEMANAS
+          </option>
+
+          <option value="6">
+            6 SEMANAS
+          </option>
+
+          <option value="8">
+            8 SEMANAS
+          </option>
+
+          <option value="12">
+            12 SEMANAS
+          </option>
+
+        </select>
+
+        <label for="workout-status">
+          ESTADO
+        </label>
+
+        <select
+          id="workout-status"
+          required
+        >
+
+          <option value="draft">
+            BORRADOR
+          </option>
+
+          <option value="active">
+            ACTIVA
+          </option>
+
+        </select>
+
+        <button
+          type="submit"
+          class="button"
+        >
+          CREAR RUTINA →
+        </button>
+
+        <p
+          id="workout-form-message"
+          class="students-empty"
+        ></p>
+
+      </form>
+
+    </div>
+
+  `;
+
+  document
+    .getElementById(
+      "back-from-workout-builder"
+    )
+    .addEventListener(
+      "click",
+      function() {
+
+        showStudentWorkoutList(
+          currentStudent
+        );
+
+      }
+    );
+
+  document
+    .getElementById(
+      "new-workout-form"
+    )
+    .addEventListener(
+      "submit",
+      createWorkout
+    );
+}
+
+
+/* =====================================
+   CREAR RUTINA EN SUPABASE
+===================================== */
+
+async function createWorkout(event) {
+
+  event.preventDefault();
+
+  const message =
+    document.getElementById(
+      "workout-form-message"
+    );
+
+  message.textContent =
+    "CREANDO RUTINA...";
+
+  const name =
+    document
+      .getElementById("workout-name")
+      .value
+      .trim();
+
+  const weeks =
+    Number(
+      document
+        .getElementById("workout-weeks")
+        .value
+    );
+
+  const status =
+    document
+      .getElementById("workout-status")
+      .value;
+
+  const {
+    data: {
+      user
+    }
+  } =
+    await supabaseClient.auth.getUser();
+
+  if (!user) {
+
+    message.textContent =
+      "NO HAY UNA SESIÓN ACTIVA.";
+
+    return;
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("workouts")
+      .insert({
+
+        student_id:
+          currentStudent.id,
+
+        trainer_id:
+          user.id,
+
+        name:
+          name,
+
+        objective:
+          "GENERAL",
+
+        weeks:
+          weeks,
+
+        status:
+          status
+
+      })
+      .select()
+      .single();
+
+  if (error) {
+
+    console.error(
+      "Error creando rutina:",
+      error
+    );
+
+    message.textContent =
+      "NO SE PUDO CREAR LA RUTINA: " +
+      (
+        error.message ||
+        "Error desconocido"
+      );
+
+    return;
+  }
+
+  message.textContent =
+    "✓ RUTINA CREADA CORRECTAMENTE. ABRIENDO CONSTRUCTOR...";
+
+  try {
+
+    openWorkoutEditor(data);
+
+  } catch (editorError) {
+
+    console.error(
+      "Error abriendo constructor:",
+      editorError
+    );
+
+    message.textContent =
+      "RUTINA CREADA, PERO NO SE PUDO ABRIR EL CONSTRUCTOR: " +
+      (
+        editorError &&
+        editorError.message
+          ?
+          editorError.message
+          :
+          String(editorError)
+      );
+
+  }
+
+}
+
+
+/* =====================================
+   UTILIDADES CONSTRUCTOR
+===================================== */
+
+function escapeWorkoutHtml(value) {
+
+  return String(
+    value == null
+      ? ""
+      : value
+  )
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+function getWorkoutBuilderStorageKey(workout) {
+
+  return "forja_workout_builder_" +
+    String(workout.id);
+
+}
+
+
+function createWorkoutId(prefix) {
+
+  if (
+    window.crypto &&
+    typeof window.crypto.randomUUID ===
+      "function"
+  ) {
+
+    return prefix + "_" +
+      window.crypto.randomUUID();
+
+  }
+
+  return prefix + "_" +
+    Date.now() + "_" +
+    Math.random()
+      .toString(36)
+      .slice(2);
+
+}
+
+
+function getWorkoutEditorState(workout) {
+
+  const key =
+    getWorkoutBuilderStorageKey(
+      workout
+    );
+
+  try {
+
+    const saved =
+      localStorage.getItem(key);
+
+    if (saved) {
+
+      const parsed =
+        JSON.parse(saved);
+
+      if (
+        parsed &&
+        Array.isArray(parsed.days)
+      ) {
+
+        return normalizeWorkoutState(
+          parsed,
+          workout
+        );
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Error leyendo rutina local:",
+      error
+    );
+
+  }
+
+  return {
+    workout: workout,
+    days: []
+  };
+
+}
+
+
+function normalizeWorkoutState(
+  state,
+  workout
+) {
+
+  const weeks =
+    Number(workout.weeks) || 1;
+
+  const normalized = {
+
+    workout: workout,
+
+    days:
+      Array.isArray(state.days)
+        ?
+        state.days
+        :
+        []
+
+  };
+
+  normalized.days.forEach(
+    function(day) {
+
+      day.exercises =
+        Array.isArray(day.exercises)
+          ?
+          day.exercises
+          :
+          [];
+
+      day.exercises.forEach(
+        function(exercise) {
+
+          if (
+            !Array.isArray(
+              exercise.weeks
+            )
+          ) {
+
+            exercise.weeks = [];
+
+            for (
+              let i = 0;
+              i < weeks;
+              i++
+            ) {
+
+              exercise.weeks.push({
+
+                series:
+                  i === 0
+                    ?
+                    (exercise.series || "")
+                    :
+                    "",
+
+                reps:
+                  i === 0
+                    ?
+                    (exercise.reps || "")
+                    :
+                    "",
+
+                rpe:
+                  i === 0
+                    ?
+                    (exercise.rpe || "")
+                    :
+                    "",
+
+                load:
+                  i === 0
+                    ?
+                    (exercise.load || "")
+                    :
+                    "",
+
+                rest:
+                  i === 0
+                    ?
+                    (exercise.rest || "")
+                    :
+                    "",
+
+                tempo:
+                  i === 0
+                    ?
+                    (exercise.tempo || "")
+                    :
+                    "",
+
+                notes:
+                  i === 0
+                    ?
+                    (exercise.notes || "")
+                    :
+                    ""
+
+              });
 
             }
-          );
 
+          }
 
-          workoutStudentList.appendChild(
-            card
-          );
+          while (
+            exercise.weeks.length <
+            weeks
+          ) {
+
+            exercise.weeks.push({
+
+              series: "",
+              reps: "",
+              rpe: "",
+              load: "",
+              rest: "",
+              tempo: "",
+              notes: ""
+
+            });
+
+          }
+
+          if (
+            exercise.weeks.length >
+            weeks
+          ) {
+
+            exercise.weeks =
+              exercise.weeks.slice(
+                0,
+                weeks
+              );
+
+          }
 
         }
       );
 
     }
+  );
+
+  return normalized;
+
+}
 
 
-    /* =====================================
-       SELECCIONAR ALUMNA PARA RUTINAS
-    ====================================== */
+function saveWorkoutEditorState(
+  workout,
+  state
+) {
 
-    function openStudentWorkouts(student) {
+  try {
 
-      currentStudent =
-        student;
+    localStorage.setItem(
+
+      getWorkoutBuilderStorageKey(
+        workout
+      ),
+
+      JSON.stringify(
+        normalizeWorkoutState(
+          state,
+          workout
+        )
+      )
+
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "Error guardando rutina local:",
+      error
+    );
+
+    return false;
+
+  }
+
+}
 
 
-      if (workoutsScreen) {
+/* =====================================
+   ABRIR CONSTRUCTOR
+===================================== */
 
-        workoutsScreen.style.display =
-          "none";
+function openWorkoutEditor(workout) {
 
-      }
+  if (!currentStudent) {
 
+    console.error(
+      "No hay alumna seleccionada para abrir la rutina."
+    );
 
-      createWorkoutBuilder(
-        student
+    return;
+
+  }
+
+  if (!workoutBuilderScreen) {
+
+    workoutBuilderScreen =
+      document.createElement("section");
+
+    workoutBuilderScreen.id =
+      "workout-builder-screen";
+
+    workoutBuilderScreen.className =
+      "students-screen";
+
+    document.body.appendChild(
+      workoutBuilderScreen
+    );
+
+  }
+
+  if (workoutsScreen) {
+
+    workoutsScreen.style.display =
+      "none";
+
+  }
+
+  workoutBuilderScreen.style.display =
+    "block";
+
+  try {
+
+    const state =
+      getWorkoutEditorState(
+        workout
       );
 
-    }
+    state.workout =
+      workout;
 
+    saveWorkoutEditorState(
+      workout,
+      state
+    );
 
-    /* =====================================
-       CREAR PANTALLA NUEVA RUTINA
-    ====================================== */
+    renderWorkoutEditor(
+      workout,
+      state
+    );
 
-    function createWorkoutBuilder(student) {
+  } catch (editorError) {
 
-      if (!workoutBuilderScreen) {
+    console.error(
+      "Error renderizando constructor:",
+      editorError
+    );
 
-        workoutBuilderScreen =
-          document.createElement("section");
+    workoutBuilderScreen.innerHTML = `
 
-        workoutBuilderScreen.id =
-          "workout-builder-screen";
+      <div class="student-form">
 
-        workoutBuilderScreen.className =
-          "students-screen";
+        <div class="eyebrow">
+          CONSTRUCTOR DE RUTINA
+        </div>
 
-        document
-          .body
-          .appendChild(
-            workoutBuilderScreen
+        <h1>
+          NO SE PUDO ABRIR
+        </h1>
+
+        <p
+          style="
+            color:#aaa;
+            line-height:1.6;
+          "
+        >
+          La rutina se creó correctamente,
+          pero hubo un error al abrir el constructor.
+        </p>
+
+        <p
+          style="
+            color:#E60000;
+            font-size:12px;
+            line-height:1.6;
+            word-break:break-word;
+          "
+        >
+          ${escapeWorkoutHtml(
+            editorError &&
+            editorError.message
+              ?
+              editorError.message
+              :
+              String(editorError)
+          )}
+        </p>
+
+        <button
+          id="retry-workout-editor"
+          class="button"
+          type="button"
+        >
+          REINTENTAR
+        </button>
+
+      </div>
+
+    `;
+
+    document
+      .getElementById(
+        "retry-workout-editor"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          openWorkoutEditor(
+            workout
           );
 
+        }
+      );
+
+  }
+
+}
+
+
+/* =====================================
+   RENDERIZAR CONSTRUCTOR
+===================================== */
+
+function renderWorkoutEditor(
+  workout,
+  state
+) {
+
+  state =
+    normalizeWorkoutState(
+      state,
+      workout
+    );
+
+  workoutBuilderScreen.innerHTML = `
+
+    <div class="workout-editor">
+
+      <div class="students-header">
+
+        <button
+          id="back-from-workout-editor"
+          class="back-button"
+          type="button"
+        >
+          ← VOLVER A RUTINAS
+        </button>
+
+        <div class="eyebrow">
+          CONSTRUCTOR DE RUTINA
+        </div>
+
+        <h1>
+          ${escapeWorkoutHtml(
+            workout.name || "RUTINA"
+          )}
+        </h1>
+
+        <p>
+          ${escapeWorkoutHtml(
+            currentStudent.full_name ||
+            "ALUMNA"
+          )}
+        </p>
+
+      </div>
+
+      <div class="workout-editor-meta">
+
+        <div class="workout-meta-card">
+
+          <div class="workout-meta-label">
+            DURACIÓN
+          </div>
+
+          <div class="workout-meta-value">
+            ${workout.weeks || "-"}
+            SEMANAS
+          </div>
+
+        </div>
+
+        <div class="workout-meta-card">
+
+          <div class="workout-meta-label">
+            ESTADO
+          </div>
+
+          <div
+            class="workout-meta-value"
+            id="workout-editor-status"
+          >
+            ${
+              workout.status === "active"
+                ?
+                "ACTIVA"
+                :
+                "BORRADOR"
+            }
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="workout-section-label">
+        DÍAS DE LA RUTINA
+      </div>
+
+      <div
+        id="workout-days"
+        class="workout-days"
+      >
+
+        ${
+          state.days.length === 0
+
+            ?
+
+            `
+            <div class="student-card">
+
+              <div class="detail-value">
+                TODAVÍA NO HAY DÍAS
+              </div>
+
+              <p
+                style="
+                  color:#777;
+                  font-size:11px;
+                  line-height:1.6;
+                  margin-top:8px;
+                "
+              >
+                Agregá el primer día y después
+                incorporá los ejercicios que quieras.
+              </p>
+
+            </div>
+            `
+
+            :
+
+            state.days.map(
+              function(day, dayIndex) {
+
+                return renderWorkoutDay(
+                  day,
+                  dayIndex,
+                  workout
+                );
+
+              }
+            ).join("")
+        }
+
+      </div>
+
+      <button
+        id="add-workout-day-button"
+        class="button"
+        type="button"
+        style="margin-top:16px;"
+      >
+        + AGREGAR DÍA
+      </button>
+
+      <div class="workout-editor-actions">
+
+        <button
+          id="save-workout-draft-button"
+          class="button"
+          type="button"
+        >
+          GUARDAR CAMBIOS
+        </button>
+
+        <button
+          id="publish-workout-button"
+          class="button"
+          type="button"
+        >
+          PUBLICAR RUTINA →
+        </button>
+
+        ${
+          workout.status === "active"
+
+            ?
+
+            `
+            <button
+              id="view-published-workout-button"
+              class="button"
+              type="button"
+            >
+              VER RUTINA PUBLICADA
+            </button>
+            `
+
+            :
+
+            ""
+        }
+
+      </div>
+
+      <p
+        id="workout-editor-message"
+        class="workout-editor-message"
+      ></p>
+
+    </div>
+
+  `;
+
+
+  /* VOLVER A LA LISTA DE RUTINAS */
+
+  document
+    .getElementById(
+      "back-from-workout-editor"
+    )
+    .addEventListener(
+      "click",
+      function() {
+
+        showStudentWorkoutList(
+          currentStudent
+        );
+
       }
+    );
 
 
-      workoutBuilderScreen.style.display =
-        "block";
+  /* AGREGAR DÍA */
+
+  document
+    .getElementById(
+      "add-workout-day-button"
+    )
+    .addEventListener(
+      "click",
+      function() {
+
+        state.days.push({
+
+          id:
+            createWorkoutId("day"),
+
+          name:
+            "DÍA " +
+            (
+              state.days.length + 1
+            ),
+
+          exercises: []
+
+        });
+
+        saveWorkoutEditorState(
+          workout,
+          state
+        );
+
+        renderWorkoutEditor(
+          workout,
+          state
+        );
+
+      }
+    );
 
 
-      workoutBuilderScreen.innerHTML = `
+  /* GUARDAR */
 
-        <div class="students-header">
+  document
+    .getElementById(
+      "save-workout-draft-button"
+    )
+    .addEventListener(
+      "click",
+      function() {
+
+        const saved =
+          saveWorkoutEditorState(
+            workout,
+            state
+          );
+
+        document
+          .getElementById(
+            "workout-editor-message"
+          )
+          .textContent =
+            saved
+              ?
+              "✓ CAMBIOS GUARDADOS EN ESTE DISPOSITIVO."
+              :
+              "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
+
+      }
+    );
+
+
+  /* PUBLICAR */
+
+  document
+    .getElementById(
+      "publish-workout-button"
+    )
+    .addEventListener(
+      "click",
+      function() {
+
+        publishWorkout(
+          workout,
+          state
+        );
+
+      }
+    );
+
+
+  /* VER PUBLICADA */
+
+  const viewButton =
+    document.getElementById(
+      "view-published-workout-button"
+    );
+
+  if (viewButton) {
+
+    viewButton.addEventListener(
+      "click",
+      function() {
+
+        openPublishedWorkoutFromDatabase(
+          workout
+        );
+
+      }
+    );
+
+  }
+
+
+  bindWorkoutDayEvents(
+    workout,
+    state
+  );
+
+}
+
+
+/* =====================================
+   RENDERIZAR DÍA
+===================================== */
+
+function renderWorkoutDay(
+  day,
+  dayIndex,
+  workout
+) {
+
+  return `
+
+    <div
+      class="workout-day-card"
+      data-day-id="${escapeWorkoutHtml(day.id)}"
+    >
+
+      <div class="workout-day-head">
+
+        <div style="flex:1;">
+
+          <div class="workout-day-title">
+            ${escapeWorkoutHtml(
+              day.name ||
+              "DÍA " + (dayIndex + 1)
+            )}
+          </div>
+
+        </div>
+
+        <div class="workout-day-actions">
 
           <button
-            id="back-from-workout-builder"
-            class="back-button"
             type="button"
+            class="workout-small-button edit-day-button"
+            data-day-id="${escapeWorkoutHtml(day.id)}"
           >
-            ← VOLVER A RUTINAS
+            EDITAR
           </button>
 
-          <div class="eyebrow">
-            NUEVO ENTRENAMIENTO
-          </div>
-
-          <h1>
-            NUEVA<br>
-            RUTINA
-          </h1>
-
-          <p>
-            Alumna:
-            <strong>
-              ${escapeWorkoutHtml(student.full_name || "SIN NOMBRE")}
-            </strong>
-          </p>
+          <button
+            type="button"
+            class="workout-small-button danger delete-day-button"
+            data-day-id="${escapeWorkoutHtml(day.id)}"
+          >
+            ELIMINAR
+          </button>
 
         </div>
 
+      </div>
 
-        <div class="student-card">
+      <div
+        class="workout-exercises"
+        id="workout-exercises-${escapeWorkoutHtml(day.id)}"
+      >
 
-          <div class="menu-label">
-            ALUMNA
-          </div>
+        ${
+          !day.exercises ||
+          !day.exercises.length
 
-          <div class="detail-value">
-            ${escapeWorkoutHtml(student.full_name || "SIN NOMBRE")}
-          </div>
+            ?
 
-          <div class="student-email">
-            ${escapeWorkoutHtml(student.email || "EMAIL NO DISPONIBLE")}
-          </div>
+            `
+            <div class="workout-empty-day">
+              TODAVÍA NO HAY EJERCICIOS EN ESTE DÍA.
+            </div>
+            `
 
+            :
+
+            day.exercises.map(
+              function(exercise) {
+
+                return renderWorkoutExercise(
+                  day,
+                  exercise,
+                  workout
+                );
+
+              }
+            ).join("")
+        }
+
+      </div>
+
+      <button
+        type="button"
+        class="workout-small-button add-exercise-button"
+        data-day-id="${escapeWorkoutHtml(day.id)}"
+        style="
+          width:100%;
+          margin-top:10px;
+          border-color:#E60000;
+          color:#ffffff;
+        "
+      >
+        + AGREGAR EJERCICIO
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================
+   RENDERIZAR EJERCICIO
+===================================== */
+
+function renderWorkoutExercise(
+  day,
+  exercise,
+  workout
+) {
+
+  const weeks =
+    Number(workout.weeks) || 1;
+
+  const fields = [
+    "series",
+    "reps",
+    "rpe",
+    "load",
+    "rest",
+    "tempo"
+  ];
+
+  const labels = {
+
+    series: "SERIES",
+    reps: "REPETICIONES",
+    rpe: "RPE / RIR",
+    load: "CARGA / %",
+    rest: "DESCANSO",
+    tempo: "TEMPO"
+
+  };
+
+  return `
+
+    <div
+      class="workout-exercise-card"
+      data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
+    >
+
+      <div class="workout-exercise-head">
+
+        <div class="workout-exercise-name">
+          ${escapeWorkoutHtml(
+            exercise.name ||
+            "EJERCICIO"
+          )}
         </div>
 
+        <button
+          type="button"
+          class="workout-exercise-delete"
+          data-day-id="${escapeWorkoutHtml(day.id)}"
+          data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
+          title="Eliminar ejercicio"
+        >
+          ✕
+        </button>
 
-        <div class="student-form">
+      </div>
 
-          <form id="new-workout-form">
+      <div
+        style="
+          overflow-x:auto;
+          margin-top:12px;
+        "
+      >
 
-            <label for="workout-name">
-              NOMBRE DE LA RUTINA
-            </label>
+        <table
+          style="
+            width:100%;
+            border-collapse:collapse;
+            min-width:620px;
+            font-size:11px;
+          "
+        >
 
-            <input
-              type="text"
-              id="workout-name"
-              placeholder="Ej: Plan de entrenamiento"
-              required
-            >
+          <thead>
+
+            <tr>
+
+              <th
+                style="
+                  text-align:left;
+                  padding:8px;
+                "
+              >
+                VARIABLE
+              </th>
+
+              ${
+                Array.from(
+                  {
+                    length: weeks
+                  },
+                  function(_, i) {
+
+                    return `
+                      <th
+                        style="
+                          padding:8px;
+                          text-align:center;
+                        "
+                      >
+                        SEM ${i + 1}
+                      </th>
+                    `;
+
+                  }
+                ).join("")
+              }
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${
+              fields.map(
+                function(field) {
+
+                  return `
+
+                    <tr>
+
+                      <td
+                        style="
+                          padding:6px 8px;
+                          font-weight:700;
+                          color:#aaa;
+                        "
+                      >
+                        ${labels[field]}
+                      </td>
+
+                      ${
+                        Array.from(
+                          {
+                            length: weeks
+                          },
+                          function(_, i) {
+
+                            const w =
+                              exercise.weeks[i] ||
+                              {};
+
+                            return `
+
+                              <td
+                                style="
+                                  padding:4px;
+                                "
+                              >
+
+                                <input
+                                  class="week-variable-input"
+                                  data-day-id="${escapeWorkoutHtml(day.id)}"
+                                  data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
+                                  data-week-index="${i}"
+                                  data-field="${field}"
+                                  value="${escapeWorkoutHtml(w[field] || "")}"
+                                  placeholder="—"
+                                  style="
+                                    width:100%;
+                                    box-sizing:border-box;
+                                    background:#111;
+                                    border:1px solid #333;
+                                    color:#fff;
+                                    padding:8px;
+                                    font-size:11px;
+                                  "
+                                >
+
+                              </td>
+
+                            `;
+
+                          }
+                        ).join("")
+                      }
+
+                    </tr>
+
+                  `;
+
+                }
+              ).join("")
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div style="margin-top:10px;">
+
+        <label
+          style="
+            font-size:10px;
+            color:#aaa;
+          "
+        >
+          NOTAS POR SEMANA
+        </label>
+
+        ${
+          Array.from(
+            {
+              length: weeks
+            },
+            function(_, i) {
+
+              const w =
+                exercise.weeks[i] ||
+                {};
+
+              return `
+
+                <textarea
+                  class="week-notes-input"
+                  data-day-id="${escapeWorkoutHtml(day.id)}"
+                  data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
+                  data-week-index="${i}"
+                  style="
+                    width:100%;
+                    box-sizing:border-box;
+                    margin-top:6px;
+                    background:#111;
+                    border:1px solid #333;
+                    color:#fff;
+                    padding:8px;
+                    font-size:11px;
+                    min-height:50px;
+                  "
+                  placeholder="Semana ${i + 1}: indicaciones..."
+                >${escapeWorkoutHtml(
+                  w.notes || ""
+                )}</textarea>
+
+              `;
+
+            }
+          ).join("")
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
 
 
-            <label for="workout-weeks">
-              DURACIÓN
-            </label>
+/* =====================================
+   EVENTOS DE DÍAS Y EJERCICIOS
+===================================== */
 
-            <select
-              id="workout-weeks"
-              required
-            >
+function bindWorkoutDayEvents(
+  workout,
+  state
+) {
 
-              <option value="">
-                SELECCIONAR
-              </option>
+  document
+    .querySelectorAll(
+      ".add-exercise-button"
+    )
+    .forEach(
+      function(button) {
 
-              <option value="4">
-                4 SEMANAS
-              </option>
-
-              <option value="6">
-                6 SEMANAS
-              </option>
-
-              <option value="8">
-                8 SEMANAS
-              </option>
-
-              <option value="12">
-                12 SEMANAS
-              </option>
-
-            </select>
-
-
-            <label for="workout-status">
-              ESTADO
-            </label>
-
-            <select
-              id="workout-status"
-              required
-            >
-
-              <option value="draft">
-                BORRADOR
-              </option>
-
-              <option value="active">
-                ACTIVA
-              </option>
-
-            </select>
-
-
-            <button
-              type="submit"
-              class="button"
-            >
-              CREAR RUTINA →
-            </button>
-
-
-            <p
-              id="workout-form-message"
-              class="students-empty"
-            ></p>
-
-          </form>
-
-        </div>
-
-      `;
-
-
-      document
-        .getElementById(
-          "back-from-workout-builder"
-        )
-        .addEventListener(
+        button.addEventListener(
           "click",
           function() {
 
-            workoutBuilderScreen.style.display =
-              "none";
-
-            showWorkouts();
+            openExerciseForm(
+              workout,
+              state,
+              button.dataset.dayId
+            );
 
           }
         );
 
+      }
+    );
 
-      document
-        .getElementById(
-          "new-workout-form"
-        )
-        .addEventListener(
-          "submit",
-          createWorkout
+
+  document
+    .querySelectorAll(
+      ".delete-day-button"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            state.days =
+              state.days.filter(
+                function(day) {
+
+                  return (
+                    day.id !==
+                    button.dataset.dayId
+                  );
+
+                }
+              );
+
+            saveWorkoutEditorState(
+              workout,
+              state
+            );
+
+            renderWorkoutEditor(
+              workout,
+              state
+            );
+
+          }
         );
 
-    }
+      }
+    );
 
 
-    /* =====================================
-       CREAR RUTINA EN SUPABASE
-    ====================================== */
+  document
+    .querySelectorAll(
+      ".edit-day-button"
+    )
+    .forEach(
+      function(button) {
 
-    async function createWorkout(event) {
+        button.addEventListener(
+          "click",
+          function() {
+
+            const day =
+              state.days.find(
+                function(item) {
+
+                  return (
+                    item.id ===
+                    button.dataset.dayId
+                  );
+
+                }
+              );
+
+            if (!day) {
+              return;
+            }
+
+            const currentName =
+              prompt(
+                "Nombre del día:",
+                day.name
+              );
+
+            if (
+              currentName === null
+            ) {
+
+              return;
+
+            }
+
+            const cleanName =
+              currentName.trim();
+
+            if (!cleanName) {
+              return;
+            }
+
+            day.name =
+              cleanName;
+
+            saveWorkoutEditorState(
+              workout,
+              state
+            );
+
+            renderWorkoutEditor(
+              workout,
+              state
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".workout-exercise-delete"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            const day =
+              state.days.find(
+                function(item) {
+
+                  return (
+                    item.id ===
+                    button.dataset.dayId
+                  );
+
+                }
+              );
+
+            if (!day) {
+              return;
+            }
+
+            day.exercises =
+              (
+                day.exercises ||
+                []
+              ).filter(
+                function(ex) {
+
+                  return (
+                    ex.id !==
+                    button.dataset.exerciseId
+                  );
+
+                }
+              );
+
+            saveWorkoutEditorState(
+              workout,
+              state
+            );
+
+            renderWorkoutEditor(
+              workout,
+              state
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".week-variable-input, .week-notes-input"
+    )
+    .forEach(
+      function(input) {
+
+        input.addEventListener(
+          "change",
+          function() {
+
+            const day =
+              state.days.find(
+                function(d) {
+
+                  return (
+                    d.id ===
+                    input.dataset.dayId
+                  );
+
+                }
+              );
+
+            if (!day) {
+              return;
+            }
+
+            const ex =
+              day.exercises.find(
+                function(e) {
+
+                  return (
+                    e.id ===
+                    input.dataset.exerciseId
+                  );
+
+                }
+              );
+
+            if (!ex) {
+              return;
+            }
+
+            const wi =
+              Number(
+                input.dataset.weekIndex
+              );
+
+            ex.weeks =
+              ex.weeks || [];
+
+            while (
+              ex.weeks.length <
+              Number(workout.weeks)
+            ) {
+
+              ex.weeks.push({});
+
+            }
+
+            ex.weeks[wi][
+              input.dataset.field ||
+              "notes"
+            ] =
+              input.value.trim();
+
+            saveWorkoutEditorState(
+              workout,
+              state
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================
+   AGREGAR EJERCICIO
+===================================== */
+
+function openExerciseForm(
+  workout,
+  state,
+  dayId
+) {
+
+  const day =
+    state.days.find(
+      function(item) {
+
+        return item.id === dayId;
+
+      }
+    );
+
+  if (!day) {
+    return;
+  }
+
+  const existing =
+    document.getElementById(
+      "workout-exercise-form-" +
+      dayId
+    );
+
+  if (existing) {
+
+    existing.remove();
+
+    return;
+
+  }
+
+  const container =
+    document.getElementById(
+      "workout-exercises-" +
+      dayId
+    );
+
+  const form =
+    document.createElement("form");
+
+  form.id =
+    "workout-exercise-form-" +
+    dayId;
+
+  form.className =
+    "workout-exercise-form";
+
+  form.innerHTML = `
+
+    <div class="workout-exercise-form-grid">
+
+      <div class="workout-exercise-field full">
+
+        <label>
+          EJERCICIO
+        </label>
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Ej: Sentadilla"
+          required
+        >
+
+      </div>
+
+    </div>
+
+    <button
+      type="submit"
+      class="button"
+      style="margin-top:10px;"
+    >
+      AGREGAR EJERCICIO
+    </button>
+
+  `;
+
+  container.appendChild(form);
+
+  form.addEventListener(
+    "submit",
+    function(event) {
 
       event.preventDefault();
 
-
-      const message =
-        document.getElementById(
-          "workout-form-message"
-        );
-
-
-      message.textContent =
-        "CREANDO RUTINA...";
-
-
       const name =
-        document
-          .getElementById("workout-name")
-          .value
-          .trim();
-
+        String(
+          new FormData(form).get(
+            "name"
+          ) || ""
+        ).trim();
 
       const weeks =
-        Number(
-          document
-            .getElementById("workout-weeks")
-            .value
-        );
+        Number(workout.weeks) || 1;
 
+      day.exercises =
+        day.exercises || [];
 
-      const status =
-        document
-          .getElementById("workout-status")
-          .value;
+      day.exercises.push({
 
+        id:
+          createWorkoutId(
+            "exercise"
+          ),
 
-      const {
-        data: {
-          user
-        }
-      } =
-        await supabaseClient.auth.getUser();
+        name:
+          name,
 
+        weeks:
+          Array.from(
+            {
+              length: weeks
+            },
+            function() {
 
-      if (!user) {
+              return {
 
-        message.textContent =
-          "NO HAY UNA SESIÓN ACTIVA.";
+                series: "",
+                reps: "",
+                rpe: "",
+                load: "",
+                rest: "",
+                tempo: "",
+                notes: ""
 
-        return;
+              };
 
-      }
+            }
+          )
 
+      });
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("workouts")
-          .insert({
-
-            student_id:
-              currentStudent.id,
-
-            trainer_id:
-              user.id,
-
-            name:
-              name,
-
-            /*
-             * Supabase todavía espera el campo objective.
-             * La entrenadora ya no lo completa en la interfaz;
-             * usamos GENERAL internamente para mantener
-             * compatibilidad con la estructura actual.
-             */
-            objective:
-              "GENERAL",
-
-            weeks:
-              weeks,
-
-            status:
-              status
-
-          })
-          .select()
-          .single();
-
-
-      if (error) {
-
-        console.error(
-          "Error creando rutina:",
-          error
-        );
-
-
-        const detail =
-          error && error.message
-            ? error.message
-            : "Error desconocido";
-
-        message.textContent =
-          "NO SE PUDO CREAR LA RUTINA: " + detail;
-
-        return;
-
-      }
-
-
-      console.log(
-        "Rutina creada:",
-        data
+      saveWorkoutEditorState(
+        workout,
+        state
       );
 
+      renderWorkoutEditor(
+        workout,
+        state
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================
+   PUBLICAR RUTINA
+===================================== */
+
+async function publishWorkout(
+  workout,
+  state
+) {
+
+  const message =
+    document.getElementById(
+      "workout-editor-message"
+    );
+
+  if (!state.days.length) {
+
+    message.textContent =
+      "AGREGÁ AL MENOS UN DÍA ANTES DE PUBLICAR.";
+
+    return;
+
+  }
+
+  for (
+    const day of state.days
+  ) {
+
+    if (
+      !day.exercises ||
+      !day.exercises.length
+    ) {
 
       message.textContent =
-        "✓ RUTINA CREADA CORRECTAMENTE. ABRIENDO CONSTRUCTOR...";
+        "CADA DÍA DEBE TENER AL MENOS UN EJERCICIO.";
 
-      // Abrimos el constructor de forma inmediata y con diagnóstico visible.
-      // Así, si algo falla al renderizarlo, no queda la pantalla bloqueada
-      // mostrando solamente el mensaje de rutina creada.
-      try {
-        openWorkoutEditor(data);
-      } catch (editorError) {
-        console.error("Error abriendo constructor:", editorError);
-        message.textContent =
-          "RUTINA CREADA, PERO NO SE PUDO ABRIR EL CONSTRUCTOR: " +
-          (editorError && editorError.message ? editorError.message : String(editorError));
-      }
+      return;
 
     }
 
+  }
 
-    /* =====================================
-       UTILIDADES CONSTRUCTOR
-    ====================================== */
+  message.textContent =
+    "PUBLICANDO RUTINA...";
 
-    function escapeWorkoutHtml(value) {
+  const normalized =
+    normalizeWorkoutState(
+      state,
+      workout
+    );
 
-      return String(
-        value == null
-          ? ""
-          : value
-      )
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+  const {
+    data: updatedWorkout,
+    error
+  } =
+    await supabaseClient
+      .from("workouts")
+      .update({
 
-    }
+        status:
+          "active",
 
+        plan: {
 
-    function getWorkoutBuilderStorageKey(workout) {
+          weeks:
+            Number(workout.weeks) || 1,
 
-      return "forja_workout_builder_" +
-        String(workout.id);
+          days:
+            normalized.days
 
-    }
-
-
-    function createWorkoutId(prefix) {
-
-      if (
-        window.crypto &&
-        typeof window.crypto.randomUUID === "function"
-      ) {
-
-        return prefix + "_" +
-          window.crypto.randomUUID();
-
-      }
-
-
-      return prefix + "_" +
-        Date.now() + "_" +
-        Math.random()
-          .toString(36)
-          .slice(2);
-
-    }
-
-
-    function getWorkoutEditorState(workout) {
-
-      const key = getWorkoutBuilderStorageKey(workout);
-
-      try {
-        const saved = localStorage.getItem(key);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && Array.isArray(parsed.days)) {
-            return normalizeWorkoutState(parsed, workout);
-          }
         }
-      } catch (error) {
-        console.error("Error leyendo rutina local:", error);
-      }
 
-      return { workout: workout, days: [] };
-    }
+      })
+      .eq(
+        "id",
+        workout.id
+      )
+      .select()
+      .single();
 
-    function normalizeWorkoutState(state, workout) {
-      const weeks = Number(workout.weeks) || 1;
-      const normalized = {
-        workout: workout,
-        days: Array.isArray(state.days) ? state.days : []
-      };
+  if (error) {
 
-      normalized.days.forEach(function(day) {
-        day.exercises = Array.isArray(day.exercises) ? day.exercises : [];
-        day.exercises.forEach(function(exercise) {
-          if (!Array.isArray(exercise.weeks)) {
-            exercise.weeks = [];
-            for (let i = 0; i < weeks; i++) {
-              exercise.weeks.push({
-                series: i === 0 ? (exercise.series || "") : "",
-                reps: i === 0 ? (exercise.reps || "") : "",
-                rpe: i === 0 ? (exercise.rpe || "") : "",
-                load: i === 0 ? (exercise.load || "") : "",
-                rest: i === 0 ? (exercise.rest || "") : "",
-                tempo: i === 0 ? (exercise.tempo || "") : "",
-                notes: i === 0 ? (exercise.notes || "") : ""
-              });
-            }
-          }
-          while (exercise.weeks.length < weeks) {
-            exercise.weeks.push({series:"",reps:"",rpe:"",load:"",rest:"",tempo:"",notes:""});
-          }
-          if (exercise.weeks.length > weeks) exercise.weeks = exercise.weeks.slice(0, weeks);
-        });
-      });
-      return normalized;
-    }
+    console.error(
+      "Error publicando rutina:",
+      error
+    );
 
-    function saveWorkoutEditorState(workout, state) {
-      try {
-        localStorage.setItem(
-          getWorkoutBuilderStorageKey(workout),
-          JSON.stringify(normalizeWorkoutState(state, workout))
+    message.textContent =
+      "NO SE PUDO PUBLICAR LA RUTINA: " +
+      (
+        error.message ||
+        "Error desconocido"
+      );
+
+    return;
+
+  }
+
+  /* Actualizamos el objeto */
+
+  workout =
+    updatedWorkout;
+
+  state.workout =
+    updatedWorkout;
+
+  saveWorkoutEditorState(
+    updatedWorkout,
+    state
+  );
+
+  message.textContent =
+    "✓ RUTINA PUBLICADA.";
+
+  const statusElement =
+    document.getElementById(
+      "workout-editor-status"
+    );
+
+  if (statusElement) {
+
+    statusElement.textContent =
+      "ACTIVA";
+
+  }
+
+  /*
+   * Mostramos directamente el botón
+   * para ver la versión guardada.
+   */
+
+  const actions =
+    document.querySelector(
+      ".workout-editor-actions"
+    );
+
+  if (
+    actions &&
+    !document.getElementById(
+      "view-published-workout-button"
+    )
+  ) {
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+    button.id =
+      "view-published-workout-button";
+
+    button.className =
+      "button";
+
+    button.type =
+      "button";
+
+    button.textContent =
+      "VER RUTINA PUBLICADA";
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        openPublishedWorkoutFromDatabase(
+          updatedWorkout
         );
-        return true;
-      } catch (error) {
-        console.error("Error guardando rutina local:", error);
-        return false;
+
       }
-    }
+    );
 
-    function openWorkoutEditor(workout) {
-      if (!currentStudent) {
-        console.error("No hay alumna seleccionada para abrir la rutina.");
-        return;
-      }
+    actions.appendChild(
+      button
+    );
 
-      if (!workoutBuilderScreen) {
-        workoutBuilderScreen = document.createElement("section");
-        workoutBuilderScreen.id = "workout-builder-screen";
-        workoutBuilderScreen.className = "students-screen";
-        document.body.appendChild(workoutBuilderScreen);
-      }
+  }
 
-      if (workoutsScreen) {
-        workoutsScreen.style.display = "none";
-      }
+}
 
-      workoutBuilderScreen.style.display = "block";
 
-      try {
-        const state = getWorkoutEditorState(workout);
-        state.workout = workout;
-        saveWorkoutEditorState(workout, state);
-        renderWorkoutEditor(workout, state);
-      } catch (editorError) {
-        console.error("Error renderizando constructor:", editorError);
-        workoutBuilderScreen.innerHTML = `
-          <div class="student-form">
-            <div class="eyebrow">CONSTRUCTOR DE RUTINA</div>
-            <h1>NO SE PUDO ABRIR</h1>
-            <p style="color:#aaa;line-height:1.6;">La rutina se creó correctamente, pero hubo un error al abrir el constructor.</p>
-            <p style="color:#E60000;font-size:12px;line-height:1.6;word-break:break-word;">${escapeWorkoutHtml(editorError && editorError.message ? editorError.message : String(editorError))}</p>
-            <button id="retry-workout-editor" class="button" type="button">REINTENTAR</button>
-          </div>`;
-        document.getElementById("retry-workout-editor").addEventListener("click", function(){ openWorkoutEditor(workout); });
-      }
-    }
+/* =====================================
+   VOLVER A RUTINAS DESPUÉS DE PUBLICAR
+===================================== */
 
-    function renderWorkoutEditor(workout, state) {
-      state = normalizeWorkoutState(state, workout);
-      workoutBuilderScreen.innerHTML = `
-        <div class="workout-editor">
-          <div class="students-header">
-            <button id="back-from-workout-editor" class="back-button" type="button">← VOLVER</button>
-            <div class="eyebrow">CONSTRUCTOR DE RUTINA</div>
-            <h1>${escapeWorkoutHtml(workout.name || "RUTINA")}</h1>
-            <p>${escapeWorkoutHtml(currentStudent.full_name || "ALUMNA")}</p>
-          </div>
-          <div class="workout-editor-meta">
-            <div class="workout-meta-card"><div class="workout-meta-label">DURACIÓN</div><div class="workout-meta-value">${workout.weeks || "-"} SEMANAS</div></div>
-            <div class="workout-meta-card"><div class="workout-meta-label">ESTADO</div><div class="workout-meta-value" id="workout-editor-status">${workout.status === "active" ? "ACTIVA" : "BORRADOR"}</div></div>
-          </div>
-          <div class="workout-section-label">DÍAS DE LA RUTINA</div>
-          <div id="workout-days" class="workout-days">
-            ${state.days.length === 0 ? `<div class="student-card"><div class="detail-value">TODAVÍA NO HAY DÍAS</div><p style="color:#777;font-size:11px;line-height:1.6;margin-top:8px;">Agregá el primer día y después incorporá los ejercicios que quieras.</p></div>` : state.days.map(function(day, dayIndex){return renderWorkoutDay(day, dayIndex, workout);}).join("")}
-          </div>
-          <button id="add-workout-day-button" class="button" type="button" style="margin-top:16px;">+ AGREGAR DÍA</button>
-          <div class="workout-editor-actions">
-            <button id="save-workout-draft-button" class="button" type="button">GUARDAR CAMBIOS</button>
-            <button id="publish-workout-button" class="button" type="button">PUBLICAR RUTINA →</button>
-            ${workout.status === "active" ? `<button id="view-published-workout-button" class="button" type="button">VER RUTINA PUBLICADA</button>` : ""}
-          </div>
-          <p id="workout-editor-message" class="workout-editor-message"></p>
-        </div>`;
+function viewPublishedWorkout(
+  workout,
+  state
+) {
 
-      document.getElementById("back-from-workout-editor").addEventListener("click", function(){ createWorkoutBuilder(currentStudent); });
-      document.getElementById("add-workout-day-button").addEventListener("click", function(){
-        state.days.push({id:createWorkoutId("day"),name:"DÍA " + (state.days.length + 1),exercises:[]});
-        saveWorkoutEditorState(workout,state); renderWorkoutEditor(workout,state);
-      });
-      document.getElementById("save-workout-draft-button").addEventListener("click", function(){
-        const saved=saveWorkoutEditorState(workout,state);
-        document.getElementById("workout-editor-message").textContent=saved?"✓ CAMBIOS GUARDADOS EN ESTE DISPOSITIVO.":"NO SE PUDIERON GUARDAR LOS CAMBIOS.";
-      });
-      document.getElementById("publish-workout-button").addEventListener("click", function(){ publishWorkout(workout,state); });
-      const viewButton=document.getElementById("view-published-workout-button");
-      if(viewButton) viewButton.addEventListener("click", function(){ viewPublishedWorkout(workout,state); });
-      bindWorkoutDayEvents(workout,state);
-    }
+  openPublishedWorkoutFromDatabase(
+    workout
+  );
+
+}
 
     function renderWorkoutDay(day, dayIndex, workout) {
       return `
