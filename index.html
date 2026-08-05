@@ -4058,12 +4058,13 @@
               name,
 
             /*
-             * Se conserva el campo para no romper la
-             * estructura actual de Supabase, pero ya no
-             * se muestra ni se pide en la interfaz.
+             * Supabase todavía espera el campo objective.
+             * La entrenadora ya no lo completa en la interfaz;
+             * usamos GENERAL internamente para mantener
+             * compatibilidad con la estructura actual.
              */
             objective:
-              "",
+              "GENERAL",
 
             weeks:
               weeks,
