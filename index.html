@@ -5452,7 +5452,22 @@ function renderWorkoutEditor(
 
       }
     );
-  
+  <button
+  id="edit-workout-button"
+  class="button"
+  type="button"
+>
+  EDITAR RUTINA
+</button>
+
+<button
+  id="delete-workout-button"
+  class="button"
+  type="button"
+  style="border-color:#E60000;color:#E60000;"
+>
+  ELIMINAR RUTINA
+</button>
 document.getElementById("edit-workout-button").addEventListener("click", function(){
   renderWorkoutEditor(workout,state);
 });
