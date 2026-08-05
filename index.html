@@ -4085,8 +4085,13 @@
         );
 
 
+        const detail =
+          error && error.message
+            ? error.message
+            : "Error desconocido";
+
         message.textContent =
-          "NO SE PUDO CREAR LA RUTINA.";
+          "NO SE PUDO CREAR LA RUTINA: " + detail;
 
         return;
 
