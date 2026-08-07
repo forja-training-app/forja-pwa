@@ -1320,6 +1320,388 @@
   }
 }
 
+/* =========================================================
+   FORJA — PANTALLA DE ALUMNA
+   DISEÑO RESPONSIVE
+========================================================= */
+
+#student-home-screen {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #000;
+  color: #fff;
+  padding: 0 20px 40px;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+========================================================= */
+
+#student-home-screen > * {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+#student-home-screen .students-header {
+  max-width: 1100px;
+  padding: 42px 0 32px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #222;
+}
+
+#student-home-screen .students-header .eyebrow {
+  color: #E60000;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+}
+
+#student-home-screen #student-home-title {
+  margin: 0;
+  color: #fff;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(42px, 7vw, 78px);
+  line-height: .95;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+#student-home-screen .students-header p {
+  margin: 14px 0 0;
+  color: #777;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   SECCIONES
+========================================================= */
+
+#student-home-screen .workout-section-label {
+  width: 100%;
+  max-width: 1100px;
+  margin: 28px auto 10px;
+  color: #777;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   RUTINA ACTIVA
+========================================================= */
+
+#student-home-screen #student-workout-name {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+#student-home-screen #student-workout-weeks,
+#student-home-screen #student-workout-status {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+#student-home-screen #student-workout-status {
+  color: #E60000;
+}
+
+
+/* =========================================================
+   TARJETAS
+========================================================= */
+
+#student-home-screen .student-card {
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+  margin: 0 auto 12px;
+  padding: 24px;
+  background: #0b0b0b;
+  border: 1px solid #242424;
+  border-left: 3px solid #E60000;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   PRÓXIMO ENTRENAMIENTO
+========================================================= */
+
+#student-home-screen #student-today-name {
+  color: #fff;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(30px, 5vw, 52px);
+  line-height: 1;
+  text-transform: uppercase;
+  margin: 5px 0 8px;
+}
+
+#student-home-screen #student-today-description {
+  color: #777;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BOTÓN COMENZAR ENTRENAMIENTO
+========================================================= */
+
+#student-home-screen #student-start-workout-button {
+  width: 100%;
+  min-height: 62px;
+  margin-top: 20px;
+  border: 1px solid #E60000;
+  border-radius: 0;
+  background: #E60000;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background .2s ease,
+    transform .15s ease;
+}
+
+#student-home-screen #student-start-workout-button:hover {
+  background: #c90000;
+}
+
+#student-home-screen #student-start-workout-button:active {
+  transform: scale(.99);
+}
+
+
+/* =========================================================
+   MIS ENTRENAMIENTOS
+========================================================= */
+
+#student-home-screen #student-workout-days {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#student-home-screen #student-workout-days .student-card {
+  position: relative;
+  transition:
+    border-color .2s ease,
+    transform .15s ease;
+}
+
+#student-home-screen #student-workout-days .student-card:hover {
+  border-color: #444;
+  transform: translateY(-1px);
+}
+
+#student-home-screen #student-workout-days .menu-label {
+  color: #E60000;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+#student-home-screen #student-workout-days .detail-value {
+  margin-top: 5px;
+  color: #fff;
+  font-family: "Anton", sans-serif;
+  font-size: 28px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BOTÓN CERRAR SESIÓN
+========================================================= */
+
+#student-home-screen #student-logout-button {
+  display: block;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 52px;
+  margin: 30px auto 0;
+  border: 1px solid #222;
+  border-radius: 0;
+  background: transparent;
+  color: #777;
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color .2s ease,
+    border-color .2s ease;
+}
+
+#student-home-screen #student-logout-button:hover {
+  color: #fff;
+  border-color: #555;
+}
+
+
+/* =========================================================
+   ESTADOS VACÍOS / CARGANDO
+========================================================= */
+
+#student-home-screen .workouts-loading {
+  padding: 30px 0;
+  color: #777;
+  font-size: 11px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+#student-home-screen .detail-value {
+  color: #fff;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+
+  #student-home-screen {
+    padding: 0 16px 30px;
+  }
+
+  #student-home-screen .students-header {
+    padding: 32px 0 26px;
+  }
+
+  #student-home-screen .student-card {
+    padding: 20px;
+  }
+
+  #student-home-screen #student-start-workout-button {
+    min-height: 58px;
+  }
+
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 480px) {
+
+  #student-home-screen {
+    padding: 0 12px 26px;
+  }
+
+  #student-home-screen .students-header {
+    padding: 26px 0 22px;
+  }
+
+  #student-home-screen .students-header .eyebrow {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  #student-home-screen #student-home-title {
+    font-size: 48px;
+    line-height: .9;
+  }
+
+  #student-home-screen .students-header p {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  #student-home-screen .workout-section-label {
+    margin-top: 22px;
+    font-size: 9px;
+  }
+
+  #student-home-screen .student-card {
+    padding: 18px;
+    margin-bottom: 10px;
+  }
+
+  #student-home-screen #student-workout-name {
+    font-size: 32px;
+  }
+
+  #student-home-screen #student-today-name {
+    font-size: 38px;
+  }
+
+  #student-home-screen #student-start-workout-button {
+    min-height: 58px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  #student-home-screen #student-workout-days .detail-value {
+    font-size: 25px;
+  }
+
+  #student-home-screen #student-logout-button {
+    min-height: 48px;
+    margin-top: 24px;
+  }
+
+}
+
+
+/* =========================================================
+   CELULARES MUY PEQUEÑOS
+========================================================= */
+
+@media (max-width: 360px) {
+
+  #student-home-screen {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #student-home-screen #student-home-title {
+    font-size: 42px;
+  }
+
+  #student-home-screen #student-today-name {
+    font-size: 34px;
+  }
+
+  #student-home-screen .student-card {
+    padding: 16px;
+  }
+
+}
+    
 </style>
 
 
