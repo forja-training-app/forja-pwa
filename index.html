@@ -3836,7 +3836,373 @@ async function showStudentWorkoutList(student) {
   await loadStudentWorkouts(student);
 }
 
+/* =====================================
+   ABRIR PANTALLA DE ALUMNA
+===================================== */
 
+async function openStudentHome() {
+
+  if (!currentStudent || !currentStudent.id) {
+
+    alert(
+      "NO SE PUDO IDENTIFICAR LA ALUMNA."
+    );
+
+    return;
+  }
+
+  loginScreen.style.display = "none";
+  appScreen.style.display = "none";
+  studentsScreen.style.display = "none";
+
+  if (workoutsScreen) {
+    workoutsScreen.style.display = "none";
+  }
+
+  if (workoutBuilderScreen) {
+    workoutBuilderScreen.style.display = "none";
+  }
+
+  if (studentDetailScreen) {
+    studentDetailScreen.style.display = "none";
+  }
+
+  const studentHomeScreen =
+    document.getElementById(
+      "student-home-screen"
+    );
+
+  if (!studentHomeScreen) {
+
+    console.error(
+      "No se encontró student-home-screen."
+    );
+
+    return;
+  }
+
+  studentHomeScreen.style.display = "block";
+
+  const title =
+    document.getElementById(
+      "student-home-title"
+    );
+
+  if (title) {
+
+    title.textContent =
+      "HOLA, " +
+      (
+        currentStudent.full_name ||
+        "ALUMNA"
+      ).split(" ")[0].toUpperCase();
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("workouts")
+      .select("*")
+      .eq(
+        "student_id",
+        currentStudent.id
+      )
+      .eq(
+        "status",
+        "active"
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1);
+
+
+  if (error) {
+
+    console.error(
+      "Error cargando rutina de alumna:",
+      error
+    );
+
+    const workoutName =
+      document.getElementById(
+        "student-workout-name"
+      );
+
+    if (workoutName) {
+      workoutName.textContent =
+        "NO SE PUDO CARGAR LA RUTINA";
+    }
+
+    return;
+  }
+
+
+  if (!data || !data.length) {
+
+    const workoutName =
+      document.getElementById(
+        "student-workout-name"
+      );
+
+    if (workoutName) {
+      workoutName.textContent =
+        "NO HAY RUTINA ACTIVA";
+    }
+
+    const todayName =
+      document.getElementById(
+        "student-today-name"
+      );
+
+    if (todayName) {
+      todayName.textContent =
+        "TODAVÍA NO HAY ENTRENAMIENTO";
+    }
+
+    return;
+  }
+
+
+  const workout =
+    data[0];
+
+
+  const workoutName =
+    document.getElementById(
+      "student-workout-name"
+    );
+
+  if (workoutName) {
+
+    workoutName.textContent =
+      workout.name ||
+      "RUTINA";
+
+  }
+
+
+  const workoutWeeks =
+    document.getElementById(
+      "student-workout-weeks"
+    );
+
+  if (workoutWeeks) {
+
+    workoutWeeks.textContent =
+      (
+        Number(workout.weeks) || 1
+      ) +
+      " SEMANAS";
+
+  }
+
+
+  const workoutStatus =
+    document.getElementById(
+      "student-workout-status"
+    );
+
+  if (workoutStatus) {
+
+    workoutStatus.textContent =
+      "ACTIVA";
+
+  }
+
+
+  const days =
+    workout.plan &&
+    Array.isArray(workout.plan.days)
+      ? workout.plan.days
+      : [];
+
+
+  const todayName =
+    document.getElementById(
+      "student-today-name"
+    );
+
+  const todayDescription =
+    document.getElementById(
+      "student-today-description"
+    );
+
+  if (days.length) {
+
+    const firstDay =
+      days[0];
+
+    if (todayName) {
+
+      todayName.textContent =
+        firstDay.name ||
+        "DÍA 1";
+
+    }
+
+    if (todayDescription) {
+
+      const exerciseCount =
+        Array.isArray(
+          firstDay.exercises
+        )
+          ? firstDay.exercises.length
+          : 0;
+
+      todayDescription.textContent =
+        exerciseCount +
+        (
+          exerciseCount === 1
+            ? " EJERCICIO"
+            : " EJERCICIOS"
+        );
+
+    }
+
+  }
+
+
+  const daysContainer =
+    document.getElementById(
+      "student-workout-days"
+    );
+
+
+  if (!daysContainer) {
+    return;
+  }
+
+
+  if (!days.length) {
+
+    daysContainer.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          LA RUTINA NO TIENE DÍAS CARGADOS.
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  daysContainer.innerHTML =
+    days.map(
+      function(day, index) {
+
+        const exerciseCount =
+          Array.isArray(
+            day.exercises
+          )
+            ? day.exercises.length
+            : 0;
+
+        return `
+
+          <div
+            class="student-card"
+            style="margin-bottom:10px;"
+          >
+
+            <div class="menu-label">
+              DÍA ${index + 1}
+            </div>
+
+            <div class="detail-value">
+              ${escapeWorkoutHtml(
+                day.name ||
+                "DÍA " + (index + 1)
+              )}
+            </div>
+
+            <div
+              style="
+                color:#777;
+                font-size:11px;
+                margin-top:6px;
+              "
+            >
+              ${exerciseCount}
+              ${
+                exerciseCount === 1
+                  ? " EJERCICIO"
+                  : " EJERCICIOS"
+              }
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+
+  const startButton =
+    document.getElementById(
+      "student-start-workout-button"
+    );
+
+
+  if (startButton) {
+
+    startButton.onclick =
+      function() {
+
+        if (!days.length) {
+          return;
+        }
+
+        openStudentWorkoutDay(
+          workout,
+          days[0]
+        );
+
+      };
+
+  }
+
+
+  const logoutButton =
+    document.getElementById(
+      "student-logout-button"
+    );
+
+
+  if (logoutButton) {
+
+    logoutButton.onclick =
+      function() {
+
+        studentHomeScreen.style.display =
+          "none";
+
+        currentStudent = null;
+
+        if (loginScreen) {
+          loginScreen.style.display =
+            "block";
+        }
+
+      };
+
+  }
+
+}
+    
 /* =====================================
    CARGAR RUTINAS DE UNA ALUMNA
 ===================================== */
