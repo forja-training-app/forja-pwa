@@ -4202,6 +4202,380 @@ async function openStudentHome() {
   }
 
 }
+
+ /* =====================================
+   ABRIR ENTRENAMIENTO DE ALUMNA
+===================================== */
+
+function openStudentWorkoutDay(
+  workout,
+  day
+) {
+
+  const studentHomeScreen =
+    document.getElementById(
+      "student-home-screen"
+    );
+
+  if (studentHomeScreen) {
+    studentHomeScreen.style.display =
+      "none";
+  }
+
+  let studentWorkoutScreen =
+    document.getElementById(
+      "student-workout-screen"
+    );
+
+  if (!studentWorkoutScreen) {
+
+    studentWorkoutScreen =
+      document.createElement("section");
+
+    studentWorkoutScreen.id =
+      "student-workout-screen";
+
+    studentWorkoutScreen.className =
+      "students-screen";
+
+    document.body.appendChild(
+      studentWorkoutScreen
+    );
+
+  }
+
+  studentWorkoutScreen.style.display =
+    "block";
+
+
+  const exercises =
+    Array.isArray(day.exercises)
+      ? day.exercises
+      : [];
+
+
+  studentWorkoutScreen.innerHTML = `
+
+    <div class="students-header">
+
+      <button
+        id="back-from-student-workout"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER
+      </button>
+
+      <div class="eyebrow">
+        ENTRENAMIENTO
+      </div>
+
+      <h1>
+        ${escapeWorkoutHtml(
+          day.name ||
+          "DÍA"
+        )}
+      </h1>
+
+      <p>
+        ${escapeWorkoutHtml(
+          workout.name ||
+          "RUTINA"
+        )}
+      </p>
+
+    </div>
+
+
+    <div class="workout-section-label">
+      EJERCICIOS
+    </div>
+
+
+    <div
+      id="student-exercise-list"
+      class="workout-days"
+    >
+
+      ${
+        exercises.length === 0
+
+          ?
+
+          `
+
+          <div class="student-card">
+
+            <div class="detail-value">
+              ESTE DÍA NO TIENE EJERCICIOS.
+            </div>
+
+          </div>
+
+          `
+
+          :
+
+          exercises.map(
+            function(
+              exercise,
+              exerciseIndex
+            ) {
+
+              const weeks =
+                Array.isArray(
+                  exercise.weeks
+                )
+                  ? exercise.weeks
+                  : [];
+
+              const firstWeek =
+                weeks[0] || {};
+
+              return `
+
+                <div
+                  class="student-card"
+                  style="
+                    margin-bottom:12px;
+                  "
+                >
+
+                  <div
+                    style="
+                      display:flex;
+                      justify-content:space-between;
+                      align-items:flex-start;
+                      gap:12px;
+                    "
+                  >
+
+                    <div>
+
+                      <div
+                        class="menu-label"
+                      >
+                        EJERCICIO
+                        ${exerciseIndex + 1}
+                      </div>
+
+                      <div
+                        class="detail-value"
+                      >
+                        ${escapeWorkoutHtml(
+                          exercise.name ||
+                          "EJERCICIO"
+                        )}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    style="
+                      display:grid;
+                      grid-template-columns:
+                        repeat(2,minmax(0,1fr));
+                      gap:8px;
+                      margin-top:14px;
+                    "
+                  >
+
+                    <div
+                      style="
+                        background:#111;
+                        border:1px solid #222;
+                        padding:10px;
+                      "
+                    >
+
+                      <div
+                        style="
+                          color:#777;
+                          font-size:9px;
+                        "
+                      >
+                        SERIES
+                      </div>
+
+                      <strong>
+                        ${escapeWorkoutHtml(
+                          firstWeek.series ||
+                          "—"
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div
+                      style="
+                        background:#111;
+                        border:1px solid #222;
+                        padding:10px;
+                      "
+                    >
+
+                      <div
+                        style="
+                          color:#777;
+                          font-size:9px;
+                        "
+                      >
+                        REPETICIONES
+                      </div>
+
+                      <strong>
+                        ${escapeWorkoutHtml(
+                          firstWeek.reps ||
+                          "—"
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div
+                      style="
+                        background:#111;
+                        border:1px solid #222;
+                        padding:10px;
+                      "
+                    >
+
+                      <div
+                        style="
+                          color:#777;
+                          font-size:9px;
+                        "
+                      >
+                        RPE / RIR
+                      </div>
+
+                      <strong>
+                        ${escapeWorkoutHtml(
+                          firstWeek.rpe ||
+                          "—"
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div
+                      style="
+                        background:#111;
+                        border:1px solid #222;
+                        padding:10px;
+                      "
+                    >
+
+                      <div
+                        style="
+                          color:#777;
+                          font-size:9px;
+                        "
+                      >
+                        CARGA / %
+                      </div>
+
+                      <strong>
+                        ${escapeWorkoutHtml(
+                          firstWeek.load ||
+                          "—"
+                        )}
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+
+                  ${
+                    firstWeek.rest ||
+                    firstWeek.tempo
+                      ?
+
+                      `
+
+                      <div
+                        style="
+                          margin-top:10px;
+                          color:#777;
+                          font-size:10px;
+                        "
+                      >
+
+                        ${
+                          firstWeek.rest
+                            ? "DESCANSO: " +
+                              escapeWorkoutHtml(
+                                firstWeek.rest
+                              )
+                            : ""
+                        }
+
+                        ${
+                          firstWeek.tempo
+                            ? " · TEMPO: " +
+                              escapeWorkoutHtml(
+                                firstWeek.tempo
+                              )
+                            : ""
+                        }
+
+                      </div>
+
+                      `
+
+                      :
+
+                      ""
+                  }
+
+                </div>
+
+              `;
+
+            }
+          ).join("")
+      }
+
+    </div>
+
+  `;
+
+
+  const backButton =
+    document.getElementById(
+      "back-from-student-workout"
+    );
+
+
+  if (backButton) {
+
+    backButton.addEventListener(
+      "click",
+      function() {
+
+        studentWorkoutScreen.style.display =
+          "none";
+
+        if (studentHomeScreen) {
+
+          studentHomeScreen.style.display =
+            "block";
+
+        }
+
+      }
+    );
+
+  }
+
+}   
     
 /* =====================================
    CARGAR RUTINAS DE UNA ALUMNA
