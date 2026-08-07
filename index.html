@@ -6427,6 +6427,152 @@ function viewPublishedWorkout(
 
   </script>
 
+  <!-- =====================================
+     PANTALLA ALUMNA
+===================================== -->
+
+<section
+  id="student-home-screen"
+  class="app-screen"
+  style="display:none;"
+>
+
+  <div class="students-header">
+
+    <div class="eyebrow">
+      FORJA TRAINING
+    </div>
+
+    <h1 id="student-home-title">
+      HOLA, ALUMNA
+    </h1>
+
+    <p>
+      ESTA ES TU ZONA DE ENTRENAMIENTO
+    </p>
+
+  </div>
+
+
+  <!-- RUTINA ACTIVA -->
+
+  <div class="student-card">
+
+    <div class="eyebrow">
+      TU RUTINA ACTIVA
+    </div>
+
+    <h2 id="student-workout-name">
+      MI RUTINA
+    </h2>
+
+    <div
+      class="workout-exercise-data"
+      style="margin-top:14px;"
+    >
+
+      <div>
+        <span>DURACIÓN</span>
+        <strong id="student-workout-weeks">
+          —
+        </strong>
+      </div>
+
+      <div>
+        <span>ESTADO</span>
+        <strong id="student-workout-status">
+          ACTIVA
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ENTRENAMIENTO DE HOY -->
+
+  <div class="workout-section-label">
+    ENTRENAMIENTO DE HOY
+  </div>
+
+  <div class="student-card">
+
+    <div class="eyebrow">
+      PRÓXIMO ENTRENAMIENTO
+    </div>
+
+    <h2 id="student-today-name">
+      DÍA 1
+    </h2>
+
+    <p
+      id="student-today-description"
+      style="
+        color:#777;
+        font-size:11px;
+        line-height:1.6;
+        margin-top:8px;
+      "
+    >
+      TU ENTRENAMIENTO ESTÁ LISTO.
+    </p>
+
+    <button
+      id="student-start-workout-button"
+      class="button"
+      type="button"
+      style="
+        width:100%;
+        margin-top:16px;
+      "
+    >
+      COMENZAR ENTRENAMIENTO →
+    </button>
+
+  </div>
+
+
+  <!-- MIS ENTRENAMIENTOS -->
+
+  <div class="workout-section-label">
+    MIS ENTRENAMIENTOS
+  </div>
+
+  <div
+    id="student-workout-days"
+    class="workout-days"
+  >
+
+    <div class="student-card">
+
+      <div class="detail-value">
+        TODAVÍA NO HAY ENTRENAMIENTOS PARA MOSTRAR.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- CERRAR SESIÓN -->
+
+  <button
+    id="student-logout-button"
+    class="button"
+    type="button"
+    style="
+      width:100%;
+      margin-top:20px;
+      border-color:#333;
+      color:#777;
+    "
+  >
+    CERRAR SESIÓN
+  </button>
+
+</section>
+  
 </body>
 
 </html>
