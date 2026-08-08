@@ -5103,50 +5103,228 @@ function openStudentWorkoutDay(
                     }
 
 
-                    <!-- FUTURO REGISTRO -->
+<!-- REGISTRO DE SERIES -->
 
-                    <div
-                      style="
-                        margin-top:18px;
-                        padding-top:14px;
-                        border-top:1px solid #222;
-                      "
-                    >
+<div
+  class="student-series-log"
+  data-exercise-index="${exerciseIndex}"
+  style="
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px solid #222;
+  "
+>
 
-                      <div
-                        style="
-                          color:#555;
-                          font-size:8px;
-                          font-weight:900;
-                          letter-spacing:1.5px;
-                          margin-bottom:8px;
-                        "
-                      >
-                        REGISTRO DE ENTRENAMIENTO
-                      </div>
+  <div
+    style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:12px;
+    "
+  >
+
+    <div
+      style="
+        color:#fff;
+        font-size:9px;
+        font-weight:900;
+        letter-spacing:1.5px;
+      "
+    >
+      REGISTRO REAL
+    </div>
+
+    <div
+      class="exercise-progress"
+      style="
+        color:#E60000;
+        font-size:9px;
+        font-weight:900;
+      "
+    >
+      0 / ${parseInt(firstWeek.series) || 1}
+    </div>
+
+  </div>
 
 
-                      <div
-                        style="
-                          color:#555;
-                          font-size:10px;
-                          line-height:1.5;
-                        "
-                      >
-                        Acá vas a poder registrar
-                        lo que realmente realizaste
-                        en cada serie.
-                      </div>
+  <div
+    class="series-list"
+  >
 
-                    </div>
+    ${
+      Array.from(
+        {
+          length:
+            parseInt(firstWeek.series) || 1
+        },
+        function(_, seriesIndex) {
 
-                  </div>
+          return `
 
-                `;
+            <div
+              class="student-series-row"
+              data-series-index="${seriesIndex}"
+              style="
+                display:grid;
+                grid-template-columns:
+                  42px
+                  1fr
+                  1fr
+                  1fr
+                  44px;
+                gap:6px;
+                align-items:end;
+                padding:10px 0;
+                border-bottom:1px solid #181818;
+              "
+            >
 
-              }
-            ).join("")
+              <div
+                style="
+                  color:#777;
+                  font-size:9px;
+                  font-weight:900;
+                  padding-bottom:9px;
+                "
+              >
+                S${seriesIndex + 1}
+              </div>
+
+
+              <div>
+
+                <div
+                  style="
+                    color:#555;
+                    font-size:7px;
+                    font-weight:900;
+                    margin-bottom:4px;
+                  "
+                >
+                  REPS
+                </div>
+
+                <input
+                  type="number"
+                  min="0"
+                  class="student-series-reps"
+                  placeholder="${
+                    firstWeek.reps || "—"
+                  }"
+                  style="
+                    width:100%;
+                    box-sizing:border-box;
+                    background:#111;
+                    border:1px solid #292929;
+                    color:#fff;
+                    padding:9px 7px;
+                    font-size:11px;
+                  "
+                >
+
+              </div>
+
+
+              <div>
+
+                <div
+                  style="
+                    color:#555;
+                    font-size:7px;
+                    font-weight:900;
+                    margin-bottom:4px;
+                  "
+                >
+                  CARGA
+                </div>
+
+                <input
+                  type="text"
+                  class="student-series-load"
+                  placeholder="${
+                    firstWeek.load || "—"
+                  }"
+                  style="
+                    width:100%;
+                    box-sizing:border-box;
+                    background:#111;
+                    border:1px solid #292929;
+                    color:#fff;
+                    padding:9px 7px;
+                    font-size:11px;
+                  "
+                >
+
+              </div>
+
+
+              <div>
+
+                <div
+                  style="
+                    color:#555;
+                    font-size:7px;
+                    font-weight:900;
+                    margin-bottom:4px;
+                  "
+                >
+                  RPE
+                </div>
+
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  step="0.5"
+                  class="student-series-rpe"
+                  placeholder="${
+                    firstWeek.rpe || "—"
+                  }"
+                  style="
+                    width:100%;
+                    box-sizing:border-box;
+                    background:#111;
+                    border:1px solid #292929;
+                    color:#fff;
+                    padding:9px 7px;
+                    font-size:11px;
+                  "
+                >
+
+              </div>
+
+
+              <button
+                type="button"
+                class="student-series-complete"
+                style="
+                  width:40px;
+                  height:40px;
+                  border:1px solid #333;
+                  background:#111;
+                  color:#555;
+                  font-size:17px;
+                  cursor:pointer;
+                "
+                title="Marcar serie completada"
+              >
+                ✓
+              </button>
+
+            </div>
+
+          `;
+
         }
+      ).join("")
+    }
+
+  </div>
+
+</div>
 
       </div>
 
@@ -5220,7 +5398,104 @@ function openStudentWorkoutDay(
 
   }
 
+/* =====================================
+   REGISTRAR SERIES
+===================================== */
 
+const seriesLogs =
+  studentWorkoutScreen.querySelectorAll(
+    ".student-series-log"
+  );
+
+
+seriesLogs.forEach(
+  function(log) {
+
+    const rows =
+      log.querySelectorAll(
+        ".student-series-row"
+      );
+
+    const progress =
+      log.querySelector(
+        ".exercise-progress"
+      );
+
+
+    function updateProgress() {
+
+      const completed =
+        log.querySelectorAll(
+          ".student-series-complete.completed"
+        ).length;
+
+      progress.textContent =
+        completed +
+        " / " +
+        rows.length;
+    }
+
+
+    rows.forEach(
+      function(row) {
+
+        const completeButton =
+          row.querySelector(
+            ".student-series-complete"
+          );
+
+
+        completeButton.addEventListener(
+          "click",
+          function() {
+
+            completeButton.classList.toggle(
+              "completed"
+            );
+
+
+            if (
+              completeButton.classList.contains(
+                "completed"
+              )
+            ) {
+
+              completeButton.style.background =
+                "#E60000";
+
+              completeButton.style.borderColor =
+                "#E60000";
+
+              completeButton.style.color =
+                "#fff";
+
+            } else {
+
+              completeButton.style.background =
+                "#111";
+
+              completeButton.style.borderColor =
+                "#333";
+
+              completeButton.style.color =
+                "#555";
+
+            }
+
+
+            updateProgress();
+
+          }
+        );
+
+      }
+    );
+
+
+    updateProgress();
+
+  }
+);
   /* =====================================
      FINALIZAR
   ===================================== */
