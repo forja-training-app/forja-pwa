@@ -9151,22 +9151,17 @@ async function openProgressScreen() {
 
 async function loadStudentProgress(student) {
 
-  const container =
-    document.getElementById(
-      "progress-content"
-    );
+  const container = document.getElementById("progress-content");
 
   if (!container) {
     return;
   }
-
 
   /* ---------------------------------
      CARGANDO
   --------------------------------- */
 
   container.innerHTML = `
-
     <div class="student-card">
 
       <p
@@ -9177,7 +9172,6 @@ async function loadStudentProgress(student) {
       </p>
 
     </div>
-
   `;
 
 
@@ -9188,27 +9182,20 @@ async function loadStudentProgress(student) {
   const {
     data: sessions,
     error
-  } =
-    await supabaseClient
-      .from("workout_sessions")
-      .select(`
-        id,
-        workout_id,
-        day_id,
-        started_at,
-        finished_at,
-        status
-      `)
-      .eq(
-        "student_id",
-        student.id
-      )
-      .order(
-        "finished_at",
-        {
-          ascending: false
-        }
-      );
+  } = await supabaseClient
+    .from("workout_sessions")
+    .select(`
+      id,
+      workout_id,
+      day_id,
+      started_at,
+      finished_at,
+      status
+    `)
+    .eq("student_id", student.id)
+    .order("finished_at", {
+      ascending: false
+    });
 
 
   if (error) {
@@ -9217,7 +9204,6 @@ async function loadStudentProgress(student) {
       "Error cargando progreso:",
       error
     );
-
 
     container.innerHTML = `
 
@@ -9245,7 +9231,6 @@ async function loadStudentProgress(student) {
     `;
 
     return;
-
   }
 
 
@@ -9253,25 +9238,17 @@ async function loadStudentProgress(student) {
      RESUMEN
   --------------------------------- */
 
-  const total =
-    sessions
-      ? sessions.length
-      : 0;
+  const total = sessions
+    ? sessions.length
+    : 0;
 
+  const completed = sessions
+    ? sessions.filter(function(session) {
 
-  const completed =
-    sessions
-      ? sessions.filter(
-          function(session) {
+        return session.status === "completed";
 
-            return (
-              session.status ===
-              "completed"
-            );
-
-          }
-        ).length
-      : 0;
+      }).length
+    : 0;
 
 
   const lastSession =
@@ -9284,16 +9261,18 @@ async function loadStudentProgress(student) {
   const lastDate =
     lastSession &&
     lastSession.finished_at
+
       ? new Date(
           lastSession.finished_at
         ).toLocaleDateString(
           "es-AR",
           {
-            day:"2-digit",
-            month:"2-digit",
-            year:"numeric"
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
           }
         )
+
       : "—";
 
 
@@ -9314,7 +9293,6 @@ async function loadStudentProgress(student) {
       <div class="eyebrow">
         PROGRESO DE ALUMNA
       </div>
-
 
       <h2
         style="
@@ -9448,9 +9426,7 @@ async function loadStudentProgress(student) {
         !sessions ||
         sessions.length === 0
 
-          ?
-
-          `
+          ? `
 
             <div class="detail-value">
               TODAVÍA NO HAY ENTRENAMIENTOS
@@ -9459,37 +9435,43 @@ async function loadStudentProgress(student) {
 
           `
 
-          :
-
-          sessions
-            .slice(0,10)
-            .map(
-              function(session) {
+          : sessions
+              .slice(0, 10)
+              .map(function(session) {
 
                 const date =
                   session.finished_at
+
                     ? new Date(
                         session.finished_at
                       ).toLocaleString(
                         "es-AR",
                         {
-                          day:"2-digit",
-                          month:"2-digit",
-                          year:"numeric",
-                          hour:"2-digit",
-                          minute:"2-digit"
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit"
                         }
                       )
+
                     : "SIN FECHA";
+
+
+                const statusLabel =
+                  session.status === "completed"
+                    ? "COMPLETADO"
+                    : (
+                        session.status ||
+                        "EN CURSO"
+                      ).toUpperCase();
 
 
                 return `
 
                   <button
                     type="button"
-                    class="
-                      student-training-history-button
-                    "
+                    class="student-training-history-button"
                     data-session-id="${escapeWorkoutHtml(
                       session.id
                     )}"
@@ -9552,9 +9534,10 @@ async function loadStudentProgress(student) {
                             font-weight:900;
                           "
                         >
-                          COMPLETADO
+                          ${escapeWorkoutHtml(
+                            statusLabel
+                          )}
                         </span>
-
 
                         <span
                           style="
@@ -9573,10 +9556,8 @@ async function loadStudentProgress(student) {
 
                 `;
 
-              }
-            )
-            .join("")
-
+              })
+              .join("")
       }
 
     </div>
@@ -9588,9 +9569,7 @@ async function loadStudentProgress(student) {
      CARGAR EVOLUCIÓN
   --------------------------------- */
 
-  await loadStudentExerciseEvolution(
-    student
-  );
+  await loadStudentExerciseEvolution(student);
 
 }
 
@@ -9599,15 +9578,12 @@ async function loadStudentProgress(student) {
    EVOLUCIÓN DE EJERCICIOS
 ====================================== */
 
-async function loadStudentExerciseEvolution(
-  student
-) {
+async function loadStudentExerciseEvolution(student) {
 
   const container =
     document.getElementById(
       "progress-evolution-content"
     );
-
 
   if (!container) {
     return;
@@ -9641,29 +9617,19 @@ async function loadStudentExerciseEvolution(
   const {
     data: sessions,
     error: sessionsError
-  } =
-    await supabaseClient
-      .from("workout_sessions")
-      .select(`
-        id,
-        workout_id,
-        day_id,
-        finished_at
-      `)
-      .eq(
-        "student_id",
-        student.id
-      )
-      .eq(
-        "status",
-        "completed"
-      )
-      .order(
-        "finished_at",
-        {
-          ascending:true
-        }
-      );
+  } = await supabaseClient
+    .from("workout_sessions")
+    .select(`
+      id,
+      workout_id,
+      day_id,
+      finished_at
+    `)
+    .eq("student_id", student.id)
+    .eq("status", "completed")
+    .order("finished_at", {
+      ascending: true
+    });
 
 
   if (sessionsError) {
@@ -9672,7 +9638,6 @@ async function loadStudentExerciseEvolution(
       "Error cargando sesiones para evolución:",
       sessionsError
     );
-
 
     container.innerHTML = `
 
@@ -9700,7 +9665,6 @@ async function loadStudentExerciseEvolution(
     `;
 
     return;
-
   }
 
 
@@ -9735,7 +9699,6 @@ async function loadStudentExerciseEvolution(
     `;
 
     return;
-
   }
 
 
@@ -9744,13 +9707,11 @@ async function loadStudentExerciseEvolution(
   --------------------------------- */
 
   const sessionIds =
-    sessions.map(
-      function(session) {
+    sessions.map(function(session) {
 
-        return session.id;
+      return session.id;
 
-      }
-    );
+    });
 
 
   console.log(
@@ -9762,28 +9723,24 @@ async function loadStudentExerciseEvolution(
   const {
     data: logs,
     error: logsError
-  } =
-    await supabaseClient
-      .from("workout_set_logs")
-      .select(`
-        session_id,
-        exercise_id,
-        series_number,
-        reps,
-        load,
-        rpe,
-        completed
-      `)
-      .in(
-        "session_id",
-        sessionIds
-      )
-      .order(
-        "series_number",
-        {
-          ascending:true
-        }
-      );
+  } = await supabaseClient
+    .from("workout_set_logs")
+    .select(`
+      session_id,
+      exercise_id,
+      series_number,
+      reps,
+      load,
+      rpe,
+      completed
+    `)
+    .in(
+      "session_id",
+      sessionIds
+    )
+    .order("series_number", {
+      ascending: true
+    });
 
 
   console.log(
@@ -9798,7 +9755,6 @@ async function loadStudentExerciseEvolution(
       "Error cargando registros para evolución:",
       logsError
     );
-
 
     container.innerHTML = `
 
@@ -9826,7 +9782,6 @@ async function loadStudentExerciseEvolution(
     `;
 
     return;
-
   }
 
 
@@ -9848,7 +9803,6 @@ async function loadStudentExerciseEvolution(
     `;
 
     return;
-
   }
 
 
@@ -9859,13 +9813,11 @@ async function loadStudentExerciseEvolution(
   const workoutIds = [
     ...new Set(
       sessions
-        .map(
-          function(session) {
+        .map(function(session) {
 
-            return session.workout_id;
+          return session.workout_id;
 
-          }
-        )
+        })
         .filter(Boolean)
     )
   ];
@@ -9874,21 +9826,18 @@ async function loadStudentExerciseEvolution(
   let workouts = [];
 
 
-  if (
-    workoutIds.length > 0
-  ) {
+  if (workoutIds.length > 0) {
 
     const {
       data,
       error: workoutsError
-    } =
-      await supabaseClient
-        .from("workouts")
-        .select("*")
-        .in(
-          "id",
-          workoutIds
-        );
+    } = await supabaseClient
+      .from("workouts")
+      .select("*")
+      .in(
+        "id",
+        workoutIds
+      );
 
 
     if (workoutsError) {
@@ -9900,8 +9849,7 @@ async function loadStudentExerciseEvolution(
 
     } else {
 
-      workouts =
-        data || [];
+      workouts = data || [];
 
     }
 
@@ -9915,72 +9863,64 @@ async function loadStudentExerciseEvolution(
   const exerciseCatalog = {};
 
 
-  workouts.forEach(
-    function(workout) {
+  workouts.forEach(function(workout) {
 
-      const days =
-        workout &&
-        workout.plan &&
+    const days =
+      workout &&
+      workout.plan &&
+      Array.isArray(
+        workout.plan.days
+      )
+        ? workout.plan.days
+        : [];
+
+
+    days.forEach(function(day) {
+
+      const exercises =
         Array.isArray(
-          workout.plan.days
+          day.exercises
         )
-          ? workout.plan.days
+          ? day.exercises
           : [];
 
 
-      days.forEach(
-        function(day) {
+      exercises.forEach(
+        function(exercise, index) {
 
-          const exercises =
-            Array.isArray(
-              day.exercises
-            )
-              ? day.exercises
-              : [];
-
-
-          exercises.forEach(
-            function(
-              exercise,
+          const exerciseId =
+            String(
+              exercise.id ||
               index
-            ) {
-
-              const exerciseId =
-                String(
-                  exercise.id ||
-                  index
-                );
+            );
 
 
-              if (
-                !exerciseCatalog[
-                  exerciseId
-                ]
-              ) {
+          if (
+            !exerciseCatalog[
+              exerciseId
+            ]
+          ) {
 
-                exerciseCatalog[
-                  exerciseId
-                ] = {
+            exerciseCatalog[
+              exerciseId
+            ] = {
 
-                  id:
-                    exerciseId,
+              id: exerciseId,
 
-                  name:
-                    exercise.name ||
-                    "EJERCICIO"
+              name:
+                exercise.name ||
+                "EJERCICIO"
 
-                };
+            };
 
-              }
-
-            }
-          );
+          }
 
         }
       );
 
-    }
-  );
+    });
+
+  });
 
 
   /* ---------------------------------
@@ -9989,37 +9929,33 @@ async function loadStudentExerciseEvolution(
 
   const exerciseIds = [
     ...new Set(
-      logs.map(
-        function(log) {
+      logs.map(function(log) {
 
-          return String(
-            log.exercise_id
-          );
+        return String(
+          log.exercise_id
+        );
 
-        }
-      )
+      })
     )
   ];
 
 
   const exercises =
-    exerciseIds.map(
-      function(id) {
+    exerciseIds.map(function(id) {
 
-        return (
-          exerciseCatalog[id] || {
+      return (
+        exerciseCatalog[id] || {
 
-            id:id,
+          id: id,
 
-            name:
-              "EJERCICIO " +
-              id
+          name:
+            "EJERCICIO " +
+            id
 
-          }
-        );
+        }
+      );
 
-      }
-    );
+    });
 
 
   if (
@@ -10039,7 +9975,6 @@ async function loadStudentExerciseEvolution(
     `;
 
     return;
-
   }
 
 
@@ -10047,16 +9982,14 @@ async function loadStudentExerciseEvolution(
      ORDENAR EJERCICIOS
   --------------------------------- */
 
-  exercises.sort(
-    function(a,b) {
+  exercises.sort(function(a, b) {
 
-      return a.name.localeCompare(
-        b.name,
-        "es"
-      );
+    return a.name.localeCompare(
+      b.name,
+      "es"
+    );
 
-    }
-  );
+  });
 
 
   /* ---------------------------------
@@ -10094,27 +10027,24 @@ async function loadStudentExerciseEvolution(
 
         ${
           exercises
-            .map(
-              function(exercise) {
+            .map(function(exercise) {
 
-                return `
+              return `
 
-                  <option
-                    value="${escapeWorkoutHtml(
-                      exercise.id
-                    )}"
-                  >
-                    ${escapeWorkoutHtml(
-                      exercise.name
-                    )}
-                  </option>
+                <option
+                  value="${escapeWorkoutHtml(
+                    exercise.id
+                  )}"
+                >
+                  ${escapeWorkoutHtml(
+                    exercise.name
+                  )}
+                </option>
 
-                `;
+              `;
 
-              }
-            )
+            })
             .join("")
-
         }
 
       </select>
@@ -10159,9 +10089,7 @@ async function loadStudentExerciseEvolution(
     !select ||
     !evolutionContainer
   ) {
-
     return;
-
   }
 
 
@@ -10193,7 +10121,6 @@ async function loadStudentExerciseEvolution(
         `;
 
         return;
-
       }
 
 
@@ -10224,29 +10151,25 @@ function renderSelectedExerciseEvolution(
 ) {
 
   const exercise =
-    exercises.find(
-      function(item) {
+    exercises.find(function(item) {
 
-        return (
-          String(item.id) ===
-          String(exerciseId)
-        );
+      return (
+        String(item.id) ===
+        String(exerciseId)
+      );
 
-      }
-    );
+    });
 
 
   const exerciseLogs =
-    logs.filter(
-      function(log) {
+    logs.filter(function(log) {
 
-        return (
-          String(log.exercise_id) ===
-          String(exerciseId)
-        );
+      return (
+        String(log.exercise_id) ===
+        String(exerciseId)
+      );
 
-      }
-    );
+    });
 
 
   if (
@@ -10266,7 +10189,6 @@ function renderSelectedExerciseEvolution(
     `;
 
     return;
-
   }
 
 
@@ -10277,28 +10199,26 @@ function renderSelectedExerciseEvolution(
   const sessionData = {};
 
 
-  exerciseLogs.forEach(
-    function(log) {
+  exerciseLogs.forEach(function(log) {
 
-      if (
-        !sessionData[
-          log.session_id
-        ]
-      ) {
-
-        sessionData[
-          log.session_id
-        ] = [];
-
-      }
-
+    if (
+      !sessionData[
+        log.session_id
+      ]
+    ) {
 
       sessionData[
         log.session_id
-      ].push(log);
+      ] = [];
 
     }
-  );
+
+
+    sessionData[
+      log.session_id
+    ].push(log);
+
+  });
 
 
   /* ---------------------------------
@@ -10307,149 +10227,140 @@ function renderSelectedExerciseEvolution(
 
   const evolution =
     sessions
-      .filter(
-        function(session) {
+      .filter(function(session) {
 
-          return (
-            sessionData[
-              session.id
-            ]
-          );
+        return Boolean(
+          sessionData[
+            session.id
+          ]
+        );
 
-        }
-      )
-      .map(
-        function(session) {
+      })
+      .map(function(session) {
 
-          const rows =
-            sessionData[
-              session.id
-            ];
+        const rows =
+          sessionData[
+            session.id
+          ];
 
 
-          /* -----------------------------
-             CARGAS
-          ------------------------------ */
+        /* -----------------------------
+           CARGAS
+        ------------------------------ */
 
-          const numericLoads =
-            rows
-              .map(
-                function(row) {
+        const numericLoads =
+          rows
+            .map(function(row) {
 
-                  const value =
-                    parseFloat(
-                      row.load
-                    );
+              const value =
+                parseFloat(
+                  row.load
+                );
 
 
-                  return isNaN(value)
-                    ? null
-                    : value;
+              return isNaN(value)
+                ? null
+                : value;
 
-                }
-              )
-              .filter(
-                function(value) {
+            })
+            .filter(function(value) {
 
-                  return (
-                    value !== null
-                  );
-
-                }
+              return (
+                value !== null
               );
 
+            });
 
-          const maxLoad =
-            numericLoads.length
-              ? Math.max(
-                  ...numericLoads
+
+        const maxLoad =
+          numericLoads.length
+            ? Math.max(
+                ...numericLoads
+              )
+            : null;
+
+
+        /* -----------------------------
+           REPETICIONES
+        ------------------------------ */
+
+        const totalReps =
+          rows.reduce(
+            function(total, row) {
+
+              const reps =
+                Number(
+                  row.reps
+                );
+
+
+              return (
+                total +
+                (
+                  isNaN(reps)
+                    ? 0
+                    : reps
                 )
-              : null;
+              );
+
+            },
+            0
+          );
 
 
-          /* -----------------------------
-             REPETICIONES
-          ------------------------------ */
+        /* -----------------------------
+           SERIES COMPLETADAS
+        ------------------------------ */
 
-          const totalReps =
-            rows.reduce(
-              function(
-                total,
-                row
-              ) {
+        const completedSets =
+          rows.filter(
+            function(row) {
 
-                const reps =
-                  Number(
-                    row.reps
-                  );
+              return (
+                row.completed ===
+                true
+              );
 
-
-                return (
-                  total +
-                  (
-                    isNaN(reps)
-                      ? 0
-                      : reps
-                  )
-                );
-
-              },
-              0
-            );
+            }
+          ).length;
 
 
-          /* -----------------------------
-             SERIES COMPLETADAS
-          ------------------------------ */
+        return {
 
-          const completedSets =
-            rows.filter(
-              function(row) {
+          sessionId:
+            session.id,
 
-                return (
-                  row.completed ===
-                  true
-                );
+          date:
+            session.finished_at
 
-              }
-            ).length;
+              ? new Date(
+                  session.finished_at
+                ).toLocaleDateString(
+                  "es-AR",
+                  {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                  }
+                )
 
+              : "SIN FECHA",
 
-          return {
+          maxLoad:
+            maxLoad,
 
-            sessionId:
-              session.id,
+          totalReps:
+            totalReps,
 
-            date:
-              session.finished_at
-                ? new Date(
-                    session.finished_at
-                  ).toLocaleDateString(
-                    "es-AR",
-                    {
-                      day:"2-digit",
-                      month:"2-digit",
-                      year:"numeric"
-                    }
-                  )
-                : "SIN FECHA",
+          sets:
+            rows.length,
 
-            maxLoad:
-              maxLoad,
+          completedSets:
+            completedSets
 
-            totalReps:
-              totalReps,
+        };
 
-            sets:
-              rows.length,
-
-            completedSets:
-              completedSets
-
-          };
-
-        }
-      );
+      });
 
 
   /* ---------------------------------
@@ -10458,22 +10369,18 @@ function renderSelectedExerciseEvolution(
 
   const allLoads =
     evolution
-      .map(
-        function(item) {
+      .map(function(item) {
 
-          return item.maxLoad;
+        return item.maxLoad;
 
-        }
-      )
-      .filter(
-        function(value) {
+      })
+      .filter(function(value) {
 
-          return (
-            value !== null
-          );
+        return (
+          value !== null
+        );
 
-        }
-      );
+      });
 
 
   const bestLoad =
@@ -10588,7 +10495,9 @@ function renderSelectedExerciseEvolution(
             ${
               last &&
               last.maxLoad !== null
+
                 ? last.maxLoad
+
                 : "—"
             }
           </strong>
@@ -10610,9 +10519,7 @@ function renderSelectedExerciseEvolution(
       ${
         evolution.length === 0
 
-          ?
-
-          `
+          ? `
 
             <div class="detail-value">
               NO HAY DATOS DE EVOLUCIÓN.
@@ -10620,13 +10527,10 @@ function renderSelectedExerciseEvolution(
 
           `
 
-          :
-
-          evolution
-            .slice()
-            .reverse()
-            .map(
-              function(item) {
+          : evolution
+              .slice()
+              .reverse()
+              .map(function(item) {
 
                 return `
 
@@ -10665,8 +10569,10 @@ function renderSelectedExerciseEvolution(
 
                           ${
                             item.maxLoad !== null
+
                               ? item.maxLoad +
                                 " CARGA MÁX."
+
                               : "SIN CARGA"
                           }
 
@@ -10700,10 +10606,8 @@ function renderSelectedExerciseEvolution(
 
                 `;
 
-              }
-            )
-            .join("")
-
+              })
+              .join("")
       }
 
     </div>
@@ -10711,445 +10615,6 @@ function renderSelectedExerciseEvolution(
   `;
 
 }
-    
-/* =====================================
-   MOSTRAR EVOLUCIÓN DE EJERCICIO
-====================================== */
-
-function renderSelectedExerciseEvolution(
-  exerciseId,
-  exercises,
-  sessions,
-  logs,
-  container
-) {
-
-  const exercise =
-    exercises.find(
-      function(item) {
-
-        return (
-          String(item.id) ===
-          String(exerciseId)
-        );
-
-      }
-    );
-
-
-  const exerciseLogs =
-    logs.filter(
-      function(log) {
-
-        return (
-          String(log.exercise_id) ===
-          String(exerciseId)
-        );
-
-      }
-    );
-
-
-  if (
-    exerciseLogs.length === 0
-  ) {
-
-    container.innerHTML = `
-
-      <div class="student-card">
-
-        <div class="detail-value">
-          NO HAY REGISTROS PARA ESTE EJERCICIO.
-        </div>
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-
-  /* ---------------------------------
-     AGRUPAR POR SESIÓN
-  --------------------------------- */
-
-  const sessionData = {};
-
-
-  exerciseLogs.forEach(
-    function(log) {
-
-      if (
-        !sessionData[
-          log.session_id
-        ]
-      ) {
-
-        sessionData[
-          log.session_id
-        ] = [];
-
-      }
-
-
-      sessionData[
-        log.session_id
-      ].push(log);
-
-    }
-  );
-
-
-  const evolution =
-    sessions
-      .filter(
-        function(session) {
-
-          return (
-            sessionData[
-              session.id
-            ]
-          );
-
-        }
-      )
-      .map(
-        function(session) {
-
-          const rows =
-            sessionData[
-              session.id
-            ];
-
-
-          const numericLoads =
-            rows
-              .map(
-                function(row) {
-
-                  const value =
-                    parseFloat(
-                      row.load
-                    );
-
-                  return isNaN(value)
-                    ? null
-                    : value;
-
-                }
-              )
-              .filter(
-                function(value) {
-
-                  return value !== null;
-
-                }
-              );
-
-
-          const maxLoad =
-            numericLoads.length
-              ? Math.max(
-                  ...numericLoads
-                )
-              : null;
-
-
-          const totalReps =
-            rows.reduce(
-              function(total,row) {
-
-                const reps =
-                  Number(
-                    row.reps
-                  );
-
-
-                return (
-                  total +
-                  (
-                    isNaN(reps)
-                      ? 0
-                      : reps
-                  )
-                );
-
-              },
-              0
-            );
-
-
-          const completedSets =
-            rows.filter(
-              function(row) {
-
-                return (
-                  row.completed ===
-                  true
-                );
-
-              }
-            ).length;
-
-
-          return {
-
-            sessionId:
-              session.id,
-
-            date:
-              session.finished_at
-                ? new Date(
-                    session.finished_at
-                  ).toLocaleDateString(
-                    "es-AR",
-                    {
-                      day:"2-digit",
-                      month:"2-digit",
-                      year:"numeric"
-                    }
-                  )
-                : "SIN FECHA",
-
-            maxLoad:
-              maxLoad,
-
-            totalReps:
-              totalReps,
-
-            sets:
-              rows.length,
-
-            completedSets:
-              completedSets
-
-          };
-
-        }
-      );
-
-
-  const allLoads =
-    evolution
-      .map(
-        function(item) {
-          return item.maxLoad;
-        }
-      )
-      .filter(
-        function(value) {
-          return value !== null;
-        }
-      );
-
-
-  const bestLoad =
-    allLoads.length
-      ? Math.max(
-          ...allLoads
-        )
-      : null;
-
-
-  const last =
-    evolution.length
-      ? evolution[
-          evolution.length - 1
-        ]
-      : null;
-
-
-  container.innerHTML = `
-
-    <div class="student-card">
-
-      <div class="eyebrow">
-        EVOLUCIÓN
-      </div>
-
-      <h2
-        style="
-          margin-top:4px;
-          font-family:Anton,sans-serif;
-          font-size:30px;
-          text-transform:uppercase;
-        "
-      >
-        ${escapeWorkoutHtml(
-          exercise
-            ? exercise.name
-            : "EJERCICIO"
-        )}
-      </h2>
-
-
-      <div
-        style="
-          display:grid;
-          grid-template-columns:
-            repeat(2,minmax(0,1fr));
-          gap:10px;
-          margin-top:16px;
-        "
-      >
-
-        <div
-          style="
-            background:#111;
-            border:1px solid #222;
-            padding:14px;
-          "
-        >
-
-          <div class="menu-label">
-            MEJOR CARGA
-          </div>
-
-          <strong
-            style="
-              display:block;
-              margin-top:7px;
-              font-size:22px;
-            "
-          >
-            ${
-              bestLoad !== null
-                ? bestLoad
-                : "—"
-            }
-          </strong>
-
-        </div>
-
-
-        <div
-          style="
-            background:#111;
-            border:1px solid #222;
-            padding:14px;
-          "
-        >
-
-          <div class="menu-label">
-            ÚLTIMA CARGA
-          </div>
-
-          <strong
-            style="
-              display:block;
-              margin-top:7px;
-              font-size:22px;
-            "
-          >
-            ${
-              last &&
-              last.maxLoad !== null
-                ? last.maxLoad
-                : "—"
-            }
-          </strong>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="workout-section-label">
-      HISTORIAL DEL EJERCICIO
-    </div>
-
-
-    <div class="student-card">
-
-      ${
-        evolution
-          .slice()
-          .reverse()
-          .map(
-            function(item) {
-
-              return `
-
-                <div
-                  style="
-                    padding:14px 0;
-                    border-bottom:1px solid #222;
-                  "
-                >
-
-                  <div
-                    style="
-                      display:flex;
-                      justify-content:space-between;
-                      gap:12px;
-                      align-items:center;
-                    "
-                  >
-
-                    <div>
-
-                      <div class="menu-label">
-                        ${escapeWorkoutHtml(
-                          item.date
-                        )}
-                      </div>
-
-                      <div
-                        style="
-                          margin-top:5px;
-                          font-size:14px;
-                          font-weight:800;
-                        "
-                      >
-                        ${
-                          item.maxLoad !== null
-                            ? item.maxLoad +
-                              " CARGA MÁX."
-                            : "SIN CARGA"
-                        }
-                      </div>
-
-                    </div>
-
-
-                    <div
-                      style="
-                        text-align:right;
-                        color:#777;
-                        font-size:10px;
-                        line-height:1.6;
-                      "
-                    >
-
-                      ${item.sets}
-                      SERIES
-
-                      <br>
-
-                      ${item.totalReps}
-                      REPS
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              `;
-
-            }
-          )
-          .join("")
-
-      }
-
-    </div>
-
-  `;
-
 
   /* ---------------------------------
      RESPONSIVE
