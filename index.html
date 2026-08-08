@@ -4611,7 +4611,7 @@ async function openStudentHome() {
 
 }
 
- /* =====================================
+/* =====================================
    ABRIR ENTRENAMIENTO DE ALUMNA
 ===================================== */
 
@@ -4624,6 +4624,7 @@ function openStudentWorkoutDay(
     document.getElementById(
       "student-home-screen"
     );
+
 
   if (studentHomeScreen) {
     studentHomeScreen.style.display =
@@ -4664,6 +4665,590 @@ function openStudentWorkoutDay(
       ? day.exercises
       : [];
 
+
+  /* =====================================
+     CONSTRUIR EJERCICIOS
+  ===================================== */
+
+  let exercisesHtml = "";
+
+
+  exercises.forEach(
+    function(
+      exercise,
+      exerciseIndex
+    ) {
+
+      const weeks =
+        Array.isArray(exercise.weeks)
+          ? exercise.weeks
+          : [];
+
+
+      const firstWeek =
+        weeks[0] || {};
+
+
+      const seriesCount =
+        parseInt(firstWeek.series) || 1;
+
+
+      /* =====================================
+         CONSTRUIR SERIES
+      ===================================== */
+
+      let seriesHtml = "";
+
+
+      for (
+        let seriesIndex = 0;
+        seriesIndex < seriesCount;
+        seriesIndex++
+      ) {
+
+        seriesHtml += `
+
+          <div
+            class="student-series-row"
+            data-series-index="${seriesIndex}"
+            style="
+              display:grid;
+              grid-template-columns:
+                42px
+                1fr
+                1fr
+                1fr
+                44px;
+              gap:6px;
+              align-items:end;
+              padding:10px 0;
+              border-bottom:1px solid #181818;
+            "
+          >
+
+            <div
+              style="
+                color:#777;
+                font-size:9px;
+                font-weight:900;
+                padding-bottom:9px;
+              "
+            >
+              S${seriesIndex + 1}
+            </div>
+
+
+            <div>
+
+              <div
+                style="
+                  color:#555;
+                  font-size:7px;
+                  font-weight:900;
+                  margin-bottom:4px;
+                "
+              >
+                REPS
+              </div>
+
+              <input
+                type="number"
+                min="0"
+                class="student-series-reps"
+                placeholder="${escapeWorkoutHtml(
+                  firstWeek.reps || "—"
+                )}"
+                style="
+                  width:100%;
+                  box-sizing:border-box;
+                  background:#111;
+                  border:1px solid #292929;
+                  color:#fff;
+                  padding:9px 7px;
+                  font-size:11px;
+                "
+              >
+
+            </div>
+
+
+            <div>
+
+              <div
+                style="
+                  color:#555;
+                  font-size:7px;
+                  font-weight:900;
+                  margin-bottom:4px;
+                "
+              >
+                CARGA
+              </div>
+
+              <input
+                type="text"
+                class="student-series-load"
+                placeholder="${escapeWorkoutHtml(
+                  firstWeek.load || "—"
+                )}"
+                style="
+                  width:100%;
+                  box-sizing:border-box;
+                  background:#111;
+                  border:1px solid #292929;
+                  color:#fff;
+                  padding:9px 7px;
+                  font-size:11px;
+                "
+              >
+
+            </div>
+
+
+            <div>
+
+              <div
+                style="
+                  color:#555;
+                  font-size:7px;
+                  font-weight:900;
+                  margin-bottom:4px;
+                "
+              >
+                RPE
+              </div>
+
+              <input
+                type="number"
+                min="0"
+                max="10"
+                step="0.5"
+                class="student-series-rpe"
+                placeholder="${escapeWorkoutHtml(
+                  firstWeek.rpe || "—"
+                )}"
+                style="
+                  width:100%;
+                  box-sizing:border-box;
+                  background:#111;
+                  border:1px solid #292929;
+                  color:#fff;
+                  padding:9px 7px;
+                  font-size:11px;
+                "
+              >
+
+            </div>
+
+
+            <button
+              type="button"
+              class="student-series-complete"
+              style="
+                width:40px;
+                height:40px;
+                border:1px solid #333;
+                background:#111;
+                color:#555;
+                font-size:17px;
+                cursor:pointer;
+              "
+              title="Marcar serie completada"
+            >
+              ✓
+            </button>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* =====================================
+         DESCANSO / TEMPO
+      ===================================== */
+
+      let restTempoHtml = "";
+
+
+      if (
+        firstWeek.rest ||
+        firstWeek.tempo
+      ) {
+
+        restTempoHtml = `
+
+          <div
+            style="
+              display:flex;
+              flex-wrap:wrap;
+              gap:8px;
+              margin-top:12px;
+            "
+          >
+
+            ${
+              firstWeek.rest
+                ? `
+                  <div
+                    style="
+                      color:#aaa;
+                      background:#111;
+                      border:1px solid #222;
+                      padding:9px 11px;
+                      font-size:9px;
+                      font-weight:800;
+                    "
+                  >
+                    DESCANSO:
+                    ${escapeWorkoutHtml(
+                      firstWeek.rest
+                    )}
+                  </div>
+                `
+                : ""
+            }
+
+
+            ${
+              firstWeek.tempo
+                ? `
+                  <div
+                    style="
+                      color:#aaa;
+                      background:#111;
+                      border:1px solid #222;
+                      padding:9px 11px;
+                      font-size:9px;
+                      font-weight:800;
+                    "
+                  >
+                    TEMPO:
+                    ${escapeWorkoutHtml(
+                      firstWeek.tempo
+                    )}
+                  </div>
+                `
+                : ""
+            }
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* =====================================
+         EJERCICIO COMPLETO
+      ===================================== */
+
+      exercisesHtml += `
+
+        <div
+          class="student-card"
+          style="
+            margin-bottom:14px;
+            border-left:3px solid #E60000;
+          "
+        >
+
+          <div>
+
+            <div
+              style="
+                color:#E60000;
+                font-size:9px;
+                font-weight:900;
+                letter-spacing:2px;
+                margin-bottom:7px;
+              "
+            >
+              EJERCICIO
+              ${exerciseIndex + 1}
+            </div>
+
+
+            <div
+              style="
+                color:#fff;
+                font-family:'Anton',sans-serif;
+                font-size:30px;
+                line-height:1;
+                text-transform:uppercase;
+              "
+            >
+              ${escapeWorkoutHtml(
+                exercise.name ||
+                "EJERCICIO"
+              )}
+            </div>
+
+          </div>
+
+
+          <!-- VARIABLES PROGRAMADAS -->
+
+          <div
+            style="
+              display:grid;
+              grid-template-columns:
+                repeat(2,minmax(0,1fr));
+              gap:8px;
+              margin-top:18px;
+            "
+          >
+
+            <div
+              style="
+                background:#111;
+                border:1px solid #252525;
+                padding:12px;
+              "
+            >
+
+              <div
+                style="
+                  color:#777;
+                  font-size:8px;
+                  font-weight:900;
+                  letter-spacing:1.5px;
+                "
+              >
+                SERIES
+              </div>
+
+              <div
+                style="
+                  color:#fff;
+                  font-size:18px;
+                  font-weight:900;
+                  margin-top:5px;
+                "
+              >
+                ${escapeWorkoutHtml(
+                  firstWeek.series ||
+                  "—"
+                )}
+              </div>
+
+            </div>
+
+
+            <div
+              style="
+                background:#111;
+                border:1px solid #252525;
+                padding:12px;
+              "
+            >
+
+              <div
+                style="
+                  color:#777;
+                  font-size:8px;
+                  font-weight:900;
+                  letter-spacing:1.5px;
+                "
+              >
+                REPETICIONES
+              </div>
+
+              <div
+                style="
+                  color:#fff;
+                  font-size:18px;
+                  font-weight:900;
+                  margin-top:5px;
+                "
+              >
+                ${escapeWorkoutHtml(
+                  firstWeek.reps ||
+                  "—"
+                )}
+              </div>
+
+            </div>
+
+
+            <div
+              style="
+                background:#111;
+                border:1px solid #252525;
+                padding:12px;
+              "
+            >
+
+              <div
+                style="
+                  color:#777;
+                  font-size:8px;
+                  font-weight:900;
+                  letter-spacing:1.5px;
+                "
+              >
+                RPE / RIR
+              </div>
+
+              <div
+                style="
+                  color:#fff;
+                  font-size:18px;
+                  font-weight:900;
+                  margin-top:5px;
+                "
+              >
+                ${escapeWorkoutHtml(
+                  firstWeek.rpe ||
+                  "—"
+                )}
+              </div>
+
+            </div>
+
+
+            <div
+              style="
+                background:#111;
+                border:1px solid #252525;
+                padding:12px;
+              "
+            >
+
+              <div
+                style="
+                  color:#777;
+                  font-size:8px;
+                  font-weight:900;
+                  letter-spacing:1.5px;
+                "
+              >
+                CARGA / %
+              </div>
+
+              <div
+                style="
+                  color:#fff;
+                  font-size:18px;
+                  font-weight:900;
+                  margin-top:5px;
+                "
+              >
+                ${escapeWorkoutHtml(
+                  firstWeek.load ||
+                  "—"
+                )}
+              </div>
+
+            </div>
+
+          </div>
+
+
+          ${restTempoHtml}
+
+
+          <!-- REGISTRO REAL -->
+
+          <div
+            class="student-series-log"
+            data-exercise-index="${exerciseIndex}"
+            style="
+              margin-top:18px;
+              padding-top:16px;
+              border-top:1px solid #222;
+            "
+          >
+
+            <div
+              style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:10px;
+                margin-bottom:12px;
+              "
+            >
+
+              <div
+                style="
+                  color:#fff;
+                  font-size:9px;
+                  font-weight:900;
+                  letter-spacing:1.5px;
+                "
+              >
+                REGISTRO REAL
+              </div>
+
+
+              <div
+                class="exercise-progress"
+                style="
+                  color:#E60000;
+                  font-size:9px;
+                  font-weight:900;
+                "
+              >
+                0 / ${seriesCount}
+              </div>
+
+            </div>
+
+
+            <div class="series-list">
+
+              ${seriesHtml}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  /* =====================================
+     CONTENIDO SIN EJERCICIOS
+  ===================================== */
+
+  if (exercises.length === 0) {
+
+    exercisesHtml = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          ESTE DÍA NO TIENE EJERCICIOS.
+        </div>
+
+        <p
+          style="
+            color:#777;
+            font-size:11px;
+            line-height:1.6;
+            margin-top:8px;
+          "
+        >
+          Todavía no hay ejercicios cargados
+          para este entrenamiento.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =====================================
+     PANTALLA
+  ===================================== */
 
   studentWorkoutScreen.innerHTML = `
 
@@ -4732,13 +5317,14 @@ function openStudentWorkoutDay(
             font-size:10px;
             font-weight:800;
             letter-spacing:1px;
-            white-space:nowrap;
           "
         >
           ${exercises.length}
-          ${exercises.length === 1
-            ? "EJERCICIO"
-            : "EJERCICIOS"}
+          ${
+            exercises.length === 1
+              ? "EJERCICIO"
+              : "EJERCICIOS"
+          }
         </div>
 
       </div>
@@ -4749,616 +5335,35 @@ function openStudentWorkoutDay(
         class="workout-days"
       >
 
-        ${
-          exercises.length === 0
-
-            ?
-
-            `
-
-            <div class="student-card">
-
-              <div class="detail-value">
-                ESTE DÍA NO TIENE EJERCICIOS.
-              </div>
-
-              <p
-                style="
-                  color:#777;
-                  font-size:11px;
-                  line-height:1.6;
-                  margin-top:8px;
-                "
-              >
-                Todavía no hay ejercicios cargados
-                para este entrenamiento.
-              </p>
-
-            </div>
-
-            `
-
-            :
-
-            exercises.map(
-              function(
-                exercise,
-                exerciseIndex
-              ) {
-
-                const weeks =
-                  Array.isArray(
-                    exercise.weeks
-                  )
-                    ? exercise.weeks
-                    : [];
-
-
-                const firstWeek =
-                  weeks[0] || {};
-
-
-                return `
-
-                  <div
-                    class="student-card"
-                    style="
-                      margin-bottom:14px;
-                      border-left:3px solid #E60000;
-                    "
-                  >
-
-                    <!-- CABECERA EJERCICIO -->
-
-                    <div
-                      style="
-                        display:flex;
-                        justify-content:space-between;
-                        align-items:flex-start;
-                        gap:12px;
-                      "
-                    >
-
-                      <div>
-
-                        <div
-                          style="
-                            color:#E60000;
-                            font-size:9px;
-                            font-weight:900;
-                            letter-spacing:2px;
-                            margin-bottom:7px;
-                          "
-                        >
-                          EJERCICIO
-                          ${exerciseIndex + 1}
-                        </div>
-
-
-                        <div
-                          style="
-                            color:#fff;
-                            font-family:'Anton',sans-serif;
-                            font-size:30px;
-                            line-height:1;
-                            text-transform:uppercase;
-                          "
-                        >
-                          ${escapeWorkoutHtml(
-                            exercise.name ||
-                            "EJERCICIO"
-                          )}
-                        </div>
-
-                      </div>
-
-                    </div>
-
-
-                    <!-- VARIABLES -->
-
-                    <div
-                      style="
-                        display:grid;
-                        grid-template-columns:
-                          repeat(2,minmax(0,1fr));
-                        gap:8px;
-                        margin-top:18px;
-                      "
-                    >
-
-                      <div
-                        style="
-                          background:#111;
-                          border:1px solid #252525;
-                          padding:12px;
-                        "
-                      >
-
-                        <div
-                          style="
-                            color:#777;
-                            font-size:8px;
-                            font-weight:900;
-                            letter-spacing:1.5px;
-                          "
-                        >
-                          SERIES
-                        </div>
-
-                        <div
-                          style="
-                            color:#fff;
-                            font-size:18px;
-                            font-weight:900;
-                            margin-top:5px;
-                          "
-                        >
-                          ${escapeWorkoutHtml(
-                            firstWeek.series ||
-                            "—"
-                          )}
-                        </div>
-
-                      </div>
-
-
-                      <div
-                        style="
-                          background:#111;
-                          border:1px solid #252525;
-                          padding:12px;
-                        "
-                      >
-
-                        <div
-                          style="
-                            color:#777;
-                            font-size:8px;
-                            font-weight:900;
-                            letter-spacing:1.5px;
-                          "
-                        >
-                          REPETICIONES
-                        </div>
-
-                        <div
-                          style="
-                            color:#fff;
-                            font-size:18px;
-                            font-weight:900;
-                            margin-top:5px;
-                          "
-                        >
-                          ${escapeWorkoutHtml(
-                            firstWeek.reps ||
-                            "—"
-                          )}
-                        </div>
-
-                      </div>
-
-
-                      <div
-                        style="
-                          background:#111;
-                          border:1px solid #252525;
-                          padding:12px;
-                        "
-                      >
-
-                        <div
-                          style="
-                            color:#777;
-                            font-size:8px;
-                            font-weight:900;
-                            letter-spacing:1.5px;
-                          "
-                        >
-                          RPE / RIR
-                        </div>
-
-                        <div
-                          style="
-                            color:#fff;
-                            font-size:18px;
-                            font-weight:900;
-                            margin-top:5px;
-                          "
-                        >
-                          ${escapeWorkoutHtml(
-                            firstWeek.rpe ||
-                            "—"
-                          )}
-                        </div>
-
-                      </div>
-
-
-                      <div
-                        style="
-                          background:#111;
-                          border:1px solid #252525;
-                          padding:12px;
-                        "
-                      >
-
-                        <div
-                          style="
-                            color:#777;
-                            font-size:8px;
-                            font-weight:900;
-                            letter-spacing:1.5px;
-                          "
-                        >
-                          CARGA / %
-                        </div>
-
-                        <div
-                          style="
-                            color:#fff;
-                            font-size:18px;
-                            font-weight:900;
-                            margin-top:5px;
-                          "
-                        >
-                          ${escapeWorkoutHtml(
-                            firstWeek.load ||
-                            "—"
-                          )}
-                        </div>
-
-                      </div>
-
-                    </div>
-
-
-                    <!-- DESCANSO Y TEMPO -->
-
-                    ${
-                      firstWeek.rest ||
-                      firstWeek.tempo
-
-                        ?
-
-                        `
-
-                        <div
-                          style="
-                            display:flex;
-                            flex-wrap:wrap;
-                            gap:8px;
-                            margin-top:12px;
-                          "
-                        >
-
-                          ${
-                            firstWeek.rest
-                              ?
-
-                              `
-
-                              <div
-                                style="
-                                  color:#aaa;
-                                  background:#111;
-                                  border:1px solid #222;
-                                  padding:9px 11px;
-                                  font-size:9px;
-                                  font-weight:800;
-                                  letter-spacing:.5px;
-                                "
-                              >
-                                DESCANSO:
-                                ${escapeWorkoutHtml(
-                                  firstWeek.rest
-                                )}
-                              </div>
-
-                              `
-
-                              :
-
-                              ""
-                          }
-
-
-                          ${
-                            firstWeek.tempo
-                              ?
-
-                              `
-
-                              <div
-                                style="
-                                  color:#aaa;
-                                  background:#111;
-                                  border:1px solid #222;
-                                  padding:9px 11px;
-                                  font-size:9px;
-                                  font-weight:800;
-                                  letter-spacing:.5px;
-                                "
-                              >
-                                TEMPO:
-                                ${escapeWorkoutHtml(
-                                  firstWeek.tempo
-                                )}
-                              </div>
-
-                              `
-
-                              :
-
-                              ""
-                          }
-
-                        </div>
-
-                        `
-
-                        :
-
-                        ""
-                    }
-
-
-<!-- REGISTRO DE SERIES -->
-
-<div
-  class="student-series-log"
-  data-exercise-index="${exerciseIndex}"
-  style="
-    margin-top:18px;
-    padding-top:16px;
-    border-top:1px solid #222;
-  "
->
-
-  <div
-    style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom:12px;
-    "
-  >
-
-    <div
-      style="
-        color:#fff;
-        font-size:9px;
-        font-weight:900;
-        letter-spacing:1.5px;
-      "
-    >
-      REGISTRO REAL
-    </div>
-
-    <div
-      class="exercise-progress"
-      style="
-        color:#E60000;
-        font-size:9px;
-        font-weight:900;
-      "
-    >
-      0 / ${parseInt(firstWeek.series) || 1}
-    </div>
-
-  </div>
-
-
-  <div
-    class="series-list"
-  >
-
-    ${
-      Array.from(
-        {
-          length:
-            parseInt(firstWeek.series) || 1
-        },
-        function(_, seriesIndex) {
-
-          return `
-
-            <div
-              class="student-series-row"
-              data-series-index="${seriesIndex}"
-              style="
-                display:grid;
-                grid-template-columns:
-                  42px
-                  1fr
-                  1fr
-                  1fr
-                  44px;
-                gap:6px;
-                align-items:end;
-                padding:10px 0;
-                border-bottom:1px solid #181818;
-              "
-            >
-
-              <div
-                style="
-                  color:#777;
-                  font-size:9px;
-                  font-weight:900;
-                  padding-bottom:9px;
-                "
-              >
-                S${seriesIndex + 1}
-              </div>
-
-
-              <div>
-
-                <div
-                  style="
-                    color:#555;
-                    font-size:7px;
-                    font-weight:900;
-                    margin-bottom:4px;
-                  "
-                >
-                  REPS
-                </div>
-
-                <input
-                  type="number"
-                  min="0"
-                  class="student-series-reps"
-                  placeholder="${
-                    firstWeek.reps || "—"
-                  }"
-                  style="
-                    width:100%;
-                    box-sizing:border-box;
-                    background:#111;
-                    border:1px solid #292929;
-                    color:#fff;
-                    padding:9px 7px;
-                    font-size:11px;
-                  "
-                >
-
-              </div>
-
-
-              <div>
-
-                <div
-                  style="
-                    color:#555;
-                    font-size:7px;
-                    font-weight:900;
-                    margin-bottom:4px;
-                  "
-                >
-                  CARGA
-                </div>
-
-                <input
-                  type="text"
-                  class="student-series-load"
-                  placeholder="${
-                    firstWeek.load || "—"
-                  }"
-                  style="
-                    width:100%;
-                    box-sizing:border-box;
-                    background:#111;
-                    border:1px solid #292929;
-                    color:#fff;
-                    padding:9px 7px;
-                    font-size:11px;
-                  "
-                >
-
-              </div>
-
-
-              <div>
-
-                <div
-                  style="
-                    color:#555;
-                    font-size:7px;
-                    font-weight:900;
-                    margin-bottom:4px;
-                  "
-                >
-                  RPE
-                </div>
-
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  step="0.5"
-                  class="student-series-rpe"
-                  placeholder="${
-                    firstWeek.rpe || "—"
-                  }"
-                  style="
-                    width:100%;
-                    box-sizing:border-box;
-                    background:#111;
-                    border:1px solid #292929;
-                    color:#fff;
-                    padding:9px 7px;
-                    font-size:11px;
-                  "
-                >
-
-              </div>
-
-
-              <button
-                type="button"
-                class="student-series-complete"
-                style="
-                  width:40px;
-                  height:40px;
-                  border:1px solid #333;
-                  background:#111;
-                  color:#555;
-                  font-size:17px;
-                  cursor:pointer;
-                "
-                title="Marcar serie completada"
-              >
-                ✓
-              </button>
-
-            </div>
-
-          `;
-
-        }
-      ).join("")
-    }
-
-  </div>
-
-</div>
+        ${exercisesHtml}
 
       </div>
 
 
       ${
         exercises.length > 0
+          ? `
 
-          ?
-
-          `
-
-          <button
-            id="finish-student-workout-button"
-            type="button"
-            class="button"
-            style="
-              width:100%;
-              min-height:58px;
-              margin-top:8px;
-              border-color:#E60000;
-              background:#E60000;
-              color:#fff;
-              font-weight:900;
-              letter-spacing:1px;
-            "
-          >
-            FINALIZAR ENTRENAMIENTO
-          </button>
+            <button
+              id="finish-student-workout-button"
+              type="button"
+              class="button"
+              style="
+                width:100%;
+                min-height:58px;
+                margin-top:8px;
+                border-color:#E60000;
+                background:#E60000;
+                color:#fff;
+                font-weight:900;
+                letter-spacing:1px;
+              "
+            >
+              FINALIZAR ENTRENAMIENTO
+            </button>
 
           `
-
-          :
-
-          ""
+          : ""
       }
 
     </div>
@@ -5398,106 +5403,112 @@ function openStudentWorkoutDay(
 
   }
 
-/* =====================================
-   REGISTRAR SERIES
-===================================== */
 
-const seriesLogs =
-  studentWorkoutScreen.querySelectorAll(
-    ".student-series-log"
-  );
+  /* =====================================
+     REGISTRAR SERIES
+  ===================================== */
 
-
-seriesLogs.forEach(
-  function(log) {
-
-    const rows =
-      log.querySelectorAll(
-        ".student-series-row"
-      );
-
-    const progress =
-      log.querySelector(
-        ".exercise-progress"
-      );
-
-
-    function updateProgress() {
-
-      const completed =
-        log.querySelectorAll(
-          ".student-series-complete.completed"
-        ).length;
-
-      progress.textContent =
-        completed +
-        " / " +
-        rows.length;
-    }
-
-
-    rows.forEach(
-      function(row) {
-
-        const completeButton =
-          row.querySelector(
-            ".student-series-complete"
-          );
-
-
-        completeButton.addEventListener(
-          "click",
-          function() {
-
-            completeButton.classList.toggle(
-              "completed"
-            );
-
-
-            if (
-              completeButton.classList.contains(
-                "completed"
-              )
-            ) {
-
-              completeButton.style.background =
-                "#E60000";
-
-              completeButton.style.borderColor =
-                "#E60000";
-
-              completeButton.style.color =
-                "#fff";
-
-            } else {
-
-              completeButton.style.background =
-                "#111";
-
-              completeButton.style.borderColor =
-                "#333";
-
-              completeButton.style.color =
-                "#555";
-
-            }
-
-
-            updateProgress();
-
-          }
-        );
-
-      }
+  const seriesLogs =
+    studentWorkoutScreen.querySelectorAll(
+      ".student-series-log"
     );
 
 
-    updateProgress();
+  seriesLogs.forEach(
+    function(log) {
 
-  }
-);
+      const rows =
+        log.querySelectorAll(
+          ".student-series-row"
+        );
+
+
+      const progress =
+        log.querySelector(
+          ".exercise-progress"
+        );
+
+
+      function updateProgress() {
+
+        const completed =
+          log.querySelectorAll(
+            ".student-series-complete.completed"
+          ).length;
+
+
+        progress.textContent =
+          completed +
+          " / " +
+          rows.length;
+
+      }
+
+
+      rows.forEach(
+        function(row) {
+
+          const completeButton =
+            row.querySelector(
+              ".student-series-complete"
+            );
+
+
+          completeButton.addEventListener(
+            "click",
+            function() {
+
+              completeButton.classList.toggle(
+                "completed"
+              );
+
+
+              if (
+                completeButton.classList.contains(
+                  "completed"
+                )
+              ) {
+
+                completeButton.style.background =
+                  "#E60000";
+
+                completeButton.style.borderColor =
+                  "#E60000";
+
+                completeButton.style.color =
+                  "#fff";
+
+              } else {
+
+                completeButton.style.background =
+                  "#111";
+
+                completeButton.style.borderColor =
+                  "#333";
+
+                completeButton.style.color =
+                  "#555";
+
+              }
+
+
+              updateProgress();
+
+            }
+          );
+
+        }
+      );
+
+
+      updateProgress();
+
+    }
+  );
+
+
   /* =====================================
-     FINALIZAR
+     FINALIZAR ENTRENAMIENTO
   ===================================== */
 
   const finishButton =
@@ -5521,7 +5532,7 @@ seriesLogs.forEach(
 
   }
 
-)}
+}
     
 /* =====================================
    CARGAR RUTINAS DE UNA ALUMNA
