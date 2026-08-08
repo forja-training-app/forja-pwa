@@ -5510,29 +5510,410 @@ function openStudentWorkoutDay(
   /* =====================================
      FINALIZAR ENTRENAMIENTO
   ===================================== */
+/* =====================================
+   FINALIZAR Y GUARDAR ENTRENAMIENTO
+===================================== */
 
-  const finishButton =
-    document.getElementById(
-      "finish-student-workout-button"
-    );
+const finishButton =
+  document.getElementById(
+    "finish-student-workout-button"
+  );
 
 
-  if (finishButton) {
+if (finishButton) {
 
-    finishButton.addEventListener(
-      "click",
-      function() {
+  finishButton.addEventListener(
+    "click",
+    async function() {
 
-        alert(
-          "REGISTRO DE SERIES: PRÓXIMAMENTE."
+      /* ---------------------------------
+         EVITAR DOBLE ENVÍO
+      --------------------------------- */
+
+      if (
+        finishButton.dataset.saving === "true"
+      ) {
+        return;
+      }
+
+
+      finishButton.dataset.saving =
+        "true";
+
+
+      const originalText =
+        finishButton.textContent;
+
+
+      finishButton.disabled =
+        true;
+
+
+      finishButton.textContent =
+        "GUARDANDO ENTRENAMIENTO...";
+
+
+      try {
+
+        /* ---------------------------------
+           USUARIO ACTUAL
+        --------------------------------- */
+
+        const {
+          data: {
+            user
+          },
+          error: userError
+        } =
+          await supabaseClient.auth.getUser();
+
+
+        if (
+          userError ||
+          !user
+        ) {
+
+          throw new Error(
+            "NO HAY UNA SESIÓN ACTIVA."
+          );
+
+        }
+
+
+        /* ---------------------------------
+           CREAR SESIÓN
+        --------------------------------- */
+
+        const {
+          data: session,
+          error: sessionError
+        } =
+          await supabaseClient
+            .from(
+              "workout_sessions"
+            )
+            .insert({
+
+              student_id:
+                currentStudent.id,
+
+              workout_id:
+                workout.id,
+
+              day_id:
+                String(day.id),
+
+              started_at:
+                new Date().toISOString(),
+
+              finished_at:
+                new Date().toISOString(),
+
+              status:
+                "completed"
+
+            })
+            .select()
+            .single();
+
+
+        if (sessionError) {
+
+          console.error(
+            "Error creando sesión:",
+            sessionError
+          );
+
+          throw new Error(
+            sessionError.message ||
+            "NO SE PUDO GUARDAR LA SESIÓN."
+          );
+
+        }
+
+
+        /* ---------------------------------
+           BUSCAR TODAS LAS SERIES
+        --------------------------------- */
+
+        const seriesRows =
+          studentWorkoutScreen.querySelectorAll(
+            ".student-series-row"
+          );
+
+
+        const logs = [];
+
+
+        seriesRows.forEach(
+          function(row) {
+
+            const exerciseLog =
+              row.closest(
+                ".student-series-log"
+              );
+
+
+            if (!exerciseLog) {
+              return;
+            }
+
+
+            const exerciseIndex =
+              Number(
+                exerciseLog.dataset.exerciseIndex
+              );
+
+
+            const exercise =
+              exercises[exerciseIndex];
+
+
+            if (!exercise) {
+              return;
+            }
+
+
+            const repsInput =
+              row.querySelector(
+                ".student-series-reps"
+              );
+
+
+            const loadInput =
+              row.querySelector(
+                ".student-series-load"
+              );
+
+
+            const rpeInput =
+              row.querySelector(
+                ".student-series-rpe"
+              );
+
+
+            const completeButton =
+              row.querySelector(
+                ".student-series-complete"
+              );
+
+
+            const seriesIndex =
+              Number(
+                row.dataset.seriesIndex
+              );
+
+
+            const reps =
+              repsInput
+                ? repsInput.value.trim()
+                : "";
+
+
+            const load =
+              loadInput
+                ? loadInput.value.trim()
+                : "";
+
+
+            const rpeValue =
+              rpeInput
+                ? rpeInput.value.trim()
+                : "";
+
+
+            const completed =
+              completeButton
+                ? completeButton.classList.contains(
+                    "completed"
+                  )
+                : false;
+
+
+            /*
+             * Guardamos la serie aunque
+             * esté incompleta.
+             *
+             * Así después podemos saber
+             * qué hizo realmente la alumna.
+             */
+
+            logs.push({
+
+              session_id:
+                session.id,
+
+              exercise_id:
+                String(
+                  exercise.id ||
+                  exerciseIndex
+                ),
+
+              series_number:
+                seriesIndex + 1,
+
+              reps:
+                reps === ""
+                  ? null
+                  : Number(reps),
+
+              load:
+                load === ""
+                  ? null
+                  : load,
+
+              rpe:
+                rpeValue === ""
+                  ? null
+                  : Number(rpeValue),
+
+              completed:
+                completed
+
+            });
+
+          }
         );
 
-      }
-    );
 
-  }
+        /* ---------------------------------
+           GUARDAR SERIES
+        --------------------------------- */
+
+        if (logs.length > 0) {
+
+          const {
+            error: logsError
+          } =
+            await supabaseClient
+              .from(
+                "workout_set_logs"
+              )
+              .insert(
+                logs
+              );
+
+
+          if (logsError) {
+
+            console.error(
+              "Error guardando series:",
+              logsError
+            );
+
+
+            /*
+             * Si fallan las series,
+             * eliminamos la sesión para
+             * no dejar un registro incompleto.
+             */
+
+            await supabaseClient
+              .from(
+                "workout_sessions"
+              )
+              .delete()
+              .eq(
+                "id",
+                session.id
+              );
+
+
+            throw new Error(
+              logsError.message ||
+              "NO SE PUDIERON GUARDAR LAS SERIES."
+            );
+
+          }
+
+        }
+
+
+        /* ---------------------------------
+           ÉXITO
+        --------------------------------- */
+
+        finishButton.textContent =
+          "✓ ENTRENAMIENTO GUARDADO";
+
+
+        finishButton.style.background =
+          "#111";
+
+
+        finishButton.style.borderColor =
+          "#E60000";
+
+
+        finishButton.style.color =
+          "#ffffff";
+
+
+        alert(
+          "✓ ENTRENAMIENTO REGISTRADO CORRECTAMENTE."
+        );
+
+
+        /* ---------------------------------
+           VOLVER A INICIO ALUMNA
+        --------------------------------- */
+
+        setTimeout(
+          function() {
+
+            studentWorkoutScreen.style.display =
+              "none";
+
+
+            if (studentHomeScreen) {
+
+              studentHomeScreen.style.display =
+                "block";
+
+            }
+
+          },
+          500
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Error finalizando entrenamiento:",
+          error
+        );
+
+
+        alert(
+          "NO SE PUDO GUARDAR EL ENTRENAMIENTO.\n\n" +
+          (
+            error &&
+            error.message
+              ? error.message
+              : "ERROR DESCONOCIDO."
+          )
+        );
+
+
+        finishButton.dataset.saving =
+          "false";
+
+
+        finishButton.disabled =
+          false;
+
+
+        finishButton.textContent =
+          originalText;
+
+      }
+
+    }
+  );
 
 }
+
     
 /* =====================================
    CARGAR RUTINAS DE UNA ALUMNA
