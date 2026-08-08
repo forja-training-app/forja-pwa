@@ -9161,6 +9161,10 @@ async function loadStudentProgress(student) {
   }
 
 
+  /* ---------------------------------
+     CARGANDO
+  --------------------------------- */
+
   container.innerHTML = `
 
     <div class="student-card">
@@ -9176,6 +9180,10 @@ async function loadStudentProgress(student) {
 
   `;
 
+
+  /* ---------------------------------
+     BUSCAR SESIONES
+  --------------------------------- */
 
   const {
     data: sessions,
@@ -9237,8 +9245,13 @@ async function loadStudentProgress(student) {
     `;
 
     return;
+
   }
 
+
+  /* ---------------------------------
+     RESUMEN
+  --------------------------------- */
 
   const total =
     sessions
@@ -9284,6 +9297,10 @@ async function loadStudentProgress(student) {
       : "—";
 
 
+  /* ---------------------------------
+     HTML PRINCIPAL
+  --------------------------------- */
+
   container.innerHTML = `
 
     <div
@@ -9297,6 +9314,7 @@ async function loadStudentProgress(student) {
       <div class="eyebrow">
         PROGRESO DE ALUMNA
       </div>
+
 
       <h2
         style="
@@ -9315,6 +9333,10 @@ async function loadStudentProgress(student) {
 
     </div>
 
+
+    <!-- ==============================
+         RESUMEN
+    =============================== -->
 
     <div
       class="progress-summary-grid"
@@ -9335,7 +9357,9 @@ async function loadStudentProgress(student) {
 
         <div
           class="detail-value"
-          style="margin-top:8px;"
+          style="
+            margin-top:8px;
+          "
         >
           ${total}
         </div>
@@ -9351,7 +9375,9 @@ async function loadStudentProgress(student) {
 
         <div
           class="detail-value"
-          style="margin-top:8px;"
+          style="
+            margin-top:8px;
+          "
         >
           ${completed}
         </div>
@@ -9379,22 +9405,38 @@ async function loadStudentProgress(student) {
 
     </div>
 
-<div class="workout-section-label">
-  EVOLUCIÓN
-</div>
 
-<div
-  id="progress-evolution-content"
-  style="margin-bottom:24px;"
->
-  <div class="student-card">
+    <!-- ==============================
+         EVOLUCIÓN
+    =============================== -->
 
-    <div class="detail-value">
-      CARGANDO EVOLUCIÓN...
+    <div class="workout-section-label">
+      EVOLUCIÓN
     </div>
 
-  </div>
-</div>
+
+    <div
+      id="progress-evolution-content"
+      style="
+        margin-bottom:20px;
+      "
+    >
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          CARGANDO EVOLUCIÓN...
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         HISTORIAL
+    =============================== -->
+
     <div class="workout-section-label">
       HISTORIAL
     </div>
@@ -9410,9 +9452,10 @@ async function loadStudentProgress(student) {
 
           `
 
-          <div class="detail-value">
-            TODAVÍA NO HAY ENTRENAMIENTOS REGISTRADOS.
-          </div>
+            <div class="detail-value">
+              TODAVÍA NO HAY ENTRENAMIENTOS
+              REGISTRADOS.
+            </div>
 
           `
 
@@ -9444,7 +9487,9 @@ async function loadStudentProgress(student) {
 
                   <button
                     type="button"
-                    class="student-training-history-button"
+                    class="
+                      student-training-history-button
+                    "
                     data-session-id="${escapeWorkoutHtml(
                       session.id
                     )}"
@@ -9479,7 +9524,9 @@ async function loadStudentProgress(student) {
 
                         <div
                           class="detail-value"
-                          style="margin-top:5px;"
+                          style="
+                            margin-top:5px;
+                          "
                         >
                           ${escapeWorkoutHtml(
                             date
@@ -9508,6 +9555,7 @@ async function loadStudentProgress(student) {
                           COMPLETADO
                         </span>
 
+
                         <span
                           style="
                             color:#777;
@@ -9534,21 +9582,41 @@ async function loadStudentProgress(student) {
     </div>
 
   `;
+
+
+  /* ---------------------------------
+     CARGAR EVOLUCIÓN
+  --------------------------------- */
+
+  await loadStudentExerciseEvolution(
+    student
+  );
+
+}
+
+
 /* =====================================
    EVOLUCIÓN DE EJERCICIOS
 ====================================== */
 
-async function loadStudentExerciseEvolution(student) {
+async function loadStudentExerciseEvolution(
+  student
+) {
 
   const container =
     document.getElementById(
       "progress-evolution-content"
     );
 
+
   if (!container) {
     return;
   }
 
+
+  /* ---------------------------------
+     CARGANDO
+  --------------------------------- */
 
   container.innerHTML = `
 
@@ -9567,7 +9635,7 @@ async function loadStudentExerciseEvolution(student) {
 
 
   /* ---------------------------------
-     BUSCAR SESIONES
+     BUSCAR SESIONES COMPLETADAS
   --------------------------------- */
 
   const {
@@ -9605,6 +9673,7 @@ async function loadStudentExerciseEvolution(student) {
       sessionsError
     );
 
+
     container.innerHTML = `
 
       <div class="student-card">
@@ -9631,6 +9700,7 @@ async function loadStudentExerciseEvolution(student) {
     `;
 
     return;
+
   }
 
 
@@ -9652,10 +9722,12 @@ async function loadStudentExerciseEvolution(student) {
             color:#777;
             font-size:10px;
             margin-top:8px;
+            line-height:1.6;
           "
         >
-          CUANDO LA ALUMNA COMPLETE ENTRENAMIENTOS,
-          ACÁ VAMOS A PODER VER SU EVOLUCIÓN.
+          CUANDO LA ALUMNA COMPLETE
+          ENTRENAMIENTOS, ACÁ VAMOS A PODER
+          VER SU EVOLUCIÓN.
         </p>
 
       </div>
@@ -9663,6 +9735,7 @@ async function loadStudentExerciseEvolution(student) {
     `;
 
     return;
+
   }
 
 
@@ -9673,15 +9746,19 @@ async function loadStudentExerciseEvolution(student) {
   const sessionIds =
     sessions.map(
       function(session) {
+
         return session.id;
+
       }
     );
 
-console.log(
-  "EVOLUCIÓN: buscando series",
-  sessionIds
-);
-  
+
+  console.log(
+    "EVOLUCIÓN: buscando series",
+    sessionIds
+  );
+
+
   const {
     data: logs,
     error: logsError
@@ -9707,11 +9784,13 @@ console.log(
           ascending:true
         }
       );
-  
-console.log(
-  "EVOLUCIÓN: series recibidas",
-  logs
-);
+
+
+  console.log(
+    "EVOLUCIÓN: series recibidas",
+    logs
+  );
+
 
   if (logsError) {
 
@@ -9719,6 +9798,7 @@ console.log(
       "Error cargando registros para evolución:",
       logsError
     );
+
 
     container.innerHTML = `
 
@@ -9746,6 +9826,7 @@ console.log(
     `;
 
     return;
+
   }
 
 
@@ -9767,6 +9848,7 @@ console.log(
     `;
 
     return;
+
   }
 
 
@@ -9779,7 +9861,9 @@ console.log(
       sessions
         .map(
           function(session) {
+
             return session.workout_id;
+
           }
         )
         .filter(Boolean)
@@ -9790,7 +9874,9 @@ console.log(
   let workouts = [];
 
 
-  if (workoutIds.length > 0) {
+  if (
+    workoutIds.length > 0
+  ) {
 
     const {
       data,
@@ -9854,7 +9940,10 @@ console.log(
 
 
           exercises.forEach(
-            function(exercise, index) {
+            function(
+              exercise,
+              index
+            ) {
 
               const exerciseId =
                 String(
@@ -9950,7 +10039,24 @@ console.log(
     `;
 
     return;
+
   }
+
+
+  /* ---------------------------------
+     ORDENAR EJERCICIOS
+  --------------------------------- */
+
+  exercises.sort(
+    function(a,b) {
+
+      return a.name.localeCompare(
+        b.name,
+        "es"
+      );
+
+    }
+  );
 
 
   /* ---------------------------------
@@ -9964,6 +10070,7 @@ console.log(
       <div class="menu-label">
         EJERCICIO
       </div>
+
 
       <select
         id="progress-exercise-select"
@@ -9984,18 +10091,9 @@ console.log(
           SELECCIONÁ UN EJERCICIO
         </option>
 
+
         ${
           exercises
-            .sort(
-              function(a,b) {
-
-                return a.name.localeCompare(
-                  b.name,
-                  "es"
-                );
-
-              }
-            )
             .map(
               function(exercise) {
 
@@ -10026,13 +10124,16 @@ console.log(
 
     <div
       id="selected-exercise-evolution"
-      style="margin-top:14px;"
+      style="
+        margin-top:14px;
+      "
     >
 
       <div class="student-card">
 
         <div class="detail-value">
-          SELECCIONÁ UN EJERCICIO PARA VER SU EVOLUCIÓN.
+          SELECCIONÁ UN EJERCICIO
+          PARA VER SU EVOLUCIÓN.
         </div>
 
       </div>
@@ -10054,6 +10155,16 @@ console.log(
     );
 
 
+  if (
+    !select ||
+    !evolutionContainer
+  ) {
+
+    return;
+
+  }
+
+
   /* ---------------------------------
      CAMBIO DE EJERCICIO
   --------------------------------- */
@@ -10073,7 +10184,8 @@ console.log(
           <div class="student-card">
 
             <div class="detail-value">
-              SELECCIONÁ UN EJERCICIO PARA VER SU EVOLUCIÓN.
+              SELECCIONÁ UN EJERCICIO
+              PARA VER SU EVOLUCIÓN.
             </div>
 
           </div>
@@ -10081,6 +10193,7 @@ console.log(
         `;
 
         return;
+
       }
 
 
@@ -10098,6 +10211,507 @@ console.log(
 }
 
 
+/* =====================================
+   MOSTRAR EVOLUCIÓN DE EJERCICIO
+====================================== */
+
+function renderSelectedExerciseEvolution(
+  exerciseId,
+  exercises,
+  sessions,
+  logs,
+  container
+) {
+
+  const exercise =
+    exercises.find(
+      function(item) {
+
+        return (
+          String(item.id) ===
+          String(exerciseId)
+        );
+
+      }
+    );
+
+
+  const exerciseLogs =
+    logs.filter(
+      function(log) {
+
+        return (
+          String(log.exercise_id) ===
+          String(exerciseId)
+        );
+
+      }
+    );
+
+
+  if (
+    exerciseLogs.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO HAY REGISTROS PARA ESTE EJERCICIO.
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /* ---------------------------------
+     AGRUPAR POR SESIÓN
+  --------------------------------- */
+
+  const sessionData = {};
+
+
+  exerciseLogs.forEach(
+    function(log) {
+
+      if (
+        !sessionData[
+          log.session_id
+        ]
+      ) {
+
+        sessionData[
+          log.session_id
+        ] = [];
+
+      }
+
+
+      sessionData[
+        log.session_id
+      ].push(log);
+
+    }
+  );
+
+
+  /* ---------------------------------
+     CREAR EVOLUCIÓN
+  --------------------------------- */
+
+  const evolution =
+    sessions
+      .filter(
+        function(session) {
+
+          return (
+            sessionData[
+              session.id
+            ]
+          );
+
+        }
+      )
+      .map(
+        function(session) {
+
+          const rows =
+            sessionData[
+              session.id
+            ];
+
+
+          /* -----------------------------
+             CARGAS
+          ------------------------------ */
+
+          const numericLoads =
+            rows
+              .map(
+                function(row) {
+
+                  const value =
+                    parseFloat(
+                      row.load
+                    );
+
+
+                  return isNaN(value)
+                    ? null
+                    : value;
+
+                }
+              )
+              .filter(
+                function(value) {
+
+                  return (
+                    value !== null
+                  );
+
+                }
+              );
+
+
+          const maxLoad =
+            numericLoads.length
+              ? Math.max(
+                  ...numericLoads
+                )
+              : null;
+
+
+          /* -----------------------------
+             REPETICIONES
+          ------------------------------ */
+
+          const totalReps =
+            rows.reduce(
+              function(
+                total,
+                row
+              ) {
+
+                const reps =
+                  Number(
+                    row.reps
+                  );
+
+
+                return (
+                  total +
+                  (
+                    isNaN(reps)
+                      ? 0
+                      : reps
+                  )
+                );
+
+              },
+              0
+            );
+
+
+          /* -----------------------------
+             SERIES COMPLETADAS
+          ------------------------------ */
+
+          const completedSets =
+            rows.filter(
+              function(row) {
+
+                return (
+                  row.completed ===
+                  true
+                );
+
+              }
+            ).length;
+
+
+          return {
+
+            sessionId:
+              session.id,
+
+            date:
+              session.finished_at
+                ? new Date(
+                    session.finished_at
+                  ).toLocaleDateString(
+                    "es-AR",
+                    {
+                      day:"2-digit",
+                      month:"2-digit",
+                      year:"numeric"
+                    }
+                  )
+                : "SIN FECHA",
+
+            maxLoad:
+              maxLoad,
+
+            totalReps:
+              totalReps,
+
+            sets:
+              rows.length,
+
+            completedSets:
+              completedSets
+
+          };
+
+        }
+      );
+
+
+  /* ---------------------------------
+     MEJOR CARGA
+  --------------------------------- */
+
+  const allLoads =
+    evolution
+      .map(
+        function(item) {
+
+          return item.maxLoad;
+
+        }
+      )
+      .filter(
+        function(value) {
+
+          return (
+            value !== null
+          );
+
+        }
+      );
+
+
+  const bestLoad =
+    allLoads.length
+      ? Math.max(
+          ...allLoads
+        )
+      : null;
+
+
+  /* ---------------------------------
+     ÚLTIMA CARGA
+  --------------------------------- */
+
+  const last =
+    evolution.length
+      ? evolution[
+          evolution.length - 1
+        ]
+      : null;
+
+
+  /* ---------------------------------
+     MOSTRAR RESULTADO
+  --------------------------------- */
+
+  container.innerHTML = `
+
+    <div class="student-card">
+
+      <div class="eyebrow">
+        EVOLUCIÓN
+      </div>
+
+
+      <h2
+        style="
+          margin-top:4px;
+          font-family:Anton,sans-serif;
+          font-size:30px;
+          text-transform:uppercase;
+        "
+      >
+        ${escapeWorkoutHtml(
+          exercise
+            ? exercise.name
+            : "EJERCICIO"
+        )}
+      </h2>
+
+
+      <div
+        style="
+          display:grid;
+          grid-template-columns:
+            repeat(2,minmax(0,1fr));
+          gap:10px;
+          margin-top:16px;
+        "
+      >
+
+        <div
+          style="
+            background:#111;
+            border:1px solid #222;
+            padding:14px;
+          "
+        >
+
+          <div class="menu-label">
+            MEJOR CARGA
+          </div>
+
+
+          <strong
+            style="
+              display:block;
+              margin-top:7px;
+              font-size:22px;
+            "
+          >
+            ${
+              bestLoad !== null
+                ? bestLoad
+                : "—"
+            }
+          </strong>
+
+        </div>
+
+
+        <div
+          style="
+            background:#111;
+            border:1px solid #222;
+            padding:14px;
+          "
+        >
+
+          <div class="menu-label">
+            ÚLTIMA CARGA
+          </div>
+
+
+          <strong
+            style="
+              display:block;
+              margin-top:7px;
+              font-size:22px;
+            "
+          >
+            ${
+              last &&
+              last.maxLoad !== null
+                ? last.maxLoad
+                : "—"
+            }
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="workout-section-label">
+      HISTORIAL DEL EJERCICIO
+    </div>
+
+
+    <div class="student-card">
+
+      ${
+        evolution.length === 0
+
+          ?
+
+          `
+
+            <div class="detail-value">
+              NO HAY DATOS DE EVOLUCIÓN.
+            </div>
+
+          `
+
+          :
+
+          evolution
+            .slice()
+            .reverse()
+            .map(
+              function(item) {
+
+                return `
+
+                  <div
+                    style="
+                      padding:14px 0;
+                      border-bottom:1px solid #222;
+                    "
+                  >
+
+                    <div
+                      style="
+                        display:flex;
+                        justify-content:space-between;
+                        gap:12px;
+                        align-items:center;
+                      "
+                    >
+
+                      <div>
+
+                        <div class="menu-label">
+                          ${escapeWorkoutHtml(
+                            item.date
+                          )}
+                        </div>
+
+
+                        <div
+                          style="
+                            margin-top:5px;
+                            font-size:14px;
+                            font-weight:800;
+                          "
+                        >
+
+                          ${
+                            item.maxLoad !== null
+                              ? item.maxLoad +
+                                " CARGA MÁX."
+                              : "SIN CARGA"
+                          }
+
+                        </div>
+
+                      </div>
+
+
+                      <div
+                        style="
+                          text-align:right;
+                          color:#777;
+                          font-size:10px;
+                          line-height:1.6;
+                        "
+                      >
+
+                        ${item.sets}
+                        SERIES
+
+                        <br>
+
+                        ${item.totalReps}
+                        REPS
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                `;
+
+              }
+            )
+            .join("")
+
+      }
+
+    </div>
+
+  `;
+
+}
+    
 /* =====================================
    MOSTRAR EVOLUCIÓN DE EJERCICIO
 ====================================== */
