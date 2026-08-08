@@ -8853,19 +8853,683 @@ function viewPublishedWorkout(
     /* =====================================
        PROGRESO
     ====================================== */
+/* =====================================
+   PROGRESO
+====================================== */
 
-    document
-      .getElementById("progress-button")
-      .addEventListener(
-        "click",
-        function() {
+async function openProgressScreen() {
 
-          alert(
-            "Próximamente: seguimiento del progreso de tus alumnas."
-          );
+  const trainerPanel =
+    document.getElementById(
+      "trainer-panel"
+    );
+
+  if (trainerPanel) {
+    trainerPanel.style.display =
+      "none";
+  }
+
+
+  let progressScreen =
+    document.getElementById(
+      "progress-screen"
+    );
+
+
+  if (!progressScreen) {
+
+    progressScreen =
+      document.createElement(
+        "section"
+      );
+
+    progressScreen.id =
+      "progress-screen";
+
+    progressScreen.className =
+      "students-screen";
+
+    document.body.appendChild(
+      progressScreen
+    );
+
+  }
+
+
+  progressScreen.style.display =
+    "block";
+
+
+  progressScreen.innerHTML = `
+
+    <div class="students-header">
+
+      <button
+        id="back-from-progress"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER
+      </button>
+
+      <div class="eyebrow">
+        SEGUIMIENTO
+      </div>
+
+      <h1>
+        PROGRESO
+      </h1>
+
+      <p>
+        SEGUIMIENTO DE TUS ALUMNAS
+      </p>
+
+    </div>
+
+
+    <div
+      style="
+        max-width:1100px;
+        margin:0 auto;
+      "
+    >
+
+      <div class="student-card">
+
+        <div class="menu-label">
+          ALUMNA
+        </div>
+
+        <select
+          id="progress-student-select"
+          style="
+            width:100%;
+            margin-top:10px;
+            background:#111;
+            border:1px solid #292929;
+            color:#fff;
+            padding:14px;
+            font-family:Montserrat,sans-serif;
+            font-size:12px;
+            outline:none;
+          "
+        >
+
+          <option value="">
+            SELECCIONÁ UNA ALUMNA
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="progress-content"
+        style="margin-top:20px;"
+      >
+
+        <div class="student-card">
+
+          <div class="detail-value">
+            SELECCIONÁ UNA ALUMNA PARA VER SU PROGRESO.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  const backButton =
+    document.getElementById(
+      "back-from-progress"
+    );
+
+
+  if (backButton) {
+
+    backButton.addEventListener(
+      "click",
+      function() {
+
+        progressScreen.style.display =
+          "none";
+
+        if (trainerPanel) {
+
+          trainerPanel.style.display =
+            "block";
 
         }
+
+      }
+    );
+
+  }
+
+
+  const select =
+    document.getElementById(
+      "progress-student-select"
+    );
+
+
+  const {
+    data: students,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq(
+        "role",
+        "student"
+      )
+      .order(
+        "full_name",
+        {
+          ascending:true
+        }
       );
+
+
+  if (error) {
+
+    console.error(
+      "Error cargando alumnas:",
+      error
+    );
+
+    select.innerHTML = `
+      <option value="">
+        ERROR CARGANDO ALUMNAS
+      </option>
+    `;
+
+    return;
+  }
+
+
+  if (
+    !students ||
+    students.length === 0
+  ) {
+
+    select.innerHTML = `
+      <option value="">
+        NO HAY ALUMNAS CARGADAS
+      </option>
+    `;
+
+    return;
+  }
+
+
+  students.forEach(
+    function(student) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        student.id;
+
+      option.textContent =
+        student.full_name ||
+        student.email ||
+        "ALUMNA";
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  select.addEventListener(
+    "change",
+    async function() {
+
+      const student =
+        students.find(
+          function(item) {
+
+            return (
+              item.id ===
+              select.value
+            );
+
+          }
+        );
+
+
+      if (!student) {
+
+        document
+          .getElementById(
+            "progress-content"
+          )
+          .innerHTML = `
+
+            <div class="student-card">
+
+              <div class="detail-value">
+                SELECCIONÁ UNA ALUMNA PARA VER SU PROGRESO.
+              </div>
+
+            </div>
+
+          `;
+
+        return;
+      }
+
+
+      await loadStudentProgress(
+        student
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================
+   CARGAR PROGRESO DE ALUMNA
+====================================== */
+
+async function loadStudentProgress(
+  student
+) {
+
+  const container =
+    document.getElementById(
+      "progress-content"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML = `
+
+    <div class="student-card">
+
+      <p
+        class="workouts-loading"
+        style="margin:0;"
+      >
+        CARGANDO PROGRESO...
+      </p>
+
+    </div>
+
+  `;
+
+
+  const {
+    data: sessions,
+    error
+  } =
+    await supabaseClient
+      .from("workout_sessions")
+      .select(`
+        id,
+        workout_id,
+        day_id,
+        started_at,
+        finished_at,
+        status
+      `)
+      .eq(
+        "student_id",
+        student.id
+      )
+      .order(
+        "finished_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Error cargando progreso:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO SE PUDO CARGAR EL PROGRESO.
+        </div>
+
+        <p
+          style="
+            color:#777;
+            font-size:10px;
+            margin-top:8px;
+          "
+        >
+          ${escapeWorkoutHtml(
+            error.message ||
+            "Error desconocido"
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  const total =
+    sessions
+      ? sessions.length
+      : 0;
+
+
+  const completed =
+    sessions
+      ? sessions.filter(
+          function(session) {
+
+            return (
+              session.status ===
+              "completed"
+            );
+
+          }
+        ).length
+      : 0;
+
+
+  const lastSession =
+    sessions &&
+    sessions.length
+      ? sessions[0]
+      : null;
+
+
+  const lastDate =
+    lastSession &&
+    lastSession.finished_at
+      ? new Date(
+          lastSession.finished_at
+        ).toLocaleDateString(
+          "es-AR",
+          {
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric"
+          }
+        )
+      : "—";
+
+
+  container.innerHTML = `
+
+    <div
+      class="students-header"
+      style="
+        padding-top:20px;
+        border-bottom:0;
+      "
+    >
+
+      <div class="eyebrow">
+        PROGRESO DE ALUMNA
+      </div>
+
+      <h2
+        style="
+          margin:0;
+          font-family:Anton,sans-serif;
+          font-size:42px;
+          line-height:.95;
+          text-transform:uppercase;
+        "
+      >
+        ${escapeWorkoutHtml(
+          student.full_name ||
+          "ALUMNA"
+        )}
+      </h2>
+
+    </div>
+
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          repeat(3,minmax(0,1fr));
+        gap:10px;
+        margin-bottom:20px;
+      "
+    >
+
+      <div class="student-card">
+
+        <div class="menu-label">
+          ENTRENAMIENTOS
+        </div>
+
+        <div
+          class="detail-value"
+          style="margin-top:8px;"
+        >
+          ${total}
+        </div>
+
+      </div>
+
+
+      <div class="student-card">
+
+        <div class="menu-label">
+          COMPLETADOS
+        </div>
+
+        <div
+          class="detail-value"
+          style="margin-top:8px;"
+        >
+          ${completed}
+        </div>
+
+      </div>
+
+
+      <div class="student-card">
+
+        <div class="menu-label">
+          ÚLTIMO
+        </div>
+
+        <div
+          class="detail-value"
+          style="
+            margin-top:8px;
+            font-size:16px;
+          "
+        >
+          ${lastDate}
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="workout-section-label">
+      HISTORIAL
+    </div>
+
+
+    <div class="student-card">
+
+      ${
+        !sessions ||
+        sessions.length === 0
+
+          ?
+
+          `
+
+          <div class="detail-value">
+            TODAVÍA NO HAY ENTRENAMIENTOS REGISTRADOS.
+          </div>
+
+          `
+
+          :
+
+          sessions
+            .slice(0,10)
+            .map(
+              function(session) {
+
+                const date =
+                  session.finished_at
+                    ? new Date(
+                        session.finished_at
+                      ).toLocaleString(
+                        "es-AR",
+                        {
+                          day:"2-digit",
+                          month:"2-digit",
+                          year:"numeric",
+                          hour:"2-digit",
+                          minute:"2-digit"
+                        }
+                      )
+                    : "SIN FECHA";
+
+
+                return `
+
+                  <div
+                    style="
+                      padding:14px 0;
+                      border-bottom:1px solid #222;
+                    "
+                  >
+
+                    <div
+                      style="
+                        display:flex;
+                        justify-content:space-between;
+                        gap:12px;
+                      "
+                    >
+
+                      <div>
+
+                        <div class="menu-label">
+                          ENTRENAMIENTO
+                        </div>
+
+                        <div
+                          class="detail-value"
+                          style="margin-top:5px;"
+                        >
+                          ${escapeWorkoutHtml(
+                            date
+                          )}
+                        </div>
+
+                      </div>
+
+
+                      <div
+                        style="
+                          color:#E60000;
+                          font-size:9px;
+                          font-weight:900;
+                        "
+                      >
+                        COMPLETADO
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                `;
+
+              }
+            )
+            .join("")
+
+      }
+
+    </div>
+
+  `;
+
+
+  /* ---------------------------------
+     RESPONSIVE
+  --------------------------------- */
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+  style.textContent = `
+
+    @media (max-width:600px) {
+
+      #progress-content > div:nth-child(2) {
+        grid-template-columns:1fr !important;
+      }
+
+    }
+
+  `;
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
+/* =====================================
+   BOTÓN PROGRESO
+====================================== */
+
+document
+  .getElementById(
+    "progress-button"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      openProgressScreen();
+
+    }
+  );
 
 
     /* =====================================
