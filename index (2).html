@@ -9139,6 +9139,9 @@ async function openProgressScreen() {
     }
   );
 
+  await loadStudentExerciseEvolution(
+  student
+);
   
 }
 
@@ -9148,17 +9151,18 @@ async function openProgressScreen() {
 
 async function loadStudentProgress(student) {
 
-  const container = document.getElementById("progress-content");
+  const container =
+    document.getElementById(
+      "progress-content"
+    );
 
   if (!container) {
     return;
   }
 
-  /* ---------------------------------
-     CARGANDO
-  --------------------------------- */
 
   container.innerHTML = `
+
     <div class="student-card">
 
       <p
@@ -9169,30 +9173,34 @@ async function loadStudentProgress(student) {
       </p>
 
     </div>
+
   `;
 
-
-  /* ---------------------------------
-     BUSCAR SESIONES
-  --------------------------------- */
 
   const {
     data: sessions,
     error
-  } = await supabaseClient
-    .from("workout_sessions")
-    .select(`
-      id,
-      workout_id,
-      day_id,
-      started_at,
-      finished_at,
-      status
-    `)
-    .eq("student_id", student.id)
-    .order("finished_at", {
-      ascending: false
-    });
+  } =
+    await supabaseClient
+      .from("workout_sessions")
+      .select(`
+        id,
+        workout_id,
+        day_id,
+        started_at,
+        finished_at,
+        status
+      `)
+      .eq(
+        "student_id",
+        student.id
+      )
+      .order(
+        "finished_at",
+        {
+          ascending: false
+        }
+      );
 
 
   if (error) {
@@ -9201,6 +9209,7 @@ async function loadStudentProgress(student) {
       "Error cargando progreso:",
       error
     );
+
 
     container.innerHTML = `
 
@@ -9231,21 +9240,25 @@ async function loadStudentProgress(student) {
   }
 
 
-  /* ---------------------------------
-     RESUMEN
-  --------------------------------- */
+  const total =
+    sessions
+      ? sessions.length
+      : 0;
 
-  const total = sessions
-    ? sessions.length
-    : 0;
 
-  const completed = sessions
-    ? sessions.filter(function(session) {
+  const completed =
+    sessions
+      ? sessions.filter(
+          function(session) {
 
-        return session.status === "completed";
+            return (
+              session.status ===
+              "completed"
+            );
 
-      }).length
-    : 0;
+          }
+        ).length
+      : 0;
 
 
   const lastSession =
@@ -9258,24 +9271,18 @@ async function loadStudentProgress(student) {
   const lastDate =
     lastSession &&
     lastSession.finished_at
-
       ? new Date(
           lastSession.finished_at
         ).toLocaleDateString(
           "es-AR",
           {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric"
           }
         )
-
       : "—";
 
-
-  /* ---------------------------------
-     HTML PRINCIPAL
-  --------------------------------- */
 
   container.innerHTML = `
 
@@ -9309,10 +9316,6 @@ async function loadStudentProgress(student) {
     </div>
 
 
-    <!-- ==============================
-         RESUMEN
-    =============================== -->
-
     <div
       class="progress-summary-grid"
       style="
@@ -9332,9 +9335,7 @@ async function loadStudentProgress(student) {
 
         <div
           class="detail-value"
-          style="
-            margin-top:8px;
-          "
+          style="margin-top:8px;"
         >
           ${total}
         </div>
@@ -9350,9 +9351,7 @@ async function loadStudentProgress(student) {
 
         <div
           class="detail-value"
-          style="
-            margin-top:8px;
-          "
+          style="margin-top:8px;"
         >
           ${completed}
         </div>
@@ -9380,38 +9379,22 @@ async function loadStudentProgress(student) {
 
     </div>
 
+<div class="workout-section-label">
+  EVOLUCIÓN
+</div>
 
-    <!-- ==============================
-         EVOLUCIÓN
-    =============================== -->
+<div
+  id="progress-evolution-content"
+  style="margin-bottom:24px;"
+>
+  <div class="student-card">
 
-    <div class="workout-section-label">
-      EVOLUCIÓN
+    <div class="detail-value">
+      CARGANDO EVOLUCIÓN...
     </div>
 
-
-    <div
-      id="progress-evolution-content"
-      style="
-        margin-bottom:20px;
-      "
-    >
-
-      <div class="student-card">
-
-        <div class="detail-value">
-          CARGANDO EVOLUCIÓN...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ==============================
-         HISTORIAL
-    =============================== -->
-
+  </div>
+</div>
     <div class="workout-section-label">
       HISTORIAL
     </div>
@@ -9423,45 +9406,38 @@ async function loadStudentProgress(student) {
         !sessions ||
         sessions.length === 0
 
-          ? `
-
-            <div class="detail-value">
-              TODAVÍA NO HAY ENTRENAMIENTOS
-              REGISTRADOS.
-            </div>
+          ?
 
           `
 
-          : sessions
-              .slice(0, 10)
-              .map(function(session) {
+          <div class="detail-value">
+            TODAVÍA NO HAY ENTRENAMIENTOS REGISTRADOS.
+          </div>
+
+          `
+
+          :
+
+          sessions
+            .slice(0,10)
+            .map(
+              function(session) {
 
                 const date =
                   session.finished_at
-
                     ? new Date(
                         session.finished_at
                       ).toLocaleString(
                         "es-AR",
                         {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit"
+                          day:"2-digit",
+                          month:"2-digit",
+                          year:"numeric",
+                          hour:"2-digit",
+                          minute:"2-digit"
                         }
                       )
-
                     : "SIN FECHA";
-
-
-                const statusLabel =
-                  session.status === "completed"
-                    ? "COMPLETADO"
-                    : (
-                        session.status ||
-                        "EN CURSO"
-                      ).toUpperCase();
 
 
                 return `
@@ -9503,9 +9479,7 @@ async function loadStudentProgress(student) {
 
                         <div
                           class="detail-value"
-                          style="
-                            margin-top:5px;
-                          "
+                          style="margin-top:5px;"
                         >
                           ${escapeWorkoutHtml(
                             date
@@ -9531,9 +9505,7 @@ async function loadStudentProgress(student) {
                             font-weight:900;
                           "
                         >
-                          ${escapeWorkoutHtml(
-                            statusLabel
-                          )}
+                          COMPLETADO
                         </span>
 
                         <span
@@ -9553,96 +9525,15 @@ async function loadStudentProgress(student) {
 
                 `;
 
-              })
-              .join("")
+              }
+            )
+            .join("")
+
       }
 
     </div>
 
   `;
-
-
-  /* ---------------------------------
-     CARGAR EVOLUCIÓN
-  --------------------------------- */
-
-  await loadStudentExerciseEvolution(student);
-
-  /* ---------------------------------
-     ABRIR DETALLE DE ENTRENAMIENTO
-  --------------------------------- */
-
-  const historyButtons =
-    container.querySelectorAll(
-      ".student-training-history-button"
-    );
-
-  historyButtons.forEach(function(button) {
-
-    button.addEventListener(
-      "click",
-      async function() {
-
-        const sessionId =
-          button.dataset.sessionId;
-
-        const session =
-          sessions.find(function(item) {
-            return (
-              String(item.id) ===
-              String(sessionId)
-            );
-          });
-
-        if (!session) {
-          return;
-        }
-
-        await openStudentTrainingSessionDetail(
-          student,
-          session
-        );
-
-      }
-    );
-
-  });
-
-
-  /* ---------------------------------
-     RESPONSIVE
-  --------------------------------- */
-
-  if (
-    !document.getElementById(
-      "progress-responsive-style"
-    )
-  ) {
-
-    const style =
-      document.createElement("style");
-
-    style.id =
-      "progress-responsive-style";
-
-    style.textContent = `
-      @media (max-width:600px) {
-        .progress-summary-grid {
-          grid-template-columns:1fr !important;
-        }
-      }
-
-      .student-training-history-button:hover {
-        background:#0d0d0d !important;
-      }
-    `;
-
-    document.head.appendChild(style);
-  }
-
-}
-
-
 /* =====================================
    EVOLUCIÓN DE EJERCICIOS
 ====================================== */
@@ -9658,10 +9549,6 @@ async function loadStudentExerciseEvolution(student) {
     return;
   }
 
-
-  /* ---------------------------------
-     CARGANDO
-  --------------------------------- */
 
   container.innerHTML = `
 
@@ -9680,25 +9567,35 @@ async function loadStudentExerciseEvolution(student) {
 
 
   /* ---------------------------------
-     BUSCAR SESIONES COMPLETADAS
+     BUSCAR SESIONES
   --------------------------------- */
 
   const {
     data: sessions,
     error: sessionsError
-  } = await supabaseClient
-    .from("workout_sessions")
-    .select(`
-      id,
-      workout_id,
-      day_id,
-      finished_at
-    `)
-    .eq("student_id", student.id)
-    .eq("status", "completed")
-    .order("finished_at", {
-      ascending: true
-    });
+  } =
+    await supabaseClient
+      .from("workout_sessions")
+      .select(`
+        id,
+        workout_id,
+        day_id,
+        finished_at
+      `)
+      .eq(
+        "student_id",
+        student.id
+      )
+      .eq(
+        "status",
+        "completed"
+      )
+      .order(
+        "finished_at",
+        {
+          ascending:true
+        }
+      );
 
 
   if (sessionsError) {
@@ -9755,12 +9652,10 @@ async function loadStudentExerciseEvolution(student) {
             color:#777;
             font-size:10px;
             margin-top:8px;
-            line-height:1.6;
           "
         >
-          CUANDO LA ALUMNA COMPLETE
-          ENTRENAMIENTOS, ACÁ VAMOS A PODER
-          VER SU EVOLUCIÓN.
+          CUANDO LA ALUMNA COMPLETE ENTRENAMIENTOS,
+          ACÁ VAMOS A PODER VER SU EVOLUCIÓN.
         </p>
 
       </div>
@@ -9776,47 +9671,47 @@ async function loadStudentExerciseEvolution(student) {
   --------------------------------- */
 
   const sessionIds =
-    sessions.map(function(session) {
+    sessions.map(
+      function(session) {
+        return session.id;
+      }
+    );
 
-      return session.id;
-
-    });
-
-
-  console.log(
-    "EVOLUCIÓN: buscando series",
-    sessionIds
-  );
-
-
+console.log(
+  "EVOLUCIÓN: buscando series",
+  sessionIds
+);
+  
   const {
     data: logs,
     error: logsError
-  } = await supabaseClient
-    .from("workout_set_logs")
-    .select(`
-      session_id,
-      exercise_id,
-      series_number,
-      reps,
-      load,
-      rpe,
-      completed
-    `)
-    .in(
-      "session_id",
-      sessionIds
-    )
-    .order("series_number", {
-      ascending: true
-    });
-
-
-  console.log(
-    "EVOLUCIÓN: series recibidas",
-    logs
-  );
-
+  } =
+    await supabaseClient
+      .from("workout_set_logs")
+      .select(`
+        session_id,
+        exercise_id,
+        series_number,
+        reps,
+        load,
+        rpe,
+        completed
+      `)
+      .in(
+        "session_id",
+        sessionIds
+      )
+      .order(
+        "series_number",
+        {
+          ascending:true
+        }
+      );
+  
+console.log(
+  "EVOLUCIÓN: series recibidas",
+  logs
+);
 
   if (logsError) {
 
@@ -9882,11 +9777,11 @@ async function loadStudentExerciseEvolution(student) {
   const workoutIds = [
     ...new Set(
       sessions
-        .map(function(session) {
-
-          return session.workout_id;
-
-        })
+        .map(
+          function(session) {
+            return session.workout_id;
+          }
+        )
         .filter(Boolean)
     )
   ];
@@ -9900,13 +9795,14 @@ async function loadStudentExerciseEvolution(student) {
     const {
       data,
       error: workoutsError
-    } = await supabaseClient
-      .from("workouts")
-      .select("*")
-      .in(
-        "id",
-        workoutIds
-      );
+    } =
+      await supabaseClient
+        .from("workouts")
+        .select("*")
+        .in(
+          "id",
+          workoutIds
+        );
 
 
     if (workoutsError) {
@@ -9918,7 +9814,8 @@ async function loadStudentExerciseEvolution(student) {
 
     } else {
 
-      workouts = data || [];
+      workouts =
+        data || [];
 
     }
 
@@ -9932,64 +9829,69 @@ async function loadStudentExerciseEvolution(student) {
   const exerciseCatalog = {};
 
 
-  workouts.forEach(function(workout) {
+  workouts.forEach(
+    function(workout) {
 
-    const days =
-      workout &&
-      workout.plan &&
-      Array.isArray(
-        workout.plan.days
-      )
-        ? workout.plan.days
-        : [];
-
-
-    days.forEach(function(day) {
-
-      const exercises =
+      const days =
+        workout &&
+        workout.plan &&
         Array.isArray(
-          day.exercises
+          workout.plan.days
         )
-          ? day.exercises
+          ? workout.plan.days
           : [];
 
 
-      exercises.forEach(
-        function(exercise, index) {
+      days.forEach(
+        function(day) {
 
-          const exerciseId =
-            String(
-              exercise.id ||
-              index
-            );
+          const exercises =
+            Array.isArray(
+              day.exercises
+            )
+              ? day.exercises
+              : [];
 
 
-          if (
-            !exerciseCatalog[
-              exerciseId
-            ]
-          ) {
+          exercises.forEach(
+            function(exercise, index) {
 
-            exerciseCatalog[
-              exerciseId
-            ] = {
+              const exerciseId =
+                String(
+                  exercise.id ||
+                  index
+                );
 
-              id: exerciseId,
 
-              name:
-                exercise.name ||
-                "EJERCICIO"
+              if (
+                !exerciseCatalog[
+                  exerciseId
+                ]
+              ) {
 
-            };
+                exerciseCatalog[
+                  exerciseId
+                ] = {
 
-          }
+                  id:
+                    exerciseId,
+
+                  name:
+                    exercise.name ||
+                    "EJERCICIO"
+
+                };
+
+              }
+
+            }
+          );
 
         }
       );
 
-    });
-
-  });
+    }
+  );
 
 
   /* ---------------------------------
@@ -9998,33 +9900,37 @@ async function loadStudentExerciseEvolution(student) {
 
   const exerciseIds = [
     ...new Set(
-      logs.map(function(log) {
+      logs.map(
+        function(log) {
 
-        return String(
-          log.exercise_id
-        );
+          return String(
+            log.exercise_id
+          );
 
-      })
+        }
+      )
     )
   ];
 
 
   const exercises =
-    exerciseIds.map(function(id) {
+    exerciseIds.map(
+      function(id) {
 
-      return (
-        exerciseCatalog[id] || {
+        return (
+          exerciseCatalog[id] || {
 
-          id: id,
+            id:id,
 
-          name:
-            "EJERCICIO " +
-            id
+            name:
+              "EJERCICIO " +
+              id
 
-        }
-      );
+          }
+        );
 
-    });
+      }
+    );
 
 
   if (
@@ -10048,20 +9954,6 @@ async function loadStudentExerciseEvolution(student) {
 
 
   /* ---------------------------------
-     ORDENAR EJERCICIOS
-  --------------------------------- */
-
-  exercises.sort(function(a, b) {
-
-    return a.name.localeCompare(
-      b.name,
-      "es"
-    );
-
-  });
-
-
-  /* ---------------------------------
      SELECTOR
   --------------------------------- */
 
@@ -10072,7 +9964,6 @@ async function loadStudentExerciseEvolution(student) {
       <div class="menu-label">
         EJERCICIO
       </div>
-
 
       <select
         id="progress-exercise-select"
@@ -10093,27 +9984,39 @@ async function loadStudentExerciseEvolution(student) {
           SELECCIONÁ UN EJERCICIO
         </option>
 
-
         ${
           exercises
-            .map(function(exercise) {
+            .sort(
+              function(a,b) {
 
-              return `
+                return a.name.localeCompare(
+                  b.name,
+                  "es"
+                );
 
-                <option
-                  value="${escapeWorkoutHtml(
-                    exercise.id
-                  )}"
-                >
-                  ${escapeWorkoutHtml(
-                    exercise.name
-                  )}
-                </option>
+              }
+            )
+            .map(
+              function(exercise) {
 
-              `;
+                return `
 
-            })
+                  <option
+                    value="${escapeWorkoutHtml(
+                      exercise.id
+                    )}"
+                  >
+                    ${escapeWorkoutHtml(
+                      exercise.name
+                    )}
+                  </option>
+
+                `;
+
+              }
+            )
             .join("")
+
         }
 
       </select>
@@ -10123,16 +10026,13 @@ async function loadStudentExerciseEvolution(student) {
 
     <div
       id="selected-exercise-evolution"
-      style="
-        margin-top:14px;
-      "
+      style="margin-top:14px;"
     >
 
       <div class="student-card">
 
         <div class="detail-value">
-          SELECCIONÁ UN EJERCICIO
-          PARA VER SU EVOLUCIÓN.
+          SELECCIONÁ UN EJERCICIO PARA VER SU EVOLUCIÓN.
         </div>
 
       </div>
@@ -10154,14 +10054,6 @@ async function loadStudentExerciseEvolution(student) {
     );
 
 
-  if (
-    !select ||
-    !evolutionContainer
-  ) {
-    return;
-  }
-
-
   /* ---------------------------------
      CAMBIO DE EJERCICIO
   --------------------------------- */
@@ -10181,8 +10073,7 @@ async function loadStudentExerciseEvolution(student) {
           <div class="student-card">
 
             <div class="detail-value">
-              SELECCIONÁ UN EJERCICIO
-              PARA VER SU EVOLUCIÓN.
+              SELECCIONÁ UN EJERCICIO PARA VER SU EVOLUCIÓN.
             </div>
 
           </div>
@@ -10220,25 +10111,29 @@ function renderSelectedExerciseEvolution(
 ) {
 
   const exercise =
-    exercises.find(function(item) {
+    exercises.find(
+      function(item) {
 
-      return (
-        String(item.id) ===
-        String(exerciseId)
-      );
+        return (
+          String(item.id) ===
+          String(exerciseId)
+        );
 
-    });
+      }
+    );
 
 
   const exerciseLogs =
-    logs.filter(function(log) {
+    logs.filter(
+      function(log) {
 
-      return (
-        String(log.exercise_id) ===
-        String(exerciseId)
-      );
+        return (
+          String(log.exercise_id) ===
+          String(exerciseId)
+        );
 
-    });
+      }
+    );
 
 
   if (
@@ -10268,188 +10163,171 @@ function renderSelectedExerciseEvolution(
   const sessionData = {};
 
 
-  exerciseLogs.forEach(function(log) {
+  exerciseLogs.forEach(
+    function(log) {
 
-    if (
-      !sessionData[
-        log.session_id
-      ]
-    ) {
+      if (
+        !sessionData[
+          log.session_id
+        ]
+      ) {
+
+        sessionData[
+          log.session_id
+        ] = [];
+
+      }
+
 
       sessionData[
         log.session_id
-      ] = [];
+      ].push(log);
 
     }
+  );
 
-
-    sessionData[
-      log.session_id
-    ].push(log);
-
-  });
-
-
-  /* ---------------------------------
-     CREAR EVOLUCIÓN
-  --------------------------------- */
 
   const evolution =
     sessions
-      .filter(function(session) {
+      .filter(
+        function(session) {
 
-        return Boolean(
-          sessionData[
-            session.id
-          ]
-        );
-
-      })
-      .map(function(session) {
-
-        const rows =
-          sessionData[
-            session.id
-          ];
-
-
-        /* -----------------------------
-           CARGAS
-        ------------------------------ */
-
-        const numericLoads =
-          rows
-            .map(function(row) {
-
-              const value =
-                parseFloat(
-                  row.load
-                );
-
-
-              return isNaN(value)
-                ? null
-                : value;
-
-            })
-            .filter(function(value) {
-
-              return (
-                value !== null
-              );
-
-            });
-
-
-        const maxLoad =
-          numericLoads.length
-            ? Math.max(
-                ...numericLoads
-              )
-            : null;
-
-
-        /* -----------------------------
-           REPETICIONES
-        ------------------------------ */
-
-        const totalReps =
-          rows.reduce(
-            function(total, row) {
-
-              const reps =
-                Number(
-                  row.reps
-                );
-
-
-              return (
-                total +
-                (
-                  isNaN(reps)
-                    ? 0
-                    : reps
-                )
-              );
-
-            },
-            0
+          return (
+            sessionData[
+              session.id
+            ]
           );
 
+        }
+      )
+      .map(
+        function(session) {
 
-        /* -----------------------------
-           SERIES COMPLETADAS
-        ------------------------------ */
+          const rows =
+            sessionData[
+              session.id
+            ];
 
-        const completedSets =
-          rows.filter(
-            function(row) {
 
-              return (
-                row.completed ===
-                true
+          const numericLoads =
+            rows
+              .map(
+                function(row) {
+
+                  const value =
+                    parseFloat(
+                      row.load
+                    );
+
+                  return isNaN(value)
+                    ? null
+                    : value;
+
+                }
+              )
+              .filter(
+                function(value) {
+
+                  return value !== null;
+
+                }
               );
 
-            }
-          ).length;
 
-
-        return {
-
-          sessionId:
-            session.id,
-
-          date:
-            session.finished_at
-
-              ? new Date(
-                  session.finished_at
-                ).toLocaleDateString(
-                  "es-AR",
-                  {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric"
-                  }
+          const maxLoad =
+            numericLoads.length
+              ? Math.max(
+                  ...numericLoads
                 )
-
-              : "SIN FECHA",
-
-          maxLoad:
-            maxLoad,
-
-          totalReps:
-            totalReps,
-
-          sets:
-            rows.length,
-
-          completedSets:
-            completedSets
-
-        };
-
-      });
+              : null;
 
 
-  /* ---------------------------------
-     MEJOR CARGA
-  --------------------------------- */
+          const totalReps =
+            rows.reduce(
+              function(total,row) {
+
+                const reps =
+                  Number(
+                    row.reps
+                  );
+
+
+                return (
+                  total +
+                  (
+                    isNaN(reps)
+                      ? 0
+                      : reps
+                  )
+                );
+
+              },
+              0
+            );
+
+
+          const completedSets =
+            rows.filter(
+              function(row) {
+
+                return (
+                  row.completed ===
+                  true
+                );
+
+              }
+            ).length;
+
+
+          return {
+
+            sessionId:
+              session.id,
+
+            date:
+              session.finished_at
+                ? new Date(
+                    session.finished_at
+                  ).toLocaleDateString(
+                    "es-AR",
+                    {
+                      day:"2-digit",
+                      month:"2-digit",
+                      year:"numeric"
+                    }
+                  )
+                : "SIN FECHA",
+
+            maxLoad:
+              maxLoad,
+
+            totalReps:
+              totalReps,
+
+            sets:
+              rows.length,
+
+            completedSets:
+              completedSets
+
+          };
+
+        }
+      );
+
 
   const allLoads =
     evolution
-      .map(function(item) {
-
-        return item.maxLoad;
-
-      })
-      .filter(function(value) {
-
-        return (
-          value !== null
-        );
-
-      });
+      .map(
+        function(item) {
+          return item.maxLoad;
+        }
+      )
+      .filter(
+        function(value) {
+          return value !== null;
+        }
+      );
 
 
   const bestLoad =
@@ -10460,10 +10338,6 @@ function renderSelectedExerciseEvolution(
       : null;
 
 
-  /* ---------------------------------
-     ÚLTIMA CARGA
-  --------------------------------- */
-
   const last =
     evolution.length
       ? evolution[
@@ -10472,10 +10346,6 @@ function renderSelectedExerciseEvolution(
       : null;
 
 
-  /* ---------------------------------
-     MOSTRAR RESULTADO
-  --------------------------------- */
-
   container.innerHTML = `
 
     <div class="student-card">
@@ -10483,7 +10353,6 @@ function renderSelectedExerciseEvolution(
       <div class="eyebrow">
         EVOLUCIÓN
       </div>
-
 
       <h2
         style="
@@ -10523,7 +10392,6 @@ function renderSelectedExerciseEvolution(
             MEJOR CARGA
           </div>
 
-
           <strong
             style="
               display:block;
@@ -10553,7 +10421,6 @@ function renderSelectedExerciseEvolution(
             ÚLTIMA CARGA
           </div>
 
-
           <strong
             style="
               display:block;
@@ -10564,9 +10431,7 @@ function renderSelectedExerciseEvolution(
             ${
               last &&
               last.maxLoad !== null
-
                 ? last.maxLoad
-
                 : "—"
             }
           </strong>
@@ -10586,102 +10451,91 @@ function renderSelectedExerciseEvolution(
     <div class="student-card">
 
       ${
-        evolution.length === 0
+        evolution
+          .slice()
+          .reverse()
+          .map(
+            function(item) {
 
-          ? `
+              return `
 
-            <div class="detail-value">
-              NO HAY DATOS DE EVOLUCIÓN.
-            </div>
-
-          `
-
-          : evolution
-              .slice()
-              .reverse()
-              .map(function(item) {
-
-                return `
+                <div
+                  style="
+                    padding:14px 0;
+                    border-bottom:1px solid #222;
+                  "
+                >
 
                   <div
                     style="
-                      padding:14px 0;
-                      border-bottom:1px solid #222;
+                      display:flex;
+                      justify-content:space-between;
+                      gap:12px;
+                      align-items:center;
                     "
                   >
 
-                    <div
-                      style="
-                        display:flex;
-                        justify-content:space-between;
-                        gap:12px;
-                        align-items:center;
-                      "
-                    >
+                    <div>
 
-                      <div>
-
-                        <div class="menu-label">
-                          ${escapeWorkoutHtml(
-                            item.date
-                          )}
-                        </div>
-
-
-                        <div
-                          style="
-                            margin-top:5px;
-                            font-size:14px;
-                            font-weight:800;
-                          "
-                        >
-
-                          ${
-                            item.maxLoad !== null
-
-                              ? item.maxLoad +
-                                " CARGA MÁX."
-
-                              : "SIN CARGA"
-                          }
-
-                        </div>
-
+                      <div class="menu-label">
+                        ${escapeWorkoutHtml(
+                          item.date
+                        )}
                       </div>
-
 
                       <div
                         style="
-                          text-align:right;
-                          color:#777;
-                          font-size:10px;
-                          line-height:1.6;
+                          margin-top:5px;
+                          font-size:14px;
+                          font-weight:800;
                         "
                       >
-
-                        ${item.sets}
-                        SERIES
-
-                        <br>
-
-                        ${item.totalReps}
-                        REPS
-
+                        ${
+                          item.maxLoad !== null
+                            ? item.maxLoad +
+                              " CARGA MÁX."
+                            : "SIN CARGA"
+                        }
                       </div>
+
+                    </div>
+
+
+                    <div
+                      style="
+                        text-align:right;
+                        color:#777;
+                        font-size:10px;
+                        line-height:1.6;
+                      "
+                    >
+
+                      ${item.sets}
+                      SERIES
+
+                      <br>
+
+                      ${item.totalReps}
+                      REPS
 
                     </div>
 
                   </div>
 
-                `;
+                </div>
 
-              })
-              .join("")
+              `;
+
+            }
+          )
+          .join("")
+
       }
 
     </div>
 
   `;
+
 
   /* ---------------------------------
      RESPONSIVE
@@ -10694,27 +10548,135 @@ function renderSelectedExerciseEvolution(
   ) {
 
     const style =
-      document.createElement("style");
+      document.createElement(
+        "style"
+      );
+
 
     style.id =
       "exercise-evolution-responsive-style";
 
+
     style.textContent = `
+
       @media (max-width:600px) {
+
         #selected-exercise-evolution
         .student-card
         > div[style*="grid-template-columns"] {
+
           grid-template-columns:1fr !important;
+
         }
+
       }
+
     `;
 
-    document.head.appendChild(style);
+
+    document.head.appendChild(
+      style
+    );
+
   }
 
 }
 
+  /* ---------------------------------
+     ABRIR DETALLE DE ENTRENAMIENTO
+  --------------------------------- */
 
+  const historyButtons =
+    container.querySelectorAll(
+      ".student-training-history-button"
+    );
+
+
+  historyButtons.forEach(
+    function(button) {
+
+      button.addEventListener(
+        "click",
+        async function() {
+
+          const sessionId =
+            button.dataset.sessionId;
+
+
+          const session =
+            sessions.find(
+              function(item) {
+
+                return (
+                  String(item.id) ===
+                  String(sessionId)
+                );
+
+              }
+            );
+
+
+          if (!session) {
+            return;
+          }
+
+
+          await openStudentTrainingSessionDetail(
+            student,
+            session
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* ---------------------------------
+     RESPONSIVE
+  --------------------------------- */
+
+  if (
+    !document.getElementById(
+      "progress-responsive-style"
+    )
+  ) {
+
+    const style =
+      document.createElement(
+        "style"
+      );
+
+
+    style.id =
+      "progress-responsive-style";
+
+
+    style.textContent = `
+
+      @media (max-width:600px) {
+
+        .progress-summary-grid {
+          grid-template-columns:1fr !important;
+        }
+
+      }
+
+      .student-training-history-button:hover {
+        background:#0d0d0d !important;
+      }
+
+    `;
+
+
+    document.head.appendChild(
+      style
+    );
+
+  }
+
+}
 
 
 
