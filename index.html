@@ -9141,20 +9141,16 @@ async function openProgressScreen() {
 
 }
 
-
 /* =====================================
    CARGAR PROGRESO DE ALUMNA
 ====================================== */
 
-async function loadStudentProgress(
-  student
-) {
+async function loadStudentProgress(student) {
 
   const container =
     document.getElementById(
       "progress-content"
     );
-
 
   if (!container) {
     return;
@@ -9198,7 +9194,7 @@ async function loadStudentProgress(
       .order(
         "finished_at",
         {
-          ascending:false
+          ascending: false
         }
       );
 
@@ -9317,6 +9313,7 @@ async function loadStudentProgress(
 
 
     <div
+      class="progress-summary-grid"
       style="
         display:grid;
         grid-template-columns:
@@ -9426,10 +9423,23 @@ async function loadStudentProgress(
 
                 return `
 
-                  <div
+                  <button
+                    type="button"
+                    class="student-training-history-button"
+                    data-session-id="${escapeWorkoutHtml(
+                      session.id
+                    )}"
                     style="
-                      padding:14px 0;
+                      display:block;
+                      width:100%;
+                      text-align:left;
+                      background:transparent;
+                      border:0;
                       border-bottom:1px solid #222;
+                      color:#fff;
+                      padding:16px 0;
+                      cursor:pointer;
+                      font-family:inherit;
                     "
                   >
 
@@ -9437,6 +9447,7 @@ async function loadStudentProgress(
                       style="
                         display:flex;
                         justify-content:space-between;
+                        align-items:center;
                         gap:12px;
                       "
                     >
@@ -9461,17 +9472,37 @@ async function loadStudentProgress(
 
                       <div
                         style="
-                          color:#E60000;
-                          font-size:9px;
-                          font-weight:900;
+                          display:flex;
+                          align-items:center;
+                          gap:8px;
+                          white-space:nowrap;
                         "
                       >
-                        COMPLETADO
+
+                        <span
+                          style="
+                            color:#E60000;
+                            font-size:9px;
+                            font-weight:900;
+                          "
+                        >
+                          COMPLETADO
+                        </span>
+
+                        <span
+                          style="
+                            color:#777;
+                            font-size:16px;
+                          "
+                        >
+                          →
+                        </span>
+
                       </div>
 
                     </div>
 
-                  </div>
+                  </button>
 
                 `;
 
@@ -9487,31 +9518,101 @@ async function loadStudentProgress(
 
 
   /* ---------------------------------
+     ABRIR DETALLE DE ENTRENAMIENTO
+  --------------------------------- */
+
+  const historyButtons =
+    container.querySelectorAll(
+      ".student-training-history-button"
+    );
+
+
+  historyButtons.forEach(
+    function(button) {
+
+      button.addEventListener(
+        "click",
+        async function() {
+
+          const sessionId =
+            button.dataset.sessionId;
+
+
+          const session =
+            sessions.find(
+              function(item) {
+
+                return (
+                  String(item.id) ===
+                  String(sessionId)
+                );
+
+              }
+            );
+
+
+          if (!session) {
+            return;
+          }
+
+
+          await openStudentTrainingSessionDetail(
+            student,
+            session
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* ---------------------------------
      RESPONSIVE
   --------------------------------- */
 
-  const style =
-    document.createElement(
-      "style"
-    );
+  if (
+    !document.getElementById(
+      "progress-responsive-style"
+    )
+  ) {
 
-  style.textContent = `
+    const style =
+      document.createElement(
+        "style"
+      );
 
-    @media (max-width:600px) {
 
-      #progress-content > div:nth-child(2) {
-        grid-template-columns:1fr !important;
+    style.id =
+      "progress-responsive-style";
+
+
+    style.textContent = `
+
+      @media (max-width:600px) {
+
+        .progress-summary-grid {
+          grid-template-columns:1fr !important;
+        }
+
       }
 
-    }
+      .student-training-history-button:hover {
+        background:#0d0d0d !important;
+      }
 
-  `;
+    `;
 
-  document.head.appendChild(
-    style
-  );
+
+    document.head.appendChild(
+      style
+    );
+
+  }
 
 }
+
 
 
 /* =====================================
