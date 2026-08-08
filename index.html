@@ -3489,7 +3489,392 @@
 loadStudentTrainingHistory(student);
     }
 
+/* =====================================
+   CARGAR HISTORIAL DE ENTRENAMIENTOS
+====================================== */
 
+async function loadStudentTrainingHistory(student) {
+
+  const container =
+    document.getElementById(
+      "student-training-history"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = `
+    <p
+      class="workouts-loading"
+      style="margin:0;"
+    >
+      CARGANDO REGISTRO...
+    </p>
+  `;
+
+
+  if (!student || !student.id) {
+
+    container.innerHTML = `
+      <div class="detail-value">
+        NO SE PUDO IDENTIFICAR LA ALUMNA.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  const {
+    data: sessions,
+    error
+  } =
+    await supabaseClient
+      .from("workout_sessions")
+      .select(`
+        id,
+        workout_id,
+        day_id,
+        started_at,
+        finished_at,
+        status
+      `)
+      .eq(
+        "student_id",
+        student.id
+      )
+      .order(
+        "finished_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Error cargando historial:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="detail-value">
+        NO SE PUDO CARGAR EL HISTORIAL.
+      </div>
+
+      <p
+        style="
+          color:#777;
+          font-size:10px;
+          margin-top:8px;
+        "
+      >
+        ${escapeWorkoutHtml(
+          error.message ||
+          "Error desconocido"
+        )}
+      </p>
+    `;
+
+    return;
+  }
+
+
+  if (
+    !sessions ||
+    sessions.length === 0
+  ) {
+
+    container.innerHTML = `
+      <div
+        style="
+          color:#777;
+          font-size:11px;
+          line-height:1.6;
+        "
+      >
+        TODAVÍA NO HAY ENTRENAMIENTOS REGISTRADOS.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  for (
+    const session of sessions
+  ) {
+
+    const card =
+      document.createElement("div");
+
+
+    card.style.cssText = `
+      border:1px solid #222;
+      background:#0d0d0d;
+      padding:14px;
+      margin-bottom:10px;
+    `;
+
+
+    const date =
+      session.finished_at
+        ? new Date(
+            session.finished_at
+          ).toLocaleString(
+            "es-AR",
+            {
+              day:"2-digit",
+              month:"2-digit",
+              year:"numeric",
+              hour:"2-digit",
+              minute:"2-digit"
+            }
+          )
+        : "SIN FECHA";
+
+
+    card.innerHTML = `
+
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          align-items:flex-start;
+          gap:12px;
+        "
+      >
+
+        <div>
+
+          <div class="menu-label">
+            ENTRENAMIENTO
+          </div>
+
+          <div class="detail-value">
+            ${escapeWorkoutHtml(date)}
+          </div>
+
+        </div>
+
+        <div
+          style="
+            color:#E60000;
+            font-size:9px;
+            font-weight:800;
+          "
+        >
+          COMPLETADO
+        </div>
+
+      </div>
+
+
+      <div
+        class="student-training-session-content"
+        style="margin-top:12px;"
+      >
+        <div
+          style="
+            color:#777;
+            font-size:10px;
+          "
+        >
+          CARGANDO SERIES...
+        </div>
+      </div>
+
+    `;
+
+
+    container.appendChild(card);
+
+
+    const seriesContainer =
+      card.querySelector(
+        ".student-training-session-content"
+      );
+
+
+    const {
+      data: logs,
+      error: logsError
+    } =
+      await supabaseClient
+        .from("workout_set_logs")
+        .select(`
+          exercise_id,
+          series_number,
+          reps,
+          load,
+          rpe,
+          completed
+        `)
+        .eq(
+          "session_id",
+          session.id
+        )
+        .order(
+          "series_number",
+          {
+            ascending:true
+          }
+        );
+
+
+    if (logsError) {
+
+      seriesContainer.innerHTML = `
+        <div
+          style="
+            color:#777;
+            font-size:10px;
+          "
+        >
+          NO SE PUDIERON CARGAR LAS SERIES.
+        </div>
+      `;
+
+      continue;
+    }
+
+
+    if (
+      !logs ||
+      logs.length === 0
+    ) {
+
+      seriesContainer.innerHTML = `
+        <div
+          style="
+            color:#777;
+            font-size:10px;
+          "
+        >
+          SIN SERIES REGISTRADAS.
+        </div>
+      `;
+
+      continue;
+    }
+
+
+    seriesContainer.innerHTML =
+      logs.map(
+        function(log) {
+
+          return `
+
+            <div
+              style="
+                display:grid;
+                grid-template-columns:
+                  repeat(4,minmax(0,1fr));
+                gap:6px;
+                margin-top:6px;
+              "
+            >
+
+              <div
+                style="
+                  border:1px solid #222;
+                  padding:8px;
+                "
+              >
+                <div
+                  style="
+                    color:#777;
+                    font-size:8px;
+                  "
+                >
+                  SERIE
+                </div>
+
+                <strong>
+                  ${log.series_number || "—"}
+                </strong>
+              </div>
+
+
+              <div
+                style="
+                  border:1px solid #222;
+                  padding:8px;
+                "
+              >
+                <div
+                  style="
+                    color:#777;
+                    font-size:8px;
+                  "
+                >
+                  REPS
+                </div>
+
+                <strong>
+                  ${log.reps ?? "—"}
+                </strong>
+              </div>
+
+
+              <div
+                style="
+                  border:1px solid #222;
+                  padding:8px;
+                "
+              >
+                <div
+                  style="
+                    color:#777;
+                    font-size:8px;
+                  "
+                >
+                  CARGA
+                </div>
+
+                <strong>
+                  ${escapeWorkoutHtml(
+                    log.load ?? "—"
+                  )}
+                </strong>
+              </div>
+
+
+              <div
+                style="
+                  border:1px solid #222;
+                  padding:8px;
+                "
+              >
+                <div
+                  style="
+                    color:#777;
+                    font-size:8px;
+                  "
+                >
+                  RPE
+                </div>
+
+                <strong>
+                  ${log.rpe ?? "—"}
+                </strong>
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      ).join("");
+
+  }
+
+}
     /* =====================================
        VOLVER A MIS ALUMNAS
     ====================================== */
