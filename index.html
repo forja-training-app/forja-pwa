@@ -9677,7 +9677,11 @@ async function loadStudentExerciseEvolution(student) {
       }
     );
 
-
+console.log(
+  "EVOLUCIÓN: buscando series",
+  sessionIds
+);
+  
   const {
     data: logs,
     error: logsError
@@ -9703,7 +9707,11 @@ async function loadStudentExerciseEvolution(student) {
           ascending:true
         }
       );
-
+  
+console.log(
+  "EVOLUCIÓN: series recibidas",
+  logs
+);
 
   if (logsError) {
 
