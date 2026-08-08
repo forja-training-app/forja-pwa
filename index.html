@@ -9632,6 +9632,639 @@ document
     }
   );
 
+    /* =====================================
+   DETALLE DE ENTRENAMIENTO REALIZADO
+====================================== */
+
+async function openStudentTrainingSessionDetail(
+  student,
+  session
+) {
+
+  const progressScreen =
+    document.getElementById(
+      "progress-screen"
+    );
+
+
+  if (progressScreen) {
+    progressScreen.style.display =
+      "none";
+  }
+
+
+  let detailScreen =
+    document.getElementById(
+      "progress-session-detail-screen"
+    );
+
+
+  if (!detailScreen) {
+
+    detailScreen =
+      document.createElement(
+        "section"
+      );
+
+    detailScreen.id =
+      "progress-session-detail-screen";
+
+    detailScreen.className =
+      "students-screen";
+
+    document.body.appendChild(
+      detailScreen
+    );
+
+  }
+
+
+  detailScreen.style.display =
+    "block";
+
+
+  detailScreen.innerHTML = `
+
+    <div class="students-header">
+
+      <button
+        id="back-from-session-detail"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER A PROGRESO
+      </button>
+
+      <div class="eyebrow">
+        ENTRENAMIENTO REALIZADO
+      </div>
+
+      <h1>
+        ENTRENAMIENTO
+      </h1>
+
+      <p>
+        ${escapeWorkoutHtml(
+          student.full_name ||
+          "ALUMNA"
+        )}
+      </p>
+
+    </div>
+
+
+    <div
+      id="session-detail-content"
+      style="
+        max-width:1000px;
+        margin:0 auto;
+      "
+    >
+
+      <div class="student-card">
+
+        <p
+          class="workouts-loading"
+          style="margin:0;"
+        >
+          CARGANDO DETALLE...
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  const backButton =
+    document.getElementById(
+      "back-from-session-detail"
+    );
+
+
+  if (backButton) {
+
+    backButton.addEventListener(
+      "click",
+      function() {
+
+        detailScreen.style.display =
+          "none";
+
+        if (progressScreen) {
+
+          progressScreen.style.display =
+            "block";
+
+        }
+
+      }
+    );
+
+  }
+
+
+  const content =
+    document.getElementById(
+      "session-detail-content"
+    );
+
+
+  /* ---------------------------------
+     BUSCAR RUTINA
+  --------------------------------- */
+
+  const {
+    data: workout,
+    error: workoutError
+  } =
+    await supabaseClient
+      .from("workouts")
+      .select("*")
+      .eq(
+        "id",
+        session.workout_id
+      )
+      .maybeSingle();
+
+
+  if (workoutError) {
+
+    console.error(
+      "Error cargando rutina:",
+      workoutError
+    );
+
+
+    content.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO SE PUDO CARGAR LA RUTINA.
+        </div>
+
+        <p
+          style="
+            color:#777;
+            font-size:10px;
+            margin-top:8px;
+          "
+        >
+          ${escapeWorkoutHtml(
+            workoutError.message ||
+            "Error desconocido"
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  /* ---------------------------------
+     BUSCAR SERIES REALIZADAS
+  --------------------------------- */
+
+  const {
+    data: logs,
+    error: logsError
+  } =
+    await supabaseClient
+      .from("workout_set_logs")
+      .select(`
+        exercise_id,
+        series_number,
+        reps,
+        load,
+        rpe,
+        completed
+      `)
+      .eq(
+        "session_id",
+        session.id
+      )
+      .order(
+        "series_number",
+        {
+          ascending:true
+        }
+      );
+
+
+  if (logsError) {
+
+    console.error(
+      "Error cargando series:",
+      logsError
+    );
+
+
+    content.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO SE PUDIERON CARGAR LAS SERIES.
+        </div>
+
+        <p
+          style="
+            color:#777;
+            font-size:10px;
+            margin-top:8px;
+          "
+        >
+          ${escapeWorkoutHtml(
+            logsError.message ||
+            "Error desconocido"
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  /* ---------------------------------
+     BUSCAR DÍA
+  --------------------------------- */
+
+  const days =
+    workout &&
+    workout.plan &&
+    Array.isArray(
+      workout.plan.days
+    )
+      ? workout.plan.days
+      : [];
+
+
+  const day =
+    days.find(
+      function(item) {
+
+        return (
+          String(item.id) ===
+          String(session.day_id)
+        );
+
+      }
+    ) ||
+    days.find(
+      function(item) {
+
+        return (
+          String(item.day_id) ===
+          String(session.day_id)
+        );
+
+      }
+    ) ||
+    null;
+
+
+  const exercises =
+    day &&
+    Array.isArray(
+      day.exercises
+    )
+      ? day.exercises
+      : [];
+
+
+  /* ---------------------------------
+     MAPEAR SERIES POR EJERCICIO
+  --------------------------------- */
+
+  const logsByExercise = {};
+
+
+  (logs || []).forEach(
+    function(log) {
+
+      const key =
+        String(
+          log.exercise_id
+        );
+
+
+      if (
+        !logsByExercise[key]
+      ) {
+
+        logsByExercise[key] =
+          [];
+
+      }
+
+
+      logsByExercise[key].push(
+        log
+      );
+
+    }
+  );
+
+
+  const date =
+    session.finished_at
+      ? new Date(
+          session.finished_at
+        ).toLocaleString(
+          "es-AR",
+          {
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+          }
+        )
+      : "SIN FECHA";
+
+
+  content.innerHTML = `
+
+    <div class="student-card">
+
+      <div class="menu-label">
+        RUTINA
+      </div>
+
+      <div
+        class="detail-value"
+        style="
+          margin-top:6px;
+          font-size:20px;
+        "
+      >
+        ${escapeWorkoutHtml(
+          workout &&
+          workout.name
+            ? workout.name
+            : "RUTINA"
+        )}
+      </div>
+
+
+      <div
+        style="
+          color:#777;
+          font-size:10px;
+          margin-top:6px;
+        "
+      >
+        ${escapeWorkoutHtml(
+          day &&
+          day.name
+            ? day.name
+            : "DÍA"
+        )}
+        ·
+        ${escapeWorkoutHtml(
+          date
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="workout-section-label">
+      EJERCICIOS
+    </div>
+
+
+    ${
+      exercises.length === 0
+
+        ?
+
+        `
+
+        <div class="student-card">
+
+          <div class="detail-value">
+            NO SE ENCONTRARON LOS EJERCICIOS DE ESTA RUTINA.
+          </div>
+
+        </div>
+
+        `
+
+        :
+
+        exercises.map(
+          function(exercise, index) {
+
+            const exerciseId =
+              String(
+                exercise.id ||
+                index
+              );
+
+
+            const exerciseLogs =
+              logsByExercise[
+                exerciseId
+              ] || [];
+
+
+            return `
+
+              <div
+                class="student-card"
+                style="
+                  margin-bottom:12px;
+                "
+              >
+
+                <div class="menu-label">
+                  EJERCICIO ${index + 1}
+                </div>
+
+                <div
+                  class="detail-value"
+                  style="
+                    margin-top:5px;
+                    font-size:18px;
+                  "
+                >
+                  ${escapeWorkoutHtml(
+                    exercise.name ||
+                    "EJERCICIO"
+                  )}
+                </div>
+
+
+                ${
+                  exerciseLogs.length === 0
+
+                    ?
+
+                    `
+
+                    <div
+                      style="
+                        color:#777;
+                        font-size:10px;
+                        margin-top:12px;
+                      "
+                    >
+                      SIN REGISTROS DE SERIES.
+                    </div>
+
+                    `
+
+                    :
+
+                    `
+
+                    <div
+                      style="
+                        margin-top:14px;
+                        overflow-x:auto;
+                      "
+                    >
+
+                      <div
+                        style="
+                          display:grid;
+                          grid-template-columns:
+                            60px
+                            1fr
+                            1fr
+                            1fr
+                            1fr;
+                          min-width:420px;
+                          gap:6px;
+                        "
+                      >
+
+                        <div class="menu-label">
+                          SERIE
+                        </div>
+
+                        <div class="menu-label">
+                          REPS
+                        </div>
+
+                        <div class="menu-label">
+                          CARGA
+                        </div>
+
+                        <div class="menu-label">
+                          RPE
+                        </div>
+
+                        <div class="menu-label">
+                          ESTADO
+                        </div>
+
+
+                        ${
+                          exerciseLogs.map(
+                            function(log) {
+
+                              return `
+
+                                <div
+                                  style="
+                                    border-top:1px solid #222;
+                                    padding:9px 4px;
+                                    font-size:12px;
+                                  "
+                                >
+                                  ${log.series_number || "—"}
+                                </div>
+
+                                <div
+                                  style="
+                                    border-top:1px solid #222;
+                                    padding:9px 4px;
+                                    font-size:12px;
+                                  "
+                                >
+                                  ${log.reps ?? "—"}
+                                </div>
+
+                                <div
+                                  style="
+                                    border-top:1px solid #222;
+                                    padding:9px 4px;
+                                    font-size:12px;
+                                  "
+                                >
+                                  ${escapeWorkoutHtml(
+                                    log.load ??
+                                    "—"
+                                  )}
+                                </div>
+
+                                <div
+                                  style="
+                                    border-top:1px solid #222;
+                                    padding:9px 4px;
+                                    font-size:12px;
+                                  "
+                                >
+                                  ${log.rpe ?? "—"}
+                                </div>
+
+                                <div
+                                  style="
+                                    border-top:1px solid #222;
+                                    padding:9px 4px;
+                                    font-size:10px;
+                                    font-weight:800;
+                                    color:${
+                                      log.completed
+                                        ? "#ffffff"
+                                        : "#777"
+                                    };
+                                  "
+                                >
+                                  ${
+                                    log.completed
+                                      ? "✓"
+                                      : "—"
+                                  }
+                                </div>
+
+                              `;
+
+                            }
+                          ).join("")
+
+                        }
+
+                      </div>
+
+                    </div>
+
+                    `
+
+                }
+
+              </div>
+
+            `;
+
+          }
+        ).join("")
+
+    }
+
+  `;
+
+}
 
     /* =====================================
        INICIAR APP
