@@ -4304,33 +4304,85 @@ workoutsButton.addEventListener(
 function showWorkouts() {
 
   loginScreen.style.display = "none";
+
   appScreen.style.display = "none";
+
   studentsScreen.style.display = "none";
 
+
   if (studentDetailScreen) {
-    studentDetailScreen.style.display = "none";
+
+    studentDetailScreen.style.display =
+      "none";
+
   }
+
 
   if (workoutBuilderScreen) {
-    workoutBuilderScreen.style.display = "none";
+
+    workoutBuilderScreen.style.display =
+      "none";
+
   }
 
+
   workoutsScreen =
-    document.getElementById("workouts-screen");
+    document.getElementById(
+      "workouts-screen"
+    );
+
 
   if (!workoutsScreen) {
+
     createWorkoutsScreen();
+
   }
 
+
   workoutsScreen =
-    document.getElementById("workouts-screen");
+    document.getElementById(
+      "workouts-screen"
+    );
+
 
   workoutStudentList =
-    document.getElementById("workout-student-list");
+    document.getElementById(
+      "workout-student-list"
+    );
 
-  workoutsScreen.style.display = "block";
+
+  workoutsScreen.style.display =
+    "block";
+
+
+  /*
+   * BOTÓN VOLVER AL PANEL
+   *
+   * La pantalla de rutinas ya existe
+   * en el HTML, por eso necesitamos
+   * conectar el botón acá.
+   */
+
+  const backButton =
+    document.getElementById(
+      "back-from-workouts"
+    );
+
+
+  if (backButton) {
+
+    backButton.onclick =
+      function() {
+
+        showApp();
+
+      };
+
+  }
+
 
   loadWorkoutStudents();
+
 }
 
 
