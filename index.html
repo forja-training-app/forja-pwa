@@ -8902,9 +8902,10 @@ function viewPublishedWorkout(
     );
 
 
-    /* =====================================
-       PROGRESO
-    ====================================== */
+/* =====================================
+   PROGRESO
+====================================== */
+
 /* =====================================
    PROGRESO
 ====================================== */
@@ -8912,28 +8913,19 @@ function viewPublishedWorkout(
 async function openProgressScreen() {
 
   const trainerPanel =
-    document.getElementById(
-      "trainer-panel"
-    );
+    document.getElementById("trainer-panel");
 
   if (trainerPanel) {
-    trainerPanel.style.display =
-      "none";
+    trainerPanel.style.display = "none";
   }
 
-
   let progressScreen =
-    document.getElementById(
-      "progress-screen"
-    );
-
+    document.getElementById("progress-screen");
 
   if (!progressScreen) {
 
     progressScreen =
-      document.createElement(
-        "section"
-      );
+      document.createElement("section");
 
     progressScreen.id =
       "progress-screen";
@@ -8947,10 +8939,8 @@ async function openProgressScreen() {
 
   }
 
-
   progressScreen.style.display =
     "block";
-
 
   progressScreen.innerHTML = `
 
@@ -8973,7 +8963,7 @@ async function openProgressScreen() {
       </h1>
 
       <p>
-        SEGUIMIENTO DE TUS ALUMNAS
+        EVOLUCIÓN DE RENDIMIENTO
       </p>
 
     </div>
@@ -8981,7 +8971,7 @@ async function openProgressScreen() {
 
     <div
       style="
-        max-width:1100px;
+        max-width:1000px;
         margin:0 auto;
       "
     >
@@ -9024,7 +9014,7 @@ async function openProgressScreen() {
         <div class="student-card">
 
           <div class="detail-value">
-            SELECCIONÁ UNA ALUMNA PARA VER SU PROGRESO.
+            SELECCIONÁ UNA ALUMNA
           </div>
 
         </div>
@@ -9036,11 +9026,14 @@ async function openProgressScreen() {
   `;
 
 
+  /* =====================================
+     VOLVER
+  ====================================== */
+
   const backButton =
     document.getElementById(
       "back-from-progress"
     );
-
 
   if (backButton) {
 
@@ -9064,11 +9057,14 @@ async function openProgressScreen() {
   }
 
 
+  /* =====================================
+     CARGAR ALUMNAS
+  ====================================== */
+
   const select =
     document.getElementById(
       "progress-student-select"
     );
-
 
   const {
     data: students,
@@ -9077,14 +9073,11 @@ async function openProgressScreen() {
     await supabaseClient
       .from("profiles")
       .select("*")
-      .eq(
-        "role",
-        "student"
-      )
+      .eq("role", "student")
       .order(
         "full_name",
         {
-          ascending:true
+          ascending: true
         }
       );
 
@@ -9103,6 +9096,7 @@ async function openProgressScreen() {
     `;
 
     return;
+
   }
 
 
@@ -9118,6 +9112,7 @@ async function openProgressScreen() {
     `;
 
     return;
+
   }
 
 
@@ -9144,6 +9139,10 @@ async function openProgressScreen() {
     }
   );
 
+
+  /* =====================================
+     CAMBIO DE ALUMNA
+  ====================================== */
 
   select.addEventListener(
     "change",
@@ -9173,7 +9172,7 @@ async function openProgressScreen() {
             <div class="student-card">
 
               <div class="detail-value">
-                SELECCIONÁ UNA ALUMNA PARA VER SU PROGRESO.
+                SELECCIONÁ UNA ALUMNA
               </div>
 
             </div>
@@ -9181,6 +9180,7 @@ async function openProgressScreen() {
           `;
 
         return;
+
       }
 
 
@@ -9191,7 +9191,6 @@ async function openProgressScreen() {
     }
   );
 
-  
 }
 
 /* =====================================
