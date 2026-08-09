@@ -9197,19 +9197,24 @@ async function openProgressScreen() {
    CARGAR PROGRESO DE ALUMNA
 ====================================== */
 
+/* =====================================
+   CARGAR PROGRESO DE ALUMNA
+====================================== */
+
 async function loadStudentProgress(student) {
 
-  const container = document.getElementById("progress-content");
+  const container =
+    document.getElementById(
+      "progress-content"
+    );
 
   if (!container) {
     return;
   }
 
-  /* ---------------------------------
-     CARGANDO
-  --------------------------------- */
 
   container.innerHTML = `
+
     <div class="student-card">
 
       <p
@@ -9220,37 +9225,47 @@ async function loadStudentProgress(student) {
       </p>
 
     </div>
+
   `;
 
 
-  /* ---------------------------------
-     BUSCAR SESIONES
-  --------------------------------- */
+  /* =====================================
+     BUSCAR SESIONES COMPLETADAS
+  ====================================== */
 
   const {
     data: sessions,
-    error
-  } = await supabaseClient
-    .from("workout_sessions")
-    .select(`
-      id,
-      workout_id,
-      day_id,
-      started_at,
-      finished_at,
-      status
-    `)
-    .eq("student_id", student.id)
-    .order("finished_at", {
-      ascending: false
-    });
+    error: sessionsError
+  } =
+    await supabaseClient
+      .from("workout_sessions")
+      .select(`
+        id,
+        workout_id,
+        day_id,
+        finished_at
+      `)
+      .eq(
+        "student_id",
+        student.id
+      )
+      .eq(
+        "status",
+        "completed"
+      )
+      .order(
+        "finished_at",
+        {
+          ascending: true
+        }
+      );
 
 
-  if (error) {
+  if (sessionsError) {
 
     console.error(
-      "Error cargando progreso:",
-      error
+      "Error cargando sesiones:",
+      sessionsError
     );
 
     container.innerHTML = `
@@ -9261,85 +9276,321 @@ async function loadStudentProgress(student) {
           NO SE PUDO CARGAR EL PROGRESO.
         </div>
 
-        <p
-          style="
-            color:#777;
-            font-size:10px;
-            margin-top:8px;
-          "
-        >
-          ${escapeWorkoutHtml(
-            error.message ||
-            "Error desconocido"
-          )}
-        </p>
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if (
+    !sessions ||
+    sessions.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          TODAVÍA NO HAY ENTRENAMIENTOS COMPLETADOS.
+        </div>
 
       </div>
 
     `;
 
     return;
+
   }
 
 
-  /* ---------------------------------
-     RESUMEN
-  --------------------------------- */
+  /* =====================================
+     BUSCAR SERIES
+  ====================================== */
 
-  const total = sessions
-    ? sessions.length
-    : 0;
+  const sessionIds =
+    sessions.map(
+      function(session) {
 
-  const completed = sessions
-    ? sessions.filter(function(session) {
+        return session.id;
 
-        return session.status === "completed";
-
-      }).length
-    : 0;
+      }
+    );
 
 
-  const lastSession =
-    sessions &&
-    sessions.length
-      ? sessions[0]
-      : null;
+  const {
+    data: logs,
+    error: logsError
+  } =
+    await supabaseClient
+      .from("workout_set_logs")
+      .select(`
+        session_id,
+        exercise_id,
+        series_number,
+        reps,
+        load,
+        rpe,
+        completed
+      `)
+      .in(
+        "session_id",
+        sessionIds
+      )
+      .order(
+        "series_number",
+        {
+          ascending:true
+        }
+      );
 
 
-  const lastDate =
-    lastSession &&
-    lastSession.finished_at
+  if (logsError) {
 
-      ? new Date(
-          lastSession.finished_at
-        ).toLocaleDateString(
-          "es-AR",
-          {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
+    console.error(
+      "Error cargando registros:",
+      logsError
+    );
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO SE PUDIERON CARGAR LOS REGISTROS.
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if (
+    !logs ||
+    logs.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          TODAVÍA NO HAY DATOS DE RENDIMIENTO.
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /* =====================================
+     BUSCAR RUTINAS
+  ====================================== */
+
+  const workoutIds = [
+    ...new Set(
+      sessions
+        .map(
+          function(session) {
+
+            return session.workout_id;
+
           }
         )
+        .filter(Boolean)
+    )
+  ];
 
-      : "—";
+
+  let workouts = [];
 
 
-  /* ---------------------------------
-     HTML PRINCIPAL
-  --------------------------------- */
+  if (
+    workoutIds.length > 0
+  ) {
+
+    const {
+      data,
+      error: workoutsError
+    } =
+      await supabaseClient
+        .from("workouts")
+        .select("*")
+        .in(
+          "id",
+          workoutIds
+        );
+
+
+    if (!workoutsError) {
+
+      workouts =
+        data || [];
+
+    }
+
+  }
+
+
+  /* =====================================
+     CATÁLOGO DE EJERCICIOS
+  ====================================== */
+
+  const exerciseCatalog = {};
+
+
+  workouts.forEach(
+    function(workout) {
+
+      const days =
+        workout &&
+        workout.plan &&
+        Array.isArray(
+          workout.plan.days
+        )
+          ?
+          workout.plan.days
+          :
+          [];
+
+
+      days.forEach(
+        function(day) {
+
+          const exercises =
+            Array.isArray(
+              day.exercises
+            )
+              ?
+              day.exercises
+              :
+              [];
+
+
+          exercises.forEach(
+            function(
+              exercise,
+              index
+            ) {
+
+              const exerciseId =
+                String(
+                  exercise.id ||
+                  index
+                );
+
+
+              if (
+                !exerciseCatalog[
+                  exerciseId
+                ]
+              ) {
+
+                exerciseCatalog[
+                  exerciseId
+                ] = {
+
+                  id:
+                    exerciseId,
+
+                  name:
+                    exercise.name ||
+                    "EJERCICIO"
+
+                };
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =====================================
+     LISTA DE EJERCICIOS
+  ====================================== */
+
+  const exerciseIds = [
+    ...new Set(
+      logs
+        .map(
+          function(log) {
+
+            return String(
+              log.exercise_id
+            );
+
+          }
+        )
+    )
+  ];
+
+
+  const exercises =
+    exerciseIds
+      .map(
+        function(id) {
+
+          return (
+            exerciseCatalog[id] || {
+
+              id:id,
+
+              name:
+                "EJERCICIO " +
+                id
+
+            }
+          );
+
+        }
+      );
+
+
+  exercises.sort(
+    function(a,b) {
+
+      return a.name.localeCompare(
+        b.name,
+        "es"
+      );
+
+    }
+  );
+
+
+  /* =====================================
+     HTML
+  ====================================== */
 
   container.innerHTML = `
 
     <div
       class="students-header"
       style="
-        padding-top:20px;
+        padding-top:10px;
         border-bottom:0;
       "
     >
 
       <div class="eyebrow">
-        PROGRESO DE ALUMNA
+        PROGRESO
       </div>
 
       <h2
@@ -9361,338 +9612,178 @@ async function loadStudentProgress(student) {
 
 
     <!-- ==============================
-         RESUMEN
+         EJERCICIO
     =============================== -->
-
-    <div
-      class="progress-summary-grid"
-      style="
-        display:grid;
-        grid-template-columns:
-          repeat(3,minmax(0,1fr));
-        gap:10px;
-        margin-bottom:20px;
-      "
-    >
-
-      <div class="student-card">
-
-        <div class="menu-label">
-          ENTRENAMIENTOS
-        </div>
-
-        <div
-          class="detail-value"
-          style="
-            margin-top:8px;
-          "
-        >
-          ${total}
-        </div>
-
-      </div>
-
-
-      <div class="student-card">
-
-        <div class="menu-label">
-          COMPLETADOS
-        </div>
-
-        <div
-          class="detail-value"
-          style="
-            margin-top:8px;
-          "
-        >
-          ${completed}
-        </div>
-
-      </div>
-
-
-      <div class="student-card">
-
-        <div class="menu-label">
-          ÚLTIMO
-        </div>
-
-        <div
-          class="detail-value"
-          style="
-            margin-top:8px;
-            font-size:16px;
-          "
-        >
-          ${lastDate}
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ==============================
-         EVOLUCIÓN
-    =============================== -->
-
-    <div class="workout-section-label">
-      EVOLUCIÓN
-    </div>
-
-
-    <div
-      id="progress-evolution-content"
-      style="
-        margin-bottom:20px;
-      "
-    >
-
-      <div class="student-card">
-
-        <div class="detail-value">
-          CARGANDO EVOLUCIÓN...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ==============================
-         HISTORIAL
-    =============================== -->
-
-    <div class="workout-section-label">
-      HISTORIAL
-    </div>
-
 
     <div class="student-card">
 
-      ${
-        !sessions ||
-        sessions.length === 0
-
-          ? `
-
-            <div class="detail-value">
-              TODAVÍA NO HAY ENTRENAMIENTOS
-              REGISTRADOS.
-            </div>
-
-          `
-
-          : sessions
-              .slice(0, 10)
-              .map(function(session) {
-
-                const date =
-                  session.finished_at
-
-                    ? new Date(
-                        session.finished_at
-                      ).toLocaleString(
-                        "es-AR",
-                        {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit"
-                        }
-                      )
-
-                    : "SIN FECHA";
+      <div class="menu-label">
+        EJERCICIO
+      </div>
 
 
-                const statusLabel =
-                  session.status === "completed"
-                    ? "COMPLETADO"
-                    : (
-                        session.status ||
-                        "EN CURSO"
-                      ).toUpperCase();
+      <select
+        id="progress-exercise-select"
+        style="
+          width:100%;
+          margin-top:10px;
+          background:#111;
+          border:1px solid #292929;
+          color:#fff;
+          padding:14px;
+          font-family:Montserrat,sans-serif;
+          font-size:12px;
+          outline:none;
+        "
+      >
 
+        <option value="">
+          SELECCIONÁ UN EJERCICIO
+        </option>
+
+        ${
+          exercises
+            .map(
+              function(exercise) {
 
                 return `
 
-                  <button
-                    type="button"
-                    class="student-training-history-button"
-                    data-session-id="${escapeWorkoutHtml(
-                      session.id
+                  <option
+                    value="${escapeWorkoutHtml(
+                      exercise.id
                     )}"
-                    style="
-                      display:block;
-                      width:100%;
-                      text-align:left;
-                      background:transparent;
-                      border:0;
-                      border-bottom:1px solid #222;
-                      color:#fff;
-                      padding:16px 0;
-                      cursor:pointer;
-                      font-family:inherit;
-                    "
                   >
-
-                    <div
-                      style="
-                        display:flex;
-                        justify-content:space-between;
-                        align-items:center;
-                        gap:12px;
-                      "
-                    >
-
-                      <div>
-
-                        <div class="menu-label">
-                          ENTRENAMIENTO
-                        </div>
-
-                        <div
-                          class="detail-value"
-                          style="
-                            margin-top:5px;
-                          "
-                        >
-                          ${escapeWorkoutHtml(
-                            date
-                          )}
-                        </div>
-
-                      </div>
-
-
-                      <div
-                        style="
-                          display:flex;
-                          align-items:center;
-                          gap:8px;
-                          white-space:nowrap;
-                        "
-                      >
-
-                        <span
-                          style="
-                            color:#E60000;
-                            font-size:9px;
-                            font-weight:900;
-                          "
-                        >
-                          ${escapeWorkoutHtml(
-                            statusLabel
-                          )}
-                        </span>
-
-                        <span
-                          style="
-                            color:#777;
-                            font-size:16px;
-                          "
-                        >
-                          →
-                        </span>
-
-                      </div>
-
-                    </div>
-
-                  </button>
+                    ${escapeWorkoutHtml(
+                      exercise.name
+                    )}
+                  </option>
 
                 `;
 
-              })
-              .join("")
-      }
+              }
+            )
+            .join("")
+        }
+
+      </select>
+
+    </div>
+
+
+    <!-- ==============================
+         GRÁFICO DE CARGA
+    =============================== -->
+
+    <div
+      class="workout-section-label"
+      style="margin-top:24px;"
+    >
+      EVOLUCIÓN DE CARGA
+    </div>
+
+
+    <div
+      id="progress-load-chart"
+      class="student-card"
+    >
+
+      <div class="detail-value">
+        SELECCIONÁ UN EJERCICIO
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         GRÁFICO RPE
+    =============================== -->
+
+    <div
+      class="workout-section-label"
+      style="margin-top:24px;"
+    >
+      PROGRESO RPE
+    </div>
+
+
+    <div
+      id="progress-rpe-chart"
+      class="student-card"
+    >
+
+      <div class="detail-value">
+        CARGANDO RPE...
+      </div>
 
     </div>
 
   `;
 
 
-  /* ---------------------------------
-     CARGAR EVOLUCIÓN
-  --------------------------------- */
+  /* =====================================
+     RPE GENERAL
+  ====================================== */
 
-  await loadStudentExerciseEvolution(student);
-
-  /* ---------------------------------
-     ABRIR DETALLE DE ENTRENAMIENTO
-  --------------------------------- */
-
-  const historyButtons =
-    container.querySelectorAll(
-      ".student-training-history-button"
-    );
-
-  historyButtons.forEach(function(button) {
-
-    button.addEventListener(
-      "click",
-      async function() {
-
-        const sessionId =
-          button.dataset.sessionId;
-
-        const session =
-          sessions.find(function(item) {
-            return (
-              String(item.id) ===
-              String(sessionId)
-            );
-          });
-
-        if (!session) {
-          return;
-        }
-
-        await openStudentTrainingSessionDetail(
-          student,
-          session
-        );
-
-      }
-    );
-
-  });
-
-
-  /* ---------------------------------
-     RESPONSIVE
-  --------------------------------- */
-
-  if (
-    !document.getElementById(
-      "progress-responsive-style"
+  renderRPEProgress(
+    sessions,
+    logs,
+    document.getElementById(
+      "progress-rpe-chart"
     )
-  ) {
+  );
 
-    const style =
-      document.createElement("style");
 
-    style.id =
-      "progress-responsive-style";
+  /* =====================================
+     SELECTOR DE EJERCICIO
+  ====================================== */
 
-    style.textContent = `
-      @media (max-width:600px) {
-        .progress-summary-grid {
-          grid-template-columns:1fr !important;
-        }
+  const exerciseSelect =
+    document.getElementById(
+      "progress-exercise-select"
+    );
+
+
+  const loadChart =
+    document.getElementById(
+      "progress-load-chart"
+    );
+
+
+  exerciseSelect.addEventListener(
+    "change",
+    function() {
+
+      const exerciseId =
+        exerciseSelect.value;
+
+
+      if (!exerciseId) {
+
+        loadChart.innerHTML = `
+
+          <div class="detail-value">
+            SELECCIONÁ UN EJERCICIO
+          </div>
+
+        `;
+
+        return;
+
       }
 
-      .student-training-history-button:hover {
-        background:#0d0d0d !important;
-      }
-    `;
 
-    document.head.appendChild(style);
-  }
+      renderLoadProgressChart(
+        exerciseId,
+        exercises,
+        sessions,
+        logs,
+        loadChart
+      );
+
+    }
+  );
 
 }
-
 
 /* =====================================
    EVOLUCIÓN DE EJERCICIOS
