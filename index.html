@@ -9789,6 +9789,10 @@ async function loadStudentProgress(student) {
    EVOLUCIÓN DE EJERCICIOS
 ====================================== */
 
+/* =====================================
+   EVOLUCIÓN DE EJERCICIOS
+====================================== */
+
 async function loadStudentExerciseEvolution(student) {
 
   const container =
@@ -9828,19 +9832,29 @@ async function loadStudentExerciseEvolution(student) {
   const {
     data: sessions,
     error: sessionsError
-  } = await supabaseClient
-    .from("workout_sessions")
-    .select(`
-      id,
-      workout_id,
-      day_id,
-      finished_at
-    `)
-    .eq("student_id", student.id)
-    .eq("status", "completed")
-    .order("finished_at", {
-      ascending: true
-    });
+  } =
+    await supabaseClient
+      .from("workout_sessions")
+      .select(`
+        id,
+        workout_id,
+        day_id,
+        finished_at
+      `)
+      .eq(
+        "student_id",
+        student.id
+      )
+      .eq(
+        "status",
+        "completed"
+      )
+      .order(
+        "finished_at",
+        {
+          ascending: true
+        }
+      );
 
 
   if (sessionsError) {
@@ -9918,46 +9932,40 @@ async function loadStudentExerciseEvolution(student) {
   --------------------------------- */
 
   const sessionIds =
-    sessions.map(function(session) {
+    sessions.map(
+      function(session) {
 
-      return session.id;
+        return session.id;
 
-    });
-
-
-  console.log(
-    "EVOLUCIÓN: buscando series",
-    sessionIds
-  );
+      }
+    );
 
 
   const {
     data: logs,
     error: logsError
-  } = await supabaseClient
-    .from("workout_set_logs")
-    .select(`
-      session_id,
-      exercise_id,
-      series_number,
-      reps,
-      load,
-      rpe,
-      completed
-    `)
-    .in(
-      "session_id",
-      sessionIds
-    )
-    .order("series_number", {
-      ascending: true
-    });
-
-
-  console.log(
-    "EVOLUCIÓN: series recibidas",
-    logs
-  );
+  } =
+    await supabaseClient
+      .from("workout_set_logs")
+      .select(`
+        session_id,
+        exercise_id,
+        series_number,
+        reps,
+        load,
+        rpe,
+        completed
+      `)
+      .in(
+        "session_id",
+        sessionIds
+      )
+      .order(
+        "series_number",
+        {
+          ascending: true
+        }
+      );
 
 
   if (logsError) {
@@ -10024,11 +10032,13 @@ async function loadStudentExerciseEvolution(student) {
   const workoutIds = [
     ...new Set(
       sessions
-        .map(function(session) {
+        .map(
+          function(session) {
 
-          return session.workout_id;
+            return session.workout_id;
 
-        })
+          }
+        )
         .filter(Boolean)
     )
   ];
@@ -10037,18 +10047,21 @@ async function loadStudentExerciseEvolution(student) {
   let workouts = [];
 
 
-  if (workoutIds.length > 0) {
+  if (
+    workoutIds.length > 0
+  ) {
 
     const {
       data,
       error: workoutsError
-    } = await supabaseClient
-      .from("workouts")
-      .select("*")
-      .in(
-        "id",
-        workoutIds
-      );
+    } =
+      await supabaseClient
+        .from("workouts")
+        .select("*")
+        .in(
+          "id",
+          workoutIds
+        );
 
 
     if (workoutsError) {
@@ -10060,7 +10073,8 @@ async function loadStudentExerciseEvolution(student) {
 
     } else {
 
-      workouts = data || [];
+      workouts =
+        data || [];
 
     }
 
@@ -10068,105 +10082,116 @@ async function loadStudentExerciseEvolution(student) {
 
 
   /* ---------------------------------
-     CREAR CATÁLOGO DE EJERCICIOS
+     CATÁLOGO DE EJERCICIOS
   --------------------------------- */
 
   const exerciseCatalog = {};
 
 
-  workouts.forEach(function(workout) {
+  workouts.forEach(
+    function(workout) {
 
-    const days =
-      workout &&
-      workout.plan &&
-      Array.isArray(
-        workout.plan.days
-      )
-        ? workout.plan.days
-        : [];
-
-
-    days.forEach(function(day) {
-
-      const exercises =
+      const days =
+        workout &&
+        workout.plan &&
         Array.isArray(
-          day.exercises
+          workout.plan.days
         )
-          ? day.exercises
+          ? workout.plan.days
           : [];
 
 
-      exercises.forEach(
-        function(exercise, index) {
+      days.forEach(
+        function(day) {
 
-          const exerciseId =
-            String(
-              exercise.id ||
-              index
-            );
+          const exercises =
+            Array.isArray(
+              day.exercises
+            )
+              ? day.exercises
+              : [];
 
 
-          if (
-            !exerciseCatalog[
-              exerciseId
-            ]
-          ) {
+          exercises.forEach(
+            function(exercise, index) {
 
-            exerciseCatalog[
-              exerciseId
-            ] = {
+              const exerciseId =
+                String(
+                  exercise.id ||
+                  index
+                );
 
-              id: exerciseId,
 
-              name:
-                exercise.name ||
-                "EJERCICIO"
+              if (
+                !exerciseCatalog[
+                  exerciseId
+                ]
+              ) {
 
-            };
+                exerciseCatalog[
+                  exerciseId
+                ] = {
 
-          }
+                  id:
+                    exerciseId,
+
+                  name:
+                    exercise.name ||
+                    "EJERCICIO"
+
+                };
+
+              }
+
+            }
+          );
 
         }
       );
 
-    });
-
-  });
+    }
+  );
 
 
   /* ---------------------------------
-     CREAR LISTA DE EJERCICIOS
+     LISTA DE EJERCICIOS
   --------------------------------- */
 
   const exerciseIds = [
     ...new Set(
-      logs.map(function(log) {
+      logs
+        .map(
+          function(log) {
 
-        return String(
-          log.exercise_id
-        );
+            return String(
+              log.exercise_id
+            );
 
-      })
+          }
+        )
     )
   ];
 
 
   const exercises =
-    exerciseIds.map(function(id) {
+    exerciseIds.map(
+      function(id) {
 
-      return (
-        exerciseCatalog[id] || {
+        return (
+          exerciseCatalog[id] || {
 
-          id: id,
+            id:
+              id,
 
-          name:
-            "EJERCICIO " +
-            id
+            name:
+              "EJERCICIO " +
+              id
 
-        }
-      );
+          }
+        );
 
-    });
+      }
+    );
 
 
   if (
@@ -10193,18 +10218,20 @@ async function loadStudentExerciseEvolution(student) {
      ORDENAR EJERCICIOS
   --------------------------------- */
 
-  exercises.sort(function(a, b) {
+  exercises.sort(
+    function(a, b) {
 
-    return a.name.localeCompare(
-      b.name,
-      "es"
-    );
+      return a.name.localeCompare(
+        b.name,
+        "es"
+      );
 
-  });
+    }
+  );
 
 
   /* ---------------------------------
-     SELECTOR
+     INTERFAZ
   --------------------------------- */
 
   container.innerHTML = `
@@ -10238,23 +10265,25 @@ async function loadStudentExerciseEvolution(student) {
 
         ${
           exercises
-            .map(function(exercise) {
+            .map(
+              function(exercise) {
 
-              return `
+                return `
 
-                <option
-                  value="${escapeWorkoutHtml(
-                    exercise.id
-                  )}"
-                >
-                  ${escapeWorkoutHtml(
-                    exercise.name
-                  )}
-                </option>
+                  <option
+                    value="${escapeWorkoutHtml(
+                      exercise.id
+                    )}"
+                  >
+                    ${escapeWorkoutHtml(
+                      exercise.name
+                    )}
+                  </option>
 
-              `;
+                `;
 
-            })
+              }
+            )
             .join("")
         }
 
@@ -10300,7 +10329,9 @@ async function loadStudentExerciseEvolution(student) {
     !select ||
     !evolutionContainer
   ) {
+
     return;
+
   }
 
 
@@ -10346,11 +10377,120 @@ async function loadStudentExerciseEvolution(student) {
     }
   );
 
+
+  /* ---------------------------------
+     ESTILOS DEL GRÁFICO
+  --------------------------------- */
+
+  if (
+    !document.getElementById(
+      "progress-chart-style"
+    )
+  ) {
+
+    const style =
+      document.createElement(
+        "style"
+      );
+
+    style.id =
+      "progress-chart-style";
+
+
+    style.textContent = `
+
+      .progress-chart-card {
+        background:#111;
+        border:1px solid #222;
+        padding:18px;
+        margin-bottom:14px;
+      }
+
+
+      .progress-chart-title {
+        font-family:Anton,sans-serif;
+        font-size:24px;
+        text-transform:uppercase;
+        margin:0;
+        line-height:1;
+      }
+
+
+      .progress-chart-subtitle {
+        color:#777;
+        font-size:9px;
+        margin-top:7px;
+        text-transform:uppercase;
+        letter-spacing:.08em;
+      }
+
+
+      .progress-chart {
+        width:100%;
+        overflow-x:auto;
+        margin-top:18px;
+      }
+
+
+      .progress-chart svg {
+        display:block;
+        width:100%;
+        min-width:520px;
+        height:240px;
+      }
+
+
+      .progress-chart-empty {
+        color:#777;
+        font-size:10px;
+        line-height:1.6;
+        padding:20px 0;
+      }
+
+
+      .progress-rpe-value {
+        font-family:Anton,sans-serif;
+        font-size:42px;
+        line-height:1;
+        color:#E60000;
+        margin-top:12px;
+      }
+
+
+      .progress-rpe-label {
+        color:#777;
+        font-size:9px;
+        margin-top:6px;
+        text-transform:uppercase;
+      }
+
+
+      @media (max-width:600px) {
+
+        .progress-chart-card {
+          padding:14px;
+        }
+
+        .progress-chart svg {
+          min-width:480px;
+        }
+
+      }
+
+    `;
+
+
+    document.head.appendChild(
+      style
+    );
+
+  }
+
 }
 
 
 /* =====================================
-   MOSTRAR EVOLUCIÓN DE EJERCICIO
+   MOSTRAR EVOLUCIÓN DEL EJERCICIO
 ====================================== */
 
 function renderSelectedExerciseEvolution(
@@ -10362,25 +10502,29 @@ function renderSelectedExerciseEvolution(
 ) {
 
   const exercise =
-    exercises.find(function(item) {
+    exercises.find(
+      function(item) {
 
-      return (
-        String(item.id) ===
-        String(exerciseId)
-      );
+        return (
+          String(item.id) ===
+          String(exerciseId)
+        );
 
-    });
+      }
+    );
 
 
   const exerciseLogs =
-    logs.filter(function(log) {
+    logs.filter(
+      function(log) {
 
-      return (
-        String(log.exercise_id) ===
-        String(exerciseId)
-      );
+        return (
+          String(log.exercise_id) ===
+          String(exerciseId)
+        );
 
-    });
+      }
+    );
 
 
   if (
@@ -10403,6 +10547,643 @@ function renderSelectedExerciseEvolution(
   }
 
 
+  /* ---------------------------------
+     AGRUPAR POR SESIÓN
+  --------------------------------- */
+
+  const sessionData = {};
+
+
+  exerciseLogs.forEach(
+    function(log) {
+
+      if (
+        !sessionData[
+          log.session_id
+        ]
+      ) {
+
+        sessionData[
+          log.session_id
+        ] = [];
+
+      }
+
+
+      sessionData[
+        log.session_id
+      ].push(log);
+
+    }
+  );
+
+
+  /* ---------------------------------
+     CREAR EVOLUCIÓN
+  --------------------------------- */
+
+  const evolution =
+    sessions
+      .filter(
+        function(session) {
+
+          return Boolean(
+            sessionData[
+              session.id
+            ]
+          );
+
+        }
+      )
+      .map(
+        function(session) {
+
+          const rows =
+            sessionData[
+              session.id
+            ];
+
+
+          /* -----------------------------
+             CARGAS
+          ----------------------------- */
+
+          const numericLoads =
+            rows
+              .map(
+                function(row) {
+
+                  const value =
+                    parseFloat(
+                      row.load
+                    );
+
+
+                  return isNaN(value)
+                    ? null
+                    : value;
+
+                }
+              )
+              .filter(
+                function(value) {
+
+                  return (
+                    value !== null
+                  );
+
+                }
+              );
+
+
+          const maxLoad =
+            numericLoads.length
+              ? Math.max(
+                  ...numericLoads
+                )
+              : null;
+
+
+          /* -----------------------------
+             RPE
+          ----------------------------- */
+
+          const numericRpes =
+            rows
+              .map(
+                function(row) {
+
+                  const value =
+                    parseFloat(
+                      row.rpe
+                    );
+
+
+                  return isNaN(value)
+                    ? null
+                    : value;
+
+                }
+              )
+              .filter(
+                function(value) {
+
+                  return (
+                    value !== null
+                  );
+
+                }
+              );
+
+
+          const averageRpe =
+            numericRpes.length
+              ? (
+                  numericRpes.reduce(
+                    function(
+                      total,
+                      value
+                    ) {
+
+                      return (
+                        total +
+                        value
+                      );
+
+                    },
+                    0
+                  ) /
+                  numericRpes.length
+                )
+              : null;
+
+
+          return {
+
+            sessionId:
+              session.id,
+
+            date:
+              session.finished_at
+                ? new Date(
+                    session.finished_at
+                  ).toLocaleDateString(
+                    "es-AR",
+                    {
+                      day:"2-digit",
+                      month:"2-digit"
+                    }
+                  )
+                : "—",
+
+            maxLoad:
+              maxLoad,
+
+            averageRpe:
+              averageRpe
+
+          };
+
+        }
+      );
+
+
+  if (
+    evolution.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO HAY DATOS SUFICIENTES PARA MOSTRAR LA EVOLUCIÓN.
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  /* ---------------------------------
+     DATOS DEL GRÁFICO
+  --------------------------------- */
+
+  const loadData =
+    evolution.filter(
+      function(item) {
+
+        return (
+          item.maxLoad !== null
+        );
+
+      }
+    );
+
+
+  const rpeData =
+    evolution.filter(
+      function(item) {
+
+        return (
+          item.averageRpe !== null
+        );
+
+      }
+    );
+
+
+  /* ---------------------------------
+     FUNCIÓN PARA CREAR GRÁFICO SVG
+  --------------------------------- */
+
+  function createProgressChart(
+    data,
+    valueKey,
+    suffix
+  ) {
+
+    if (
+      !data.length
+    ) {
+
+      return `
+
+        <div class="progress-chart-empty">
+          NO HAY DATOS SUFICIENTES PARA MOSTRAR ESTE GRÁFICO.
+        </div>
+
+      `;
+
+    }
+
+
+    const width = 760;
+    const height = 230;
+
+    const paddingLeft = 48;
+    const paddingRight = 20;
+    const paddingTop = 20;
+    const paddingBottom = 38;
+
+
+    const chartWidth =
+      width -
+      paddingLeft -
+      paddingRight;
+
+
+    const chartHeight =
+      height -
+      paddingTop -
+      paddingBottom;
+
+
+    const values =
+      data.map(
+        function(item) {
+
+          return Number(
+            item[valueKey]
+          );
+
+        }
+      );
+
+
+    let minValue =
+      Math.min(
+        ...values
+      );
+
+
+    let maxValue =
+      Math.max(
+        ...values
+      );
+
+
+    if (
+      minValue === maxValue
+    ) {
+
+      minValue =
+        minValue - 1;
+
+      maxValue =
+        maxValue + 1;
+
+    }
+
+
+    const range =
+      maxValue -
+      minValue;
+
+
+    minValue =
+      minValue -
+      range * 0.10;
+
+
+    maxValue =
+      maxValue +
+      range * 0.10;
+
+
+    const points =
+      data.map(
+        function(item, index) {
+
+          const x =
+            data.length === 1
+
+              ? paddingLeft +
+                chartWidth / 2
+
+              : paddingLeft +
+                (
+                  index /
+                  (data.length - 1)
+                ) *
+                chartWidth;
+
+
+          const y =
+            paddingTop +
+            (
+              1 -
+              (
+                (
+                  Number(
+                    item[valueKey]
+                  ) -
+                  minValue
+                ) /
+                (
+                  maxValue -
+                  minValue
+                )
+              )
+            ) *
+            chartHeight;
+
+
+          return {
+
+            x:x,
+            y:y,
+            value:
+              Number(
+                item[valueKey]
+              ),
+
+            date:
+              item.date
+
+          };
+
+        }
+      );
+
+
+    const linePoints =
+      points
+        .map(
+          function(point) {
+
+            return (
+              point.x +
+              "," +
+              point.y
+            );
+
+          }
+        )
+        .join(" ");
+
+
+    const gridLines =
+      [0, .5, 1]
+        .map(
+          function(position) {
+
+            const y =
+              paddingTop +
+              position *
+              chartHeight;
+
+
+            const value =
+              maxValue -
+              position *
+              (
+                maxValue -
+                minValue
+              );
+
+
+            return `
+
+              <line
+                x1="${paddingLeft}"
+                y1="${y}"
+                x2="${width - paddingRight}"
+                y2="${y}"
+                stroke="#292929"
+                stroke-width="1"
+              />
+
+              <text
+                x="${paddingLeft - 8}"
+                y="${y + 4}"
+                text-anchor="end"
+                fill="#666"
+                font-size="10"
+                font-family="Montserrat"
+              >
+                ${value.toFixed(1)}
+              </text>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    const pointElements =
+      points
+        .map(
+          function(point) {
+
+            return `
+
+              <circle
+                cx="${point.x}"
+                cy="${point.y}"
+                r="4"
+                fill="#E60000"
+              />
+
+              <text
+                x="${point.x}"
+                y="${point.y - 10}"
+                text-anchor="middle"
+                fill="#fff"
+                font-size="9"
+                font-family="Montserrat"
+                font-weight="700"
+              >
+                ${point.value}${suffix}
+              </text>
+
+              <text
+                x="${point.x}"
+                y="${height - 12}"
+                text-anchor="middle"
+                fill="#666"
+                font-size="9"
+                font-family="Montserrat"
+              >
+                ${point.date}
+              </text>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    return `
+
+      <div class="progress-chart">
+
+        <svg
+          viewBox="
+            0 0 ${width} ${height}
+          "
+          preserveAspectRatio="none"
+        >
+
+          ${gridLines}
+
+
+          <polyline
+            points="${linePoints}"
+            fill="none"
+            stroke="#E60000"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+
+          ${pointElements}
+
+        </svg>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* ---------------------------------
+     ÚLTIMO RPE
+  --------------------------------- */
+
+  const lastRpe =
+    rpeData.length
+      ? rpeData[
+          rpeData.length - 1
+        ].averageRpe
+      : null;
+
+
+  /* ---------------------------------
+     MOSTRAR GRÁFICOS
+  --------------------------------- */
+
+  container.innerHTML = `
+
+    <div class="progress-chart-card">
+
+      <div class="menu-label">
+        EVOLUCIÓN DE CARGA
+      </div>
+
+
+      <h2
+        class="progress-chart-title"
+        style="margin-top:5px;"
+      >
+        ${escapeWorkoutHtml(
+          exercise
+            ? exercise.name
+            : "EJERCICIO"
+        )}
+      </h2>
+
+
+      <div class="progress-chart-subtitle">
+        CARGA MÁXIMA REGISTRADA POR ENTRENAMIENTO
+      </div>
+
+
+      ${
+        createProgressChart(
+          loadData,
+          "maxLoad",
+          ""
+        )
+      }
+
+    </div>
+
+
+    <div class="progress-chart-card">
+
+      <div class="menu-label">
+        PROGRESO RPE
+      </div>
+
+
+      <h2
+        class="progress-chart-title"
+        style="margin-top:5px;"
+      >
+        ESFUERZO PERCIBIDO
+      </h2>
+
+
+      <div class="progress-chart-subtitle">
+        RPE PROMEDIO POR ENTRENAMIENTO
+      </div>
+
+
+      ${
+        lastRpe !== null
+
+          ? `
+
+            <div
+              class="progress-rpe-value"
+            >
+              ${lastRpe.toFixed(1)}
+            </div>
+
+            <div
+              class="progress-rpe-label"
+            >
+              ÚLTIMO RPE PROMEDIO
+            </div>
+
+          `
+
+          : ""
+
+      }
+
+
+      ${
+        createProgressChart(
+          rpeData,
+          "averageRpe",
+          ""
+        )
+      }
+
+    </div>
+
+  `;
+
+}
   /* ---------------------------------
      AGRUPAR POR SESIÓN
   --------------------------------- */
