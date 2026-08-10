@@ -4877,309 +4877,898 @@ async function renderExerciseLibrary() {
 
     </div>
 
-    <div class="student-card" style="margin-bottom:14px;">
+
+    <!-- =====================================
+         NUEVO EJERCICIO
+    ====================================== -->
+
+    <div
+      class="student-card"
+      style="margin-bottom:18px;"
+    >
 
       <div class="menu-label">
         NUEVO EJERCICIO
       </div>
 
-      <form id="exercise-library-form" style="display:flex;flex-direction:column;gap:9px;margin-top:12px;">
 
-        <input name="name" required placeholder="Nombre del ejercicio" style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:13px;">
+      <form
+        id="exercise-library-form"
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:10px;
+          margin-top:12px;
+        "
+      >
 
-        <input name="category" placeholder="Categoría · Piernas / Empuje / Tirón..." style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:13px;">
+        <!-- NOMBRE -->
 
-        <input name="video_url" type="url" placeholder="URL del video (opcional)" style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:13px;">
+        <input
+          name="name"
+          required
+          placeholder="Nombre del ejercicio"
+          style="
+            width:100%;
+            box-sizing:border-box;
+            background:#111;
+            border:1px solid #333;
+            color:#fff;
+            padding:13px;
+          "
+        >
 
-        <div style="border:1px solid #333;background:#111;padding:12px;">
-          <label for="exercise-image-file" style="display:block;color:#fff;font-size:10px;font-weight:900;letter-spacing:1px;margin-bottom:8px;">
+
+        <!-- GRUPO MUSCULAR -->
+
+        <select
+          name="category"
+          required
+          style="
+            width:100%;
+            box-sizing:border-box;
+            background:#111;
+            border:1px solid #333;
+            color:#fff;
+            padding:13px;
+          "
+        >
+
+          <option value="">
+            Grupo muscular
+          </option>
+
+          <option value="Tren inferior">
+            Tren inferior
+          </option>
+
+          <option value="Tren superior">
+            Tren superior
+          </option>
+
+          <option value="Core">
+            Core
+          </option>
+
+          <option value="Cardio">
+            Cardio
+          </option>
+
+        </select>
+
+
+        <!-- DESCRIPCIÓN -->
+
+        <textarea
+          name="description"
+          placeholder="Descripción del ejercicio (opcional)"
+          style="
+            width:100%;
+            box-sizing:border-box;
+            min-height:80px;
+            resize:vertical;
+            background:#111;
+            border:1px solid #333;
+            color:#fff;
+            padding:13px;
+          "
+        ></textarea>
+
+
+        <!-- VIDEO -->
+
+        <input
+          name="video_url"
+          type="url"
+          placeholder="URL del video (opcional)"
+          style="
+            width:100%;
+            box-sizing:border-box;
+            background:#111;
+            border:1px solid #333;
+            color:#fff;
+            padding:13px;
+          "
+        >
+
+
+        <!-- IMAGEN -->
+
+        <div
+          style="
+            border:1px solid #333;
+            background:#111;
+            padding:12px;
+          "
+        >
+
+          <label
+            for="exercise-image-file"
+            style="
+              display:block;
+              color:#fff;
+              font-size:10px;
+              font-weight:900;
+              letter-spacing:1px;
+              margin-bottom:8px;
+            "
+          >
             IMAGEN DE EJECUCIÓN
           </label>
+
           <input
             id="exercise-image-file"
             name="image_file"
             type="file"
             accept="image/*"
-            style="width:100%;color:#aaa;font-size:10px;"
+            style="
+              width:100%;
+              color:#aaa;
+              font-size:10px;
+            "
           >
-          <div style="color:#666;font-size:9px;line-height:1.5;margin-top:7px;">
-            Subí la imagen que ya tenés descargada. Se guarda en la biblioteca de FORJA y la alumna verá solamente la imagen, sin ser enviada a Pinterest ni a otra página.
+
+          <div
+            style="
+              color:#666;
+              font-size:9px;
+              line-height:1.5;
+              margin-top:7px;
+            "
+          >
+            Subí la imagen que ya tenés descargada.
+            La alumna verá solamente la imagen dentro de FORJA.
           </div>
+
         </div>
 
-        <textarea name="cues" placeholder="Claves técnicas · una por línea" style="width:100%;box-sizing:border-box;min-height:90px;background:#111;border:1px solid #333;color:#fff;padding:13px;"></textarea>
 
-        <textarea name="errors" placeholder="Errores a evitar · uno por línea (opcional)" style="width:100%;box-sizing:border-box;min-height:70px;background:#111;border:1px solid #333;color:#fff;padding:13px;"></textarea>
+        <!-- MENOS IMPORTANTE / INTERNO -->
 
-        <button class="button" type="submit" style="margin-top:3px;">
+        <details
+          style="
+            border:1px solid #222;
+            background:#0d0d0d;
+            padding:10px;
+          "
+        >
+
+          <summary
+            style="
+              color:#777;
+              font-size:9px;
+              font-weight:900;
+              letter-spacing:1px;
+              cursor:pointer;
+            "
+          >
+            INFORMACIÓN TÉCNICA INTERNA
+          </summary>
+
+
+          <textarea
+            name="cues"
+            placeholder="Claves técnicas · una por línea"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              min-height:90px;
+              margin-top:10px;
+              background:#111;
+              border:1px solid #333;
+              color:#fff;
+              padding:13px;
+            "
+          ></textarea>
+
+
+          <textarea
+            name="errors"
+            placeholder="Errores a evitar · uno por línea"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              min-height:70px;
+              margin-top:9px;
+              background:#111;
+              border:1px solid #333;
+              color:#fff;
+              padding:13px;
+            "
+          ></textarea>
+
+        </details>
+
+
+        <button
+          class="button"
+          type="submit"
+          style="margin-top:3px;"
+        >
           + GUARDAR EN BIBLIOTECA
         </button>
 
-        <div id="exercise-library-message" style="color:#777;font-size:10px;min-height:16px;"></div>
+
+        <div
+          id="exercise-library-message"
+          style="
+            color:#777;
+            font-size:10px;
+            min-height:16px;
+          "
+        ></div>
 
       </form>
 
     </div>
 
-    <div class="workout-section-label">
+
+    <!-- =====================================
+         BUSCADOR + FILTROS
+    ====================================== -->
+
+    <div
+      class="student-card"
+      style="
+        margin-bottom:18px;
+        padding:14px;
+      "
+    >
+
+      <div class="menu-label">
+        BUSCAR EJERCICIO
+      </div>
+
+
+      <input
+        id="exercise-library-search"
+        type="search"
+        placeholder="Escribí el nombre de un ejercicio..."
+        autocomplete="off"
+        style="
+          width:100%;
+          box-sizing:border-box;
+          background:#111;
+          border:1px solid #333;
+          color:#fff;
+          padding:13px;
+          margin-top:10px;
+        "
+      >
+
+
+      <div
+        style="
+          display:grid;
+          grid-template-columns:repeat(2,1fr);
+          gap:7px;
+          margin-top:10px;
+        "
+      >
+
+        <button
+          type="button"
+          class="workout-small-button exercise-library-filter active"
+          data-filter="Todos"
+        >
+          TODOS
+        </button>
+
+        <button
+          type="button"
+          class="workout-small-button exercise-library-filter"
+          data-filter="Tren inferior"
+        >
+          TREN INFERIOR
+        </button>
+
+        <button
+          type="button"
+          class="workout-small-button exercise-library-filter"
+          data-filter="Tren superior"
+        >
+          TREN SUPERIOR
+        </button>
+
+        <button
+          type="button"
+          class="workout-small-button exercise-library-filter"
+          data-filter="Core"
+        >
+          CORE
+        </button>
+
+        <button
+          type="button"
+          class="workout-small-button exercise-library-filter"
+          data-filter="Cardio"
+          style="grid-column:1/-1;"
+        >
+          CARDIO
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================
+         CONTADOR
+    ====================================== -->
+
+    <div
+      id="exercise-library-results-label"
+      class="workout-section-label"
+    >
       EJERCICIOS CARGADOS · ${library.length}
     </div>
 
-    <div class="exercise-library-grid">
-      ${library.length ? library.map(function(item) {
-        const hasMedia = Boolean(item.video_url || item.image_url);
-        return `
-          <article class="exercise-library-card">
 
-            ${item.video_url ? `
-              <video class="exercise-library-media" controls muted preload="metadata" src="${escapeWorkoutHtml(item.video_url)}"></video>
-            ` : item.image_url ? `
-              <img class="exercise-library-media" src="${escapeWorkoutHtml(item.image_url)}" alt="${escapeWorkoutHtml(item.name || "Ejercicio")}">
-            ` : `
-              <div class="exercise-library-media" style="display:flex;align-items:center;justify-content:center;color:#555;font-size:9px;font-weight:900;">SIN MATERIAL VISUAL</div>
-            `}
+    <!-- =====================================
+         GRID
+    ====================================== -->
 
-            <div class="menu-label">${escapeWorkoutHtml(item.category || "EJERCICIO")}</div>
-            <div style="font-family:'Anton',sans-serif;font-size:25px;line-height:1;text-transform:uppercase;">${escapeWorkoutHtml(item.name || "EJERCICIO")}</div>
+    <div
+      id="exercise-library-grid"
+      class="exercise-library-grid"
+    >
 
-            <div style="color:#777;font-size:10px;line-height:1.5;margin-top:8px;">
-              ${hasMedia ? "MATERIAL VISUAL DISPONIBLE" : "AGREGÁ VIDEO O IMAGEN"}
+      ${
+        library.length
+
+          ? library.map(function(item) {
+
+              const hasMedia =
+                Boolean(
+                  item.video_url ||
+                  item.image_url
+                );
+
+              return `
+
+                <article
+                  class="exercise-library-card"
+                  data-name="${escapeWorkoutHtml(
+                    String(item.name || "").toLowerCase()
+                  )}"
+                  data-category="${escapeWorkoutHtml(
+                    item.category || ""
+                  )}"
+                >
+
+
+                  ${
+                    item.video_url
+
+                      ? `
+
+                        <video
+                          class="exercise-library-media"
+                          controls
+                          muted
+                          preload="metadata"
+                          src="${escapeWorkoutHtml(
+                            item.video_url
+                          )}"
+                        ></video>
+
+                      `
+
+                      : item.image_url
+
+                        ? `
+
+                          <img
+                            class="exercise-library-media"
+                            src="${escapeWorkoutHtml(
+                              item.image_url
+                            )}"
+                            alt="${escapeWorkoutHtml(
+                              item.name || "Ejercicio"
+                            )}"
+                          >
+
+                        `
+
+                        : `
+
+                          <div
+                            class="exercise-library-media"
+                            style="
+                              display:flex;
+                              align-items:center;
+                              justify-content:center;
+                              color:#555;
+                              font-size:9px;
+                              font-weight:900;
+                            "
+                          >
+                            SIN MATERIAL VISUAL
+                          </div>
+
+                        `
+                  }
+
+
+                  <!-- CATEGORÍA -->
+
+                  <div
+                    class="menu-label"
+                    style="margin-bottom:5px;"
+                  >
+                    ${escapeWorkoutHtml(
+                      item.category || "SIN CATEGORÍA"
+                    )}
+                  </div>
+
+
+                  <!-- NOMBRE -->
+
+                  <div
+                    style="
+                      font-family:'Anton',sans-serif;
+                      font-size:25px;
+                      line-height:1;
+                      text-transform:uppercase;
+                    "
+                  >
+                    ${escapeWorkoutHtml(
+                      item.name || "EJERCICIO"
+                    )}
+                  </div>
+
+
+                  <!-- DESCRIPCIÓN -->
+
+                  ${
+                    item.description
+
+                      ? `
+
+                        <div
+                          style="
+                            color:#999;
+                            font-size:10px;
+                            line-height:1.5;
+                            margin-top:9px;
+                          "
+                        >
+                          ${escapeWorkoutHtml(
+                            item.description
+                          )}
+                        </div>
+
+                      `
+
+                      : ""
+                  }
+
+
+                  <!-- ESTADO -->
+
+                  <div
+                    style="
+                      color:#666;
+                      font-size:9px;
+                      line-height:1.5;
+                      margin-top:9px;
+                      font-weight:900;
+                      letter-spacing:.5px;
+                    "
+                  >
+                    ${
+                      hasMedia
+                        ? "MATERIAL VISUAL DISPONIBLE"
+                        : "AGREGÁ VIDEO O IMAGEN"
+                    }
+                  </div>
+
+
+                  <!-- ACCIONES -->
+
+                  <div
+                    class="exercise-library-actions"
+                  >
+
+                    <button
+                      type="button"
+                      class="workout-small-button exercise-library-preview"
+                      data-id="${escapeWorkoutHtml(
+                        item.id
+                      )}"
+                    >
+                      VER
+                    </button>
+
+
+                    <button
+                      type="button"
+                      class="workout-small-button danger exercise-library-delete"
+                      data-id="${escapeWorkoutHtml(
+                        item.id
+                      )}"
+                    >
+                      ELIMINAR
+                    </button>
+
+                  </div>
+
+                </article>
+
+              `;
+
+            }).join("")
+
+          : `
+
+            <div
+              class="student-card"
+              style="grid-column:1/-1;"
+            >
+
+              <div class="detail-value">
+                TODAVÍA NO HAY EJERCICIOS.
+              </div>
+
+              <p
+                style="
+                  color:#777;
+                  font-size:10px;
+                  margin-top:8px;
+                  line-height:1.6;
+                "
+              >
+                Cargá el primero arriba y después podrás
+                vincularlo a tus rutinas.
+              </p>
+
             </div>
 
-            <div class="exercise-library-actions">
-              <button type="button" class="workout-small-button exercise-library-preview" data-id="${escapeWorkoutHtml(item.id)}">VER</button>
-              <button type="button" class="workout-small-button danger exercise-library-delete" data-id="${escapeWorkoutHtml(item.id)}">ELIMINAR</button>
-            </div>
+          `
+      }
 
-          </article>
-        `;
-      }).join("") : `
-        <div class="student-card" style="grid-column:1/-1;">
-          <div class="detail-value">TODAVÍA NO HAY EJERCICIOS.</div>
-          <p style="color:#777;font-size:10px;margin-top:8px;line-height:1.6;">Cargá el primero arriba y después podrás vincularlo a tus rutinas.</p>
-        </div>
-      `}
     </div>
 
   `;
 
-  document.getElementById("back-from-exercise-library").addEventListener(
-    "click",
-    function() {
-      exerciseLibraryScreen.style.display = "none";
-      showApp();
-    }
-  );
 
-  document.getElementById("exercise-library-form").addEventListener(
-    "submit",
-    saveExerciseLibraryItem
-  );
+  // =====================================
+  // VOLVER AL PANEL
+  // =====================================
+
+  document
+    .getElementById("back-from-exercise-library")
+    .addEventListener(
+      "click",
+      function() {
+
+        exerciseLibraryScreen.style.display =
+          "none";
+
+        showApp();
+
+      }
+    );
+
+
+  // =====================================
+  // GUARDAR
+  // =====================================
+
+  document
+    .getElementById("exercise-library-form")
+    .addEventListener(
+      "submit",
+      saveExerciseLibraryItem
+    );
+
+
+  // =====================================
+  // VER EJERCICIO
+  // =====================================
 
   exerciseLibraryScreen
-    .querySelectorAll(".exercise-library-preview")
+    .querySelectorAll(
+      ".exercise-library-preview"
+    )
     .forEach(function(button) {
-      button.addEventListener("click", function() {
-        const item = library.find(function(row) {
-          return String(row.id) === String(button.dataset.id);
-        });
-        openExerciseLibraryModal(item);
-      });
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          const item =
+            library.find(function(row) {
+
+              return String(row.id) ===
+                String(button.dataset.id);
+
+            });
+
+          openExerciseLibraryModal(item);
+
+        }
+      );
+
     });
 
+
+  // =====================================
+  // ELIMINAR
+  // =====================================
+
   exerciseLibraryScreen
-    .querySelectorAll(".exercise-library-delete")
+    .querySelectorAll(
+      ".exercise-library-delete"
+    )
     .forEach(function(button) {
-      button.addEventListener("click", async function() {
-        const confirmed = confirm("¿Eliminar este ejercicio de la biblioteca?");
-        if (!confirmed) return;
 
-        const item = library.find(function(row) {
-          return String(row.id) === String(button.dataset.id);
-        });
+      button.addEventListener(
+        "click",
+        async function() {
 
-        if (item && item.image_path) {
-          const { error: storageError } = await supabaseClient
-            .storage
-            .from("exercise-library")
-            .remove([item.image_path]);
+          const confirmed =
+            confirm(
+              "¿Eliminar este ejercicio de la biblioteca?"
+            );
 
-          if (storageError) {
-            console.error("Error eliminando imagen de ejercicio:", storageError);
+          if (!confirmed) {
+            return;
           }
+
+
+          const item =
+            library.find(function(row) {
+
+              return String(row.id) ===
+                String(button.dataset.id);
+
+            });
+
+
+          // Eliminar imagen del bucket
+
+          if (
+            item &&
+            item.image_path
+          ) {
+
+            const {
+              error: storageError
+            } =
+              await supabaseClient
+                .storage
+                .from("exercise-library")
+                .remove([
+                  item.image_path
+                ]);
+
+
+            if (storageError) {
+
+              console.error(
+                "Error eliminando imagen de ejercicio:",
+                storageError
+              );
+
+            }
+
+          }
+
+
+          // Eliminar registro
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .from("exercise_library")
+              .delete()
+              .eq(
+                "id",
+                button.dataset.id
+              );
+
+
+          if (error) {
+
+            console.error(
+              "Error eliminando ejercicio de biblioteca:",
+              error
+            );
+
+            alert(
+              "NO SE PUDO ELIMINAR. REVISÁ LA CONFIGURACIÓN DE SUPABASE."
+            );
+
+            return;
+
+          }
+
+
+          exerciseLibraryCache =
+            null;
+
+          await renderExerciseLibrary();
+
         }
+      );
 
-        const { error } = await supabaseClient
-          .from("exercise_library")
-          .delete()
-          .eq("id", button.dataset.id);
-
-        if (error) {
-          console.error("Error eliminando ejercicio de biblioteca:", error);
-          alert("NO SE PUDO ELIMINAR. REVISÁ LA CONFIGURACIÓN DE SUPABASE.");
-          return;
-        }
-
-        exerciseLibraryCache = null;
-        await renderExerciseLibrary();
-      });
     });
-}
 
 
-async function saveExerciseLibraryItem(event) {
+  // =====================================
+  // BUSCADOR + FILTROS
+  // =====================================
 
-  event.preventDefault();
+  const searchInput =
+    document.getElementById(
+      "exercise-library-search"
+    );
 
-  const form = event.currentTarget;
-  const message = document.getElementById("exercise-library-message");
+  const filterButtons =
+    exerciseLibraryScreen
+      .querySelectorAll(
+        ".exercise-library-filter"
+      );
 
-  const data = new FormData(form);
+  const cards =
+    exerciseLibraryScreen
+      .querySelectorAll(
+        ".exercise-library-card"
+      );
 
-  const imageFileInput = form.querySelector('[name="image_file"]');
-  const imageFile = imageFileInput && imageFileInput.files
-    ? imageFileInput.files[0]
-    : null;
+  const resultsLabel =
+    document.getElementById(
+      "exercise-library-results-label"
+    );
 
-  const payload = {
-    name: String(data.get("name") || "").trim(),
-    category: String(data.get("category") || "").trim(),
-    video_url: String(data.get("video_url") || "").trim() || null,
-    image_url: null,
-    image_path: null,
-    cues: String(data.get("cues") || "").trim(),
-    errors: String(data.get("errors") || "").trim()
-  };
 
-  if (!payload.name) {
-    message.textContent = "INGRESÁ EL NOMBRE DEL EJERCICIO.";
-    return;
-  }
+  let activeFilter =
+    "Todos";
 
-  if (imageFile) {
-    if (!imageFile.type.startsWith("image/")) {
-      message.textContent = "EL ARCHIVO DEBE SER UNA IMAGEN.";
-      return;
-    }
 
-    const maxSize = 10 * 1024 * 1024;
-    if (imageFile.size > maxSize) {
-      message.textContent = "LA IMAGEN NO PUEDE SUPERAR LOS 10 MB.";
-      return;
-    }
-  }
+  function applyExerciseLibraryFilters() {
 
-  message.textContent = imageFile
-    ? "SUBIENDO IMAGEN..."
-    : "GUARDANDO...";
-
-  if (imageFile) {
-    const originalName =
-      imageFile.name
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-zA-Z0-9._-]/g, "-")
+    const search =
+      String(
+        searchInput
+          ? searchInput.value
+          : ""
+      )
+        .trim()
         .toLowerCase();
 
-    const uniquePrefix =
-      (window.crypto && crypto.randomUUID)
-        ? crypto.randomUUID()
-        : String(Date.now());
 
-    const imagePath =
-      "exercises/" +
-      uniquePrefix +
-      "-" +
-      originalName;
+    let visibleCount =
+      0;
 
-    const { error: uploadError } =
-      await supabaseClient
-        .storage
-        .from("exercise-library")
-        .upload(imagePath, imageFile, {
-          cacheControl: "31536000",
-          upsert: false,
-          contentType: imageFile.type
-        });
 
-    if (uploadError) {
-      console.error("Error subiendo imagen de ejercicio:", uploadError);
-      message.textContent =
-        "NO SE PUDO SUBIR LA IMAGEN. REVISÁ EL BUCKET exercise-library Y SUS POLÍTICAS.";
-      return;
+    cards.forEach(function(card) {
+
+      const name =
+        String(
+          card.dataset.name || ""
+        )
+        .toLowerCase();
+
+
+      const category =
+        String(
+          card.dataset.category || ""
+        )
+        .toLowerCase();
+
+
+      const matchesSearch =
+        !search ||
+        name.includes(search);
+
+
+      const matchesCategory =
+        activeFilter === "Todos" ||
+        category ===
+          activeFilter.toLowerCase();
+
+
+      const visible =
+        matchesSearch &&
+        matchesCategory;
+
+
+      card.style.display =
+        visible
+          ? ""
+          : "none";
+
+
+      if (visible) {
+        visibleCount++;
+      }
+
+    });
+
+
+    if (resultsLabel) {
+
+      resultsLabel.textContent =
+        "EJERCICIOS MOSTRADOS · " +
+        visibleCount +
+        " / " +
+        library.length;
+
     }
 
-    const { data: publicUrlData } =
-      supabaseClient
-        .storage
-        .from("exercise-library")
-        .getPublicUrl(imagePath);
-
-    payload.image_url =
-      publicUrlData && publicUrlData.publicUrl
-        ? publicUrlData.publicUrl
-        : null;
-
-    payload.image_path = imagePath;
-
-    if (!payload.image_url) {
-      message.textContent = "NO SE PUDO OBTENER LA IMAGEN GUARDADA.";
-      return;
-    }
   }
 
-  message.textContent = "GUARDANDO EJERCICIO...";
 
-  const { error } = await supabaseClient
-    .from("exercise_library")
-    .insert(payload);
+  if (searchInput) {
 
-  if (error) {
-    console.error("Error guardando ejercicio:", error);
+    searchInput.addEventListener(
+      "input",
+      applyExerciseLibraryFilters
+    );
 
-    if (payload.image_path) {
-      await supabaseClient
-        .storage
-        .from("exercise-library")
-        .remove([payload.image_path]);
-    }
-
-    message.textContent =
-      "NO SE PUDO GUARDAR. REVISÁ LA TABLA exercise_library Y SUS POLÍTICAS.";
-    return;
   }
 
-  exerciseLibraryCache = null;
-  form.reset();
-  await renderExerciseLibrary();
-}
+
+  filterButtons.forEach(
+    function(button) {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          activeFilter =
+            button.dataset.filter ||
+            "Todos";
 
 
-/* =====================================
-   RUTINAS
-===================================== */
+          filterButtons.forEach(
+            function(otherButton) {
 
-workoutsButton.addEventListener(
-  "click",
-  function() {
-    showWorkouts();
-  }
-);
+              otherButton.classList.remove(
+                "active"
+              );
+
+            }
+          );
 
 
-/* =====================================
-   BIBLIOTECA DE EJERCICIOS
-===================================== */
+          button.classList.add(
+            "active"
+          );
 
-if (exerciseLibraryButton) {
-  exerciseLibraryButton.addEventListener(
-    "click",
-    function() {
-      showExerciseLibrary();
+
+          applyExerciseLibraryFilters();
+
+        }
+      );
+
     }
   );
-}
 
+}
 
 
 /* =====================================
