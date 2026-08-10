@@ -3210,7 +3210,20 @@
 
     }
 
+/* =====================================
+   BIBLIOTECA DE EJERCICIOS
+===================================== */
 
+if (exerciseLibraryButton) {
+  exerciseLibraryButton.addEventListener(
+    "click",
+    function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      showExerciseLibrary();
+    }
+  );
+}
     backToPanel.addEventListener(
       "click",
       function() {
@@ -3219,6 +3232,9 @@
 
       }
     );
+    
+    }
+    
 
 
     /* =====================================
