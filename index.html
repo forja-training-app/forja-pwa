@@ -7411,8 +7411,8 @@ async function openStudentHome() {
 
 }
 
-    /* =====================================
-   ESTADO DE PAGO DE LA ALUMNA
+/* =====================================
+   ESTADO DE PAGO — ALUMNA
 ===================================== */
 
 async function loadStudentPaymentStatus(student) {
@@ -7427,6 +7427,7 @@ async function loadStudentPaymentStatus(student) {
       "student-payment-message"
     );
 
+
   if (
     !statusElement ||
     !messageElement ||
@@ -7436,81 +7437,48 @@ async function loadStudentPaymentStatus(student) {
     return;
   }
 
+
   statusElement.textContent =
     "VERIFICANDO...";
 
   statusElement.style.color =
     "#777";
 
-  messageElement.textContent =
-    "Consultando el estado de tu pago.";
 
-  try {
+  const currentMonth =
+    new Date().getMonth() + 1;
 
-    const currentMonth =
-      new Date().getMonth() + 1;
+  const currentYear =
+    new Date().getFullYear();
 
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from("student_payments")
-      .select(
-        "id, student_id, payment_month, payment_status"
-      )
-      .eq("student_id", student.id)
-      .eq("payment_month", currentMonth)
-      .maybeSingle();
 
-    if (error) {
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("student_payments")
+    .select(
+      "id, student_id, month, year, status, paid_at"
+    )
+    .eq(
+      "student_id",
+      student.id
+    )
+    .eq(
+      "month",
+      currentMonth
+    )
+    .eq(
+      "year",
+      currentYear
+    )
+    .limit(1);
 
-      console.error(
-        "Error consultando estado de pago:",
-        error
-      );
 
-      statusElement.textContent =
-        "NO SE PUDO VERIFICAR";
-
-      statusElement.style.color =
-        "#777";
-
-      messageElement.textContent =
-        "No pudimos consultar tu estado de pago.";
-
-      return;
-    }
-
-    if (
-      data &&
-      data.payment_status === "paid"
-    ) {
-
-      statusElement.textContent =
-        "SIN DEUDA";
-
-      statusElement.style.color =
-        "#4CAF50";
-
-      messageElement.textContent =
-        "Tu rutina de este mes está abonada.";
-
-    } else {
-
-      statusElement.textContent =
-        "CON DEUDA";
-
-      statusElement.style.color =
-        "#E60000";
-
-      messageElement.textContent =
-        "Tenés pendiente el pago de tu rutina de este mes.";
-    }
-
-  } catch (error) {
+  if (error) {
 
     console.error(
-      "Error inesperado consultando pago:",
+      "Error consultando estado de pago de alumna:",
       error
     );
 
@@ -7518,10 +7486,48 @@ async function loadStudentPaymentStatus(student) {
       "NO SE PUDO VERIFICAR";
 
     statusElement.style.color =
-      "#777";
+      "#E60000";
 
     messageElement.textContent =
-      "Intentá nuevamente más tarde.";
+      "Revisá tu estado de pago con tu entrenadora.";
+
+    return;
+  }
+
+
+  const payment =
+    data && data.length
+      ? data[0]
+      : null;
+
+
+  const isPaid =
+    payment &&
+    payment.status === "paid";
+
+
+  if (isPaid) {
+
+    statusElement.textContent =
+      "SIN DEUDA";
+
+    statusElement.style.color =
+      "#39d353";
+
+    messageElement.textContent =
+      "TU RUTINA DEL MES ESTÁ ABONADA.";
+
+  } else {
+
+    statusElement.textContent =
+      "CON DEUDA";
+
+    statusElement.style.color =
+      "#E60000";
+
+    messageElement.textContent =
+      "RECORDÁ ABONAR TU RUTINA MENSUAL.";
+
   }
 
 }
