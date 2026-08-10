@@ -3736,80 +3736,440 @@ if (exerciseLibraryButton) {
     }
 
 
+   /* =====================================
+   FICHA DE ALUMNA
+===================================== */
+
+async function openStudentDetail(student) {
+
+  currentStudent = student;
+
+  loginScreen.style.display = "none";
+  appScreen.style.display = "none";
+  studentsScreen.style.display = "none";
+
+  if (workoutsScreen) {
+    workoutsScreen.style.display = "none";
+  }
+
+  if (workoutBuilderScreen) {
+    workoutBuilderScreen.style.display = "none";
+  }
+
+  studentDetailScreen =
+    document.getElementById(
+      "student-detail-screen"
+    );
+
+  studentDetailScreen.style.display =
+    "block";
+
+
+  /* =====================================
+     DATOS DE LA ALUMNA
+  ===================================== */
+
+  document
+    .getElementById("detail-student-name")
+    .textContent =
+      student.full_name ||
+      "ALUMNA";
+
+
+  document
+    .getElementById("detail-student-email")
+    .textContent =
+      student.email ||
+      "EMAIL NO DISPONIBLE";
+
+
+  document
+    .getElementById("detail-student-objective")
+    .textContent =
+      student.objective ||
+      "SIN OBJETIVO";
+
+
+  document
+    .getElementById("detail-student-days")
+    .textContent =
+      student.training_days
+        ? student.training_days + " DÍAS"
+        : "SIN DEFINIR";
+
+
+  document
+    .getElementById("detail-student-start")
+    .textContent =
+      student.start_date ||
+      "SIN FECHA";
+
+
+  /* =====================================
+     ESTADO DE PAGO
+  ===================================== */
+
+  await renderStudentPaymentStatus(student);
+
+
+  /* =====================================
+     HISTORIAL
+  ===================================== */
+
+  loadStudentTrainingHistory(student);
+
+}
     /* =====================================
-       FICHA DE ALUMNA
-    ====================================== */
+   ESTADO DE PAGO DE LA ALUMNA
+===================================== */
 
-    function openStudentDetail(student) {
+async function renderStudentPaymentStatus(student) {
 
-      currentStudent =
-        student;
-
-
-      loginScreen.style.display = "none";
-
-      appScreen.style.display = "none";
-
-      studentsScreen.style.display = "none";
-
-      if (workoutsScreen) {
-        workoutsScreen.style.display = "none";
-      }
-
-      if (workoutBuilderScreen) {
-        workoutBuilderScreen.style.display = "none";
-      }
+  if (!student || !student.id) {
+    return;
+  }
 
 
-      studentDetailScreen =
-        document.getElementById(
-          "student-detail-screen"
+  const currentMonth =
+    new Date().getMonth() + 1;
+
+
+  const currentYear =
+    new Date().getFullYear();
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("student_payments")
+    .select("*")
+    .eq("student_id", student.id)
+    .eq("payment_month", currentMonth)
+    .limit(1);
+
+
+  if (error) {
+
+    console.error(
+      "Error consultando estado de pago:",
+      error
+    );
+
+    return;
+  }
+
+
+  const payment =
+    data && data.length
+      ? data[0]
+      : null;
+
+
+  const isPaid =
+    payment &&
+    payment.payment_status === "paid";
+
+
+  /*
+     Buscamos si ya existe la tarjeta
+     para no duplicarla.
+  */
+
+  let paymentCard =
+    document.getElementById(
+      "student-payment-card"
+    );
+
+
+  if (!paymentCard) {
+
+    paymentCard =
+      document.createElement("div");
+
+    paymentCard.id =
+      "student-payment-card";
+
+    paymentCard.className =
+      "student-card";
+
+    paymentCard.style.marginTop =
+      "18px";
+
+
+    const detailScreen =
+      document.getElementById(
+        "student-detail-screen"
+      );
+
+
+    if (!detailScreen) {
+      return;
+    }
+
+
+    /*
+       La insertamos después de la
+       información principal de la alumna.
+    */
+
+    const detailEmail =
+      document.getElementById(
+        "detail-student-email"
+      );
+
+
+    if (
+      detailEmail &&
+      detailEmail.parentElement
+    ) {
+
+      detailEmail.parentElement
+        .insertAdjacentElement(
+          "afterend",
+          paymentCard
         );
 
+    } else {
 
-      studentDetailScreen.style.display =
-        "block";
+      detailScreen.appendChild(
+        paymentCard
+      );
 
-
-      document
-        .getElementById("detail-student-name")
-        .textContent =
-          student.full_name ||
-          "ALUMNA";
-
-
-      document
-        .getElementById("detail-student-email")
-        .textContent =
-          student.email ||
-          "EMAIL NO DISPONIBLE";
-
-
-      document
-        .getElementById("detail-student-objective")
-        .textContent =
-          student.objective ||
-          "SIN OBJETIVO";
-
-
-      document
-        .getElementById("detail-student-days")
-        .textContent =
-          student.training_days
-            ?
-            student.training_days +
-            " DÍAS"
-            :
-            "SIN DEFINIR";
-
-
-      document
-        .getElementById("detail-student-start")
-        .textContent =
-          student.start_date ||
-          "SIN FECHA";
-loadStudentTrainingHistory(student);
     }
+
+  }
+
+
+  paymentCard.innerHTML = `
+
+    <div class="menu-label">
+      ESTADO DE PAGO
+    </div>
+
+
+    <div
+      style="
+        margin-top:8px;
+        font-family:'Anton',sans-serif;
+        font-size:30px;
+        line-height:1;
+        color:${isPaid ? "#39d353" : "#E60000"};
+      "
+    >
+      ${isPaid ? "SIN DEUDA" : "CON DEUDA"}
+    </div>
+
+
+    <div
+      style="
+        margin-top:8px;
+        color:#777;
+        font-size:10px;
+        line-height:1.6;
+      "
+    >
+      RUTINA MENSUAL · $35.000
+    </div>
+
+
+    <div
+      style="
+        margin-top:14px;
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+      "
+    >
+
+      ${
+        isPaid
+
+          ? `
+
+            <button
+              id="student-payment-pending-button"
+              type="button"
+              class="workout-small-button"
+            >
+              MARCAR CON DEUDA
+            </button>
+
+          `
+
+          : `
+
+            <button
+              id="student-payment-paid-button"
+              type="button"
+              class="button"
+              style="margin-top:0;"
+            >
+              MARCAR COMO PAGADO
+            </button>
+
+          `
+      }
+
+    </div>
+
+  `;
+
+
+  /* =====================================
+     MARCAR PAGADO
+  ===================================== */
+
+  const paidButton =
+    document.getElementById(
+      "student-payment-paid-button"
+    );
+
+
+  if (paidButton) {
+
+    paidButton.onclick =
+      async function() {
+
+        paidButton.disabled =
+          true;
+
+        paidButton.textContent =
+          "GUARDANDO...";
+
+
+        const {
+          error
+        } = await supabaseClient
+          .from("student_payments")
+          .upsert(
+            {
+              student_id:
+                student.id,
+
+              payment_month:
+                currentMonth,
+
+              payment_status:
+                "paid",
+
+              updated_at:
+                new Date().toISOString()
+            },
+            {
+              onConflict:
+                "student_id,payment_month"
+            }
+          );
+
+
+        if (error) {
+
+          console.error(
+            "Error guardando pago:",
+            error
+          );
+
+          alert(
+            "NO SE PUDO GUARDAR EL PAGO."
+          );
+
+          paidButton.disabled =
+            false;
+
+          paidButton.textContent =
+            "MARCAR COMO PAGADO";
+
+          return;
+        }
+
+
+        await renderStudentPaymentStatus(
+          student
+        );
+
+      };
+
+  }
+
+
+  /* =====================================
+     MARCAR CON DEUDA
+  ===================================== */
+
+  const pendingButton =
+    document.getElementById(
+      "student-payment-pending-button"
+    );
+
+
+  if (pendingButton) {
+
+    pendingButton.onclick =
+      async function() {
+
+        pendingButton.disabled =
+          true;
+
+        pendingButton.textContent =
+          "GUARDANDO...";
+
+
+        const {
+          error
+        } = await supabaseClient
+          .from("student_payments")
+          .upsert(
+            {
+              student_id:
+                student.id,
+
+              payment_month:
+                currentMonth,
+
+              payment_status:
+                "pending",
+
+              updated_at:
+                new Date().toISOString()
+            },
+            {
+              onConflict:
+                "student_id,payment_month"
+            }
+          );
+
+
+        if (error) {
+
+          console.error(
+            "Error actualizando estado de pago:",
+            error
+          );
+
+          alert(
+            "NO SE PUDO ACTUALIZAR EL ESTADO."
+          );
+
+          pendingButton.disabled =
+            false;
+
+          pendingButton.textContent =
+            "MARCAR CON DEUDA";
+
+          return;
+        }
+
+
+        await renderStudentPaymentStatus(
+          student
+        );
+
+      };
+
+  }
+
+}
 
 /* =====================================
    CARGAR HISTORIAL DE ENTRENAMIENTOS
