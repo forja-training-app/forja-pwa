@@ -9393,15 +9393,18 @@ function renderWorkoutExercise(
   ];
 
   const labels = {
-
     series: "SERIES",
     reps: "REPETICIONES",
     rpe: "RPE / RIR",
     load: "CARGA / %",
     rest: "DESCANSO",
     tempo: "TEMPO"
-
   };
+
+  const library =
+    Array.isArray(exerciseLibraryCache)
+      ? exerciseLibraryCache
+      : [];
 
   return `
 
@@ -9410,9 +9413,13 @@ function renderWorkoutExercise(
       data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
     >
 
+      <!-- CABECERA -->
+
       <div class="workout-exercise-head">
 
-        <div class="workout-exercise-name">
+        <div
+          class="workout-exercise-name"
+        >
           ${escapeWorkoutHtml(
             exercise.name ||
             "EJERCICIO"
@@ -9430,6 +9437,98 @@ function renderWorkoutExercise(
         </button>
 
       </div>
+
+
+      <!-- BIBLIOTECA -->
+
+      <div
+        style="
+          margin-top:12px;
+          padding:12px;
+          background:#0d0d0d;
+          border:1px solid #292929;
+        "
+      >
+
+        <label
+          style="
+            display:block;
+            font-size:10px;
+            color:#aaa;
+            margin-bottom:7px;
+            letter-spacing:.5px;
+          "
+        >
+          BIBLIOTECA DE EJERCICIOS
+        </label>
+
+        <select
+          class="workout-exercise-library-select"
+          data-day-id="${escapeWorkoutHtml(day.id)}"
+          data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
+          style="
+            width:100%;
+            box-sizing:border-box;
+            background:#111;
+            border:1px solid #333;
+            color:#fff;
+            padding:12px;
+            font-family:Montserrat,sans-serif;
+            font-size:11px;
+            outline:none;
+          "
+        >
+
+          <option value="">
+            SIN EJERCICIO DE BIBLIOTECA
+          </option>
+
+          ${
+            library
+              .map(function(item) {
+
+                const selected =
+                  String(
+                    exercise.library_id || ""
+                  ) ===
+                  String(item.id)
+                    ? "selected"
+                    : "";
+
+                return `
+                  <option
+                    value="${escapeWorkoutHtml(item.id)}"
+                    ${selected}
+                  >
+                    ${escapeWorkoutHtml(
+                      item.name
+                    )}
+                  </option>
+                `;
+
+              })
+              .join("")
+          }
+
+        </select>
+
+        <div
+          style="
+            margin-top:7px;
+            color:#666;
+            font-size:9px;
+            line-height:1.5;
+          "
+        >
+          Elegí el ejercicio de la biblioteca para
+          que la alumna pueda consultar su imagen
+          o video desde la rutina.
+        </div>
+
+      </div>
+
+
+      <!-- VARIABLES POR SEMANA -->
 
       <div
         style="
@@ -9455,6 +9554,8 @@ function renderWorkoutExercise(
                 style="
                   text-align:left;
                   padding:8px;
+                  border-bottom:1px solid #333;
+                  color:#aaa;
                 "
               >
                 VARIABLE
@@ -9465,16 +9566,18 @@ function renderWorkoutExercise(
                   {
                     length: weeks
                   },
-                  function(_, i) {
+                  function(_, index) {
 
                     return `
                       <th
                         style="
                           padding:8px;
+                          border-bottom:1px solid #333;
+                          color:#aaa;
                           text-align:center;
                         "
                       >
-                        SEM ${i + 1}
+                        SEMANA ${index + 1}
                       </th>
                     `;
 
@@ -9486,11 +9589,12 @@ function renderWorkoutExercise(
 
           </thead>
 
+
           <tbody>
 
             ${
-              fields.map(
-                function(field) {
+              fields
+                .map(function(field) {
 
                   return `
 
@@ -9498,9 +9602,10 @@ function renderWorkoutExercise(
 
                       <td
                         style="
-                          padding:6px 8px;
-                          font-weight:700;
+                          padding:8px;
+                          border-bottom:1px solid #222;
                           color:#aaa;
+                          font-size:10px;
                         "
                       >
                         ${labels[field]}
@@ -9511,28 +9616,35 @@ function renderWorkoutExercise(
                           {
                             length: weeks
                           },
-                          function(_, i) {
+                          function(_, index) {
 
-                            const w =
-                              exercise.weeks[i] ||
-                              {};
+                            const week =
+                              exercise.weeks &&
+                              exercise.weeks[index]
+                                ?
+                                exercise.weeks[index]
+                                :
+                                {};
 
                             return `
 
                               <td
                                 style="
-                                  padding:4px;
+                                  padding:5px;
+                                  border-bottom:1px solid #222;
                                 "
                               >
 
                                 <input
+                                  type="text"
                                   class="week-variable-input"
                                   data-day-id="${escapeWorkoutHtml(day.id)}"
                                   data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
-                                  data-week-index="${i}"
-                                  data-field="${field}"
-                                  value="${escapeWorkoutHtml(w[field] || "")}"
-                                  placeholder="—"
+                                  data-week-index="${index}"
+                                  data-field="${escapeWorkoutHtml(field)}"
+                                  value="${escapeWorkoutHtml(
+                                    week[field] || ""
+                                  )}"
                                   style="
                                     width:100%;
                                     box-sizing:border-box;
@@ -9541,6 +9653,7 @@ function renderWorkoutExercise(
                                     color:#fff;
                                     padding:8px;
                                     font-size:11px;
+                                    text-align:center;
                                   "
                                 >
 
@@ -9556,8 +9669,8 @@ function renderWorkoutExercise(
 
                   `;
 
-                }
-              ).join("")
+                })
+                .join("")
             }
 
           </tbody>
@@ -9566,7 +9679,14 @@ function renderWorkoutExercise(
 
       </div>
 
-      <div style="margin-top:10px;">
+
+      <!-- NOTAS -->
+
+      <div
+        style="
+          margin-top:10px;
+        "
+      >
 
         <label
           style="
@@ -9582,11 +9702,15 @@ function renderWorkoutExercise(
             {
               length: weeks
             },
-            function(_, i) {
+            function(_, index) {
 
-              const w =
-                exercise.weeks[i] ||
-                {};
+              const week =
+                exercise.weeks &&
+                exercise.weeks[index]
+                  ?
+                  exercise.weeks[index]
+                  :
+                  {};
 
               return `
 
@@ -9594,7 +9718,7 @@ function renderWorkoutExercise(
                   class="week-notes-input"
                   data-day-id="${escapeWorkoutHtml(day.id)}"
                   data-exercise-id="${escapeWorkoutHtml(exercise.id)}"
-                  data-week-index="${i}"
+                  data-week-index="${index}"
                   style="
                     width:100%;
                     box-sizing:border-box;
@@ -9606,9 +9730,9 @@ function renderWorkoutExercise(
                     font-size:11px;
                     min-height:50px;
                   "
-                  placeholder="Semana ${i + 1}: indicaciones..."
+                  placeholder="Semana ${index + 1}: indicaciones..."
                 >${escapeWorkoutHtml(
-                  w.notes || ""
+                  week.notes || ""
                 )}</textarea>
 
               `;
@@ -9622,7 +9746,6 @@ function renderWorkoutExercise(
     </div>
 
   `;
-
 }
 
 
