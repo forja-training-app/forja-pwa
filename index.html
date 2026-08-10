@@ -3819,8 +3819,9 @@ async function openStudentDetail(student) {
   loadStudentTrainingHistory(student);
 
 }
+
     /* =====================================
-   ESTADO DE PAGO DE LA ALUMNA
+   ESTADO DE PAGO — ENTRENADORA
 ===================================== */
 
 async function renderStudentPaymentStatus(student) {
@@ -3832,19 +3833,127 @@ async function renderStudentPaymentStatus(student) {
   const currentMonth =
     new Date().getMonth() + 1;
 
-  const detailScreen =
-    document.getElementById(
-      "student-detail-screen"
+  const currentYear =
+    new Date().getFullYear();
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("student_payments")
+    .select(
+      "id, student_id, month, year, status, paid_at"
+    )
+    .eq(
+      "student_id",
+      student.id
+    )
+    .eq(
+      "month",
+      currentMonth
+    )
+    .eq(
+      "year",
+      currentYear
+    )
+    .limit(1);
+
+
+  if (error) {
+
+    console.error(
+      "Error consultando estado de pago de entrenadora:",
+      error
     );
 
-  if (!detailScreen) {
+    let paymentCard =
+      document.getElementById(
+        "student-payment-card"
+      );
+
+    if (!paymentCard) {
+
+      paymentCard =
+        document.createElement("div");
+
+      paymentCard.id =
+        "student-payment-card";
+
+      paymentCard.className =
+        "student-card";
+
+      paymentCard.style.marginTop =
+        "18px";
+
+
+      const detailScreen =
+        document.getElementById(
+          "student-detail-screen"
+        );
+
+      if (detailScreen) {
+        detailScreen.appendChild(
+          paymentCard
+        );
+      }
+    }
+
+
+    if (paymentCard) {
+
+      paymentCard.innerHTML = `
+
+        <div class="menu-label">
+          ESTADO DE PAGO
+        </div>
+
+        <div
+          style="
+            margin-top:8px;
+            font-family:'Anton',sans-serif;
+            font-size:30px;
+            line-height:1;
+            color:#E60000;
+          "
+        >
+          NO SE PUDO VERIFICAR
+        </div>
+
+        <div
+          style="
+            margin-top:8px;
+            color:#777;
+            font-size:10px;
+            line-height:1.6;
+          "
+        >
+          RUTINA MENSUAL · $35.000
+        </div>
+
+      `;
+    }
+
     return;
   }
+
+
+  const payment =
+    data && data.length
+      ? data[0]
+      : null;
+
+
+  const isPaid =
+    payment &&
+    payment.status === "paid";
+
 
   let paymentCard =
     document.getElementById(
       "student-payment-card"
     );
+
 
   if (!paymentCard) {
 
@@ -3860,10 +3969,23 @@ async function renderStudentPaymentStatus(student) {
     paymentCard.style.marginTop =
       "18px";
 
+
+    const detailScreen =
+      document.getElementById(
+        "student-detail-screen"
+      );
+
+
+    if (!detailScreen) {
+      return;
+    }
+
+
     const detailEmail =
       document.getElementById(
         "detail-student-email"
       );
+
 
     if (
       detailEmail &&
@@ -3877,28 +3999,32 @@ async function renderStudentPaymentStatus(student) {
         );
 
     } else {
+
       detailScreen.appendChild(
         paymentCard
       );
+
     }
+
   }
 
+
   paymentCard.innerHTML = `
+
     <div class="menu-label">
       ESTADO DE PAGO
     </div>
 
     <div
-      id="trainer-payment-status-text"
       style="
         margin-top:8px;
         font-family:'Anton',sans-serif;
         font-size:30px;
         line-height:1;
-        color:#777;
+        color:${isPaid ? "#39d353" : "#E60000"};
       "
     >
-      VERIFICANDO...
+      ${isPaid ? "SIN DEUDA" : "CON DEUDA"}
     </div>
 
     <div
@@ -3912,156 +4038,224 @@ async function renderStudentPaymentStatus(student) {
       RUTINA MENSUAL · $35.000
     </div>
 
+    ${
+      payment && payment.paid_at
+        ? `
+          <div
+            style="
+              margin-top:6px;
+              color:#666;
+              font-size:9px;
+            "
+          >
+            PAGO REGISTRADO
+          </div>
+        `
+        : ""
+    }
+
     <div
-      id="trainer-payment-actions"
       style="
         margin-top:14px;
       "
-    ></div>
-  `;
-
-  const statusText =
-    document.getElementById(
-      "trainer-payment-status-text"
-    );
-
-  const actions =
-    document.getElementById(
-      "trainer-payment-actions"
-    );
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("student_payments")
-    .select(
-      "id, student_id, payment_month, payment_status, created_at, updated_at"
-    )
-    .eq("student_id", student.id)
-    .eq("payment_month", currentMonth)
-    .maybeSingle();
-
-  if (error) {
-
-    console.error(
-      "Error consultando estado de pago de entrenadora:",
-      error
-    );
-
-    statusText.textContent =
-      "NO SE PUDO VERIFICAR";
-
-    statusText.style.color =
-      "#777";
-
-    actions.innerHTML = `
-      <div
-        style="
-          color:#777;
-          font-size:10px;
-          line-height:1.5;
-        "
-      >
-        Revisá la consola para ver el error de Supabase.
-      </div>
-    `;
-
-    return;
-  }
-
-  const isPaid =
-    data &&
-    data.payment_status === "paid";
-
-  statusText.textContent =
-    isPaid
-      ? "SIN DEUDA"
-      : "CON DEUDA";
-
-  statusText.style.color =
-    isPaid
-      ? "#39d353"
-      : "#E60000";
-
-  actions.innerHTML = `
-    <button
-      id="trainer-payment-toggle-button"
-      type="button"
-      class="${isPaid ? "workout-small-button" : "button"}"
-      style="${isPaid ? "" : "margin-top:0;"}"
     >
+
       ${
         isPaid
-          ? "MARCAR CON DEUDA"
-          : "MARCAR COMO PAGADO"
+
+          ? `
+
+            <button
+              id="student-payment-pending-button"
+              type="button"
+              class="workout-small-button"
+            >
+              MARCAR CON DEUDA
+            </button>
+
+          `
+
+          : `
+
+            <button
+              id="student-payment-paid-button"
+              type="button"
+              class="button"
+              style="margin-top:0;"
+            >
+              MARCAR COMO PAGADO
+            </button>
+
+          `
       }
-    </button>
+
+    </div>
+
   `;
 
-  const toggleButton =
+
+  /* =====================================
+     MARCAR COMO PAGADO
+  ===================================== */
+
+  const paidButton =
     document.getElementById(
-      "trainer-payment-toggle-button"
+      "student-payment-paid-button"
     );
 
-  if (!toggleButton) {
-    return;
-  }
 
-  toggleButton.onclick =
-    async function() {
+  if (paidButton) {
 
-      toggleButton.disabled = true;
-      toggleButton.textContent =
-        "GUARDANDO...";
+    paidButton.onclick =
+      async function() {
 
-      const newStatus =
-        isPaid
-          ? "pending"
-          : "paid";
+        paidButton.disabled =
+          true;
 
-      const { error: saveError } =
-        await supabaseClient
+        paidButton.textContent =
+          "GUARDANDO...";
+
+
+        const {
+          error
+        } = await supabaseClient
           .from("student_payments")
           .upsert(
             {
-              student_id: student.id,
-              payment_month: currentMonth,
-              payment_status: newStatus,
-              updated_at: new Date().toISOString()
+              student_id:
+                student.id,
+
+              month:
+                currentMonth,
+
+              year:
+                currentYear,
+
+              status:
+                "paid",
+
+              paid_at:
+                new Date().toISOString()
+
             },
             {
-              onConflict: "student_id,payment_month"
+              onConflict:
+                "student_id,month,year"
             }
           );
 
-      if (saveError) {
 
-        console.error(
-          "Error guardando estado de pago:",
-          saveError
+        if (error) {
+
+          console.error(
+            "Error guardando pago:",
+            error
+          );
+
+          alert(
+            "NO SE PUDO GUARDAR EL PAGO."
+          );
+
+          paidButton.disabled =
+            false;
+
+          paidButton.textContent =
+            "MARCAR COMO PAGADO";
+
+          return;
+        }
+
+
+        await renderStudentPaymentStatus(
+          student
         );
 
-        alert(
-          "NO SE PUDO GUARDAR EL ESTADO DE PAGO."
+      };
+
+  }
+
+
+  /* =====================================
+     MARCAR CON DEUDA
+  ===================================== */
+
+  const pendingButton =
+    document.getElementById(
+      "student-payment-pending-button"
+    );
+
+
+  if (pendingButton) {
+
+    pendingButton.onclick =
+      async function() {
+
+        pendingButton.disabled =
+          true;
+
+        pendingButton.textContent =
+          "GUARDANDO...";
+
+
+        const {
+          error
+        } = await supabaseClient
+          .from("student_payments")
+          .upsert(
+            {
+              student_id:
+                student.id,
+
+              month:
+                currentMonth,
+
+              year:
+                currentYear,
+
+              status:
+                "pending",
+
+              paid_at:
+                null
+
+            },
+            {
+              onConflict:
+                "student_id,month,year"
+            }
+          );
+
+
+        if (error) {
+
+          console.error(
+            "Error actualizando estado de pago:",
+            error
+          );
+
+          alert(
+            "NO SE PUDO ACTUALIZAR EL ESTADO."
+          );
+
+          pendingButton.disabled =
+            false;
+
+          pendingButton.textContent =
+            "MARCAR CON DEUDA";
+
+          return;
+        }
+
+
+        await renderStudentPaymentStatus(
+          student
         );
 
-        toggleButton.disabled = false;
-        toggleButton.textContent =
-          isPaid
-            ? "MARCAR CON DEUDA"
-            : "MARCAR COMO PAGADO";
+      };
 
-        return;
-      }
-
-      await renderStudentPaymentStatus(
-        student
-      );
-    };
+  }
 
 }
-
 /* =====================================
    CARGAR HISTORIAL DE ENTRENAMIENTOS
 ====================================== */
