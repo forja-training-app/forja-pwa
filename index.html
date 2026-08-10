@@ -5213,6 +5213,19 @@ function showWorkouts() {
   workoutStudentList =
     document.getElementById("workout-student-list");
 
+    /* =====================================
+     BOTÓN VOLVER AL PANEL
+  ====================================== */
+
+  const backFromWorkouts =
+    document.getElementById("back-from-workouts");
+
+  if (backFromWorkouts) {
+    backFromWorkouts.onclick = function() {
+      showApp();
+    };
+  }
+
   workoutsScreen.style.display = "block";
 
   loadWorkoutStudents();
