@@ -9260,6 +9260,110 @@ function renderWorkoutEditor(
   }
 
   bindWorkoutDayEvents(workout, state);
+
+    document
+    .querySelectorAll(
+      ".workout-exercise-library-select"
+    )
+    .forEach(
+      function(select) {
+
+        select.addEventListener(
+          "change",
+          function() {
+
+            const day =
+              state.days.find(
+                function(item) {
+
+                  return (
+                    item.id ===
+                    select.dataset.dayId
+                  );
+
+                }
+              );
+
+            if (!day) {
+              return;
+            }
+
+            const exercise =
+              day.exercises.find(
+                function(item) {
+
+                  return (
+                    item.id ===
+                    select.dataset.exerciseId
+                  );
+
+                }
+              );
+
+            if (!exercise) {
+              return;
+            }
+
+            const libraryId =
+              String(
+                select.value || ""
+              ).trim();
+
+            exercise.library_id =
+              libraryId || null;
+
+
+            /*
+              Si seleccionamos un ejercicio
+              de la biblioteca, actualizamos
+              también el nombre del ejercicio.
+            */
+
+            if (libraryId) {
+
+              const libraryItem =
+                Array.isArray(
+                  exerciseLibraryCache
+                )
+                  ?
+                  exerciseLibraryCache.find(
+                    function(item) {
+
+                      return (
+                        String(item.id) ===
+                        libraryId
+                      );
+
+                    }
+                  )
+                  :
+                  null;
+
+              if (libraryItem) {
+
+                exercise.name =
+                  libraryItem.name;
+
+              }
+
+            }
+
+
+            saveWorkoutEditorState(
+              workout,
+              state
+            );
+
+            renderWorkoutEditor(
+              workout,
+              state
+            );
+
+          }
+        );
+
+      }
+    );
 }
 
 
