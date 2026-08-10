@@ -4888,7 +4888,409 @@ function createExerciseLibraryScreen() {
   );
 }
 
+// =====================================
+// GUARDAR EJERCICIO EN BIBLIOTECA
+// =====================================
 
+async function saveExerciseLibraryItem(event) {
+
+  event.preventDefault();
+
+  const form = event.currentTarget;
+
+  const message =
+    document.getElementById(
+      "exercise-library-message"
+    );
+
+  if (message) {
+    message.textContent = "GUARDANDO...";
+  }
+
+
+  const name =
+    String(
+      form.elements.name
+        ? form.elements.name.value
+        : ""
+    ).trim();
+
+
+  const category =
+    String(
+      form.elements.category
+        ? form.elements.category.value
+        : ""
+    ).trim();
+
+
+  const description =
+    String(
+      form.elements.description
+        ? form.elements.description.value
+        : ""
+    ).trim();
+
+
+  const videoUrl =
+    String(
+      form.elements.video_url
+        ? form.elements.video_url.value
+        : ""
+    ).trim();
+
+
+  const cues =
+    String(
+      form.elements.cues
+        ? form.elements.cues.value
+        : ""
+    ).trim();
+
+
+  const errors =
+    String(
+      form.elements.errors
+        ? form.elements.errors.value
+        : ""
+    ).trim();
+
+
+  const imageInput =
+    document.getElementById(
+      "exercise-image-file"
+    );
+
+
+  const imageFile =
+    imageInput &&
+    imageInput.files &&
+    imageInput.files.length
+      ? imageInput.files[0]
+      : null;
+
+
+  // =====================================
+  // VALIDACIONES
+  // =====================================
+
+  if (!name) {
+
+    if (message) {
+      message.textContent =
+        "EL NOMBRE DEL EJERCICIO ES OBLIGATORIO.";
+    }
+
+    return;
+  }
+
+
+  if (!category) {
+
+    if (message) {
+      message.textContent =
+        "SELECCIONÁ UN GRUPO MUSCULAR.";
+    }
+
+    return;
+  }
+
+
+  if (!imageFile) {
+
+    if (message) {
+      message.textContent =
+        "SELECCIONÁ UNA IMAGEN DE EJECUCIÓN.";
+    }
+
+    return;
+  }
+
+
+  try {
+
+    // =====================================
+    // USUARIO ACTUAL
+    // =====================================
+
+    const {
+      data: {
+        user
+      },
+      error: userError
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      console.error(
+        "No se pudo obtener el usuario:",
+        userError
+      );
+
+      if (message) {
+        message.textContent =
+          "NO SE PUDO IDENTIFICAR A LA ENTRENADORA.";
+      }
+
+      return;
+    }
+
+
+    // =====================================
+    // NOMBRE ÚNICO PARA LA IMAGEN
+    // =====================================
+
+    const fileExtension =
+      (
+        imageFile.name
+          .split(".")
+          .pop() || "jpg"
+      )
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+
+
+    const safeName =
+      name
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .substring(0, 60);
+
+
+    const filePath =
+      user.id +
+      "/" +
+      Date.now() +
+      "-" +
+      safeName +
+      "." +
+      fileExtension;
+
+
+    // =====================================
+    // SUBIR IMAGEN AL BUCKET
+    // =====================================
+
+    if (message) {
+      message.textContent =
+        "SUBIENDO IMAGEN...";
+    }
+
+
+    const {
+      error: uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from("exercise-library")
+        .upload(
+          filePath,
+          imageFile,
+          {
+            cacheControl: "3600",
+            upsert: false,
+            contentType:
+              imageFile.type ||
+              "image/jpeg"
+          }
+        );
+
+
+    if (uploadError) {
+
+      console.error(
+        "Error subiendo imagen:",
+        uploadError
+      );
+
+      if (message) {
+        message.textContent =
+          "NO SE PUDO SUBIR LA IMAGEN: " +
+          (
+            uploadError.message ||
+            "ERROR DESCONOCIDO"
+          );
+      }
+
+      return;
+    }
+
+
+    // =====================================
+    // OBTENER URL PÚBLICA
+    // =====================================
+
+    const {
+      data: publicUrlData
+    } =
+      supabaseClient
+        .storage
+        .from("exercise-library")
+        .getPublicUrl(filePath);
+
+
+    const imageUrl =
+      publicUrlData &&
+      publicUrlData.publicUrl
+        ? publicUrlData.publicUrl
+        : "";
+
+
+    if (!imageUrl) {
+
+      console.error(
+        "No se pudo obtener URL pública de la imagen."
+      );
+
+
+      // Intentamos limpiar la imagen que acabamos de subir
+
+      await supabaseClient
+        .storage
+        .from("exercise-library")
+        .remove([
+          filePath
+        ]);
+
+
+      if (message) {
+        message.textContent =
+          "NO SE PUDO OBTENER LA URL DE LA IMAGEN.";
+      }
+
+      return;
+    }
+
+
+    // =====================================
+    // GUARDAR REGISTRO EN TABLA
+    // =====================================
+
+    if (message) {
+      message.textContent =
+        "GUARDANDO EJERCICIO...";
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("exercise_library")
+        .insert([
+          {
+            name: name,
+            category: category,
+            description:
+              description || null,
+            video_url:
+              videoUrl || null,
+            image_url:
+              imageUrl,
+            image_path:
+              filePath,
+            cues:
+              cues || null,
+            errors:
+              errors || null
+          }
+        ])
+        .select()
+        .single();
+
+
+    if (error) {
+
+      console.error(
+        "Error guardando ejercicio en exercise_library:",
+        error
+      );
+
+
+      // Si la tabla falla, eliminamos también
+      // la imagen que acabamos de subir.
+
+      await supabaseClient
+        .storage
+        .from("exercise-library")
+        .remove([
+          filePath
+        ]);
+
+
+      if (message) {
+        message.textContent =
+          "NO SE PUDO GUARDAR EL EJERCICIO: " +
+          (
+            error.message ||
+            "ERROR DESCONOCIDO"
+          );
+      }
+
+      return;
+    }
+
+
+    console.log(
+      "Ejercicio guardado correctamente:",
+      data
+    );
+
+
+    // =====================================
+    // LIMPIAR CACHE
+    // =====================================
+
+    exerciseLibraryCache =
+      null;
+
+
+    // =====================================
+    // LIMPIAR FORMULARIO
+    // =====================================
+
+    form.reset();
+
+
+    if (message) {
+      message.textContent =
+        "✓ EJERCICIO GUARDADO EN LA BIBLIOTECA.";
+    }
+
+
+    // =====================================
+    // RECARGAR BIBLIOTECA
+    // =====================================
+
+    await renderExerciseLibrary();
+
+  } catch (error) {
+
+    console.error(
+      "Error inesperado guardando ejercicio:",
+      error
+    );
+
+
+    if (message) {
+      message.textContent =
+        "ERROR INESPERADO: " +
+        (
+          error.message ||
+          "revisá la consola"
+        );
+    }
+
+  }
+
+}
+    
 async function renderExerciseLibrary() {
 
   if (!exerciseLibraryScreen) {
