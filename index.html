@@ -6908,6 +6908,9 @@ async function openStudentHome() {
     currentStudent
   );
 
+  await loadStudentPersonalProgress(
+  currentStudent
+);
 
   const startButton =
     document.getElementById(
@@ -6961,6 +6964,150 @@ async function openStudentHome() {
 
 }
 
+    /* =====================================
+   ESTADO DE PAGO DE LA ALUMNA
+===================================== */
+
+async function loadStudentPaymentStatus(student) {
+
+  const statusElement =
+    document.getElementById(
+      "student-payment-status"
+    );
+
+  const messageElement =
+    document.getElementById(
+      "student-payment-message"
+    );
+
+  if (
+    !statusElement ||
+    !messageElement
+  ) {
+    return;
+  }
+
+  if (
+    !student ||
+    !student.id
+  ) {
+    return;
+  }
+
+  statusElement.textContent =
+    "VERIFICANDO...";
+
+  statusElement.style.color =
+    "#777";
+
+  messageElement.textContent =
+    "Consultando el estado de tu pago.";
+
+
+  try {
+
+    const today =
+      new Date();
+
+    const currentMonth =
+      today.getMonth() + 1;
+
+    const currentYear =
+      today.getFullYear();
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("student_payments")
+        .select(
+          "id, status, month, year, paid_at"
+        )
+        .eq(
+          "student_id",
+          student.id
+        )
+        .eq(
+          "month",
+          currentMonth
+        )
+        .eq(
+          "year",
+          currentYear
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+      console.error(
+        "Error consultando estado de pago:",
+        error
+      );
+
+      statusElement.textContent =
+        "NO SE PUDO VERIFICAR";
+
+      statusElement.style.color =
+        "#777";
+
+      messageElement.textContent =
+        "No pudimos consultar tu estado de pago.";
+
+      return;
+
+    }
+
+
+    if (
+      data &&
+      data.status === "paid"
+    ) {
+
+      statusElement.textContent =
+        "SIN DEUDA";
+
+      statusElement.style.color =
+        "#4CAF50";
+
+      messageElement.textContent =
+        "Tu rutina de este mes está abonada.";
+
+    } else {
+
+      statusElement.textContent =
+        "CON DEUDA";
+
+      statusElement.style.color =
+        "#E60000";
+
+      messageElement.textContent =
+        "Tenés pendiente el pago de tu rutina de este mes.";
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Error inesperado consultando pago:",
+      error
+    );
+
+    statusElement.textContent =
+      "NO SE PUDO VERIFICAR";
+
+    statusElement.style.color =
+      "#777";
+
+    messageElement.textContent =
+      "Intentá nuevamente más tarde.";
+
+  }
+
+}
+    
 /* =====================================
    PROGRESO PERSONAL DE LA ALUMNA
 ===================================== */
