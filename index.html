@@ -1970,42 +1970,44 @@
 <body>
 
 
+<!-- =====================================
+     LOGIN
+====================================== -->
+
+<section
+  id="login-screen"
+  class="login-screen"
+>
+
+  <div class="login-logo">
+
+    <img
+      src="./logo-forja.png"
+      alt="FORJA Training"
+    >
+
+  </div>
+
+  <div class="eyebrow">
+    FORJANDO ATLETAS
+  </div>
+
   <!-- =====================================
        LOGIN
   ====================================== -->
 
-  <section
-    id="login-screen"
-    class="login-screen"
-  >
-
-    <div class="login-logo">
-
-      <img
-        src="./logo-forja.png"
-        alt="FORJA Training"
-      >
-
-    </div>
-
-
-    <div class="eyebrow">
-      FORJANDO ATLETAS
-    </div>
-
+  <div id="login-panel">
 
     <h1>
       INICIAR<br>
       SESIÓN
     </h1>
 
-
     <form id="login-form">
 
       <label for="email">
         EMAIL
       </label>
-
 
       <input
         type="email"
@@ -2014,11 +2016,9 @@
         required
       >
 
-
       <label for="password">
         CONTRASEÑA
       </label>
-
 
       <input
         type="password"
@@ -2027,20 +2027,139 @@
         required
       >
 
-
       <button
         type="submit"
         class="button"
+        style="width:100%;"
       >
         INGRESAR →
       </button>
-
 
       <p id="login-message"></p>
 
     </form>
 
-  </section>
+    <button
+      id="show-register-button"
+      class="button"
+      type="button"
+      style="
+        width:100%;
+        margin-top:10px;
+        background:transparent;
+        border-color:#333;
+        color:#777;
+      "
+    >
+      CREAR MI CUENTA
+    </button>
+
+  </div>
+
+
+  <!-- =====================================
+       REGISTRO DE ALUMNA
+  ====================================== -->
+
+  <div
+    id="student-register-panel"
+    style="display:none;"
+  >
+
+    <h1>
+      CREAR<br>
+      CUENTA
+    </h1>
+
+    <p
+      style="
+        color:#777;
+        font-size:11px;
+        line-height:1.6;
+        margin-top:8px;
+      "
+    >
+      REGISTRATE CON EL EMAIL QUE TE DIO TU ENTRENADORA.
+    </p>
+
+    <form id="student-register-form">
+
+      <label for="register-email">
+        EMAIL
+      </label>
+
+      <input
+        id="register-email"
+        type="email"
+        placeholder="Tu email"
+        required
+      >
+
+      <label for="register-password">
+        CONTRASEÑA
+      </label>
+
+      <input
+        id="register-password"
+        type="password"
+        placeholder="Crear contraseña"
+        required
+        minlength="6"
+      >
+
+      <label for="register-password-confirm">
+        REPETIR CONTRASEÑA
+      </label>
+
+      <input
+        id="register-password-confirm"
+        type="password"
+        placeholder="Repetir contraseña"
+        required
+        minlength="6"
+      >
+
+      <button
+        class="button"
+        type="submit"
+        style="
+          width:100%;
+          margin-top:14px;
+        "
+      >
+        CREAR CUENTA →
+      </button>
+
+    </form>
+
+    <div
+      id="register-message"
+      style="
+        margin-top:12px;
+        color:#777;
+        font-size:10px;
+        line-height:1.6;
+      "
+    ></div>
+
+    <button
+      id="back-to-login-button"
+      class="button"
+      type="button"
+      style="
+        width:100%;
+        margin-top:10px;
+        background:transparent;
+        border-color:#333;
+        color:#777;
+      "
+    >
+      ← VOLVER A INICIAR SESIÓN
+    </button>
+
+  </div>
+
+</section>
 
 
 
