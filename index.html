@@ -3842,28 +3842,23 @@ async function renderStudentPaymentStatus(student) {
   ===================================== */
 
   const {
-    data,
-    error
-  } = await supabaseClient
-    .from("student_payments")
-    .select(
-      "id, student_id, month, year, status, paid_at"
-    )
-    .eq(
-      "student_id",
-      student.id
-    )
-    .eq(
-      "month",
-      currentMonth
-    )
-    .eq(
-      "year",
-      currentYear
-    )
-    .limit(1);
+  data,
+  error
+} = await supabaseClient
+  .from("student_payments")
+  .select("*")
+  .eq("student_id", student.id)
+  .eq("month", currentMonth)
+  .eq("year", currentYear)
+  .limit(1);
 
-
+console.log("FORJA — CONSULTA DE PAGO");
+console.log("student_id:", student.id);
+console.log("month:", currentMonth);
+console.log("year:", currentYear);
+console.log("payment data:", data);
+console.log("payment error:", error);
+  
   /* =====================================
      ERROR
   ===================================== */
