@@ -3094,88 +3094,280 @@
 
 
     /* =====================================
-       LOGIN
-    ====================================== */
+   LOGIN
+===================================== */
 
-    loginForm.addEventListener(
-      "submit",
-      async function(event) {
+async function routeAuthenticatedUser(session) {
 
-        event.preventDefault();
-
-        loginMessage.textContent =
-          "INGRESANDO...";
+  if (!session || !session.user) {
+    showLogin();
+    return;
+  }
 
 
-        const email =
-          document
-            .getElementById("email")
-            .value
-            .trim();
+  const authUser =
+    session.user;
 
 
-        const password =
-          document
-            .getElementById("password")
-            .value;
+  console.log(
+    "FORJA — USUARIO AUTENTICADO:",
+    authUser.email
+  );
 
 
-        const {
-          error
-        } =
-          await supabaseClient.auth.signInWithPassword({
+  /* =====================================
+     BUSCAR PERFIL EN FORJA
+  ===================================== */
 
-            email: email,
+  const {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq(
+        "auth_user_id",
+        authUser.id
+      )
+      .single();
 
-            password: password
 
-          });
+  if (error) {
+
+    console.error(
+      "FORJA — ERROR CARGANDO PERFIL:",
+      error
+    );
 
 
-        if (error) {
+    loginMessage.textContent =
+      "NO SE PUDO CARGAR TU PERFIL.";
 
-          console.error(
-            "Error de login:",
-            error
+
+    await supabaseClient.auth.signOut();
+
+    return;
+  }
+
+
+  if (!profile) {
+
+    console.error(
+      "FORJA — NO SE ENCONTRÓ PERFIL PARA:",
+      authUser.email
+    );
+
+
+    loginMessage.textContent =
+      "NO SE ENCONTRÓ UN PERFIL DE FORJA PARA ESTE USUARIO.";
+
+
+    await supabaseClient.auth.signOut();
+
+    return;
+  }
+
+
+  console.log(
+    "FORJA — PERFIL:",
+    profile
+  );
+
+
+  /* =====================================
+     ENTRENADORA
+  ===================================== */
+
+  if (
+    profile.role === "trainer"
+  ) {
+
+    console.log(
+      "FORJA — INGRESANDO COMO ENTRENADORA"
+    );
+
+
+    currentStudent = null;
+
+    showApp();
+
+    return;
+  }
+
+
+  /* =====================================
+     ALUMNA
+  ===================================== */
+
+  if (
+    profile.role === "student"
+  ) {
+
+    console.log(
+      "FORJA — INGRESANDO COMO ALUMNA"
+    );
+
+
+    currentStudent =
+      profile;
+
+
+    await openStudentHome();
+
+    return;
+  }
+
+
+  /* =====================================
+     ROL DESCONOCIDO
+  ===================================== */
+
+  console.error(
+    "FORJA — ROL DESCONOCIDO:",
+    profile.role
+  );
+
+
+  loginMessage.textContent =
+    "NO SE PUDO DETERMINAR EL TIPO DE USUARIO.";
+
+
+  await supabaseClient.auth.signOut();
+
+}
+
+
+/* =====================================
+   SUBMIT LOGIN
+===================================== */
+
+loginForm.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    loginMessage.textContent =
+      "INGRESANDO...";
+
+
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.auth.signInWithPassword({
+
+        email: email,
+
+        password: password
+
+      });
+
+
+    if (error) {
+
+      console.error(
+        "Error de login:",
+        error
+      );
+
+
+      loginMessage.textContent =
+        "EMAIL O CONTRASEÑA INCORRECTOS.";
+
+
+      return;
+    }
+
+
+    loginMessage.textContent =
+      "INGRESANDO...";
+
+
+    /*
+     * IMPORTANTE:
+     * No usamos showApp() directamente.
+     * Primero identificamos el rol.
+     */
+
+    if (data && data.session) {
+
+      await routeAuthenticatedUser(
+        data.session
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================
+   CAMBIO DE SESIÓN
+===================================== */
+
+supabaseClient.auth.onAuthStateChange(
+  function(event, session) {
+
+    console.log(
+      "FORJA — CAMBIO DE SESIÓN:",
+      event
+    );
+
+
+    if (!session) {
+
+      currentStudent =
+        null;
+
+      showLogin();
+
+      return;
+
+    }
+
+
+    /*
+     * Evitamos procesar algunos eventos
+     * automáticos de Supabase mientras
+     * el login ya está siendo procesado.
+     */
+
+    if (
+      event === "INITIAL_SESSION" ||
+      event === "SIGNED_IN"
+    ) {
+
+      setTimeout(
+        function() {
+
+          routeAuthenticatedUser(
+            session
           );
 
-          loginMessage.textContent =
-            "EMAIL O CONTRASEÑA INCORRECTOS.";
+        },
+        0
+      );
 
-          return;
+    }
 
-        }
-
-
-        loginMessage.textContent = "";
-
-        showApp();
-
-      }
-    );
-
-
-    /* =====================================
-       CAMBIO DE SESIÓN
-    ====================================== */
-
-    supabaseClient.auth.onAuthStateChange(
-      function(event, session) {
-
-        if (session) {
-
-          showApp();
-
-        } else {
-
-          showLogin();
-
-        }
-
-      }
-    );
-
-
+  }
+);
     /* =====================================
        MIS ALUMNAS
     ====================================== */
