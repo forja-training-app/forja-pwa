@@ -3820,7 +3820,7 @@ async function openStudentDetail(student) {
 
 }
 
-    /* =====================================
+/* =====================================
    ESTADO DE PAGO — ENTRENADORA
 ===================================== */
 
@@ -3836,6 +3836,10 @@ async function renderStudentPaymentStatus(student) {
   const currentYear =
     new Date().getFullYear();
 
+
+  /* =====================================
+     CONSULTAR PAGO
+  ===================================== */
 
   const {
     data,
@@ -3860,17 +3864,22 @@ async function renderStudentPaymentStatus(student) {
     .limit(1);
 
 
+  /* =====================================
+     ERROR
+  ===================================== */
+
   if (error) {
 
     console.error(
-      "Error consultando estado de pago de entrenadora:",
-      error
+      "ERROR CONSULTANDO ESTADO DE PAGO:",
+      JSON.stringify(error, null, 2)
     );
 
     let paymentCard =
       document.getElementById(
         "student-payment-card"
       );
+
 
     if (!paymentCard) {
 
@@ -3892,11 +3901,15 @@ async function renderStudentPaymentStatus(student) {
           "student-detail-screen"
         );
 
+
       if (detailScreen) {
+
         detailScreen.appendChild(
           paymentCard
         );
+
       }
+
     }
 
 
@@ -3932,11 +3945,16 @@ async function renderStudentPaymentStatus(student) {
         </div>
 
       `;
+
     }
 
     return;
   }
 
+
+  /* =====================================
+     ESTADO ACTUAL
+  ===================================== */
 
   const payment =
     data && data.length
@@ -3948,6 +3966,10 @@ async function renderStudentPaymentStatus(student) {
     payment &&
     payment.status === "paid";
 
+
+  /* =====================================
+     CREAR TARJETA
+  ===================================== */
 
   let paymentCard =
     document.getElementById(
@@ -4009,11 +4031,16 @@ async function renderStudentPaymentStatus(student) {
   }
 
 
+  /* =====================================
+     CONTENIDO
+  ===================================== */
+
   paymentCard.innerHTML = `
 
     <div class="menu-label">
       ESTADO DE PAGO
     </div>
+
 
     <div
       style="
@@ -4027,6 +4054,7 @@ async function renderStudentPaymentStatus(student) {
       ${isPaid ? "SIN DEUDA" : "CON DEUDA"}
     </div>
 
+
     <div
       style="
         margin-top:8px;
@@ -4037,6 +4065,7 @@ async function renderStudentPaymentStatus(student) {
     >
       RUTINA MENSUAL · $35.000
     </div>
+
 
     ${
       payment && payment.paid_at
@@ -4053,6 +4082,7 @@ async function renderStudentPaymentStatus(student) {
         `
         : ""
     }
+
 
     <div
       style="
@@ -4148,13 +4178,19 @@ async function renderStudentPaymentStatus(student) {
         if (error) {
 
           console.error(
-            "Error guardando pago:",
-            error
+            "ERROR GUARDANDO PAGO:",
+            JSON.stringify(
+              error,
+              null,
+              2
+            )
           );
+
 
           alert(
             "NO SE PUDO GUARDAR EL PAGO."
           );
+
 
           paidButton.disabled =
             false;
@@ -4163,6 +4199,7 @@ async function renderStudentPaymentStatus(student) {
             "MARCAR COMO PAGADO";
 
           return;
+
         }
 
 
@@ -4229,13 +4266,19 @@ async function renderStudentPaymentStatus(student) {
         if (error) {
 
           console.error(
-            "Error actualizando estado de pago:",
-            error
+            "ERROR ACTUALIZANDO ESTADO DE PAGO:",
+            JSON.stringify(
+              error,
+              null,
+              2
+            )
           );
+
 
           alert(
             "NO SE PUDO ACTUALIZAR EL ESTADO."
           );
+
 
           pendingButton.disabled =
             false;
@@ -4244,6 +4287,7 @@ async function renderStudentPaymentStatus(student) {
             "MARCAR CON DEUDA";
 
           return;
+
         }
 
 
