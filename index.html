@@ -3319,7 +3319,7 @@ loginForm.addEventListener(
 
 /* =====================================
    CAMBIO DE SESIÓN
-===================================== */
+====================================== */
 
 supabaseClient.auth.onAuthStateChange(
   function(event, session) {
@@ -3330,10 +3330,13 @@ supabaseClient.auth.onAuthStateChange(
     );
 
 
+    /* =====================================
+       SIN SESIÓN
+    ====================================== */
+
     if (!session) {
 
-      currentStudent =
-        null;
+      currentStudent = null;
 
       showLogin();
 
@@ -3342,15 +3345,18 @@ supabaseClient.auth.onAuthStateChange(
     }
 
 
-    /*
-     * Evitamos procesar algunos eventos
-     * automáticos de Supabase mientras
-     * el login ya está siendo procesado.
-     */
+    /* =====================================
+       SESIÓN YA EXISTENTE
+       
+       Solo procesamos INITIAL_SESSION.
+       
+       El login normal ya llama a
+       routeAuthenticatedUser()
+       después de signInWithPassword().
+    ====================================== */
 
     if (
-      event === "INITIAL_SESSION" ||
-      event === "SIGNED_IN"
+      event === "INITIAL_SESSION"
     ) {
 
       setTimeout(
