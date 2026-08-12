@@ -3493,6 +3493,303 @@ supabaseClient.auth.onAuthStateChange(
 
   }
 );
+
+    /* =====================================
+   REGISTRO DE ALUMNA
+====================================== */
+
+const showRegisterButton =
+  document.getElementById(
+    "show-register-button"
+  );
+
+const backToLoginButton =
+  document.getElementById(
+    "back-to-login-button"
+  );
+
+const loginPanel =
+  document.getElementById(
+    "login-panel"
+  );
+
+const studentRegisterPanel =
+  document.getElementById(
+    "student-register-panel"
+  );
+
+const studentRegisterForm =
+  document.getElementById(
+    "student-register-form"
+  );
+
+const registerMessage =
+  document.getElementById(
+    "register-message"
+  );
+
+
+/* =====================================
+   MOSTRAR REGISTRO
+===================================== */
+
+if (showRegisterButton) {
+
+  showRegisterButton.addEventListener(
+    "click",
+    function() {
+
+      if (loginPanel) {
+        loginPanel.style.display =
+          "none";
+      }
+
+      if (studentRegisterPanel) {
+        studentRegisterPanel.style.display =
+          "block";
+      }
+
+      if (registerMessage) {
+        registerMessage.textContent =
+          "";
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================
+   VOLVER AL LOGIN
+===================================== */
+
+if (backToLoginButton) {
+
+  backToLoginButton.addEventListener(
+    "click",
+    function() {
+
+      if (studentRegisterPanel) {
+        studentRegisterPanel.style.display =
+          "none";
+      }
+
+      if (loginPanel) {
+        loginPanel.style.display =
+          "block";
+      }
+
+      if (registerMessage) {
+        registerMessage.textContent =
+          "";
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================
+   REGISTRAR ALUMNA
+===================================== */
+
+if (studentRegisterForm) {
+
+  studentRegisterForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const email =
+        document
+          .getElementById(
+            "register-email"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const password =
+        document
+          .getElementById(
+            "register-password"
+          )
+          .value;
+
+
+      const passwordConfirm =
+        document
+          .getElementById(
+            "register-password-confirm"
+          )
+          .value;
+
+
+      /* =====================================
+         VALIDACIONES
+      ====================================== */
+
+      if (
+        !email ||
+        !password ||
+        !passwordConfirm
+      ) {
+
+        registerMessage.textContent =
+          "COMPLETÁ TODOS LOS CAMPOS.";
+
+        return;
+
+      }
+
+
+      if (
+        password.length < 6
+      ) {
+
+        registerMessage.textContent =
+          "LA CONTRASEÑA DEBE TENER AL MENOS 6 CARACTERES.";
+
+        return;
+
+      }
+
+
+      if (
+        password !== passwordConfirm
+      ) {
+
+        registerMessage.textContent =
+          "LAS CONTRASEÑAS NO COINCIDEN.";
+
+        return;
+
+      }
+
+
+      registerMessage.textContent =
+        "VERIFICANDO EMAIL...";
+
+
+      /* =====================================
+         VERIFICAR QUE SEA ALUMNA DE FORJA
+      ====================================== */
+
+      const {
+        data: allowed,
+        error: checkError
+      } =
+        await supabaseClient.rpc(
+          "check_student_email",
+          {
+            p_email: email
+          }
+        );
+
+
+      if (checkError) {
+
+        console.error(
+          "FORJA — ERROR VERIFICANDO EMAIL:",
+          checkError
+        );
+
+        registerMessage.textContent =
+          "NO SE PUDO VERIFICAR EL EMAIL.";
+
+        return;
+
+      }
+
+
+      if (!allowed) {
+
+        registerMessage.textContent =
+          "ESTE EMAIL NO ESTÁ REGISTRADO COMO ALUMNA DE FORJA.";
+
+        return;
+
+      }
+
+
+      /* =====================================
+         CREAR USUARIO EN SUPABASE AUTH
+      ====================================== */
+
+      registerMessage.textContent =
+        "CREANDO CUENTA...";
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+
+        console.error(
+          "FORJA — ERROR CREANDO CUENTA:",
+          error
+        );
+
+
+        registerMessage.textContent =
+          error.message ||
+          "NO SE PUDO CREAR LA CUENTA.";
+
+        return;
+
+      }
+
+
+      console.log(
+        "FORJA — CUENTA CREADA:",
+        data
+      );
+
+
+      /* =====================================
+         CUENTA CREADA
+      ====================================== */
+
+      if (
+        data &&
+        data.session
+      ) {
+
+        registerMessage.textContent =
+          "CUENTA CREADA. INGRESANDO...";
+
+        return;
+
+      }
+
+
+      /* =====================================
+         CONFIRMACIÓN POR EMAIL
+      ====================================== */
+
+      registerMessage.textContent =
+        "CUENTA CREADA. REVISÁ TU EMAIL PARA CONFIRMAR LA CUENTA.";
+
+    }
+
+  );
+
+}
     /* =====================================
        MIS ALUMNAS
     ====================================== */
