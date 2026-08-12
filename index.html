@@ -1657,7 +1657,7 @@ h1 {
 }
 
 #student-home-screen #student-payment-message {
-  color: #777777 !important;
+  color: #FFFFFF !important;
   font-size: 10px;
 }
 
@@ -1709,7 +1709,89 @@ h1 {
   color: #FFFFFF;
   transform: rotate(180deg);
 }
+/* =========================================================
+   ACORDEÓN — ABONAR RUTINA
+========================================================= */
 
+#student-home-screen #student-payment-card {
+  cursor: pointer;
+}
+
+#student-home-screen #student-payment-card .payment-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+#student-home-screen #student-payment-card .payment-card-price {
+  color: #FFFFFF !important;
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  margin-top: 6px;
+}
+
+#student-home-screen #student-payment-card .payment-toggle-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(255,255,255,.25);
+
+  color: #E60000;
+
+  font-size: 18px;
+}
+
+#student-home-screen #student-payment-card .payment-card-content {
+  display: none;
+  margin-top: 18px;
+}
+
+#student-home-screen #student-payment-card.is-open .payment-card-content {
+  display: block;
+}
+
+#student-home-screen #student-payment-card.is-open .payment-toggle-icon {
+  background: #E60000;
+  color: #FFFFFF;
+}
+
+#student-home-screen #student-payment-card .payment-info-box {
+  padding: 14px;
+  margin-top: 10px;
+
+  background: rgba(8,9,13,.08);
+  border: 1px solid rgba(8,9,13,.12);
+}
+
+#student-home-screen #student-payment-card .payment-info-label {
+  color: #666666 !important;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+#student-home-screen #student-payment-card .payment-alias {
+  color: #08090D !important;
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 5px;
+}
+
+#student-home-screen #student-payment-card .payment-message {
+  color: #666666 !important;
+  font-size: 10px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
 
 /* =========================================================
    CONTENIDO OCULTO
@@ -8571,6 +8653,29 @@ async function loadStudentPaymentStatus(student) {
       "RECORDÁ ABONAR TU RUTINA MENSUAL.";
 
   }
+
+}
+    const paymentCard = document.getElementById("student-payment-card");
+
+if (paymentCard) {
+
+  paymentCard.addEventListener("click", function() {
+
+    paymentCard.classList.toggle("is-open");
+
+    const icon =
+      paymentCard.querySelector(".payment-toggle-icon");
+
+    if (icon) {
+
+      icon.textContent =
+        paymentCard.classList.contains("is-open")
+          ? "−"
+          : "+";
+
+    }
+
+  });
 
 }
 /* =====================================
