@@ -1813,22 +1813,39 @@ body {
   }
 }
 
-/* =========================================================
+/* =====================================
    FORJA — PANTALLA DE ALUMNA
-   DISEÑO RESPONSIVE
-========================================================= */
+===================================== */
 
 #student-home-screen {
-  width: 100%;
-  min-height: 100vh;
-  box-sizing: border-box;
-  background: #000;
-  color: #fff;
-  padding: 0 20px 40px;
-  overflow-x: hidden;
+  position: relative !important;
+
+  width: 100% !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+
+  box-sizing: border-box !important;
+
+  background-color: #F2F2F0 !important;
+
+  background-image: url("./fondoalumna.png") !important;
+
+  background-size: cover !important;
+  background-position: center top !important;
+  background-repeat: no-repeat !important;
+
+  color: #111111 !important;
 }
 
+    /* =====================================
+   CONTENIDO DE PANTALLA ALUMNA
+===================================== */
 
+#student-home-screen > * {
+  position: relative;
+  z-index: 1;
+}
+    
 /* =========================================================
    CONTENEDOR PRINCIPAL
 ========================================================= */
