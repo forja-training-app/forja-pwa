@@ -3464,6 +3464,263 @@ body {
 
   </div>
 
+  /* =========================================================
+   FORJA — NUEVA ESTÉTICA PANTALLA ALUMNA
+========================================================= */
+
+/* -----------------------------------------
+   FONDO GENERAL
+----------------------------------------- */
+
+#student-home-screen {
+  background: #08090D !important;
+  color: #F1F0EA !important;
+}
+
+
+/* -----------------------------------------
+   HEADER
+----------------------------------------- */
+
+#student-home-screen .students-header {
+  border-bottom: 1px solid rgba(241,240,234,0.12);
+}
+
+#student-home-screen #student-home-title {
+  color: #F1F0EA !important;
+}
+
+#student-home-screen .students-header p {
+  color: #8B8D92 !important;
+}
+
+
+/* -----------------------------------------
+   TITULOS DE SECCIÓN
+----------------------------------------- */
+
+#student-home-screen .workout-section-label {
+  color: #F1F0EA !important;
+
+  font-family: "Anton", sans-serif !important;
+
+  font-size: 24px !important;
+  line-height: 1 !important;
+
+  letter-spacing: 1px !important;
+
+  margin-top: 30px !important;
+  margin-bottom: 12px !important;
+
+  text-transform: uppercase;
+}
+
+
+/* -----------------------------------------
+   TODAS LAS TARJETAS PRINCIPALES
+----------------------------------------- */
+
+#student-home-screen .student-card {
+  background: #F1F0EA !important;
+
+  color: #08090D !important;
+
+  border: 1px solid rgba(0,0,0,0.08) !important;
+
+  border-left: 3px solid #E60000 !important;
+
+  border-radius: 2px !important;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.20) !important;
+}
+
+
+/* -----------------------------------------
+   TEXTOS DENTRO DE TARJETAS
+----------------------------------------- */
+
+#student-home-screen .student-card .menu-label,
+#student-home-screen .student-card .eyebrow {
+  color: #E60000 !important;
+}
+
+#student-home-screen .student-card .detail-value {
+  color: #08090D !important;
+}
+
+
+/* -----------------------------------------
+   TU RUTINA ACTIVA
+----------------------------------------- */
+
+#student-home-screen #student-workout-name {
+  color: #08090D !important;
+}
+
+
+/* DURACIÓN */
+
+#student-home-screen #student-workout-weeks {
+  color: #08090D !important;
+}
+
+
+/* ESTADO */
+
+#student-home-screen #student-workout-status {
+  color: #E60000 !important;
+}
+
+
+/* -----------------------------------------
+   ENTRENAMIENTO DE HOY
+----------------------------------------- */
+
+#student-home-screen #student-today-name {
+  color: #08090D !important;
+}
+
+#student-home-screen #student-today-description {
+  color: #666A70 !important;
+}
+
+
+/* -----------------------------------------
+   BOTÓN COMENZAR
+----------------------------------------- */
+
+#student-home-screen #student-start-workout-button {
+  background: #E60000 !important;
+  border-color: #E60000 !important;
+  color: #FFFFFF !important;
+}
+
+
+/* -----------------------------------------
+   ESTADO ACTUAL
+   MÁS SUTIL
+----------------------------------------- */
+
+/*
+   Como esta tarjeta NO tiene ID propio,
+   seleccionamos las tarjetas según
+   su posición dentro de student-home-screen.
+*/
+
+#student-home-screen > .student-card:nth-of-type(3),
+#student-home-screen > .student-card:nth-of-type(4) {
+
+  padding: 14px 18px !important;
+
+  margin-bottom: 8px !important;
+
+  transform: scale(0.97);
+
+  transform-origin: center;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.12) !important;
+}
+
+
+/* -----------------------------------------
+   ABONAR RUTINA
+   MÁS SUTIL
+----------------------------------------- */
+
+#student-home-screen > .student-card:nth-of-type(4) {
+  opacity: 0.92;
+}
+
+
+/* -----------------------------------------
+   TEXTO DEL PAGO
+----------------------------------------- */
+
+#student-home-screen #student-payment-status {
+  color: #08090D !important;
+}
+
+#student-home-screen #student-payment-message {
+  color: #666A70 !important;
+}
+
+
+/* -----------------------------------------
+   CAJAS INTERNAS DE ABONAR
+----------------------------------------- */
+
+#student-home-screen .student-card div[style*="background:#111"],
+#student-home-screen .student-card div[style*="background: #111"] {
+
+  background: #E7E5DD !important;
+
+  border-color: rgba(0,0,0,0.10) !important;
+
+  color: #08090D !important;
+}
+
+
+/* -----------------------------------------
+   MIS ENTRENAMIENTOS
+----------------------------------------- */
+
+#student-home-screen #student-workout-days .student-card {
+  background: #F1F0EA !important;
+}
+
+#student-home-screen #student-workout-days .detail-value {
+  color: #08090D !important;
+}
+
+
+/* -----------------------------------------
+   PROGRESO
+----------------------------------------- */
+
+#student-home-screen #student-personal-progress .student-card {
+  background: #F1F0EA !important;
+}
+
+#student-home-screen #student-personal-progress .detail-value {
+  color: #08090D !important;
+}
+
+
+/* -----------------------------------------
+   DATOS PEQUEÑOS
+----------------------------------------- */
+
+#student-home-screen .student-card span {
+  color: #666A70;
+}
+
+
+/* -----------------------------------------
+   LOGOUT
+----------------------------------------- */
+
+#student-home-screen #student-logout-button {
+  color: #8B8D92;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  #student-home-screen .workout-section-label {
+    font-size: 22px !important;
+  }
+
+  #student-home-screen .student-card {
+    padding: 18px !important;
+  }
+
+}
 </section>
 
 
