@@ -47,42 +47,41 @@
        CSS
   ====================================== -->
 
-  <style>
+<style>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+/* =========================================================
+   FORJA — RESET
+========================================================= */
 
-
-    body {
-      background: #08090D;
-      color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
-      min-height: 100vh;
-    }
-
-
-    button,
-    input,
-    select {
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    /* =====================================
-   FORJA — FONDO GLOBAL
-===================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html,
 body {
   background: #08090D;
   color: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
 }
 
 body {
   background-color: #08090D;
 }
+
+button,
+input,
+select,
+textarea {
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+/* =========================================================
+   FONDO GLOBAL
+========================================================= */
 
 #app,
 #login-screen,
@@ -91,12 +90,723 @@ body {
 #workouts-screen,
 #workout-builder-screen,
 #exercise-library-screen,
-#student-home-screen {
+#student-home-screen,
+#new-workout-screen {
   background-color: #08090D;
+  color: #FFFFFF;
 }
-/* =====================================
+
+
+/* =========================================================
+   APP GENERAL
+========================================================= */
+
+.app {
+  display: none;
+  position: relative;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 28px 22px 40px;
+  overflow: hidden;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   GRÁFICOS FORJA
+========================================================= */
+
+.graphic {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.graphic-one {
+  width: 180px;
+  height: 180px;
+  border: 2px solid #E60000;
+  transform: rotate(45deg);
+  top: -100px;
+  right: -90px;
+  opacity: 0.35;
+}
+
+.graphic-two {
+  width: 120px;
+  height: 8px;
+  background: #E60000;
+  transform: rotate(-35deg);
+  bottom: 80px;
+  left: -55px;
+  opacity: 0.5;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+  margin-bottom: 65px;
+}
+
+.logo img {
+  width: 150px;
+  height: auto;
+  display: block;
+}
+
+
+/* =========================================================
+   TEXTOS GENERALES
+========================================================= */
+
+.eyebrow {
+  color: #E60000;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+h1 {
+  color: #E60000;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+  font-size: 48px;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.welcome {
+  margin-bottom: 42px;
+}
+
+.welcome p {
+  margin-top: 14px;
+  color: #FFFFFF;
+  opacity: 0.7;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   BOTÓN GENERAL
+========================================================= */
+
+.button {
+  width: 100%;
+  border: none;
+  padding: 17px;
+  background: #E60000;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #FF1A1A;
+}
+
+.button:active {
+  transform: scale(0.99);
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.login-screen {
+  display: none;
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  padding: 60px 22px 40px;
+  max-width: 520px;
+  margin: auto;
+  background: #08090D;
+}
+
+.login-logo {
+  margin-bottom: 55px;
+}
+
+.login-logo img {
+  width: 150px;
+  height: auto;
+  display: block;
+}
+
+.login-screen h1 {
+  margin-bottom: 35px;
+}
+
+#login-panel {
+  background: transparent;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+#login-form label,
+#new-student-form label,
+#edit-student-form label {
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+#login-form input,
+#new-student-form input,
+#new-student-form select,
+#edit-student-form input,
+#edit-student-form select {
+  width: 100%;
+  height: 52px;
+  padding: 0 15px;
+  background: #0B0D12;
+  border: 1px solid #282C34;
+  color: #FFFFFF;
+  font-size: 13px;
+  outline: none;
+}
+
+#login-form input:focus,
+#new-student-form input:focus,
+#new-student-form select:focus,
+#edit-student-form input:focus,
+#edit-student-form select:focus {
+  border-color: #E60000;
+}
+
+#login-form input::placeholder,
+#student-register-form input::placeholder {
+  color: #555A63;
+}
+
+#login-message {
+  color: #E60000;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+
+/* =========================================================
+   REGISTRO
+========================================================= */
+
+#student-register-panel {
+  width: 100%;
+  max-width: 520px;
+  background: #08090D;
+  color: #FFFFFF;
+}
+
+#student-register-panel h1 {
+  margin-top: 18px;
+  margin-bottom: 20px;
+  color: #E60000;
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+#student-register-panel > p {
+  margin-bottom: 24px;
+  color: #777777;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+#student-register-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#student-register-form label {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  margin-bottom: 7px;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+#student-register-form label:first-of-type {
+  margin-top: 0;
+}
+
+#student-register-form input {
+  display: block;
+  width: 100%;
+  height: 52px;
+  padding: 0 15px;
+  background: #0B0D12;
+  border: 1px solid #282C34;
+  border-radius: 0;
+  color: #FFFFFF;
+  font-size: 13px;
+  outline: none;
+}
+
+#student-register-form input:focus {
+  background: #0D0F14;
+  border-color: #E60000;
+}
+
+#student-register-form .button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 26px;
+  background: #E60000;
+  border: 1px solid #E60000;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+#register-message {
+  width: 100%;
+  margin-top: 14px;
+  color: #777777;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+#back-to-login-button {
+  width: 100%;
+  margin-top: 16px;
+  background: transparent !important;
+  border: 1px solid #282C34 !important;
+  color: #777777 !important;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+#back-to-login-button:hover {
+  border-color: #E60000 !important;
+  color: #FFFFFF !important;
+}
+
+#show-register-button {
+  background: transparent !important;
+  border: 1px solid #282C34 !important;
+  color: #777777 !important;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#show-register-button:hover {
+  border-color: #E60000 !important;
+  color: #FFFFFF !important;
+}
+
+
+/* =========================================================
+   MENÚ ENTRENADORA
+========================================================= */
+
+.trainer-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.menu-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  padding: 18px;
+  background: #0B0B0B;
+  border: 1px solid #262626;
+  color: #FFFFFF;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #E60000;
+}
+
+.menu-card:hover {
+  border-color: #E60000;
+}
+
+.menu-icon {
+  min-width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E60000;
+  color: #FFFFFF;
+  font-family: 'Anton', sans-serif;
+  font-size: 25px;
+}
+
+.menu-card > div:nth-child(2) {
+  flex: 1;
+}
+
+.menu-label {
+  display: block;
+  color: #E60000;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.menu-card strong {
+  display: block;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.menu-card p {
+  margin-top: 4px;
+  color: #777777;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.menu-arrow {
+  color: #E60000;
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-button {
+  width: 100%;
+  margin-top: 35px;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid #292929;
+  color: #777777;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  color: #FFFFFF;
+  border-color: #E60000;
+}
+
+
+/* =========================================================
+   PANTALLAS GENERALES
+========================================================= */
+
+.students-screen {
+  display: none;
+  position: relative;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 28px 22px 40px;
+}
+
+.students-header {
+  margin-bottom: 30px;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: #777777;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 0;
+  margin-bottom: 35px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  color: #E60000;
+}
+
+.students-header h1 {
+  margin-bottom: 15px;
+}
+
+.students-header p {
+  color: #777777;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   LISTADO ALUMNAS
+========================================================= */
+
+.students-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.student-card {
+  position: relative;
+  background: #0B0B0B;
+  border: 1px solid #262626;
+  padding: 18px;
+}
+
+.student-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #E60000;
+}
+
+.student-card.clickable {
+  cursor: pointer;
+}
+
+.student-card.clickable:hover {
+  border-color: #E60000;
+}
+
+.student-name {
+  color: #FFFFFF;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.student-email {
+  color: #777777;
+  font-size: 11px;
+  margin-top: 5px;
+}
+
+.student-mini-data {
+  color: #777777;
+  font-size: 10px;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.students-loading,
+.students-empty,
+.workouts-loading,
+.workouts-empty {
+  color: #777777;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 20px 0;
+}
+
+
+/* =========================================================
+   FORMULARIOS
+========================================================= */
+
+.student-form {
+  padding-bottom: 40px;
+}
+
+.student-form h2 {
+  color: #E60000;
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 0.95;
+  margin-bottom: 30px;
+}
+
+#new-student-form,
+#edit-student-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#cancel-student,
+#cancel-edit-student {
+  margin-top: 5px;
+}
+
+
+/* =========================================================
+   FICHA ALUMNA
+========================================================= */
+
+#student-detail-screen {
+  display: none;
+}
+
+#detail-student-name {
+  font-size: 48px;
+  line-height: 0.95;
+  margin-bottom: 12px;
+}
+
+#detail-student-email {
+  color: #777777;
+  font-size: 13px;
+}
+
+.detail-value {
+  color: #FFFFFF;
+  font-family: 'Anton', sans-serif;
+  font-size: 25px;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   RUTINAS
+========================================================= */
+
+#workouts-screen {
+  display: none;
+}
+
+.workouts-header {
+  margin-bottom: 30px;
+}
+
+.workouts-header h1 {
+  margin-bottom: 15px;
+}
+
+.workouts-header p {
+  color: #777777;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.workout-student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.workout-student-card {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: #0B0B0B;
+  border: 1px solid #262626;
+  color: #FFFFFF;
+  text-align: left;
+  cursor: pointer;
+}
+
+.workout-student-card::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #E60000;
+}
+
+.workout-student-card:hover {
+  border-color: #E60000;
+}
+
+.workout-student-icon {
+  min-width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E60000;
+  color: #FFFFFF;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+}
+
+.workout-student-info {
+  flex: 1;
+}
+
+.workout-student-name {
+  display: block;
+  color: #FFFFFF;
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.workout-student-email {
+  display: block;
+  color: #777777;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.workout-student-arrow {
+  color: #E60000;
+  font-size: 22px;
+}
+
+
+/* =========================================================
    RUTINAS DE ALUMNA
-===================================== */
+========================================================= */
 
 #student-workouts-screen {
   display: none;
@@ -105,11 +815,11 @@ body {
 .student-workout-card {
   position: relative;
   width: 100%;
-  background: #0b0b0b;
+  background: #0B0B0B;
   border: 1px solid #262626;
   padding: 18px;
   text-align: left;
-  color: #ffffff;
+  color: #FFFFFF;
   cursor: pointer;
 }
 
@@ -118,9 +828,9 @@ body {
   position: absolute;
   width: 4px;
   height: 100%;
-  background: #E60000;
   left: 0;
   top: 0;
+  background: #E60000;
 }
 
 .student-workout-card:hover {
@@ -129,7 +839,7 @@ body {
 
 .student-workout-name {
   display: block;
-  color: #ffffff;
+  color: #FFFFFF;
   font-family: 'Anton', sans-serif;
   font-size: 24px;
   text-transform: uppercase;
@@ -162,1134 +872,106 @@ body {
   text-transform: uppercase;
 }
 
-    /* =====================================
-       APP
-    ====================================== */
 
-    .app {
-      display: none;
-      position: relative;
-      max-width: 520px;
-      min-height: 100vh;
-      margin: auto;
-      padding: 28px 22px 40px;
-      overflow: hidden;
-    }
+/* =========================================================
+   BIBLIOTECA DE EJERCICIOS
+========================================================= */
 
-
-    .content {
-      position: relative;
-      z-index: 1;
-    }
-
-
-    /* =====================================
-       GRÁFICOS
-    ====================================== */
-
-    .graphic {
-      position: absolute;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-
-    .graphic-one {
-      width: 180px;
-      height: 180px;
-      border: 2px solid #E60000;
-      transform: rotate(45deg);
-      top: -100px;
-      right: -90px;
-      opacity: 0.35;
-    }
-
-
-    .graphic-two {
-      width: 120px;
-      height: 8px;
-      background: #E60000;
-      transform: rotate(-35deg);
-      bottom: 80px;
-      left: -55px;
-      opacity: 0.5;
-    }
-
-
-    /* =====================================
-       LOGO
-    ====================================== */
-
-    .logo {
-      margin-bottom: 65px;
-    }
-
-
-    .logo img {
-      width: 150px;
-      height: auto;
-      display: block;
-    }
-
-
-    /* =====================================
-       TEXTOS
-    ====================================== */
-
-    .eyebrow {
-      color: #E60000;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-
-    h1 {
-      color: #E60000;
-      font-family: 'Anton', sans-serif;
-      text-transform: uppercase;
-      font-weight: 400;
-      letter-spacing: 1px;
-      font-size: 48px;
-      line-height: 0.95;
-    }
-
-
-    .welcome {
-      margin-bottom: 42px;
-    }
-
-
-    .welcome p {
-      color: #ffffff;
-      opacity: 0.7;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-top: 14px;
-    }
-
-
-    /* =====================================
-       BOTÓN GENERAL
-    ====================================== */
-
-    .button {
-      width: 100%;
-      border: none;
-      padding: 17px;
-      background: #E60000;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-
-
-    .button:hover {
-      background: #ff1a1a;
-    }
-
-
-    .button:active {
-      transform: scale(0.99);
-    }
-
-
-    /* =====================================
-       LOGIN
-    ====================================== */
-
-    .login-screen {
-      display: none;
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      padding: 60px 22px 40px;
-      max-width: 520px;
-      margin: auto;
-    }
-
-
-    .login-logo {
-      margin-bottom: 55px;
-    }
-
-
-    .login-logo img {
-      width: 150px;
-      height: auto;
-      display: block;
-    }
-
-
-    .login-screen h1 {
-      margin-bottom: 35px;
-    }
-
-
-    #login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-
-    #login-form label,
-    #new-student-form label,
-    #edit-student-form label {
-      color: #777777;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      margin-top: 8px;
-    }
-
-
-    #login-form input,
-    #new-student-form input,
-    #new-student-form select,
-    #edit-student-form input,
-    #edit-student-form select {
-      width: 100%;
-      padding: 15px;
-      background: #111111;
-      border: 1px solid #292929;
-      color: #ffffff;
-      font-size: 14px;
-      outline: none;
-    }
-
-
-    #login-form input:focus,
-    #new-student-form input:focus,
-    #new-student-form select:focus,
-    #edit-student-form input:focus,
-    #edit-student-form select:focus {
-      border-color: #E60000;
-    }
-
-
-    #login-message {
-      color: #E60000;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 10px;
-    }
-
-/* =====================================
-   LOGIN + REGISTRO — FORJA
-===================================== */
-
-#login-screen {
-  background: #08090D;
-  color: #FFFFFF;
+#exercise-library-screen {
+  display: none;
 }
 
-
-/* =====================================
-   LOGIN
-   MANTENER COMPOSICIÓN ORIGINAL
-===================================== */
-
-#login-panel {
-  background: transparent;
+.exercise-library-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
-
-/* Título INICIAR SESIÓN */
-
-#login-panel h1 {
-  color: #E60000;
-  font-family: 'Anton', sans-serif;
-  font-size: 64px;
-  font-weight: 400;
-  line-height: 0.88;
-  text-transform: uppercase;
-}
-
-
-/* =====================================
-   FORMULARIO LOGIN
-===================================== */
-
-#login-form {
-  width: 100%;
-}
-
-#login-form label {
-  display: block;
-  width: 100%;
-
-  margin-top: 18px;
-  margin-bottom: 7px;
-
-  color: #FFFFFF;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-#login-form input {
-  display: block;
-
-  width: 100%;
-  height: 52px;
-
-  box-sizing: border-box;
-
-  padding: 0 15px;
-
-  background: #0B0D12;
-  border: 1px solid #282C34;
-  border-radius: 0;
-
-  color: #FFFFFF;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-
-  outline: none;
-}
-
-#login-form input:focus {
-  border-color: #E60000;
-  background: #0D0F14;
-}
-
-#login-form input::placeholder {
-  color: #555A63;
-}
-
-
-/* =====================================
-   REGISTRO DE ALUMNA
-===================================== */
-
-#student-register-panel {
-
-  width: 100%;
-  max-width: 520px;
-
-  background: #08090D;
-  color: #FFFFFF;
-}
-
-
-/* TÍTULO */
-
-#student-register-panel h1 {
-
-  margin-top: 18px;
-  margin-bottom: 20px;
-
-  color: #E60000;
-
-  font-family: 'Anton', sans-serif;
-  font-size: 64px;
-  font-weight: 400;
-
-  line-height: 0.88;
-
-  text-transform: uppercase;
-}
-
-
-/* TEXTO */
-
-#student-register-panel > p {
-
-  margin-bottom: 24px;
-
-  color: #777777;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  line-height: 1.6;
-}
-
-
-/* =====================================
-   FORMULARIO REGISTRO
-===================================== */
-
-#student-register-form {
-
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-}
-
-
-/* LABEL */
-
-#student-register-form label {
-
-  display: block;
-
-  width: 100%;
-
-  margin-top: 18px;
-  margin-bottom: 7px;
-
-  color: #FFFFFF;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-
-/* PRIMER LABEL */
-
-#student-register-form label:first-of-type {
-  margin-top: 0;
-}
-
-
-/* INPUT */
-
-#student-register-form input {
-
-  display: block;
-
-  width: 100%;
-  height: 52px;
-
-  box-sizing: border-box;
-
-  padding: 0 15px;
-
-  background: #0B0D12;
-
-  border: 1px solid #282C34;
-  border-radius: 0;
-
-  color: #FFFFFF;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-
-  outline: none;
-
-  appearance: none;
-}
-
-
-/* FOCUS */
-
-#student-register-form input:focus {
-
-  background: #0D0F14;
-
-  border-color: #E60000;
-}
-
-
-/* PLACEHOLDER */
-
-#student-register-form input::placeholder {
-  color: #555A63;
-}
-
-
-/* =====================================
-   BOTÓN CREAR CUENTA
-===================================== */
-
-#student-register-form .button {
-
-  width: 100%;
-  min-height: 52px;
-
-  margin-top: 26px;
-
-  background: #E60000;
-
-  border: 1px solid #E60000;
-
-  color: #FFFFFF;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
-  cursor: pointer;
-}
-
-
-/* =====================================
-   MENSAJE REGISTRO
-===================================== */
-
-#register-message {
-
-  width: 100%;
-
-  margin-top: 14px;
-
-  color: #777777;
-
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-
-  line-height: 1.6;
-
-  text-align: center;
-}
-
-
-/* =====================================
-   VOLVER AL LOGIN
-===================================== */
-
-#back-to-login-button {
-
-  width: 100%;
-
-  margin-top: 16px;
-
-  background: transparent !important;
-
-  border: 1px solid #282C34 !important;
-
-  color: #777777 !important;
-
-  font-family: 'Montserrat', sans-serif;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 1px;
-
-  cursor: pointer;
-}
-
-#back-to-login-button:hover {
-
-  border-color: #E60000 !important;
-
-  color: #FFFFFF !important;
-}
-
-
-/* =====================================
-   CREAR MI CUENTA — LOGIN
-===================================== */
-
-#show-register-button {
-
-  background: transparent !important;
-
-  border: 1px solid #282C34 !important;
-
-  color: #777777 !important;
-
-  font-family: 'Montserrat', sans-serif;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 1px;
-}
-
-#show-register-button:hover {
-
-  border-color: #E60000 !important;
-
-  color: #FFFFFF !important;
-}
-
-
-/* =====================================
-   MOBILE
-===================================== */
-
-@media (max-width: 600px) {
-
-  #student-register-panel h1 {
-    font-size: 54px;
-  }
-
-  #student-register-form input {
-    height: 50px;
-  }
-
-}
-
-   /* =====================================
-   FORJA — PANTALLA DE ALUMNA
-===================================== */
-
-#student-home-screen {
+.exercise-library-card {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
-
-  background-color: #F2F2F0;
-  background-image: url("./fondoalumna.png");
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-} 
-    /* =====================================
-       MENÚ ENTRENADORA
-    ====================================== */
-
-    .trainer-menu {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-
-    .menu-card {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      position: relative;
-      text-align: left;
-      padding: 18px;
-      background: #0b0b0b;
-      border: 1px solid #262626;
-      color: #ffffff;
-      cursor: pointer;
-    }
-
-
-    .menu-card::before {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: 100%;
-      background: #E60000;
-      left: 0;
-      top: 0;
-    }
-
-
-    .menu-card:hover {
-      border-color: #E60000;
-    }
-
-
-    .menu-icon {
-      min-width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #E60000;
-      color: #ffffff;
-      font-family: 'Anton', sans-serif;
-      font-size: 25px;
-    }
-
-
-    .menu-card > div:nth-child(2) {
-      flex: 1;
-    }
-
-
-    .menu-label {
-      display: block;
-      color: #E60000;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      margin-bottom: 4px;
-    }
-
-
-    .menu-card strong {
-      display: block;
-      font-family: 'Anton', sans-serif;
-      font-size: 22px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
-    }
-
-
-    .menu-card p {
-      margin-top: 4px;
-      color: #777777;
-      font-size: 11px;
-      line-height: 1.4;
-    }
-
-
-    .menu-arrow {
-      color: #E60000;
-      font-size: 22px;
-    }
-
-
-    /* =====================================
-       LOGOUT
-    ====================================== */
-
-    .logout-button {
-      width: 100%;
-      margin-top: 35px;
-      padding: 14px;
-      background: transparent;
-      border: 1px solid #292929;
-      color: #777777;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      cursor: pointer;
-    }
-
-
-    .logout-button:hover {
-      color: #ffffff;
-      border-color: #E60000;
-    }
-
-
-    /* =====================================
-       PANTALLAS GENERALES
-    ====================================== */
-
-    .students-screen {
-      display: none;
-      position: relative;
-      max-width: 520px;
-      min-height: 100vh;
-      margin: auto;
-      padding: 28px 22px 40px;
-    }
-
-
-    .students-header {
-      margin-bottom: 30px;
-    }
-
-
-    .back-button {
-      background: transparent;
-      border: none;
-      color: #777777;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      padding: 0;
-      margin-bottom: 35px;
-      cursor: pointer;
-    }
-
-
-    .back-button:hover {
-      color: #E60000;
-    }
-
-
-    .students-header h1 {
-      margin-bottom: 15px;
-    }
-
-
-    .students-header p {
-      color: #777777;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-
-    /* =====================================
-       LISTADO ALUMNAS
-    ====================================== */
-
-    .students-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-
-    .student-card {
-      position: relative;
-      background: #0b0b0b;
-      border: 1px solid #262626;
-      padding: 18px;
-    }
-
-
-    .student-card::before {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: 100%;
-      background: #E60000;
-      left: 0;
-      top: 0;
-    }
-
-
-    .student-card.clickable {
-      cursor: pointer;
-    }
-
-
-    .student-card.clickable:hover {
-      border-color: #E60000;
-    }
-
-
-    .student-name {
-      color: #ffffff;
-      font-family: 'Anton', sans-serif;
-      font-size: 22px;
-      text-transform: uppercase;
-    }
-
-
-    .student-email {
-      color: #777777;
-      font-size: 11px;
-      margin-top: 5px;
-    }
-
-
-    .student-mini-data {
-      color: #777777;
-      font-size: 10px;
-      margin-top: 8px;
-      text-transform: uppercase;
-    }
-
-
-    .students-loading,
-    .students-empty,
-    .workouts-loading,
-    .workouts-empty {
-      color: #777777;
-      font-size: 12px;
-      line-height: 1.6;
-      padding: 20px 0;
-    }
-
-
-    /* =====================================
-       FORMULARIOS
-    ====================================== */
-
-    .student-form {
-      padding-bottom: 40px;
-    }
-
-
-    .student-form h2 {
-      color: #E60000;
-      font-family: 'Anton', sans-serif;
-      font-size: 42px;
-      font-weight: 400;
-      line-height: 0.95;
-      margin-bottom: 30px;
-    }
-
-
-    #new-student-form,
-    #edit-student-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-
-    #cancel-student,
-    #cancel-edit-student {
-      margin-top: 5px;
-    }
-
-
-    /* =====================================
-       FICHA ALUMNA
-    ====================================== */
-
-    #student-detail-screen {
-      display: none;
-    }
-
-
-    #detail-student-name {
-      font-size: 48px;
-      line-height: 0.95;
-      margin-bottom: 12px;
-    }
-
-
-    #detail-student-email {
-      color: #777777;
-      font-size: 13px;
-    }
-
-
-    .detail-value {
-      color: #ffffff;
-      font-family: 'Anton', sans-serif;
-      font-size: 25px;
-      text-transform: uppercase;
-    }
-
-
-    /* =====================================
-       RUTINAS
-    ====================================== */
-
-    #workouts-screen {
-      display: none;
-    }
-
-
-    .workouts-header {
-      margin-bottom: 30px;
-    }
-
-
-    .workouts-header h1 {
-      margin-bottom: 15px;
-    }
-
-
-    .workouts-header p {
-      color: #777777;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-
-    .workout-student-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 25px;
-    }
-
-
-    .workout-student-card {
-      width: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 18px;
-      background: #0b0b0b;
-      border: 1px solid #262626;
-      color: #ffffff;
-      text-align: left;
-      cursor: pointer;
-    }
-
-
-    .workout-student-card::before {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: 100%;
-      background: #E60000;
-      left: 0;
-      top: 0;
-    }
-
-
-    .workout-student-card:hover {
-      border-color: #E60000;
-    }
-
-
-    .workout-student-icon {
-      min-width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #E60000;
-      color: #ffffff;
-      font-family: 'Anton', sans-serif;
-      font-size: 22px;
-    }
-
-
-    .workout-student-info {
-      flex: 1;
-    }
-
-
-    .workout-student-name {
-      display: block;
-      color: #ffffff;
-      font-family: 'Anton', sans-serif;
-      font-size: 22px;
-      font-weight: 400;
-      text-transform: uppercase;
-    }
-
-
-    .workout-student-email {
-      display: block;
-      color: #777777;
-      font-size: 11px;
-      margin-top: 4px;
-    }
-
-
-    .workout-student-arrow {
-      color: #E60000;
-      font-size: 22px;
-    }
-
-
-    /* =====================================
-       BIBLIOTECA DE EJERCICIOS
-    ====================================== */
-
-    #exercise-library-screen {
-      display:none;
-    }
-
-    .exercise-library-grid {
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-    }
-
-    .exercise-library-card {
-      position:relative;
-      background:#0b0b0b;
-      border:1px solid #262626;
-      padding:16px;
-      min-height:130px;
-    }
-
-    .exercise-library-card:hover {
-      border-color:#E60000;
-    }
-
-    .exercise-library-media {
-      width:100%;
-      aspect-ratio:16/9;
-      object-fit:cover;
-      display:block;
-      background:#111;
-      border:1px solid #222;
-      margin-bottom:12px;
-    }
-
-    .exercise-library-actions {
-      display:flex;
-      gap:6px;
-      margin-top:12px;
-    }
-
-    .exercise-library-actions button {
-      flex:1;
-    }
-
-    .exercise-help-button {
-      width:100%;
-      margin-top:14px;
-      padding:12px;
-      background:#111;
-      border:1px solid #333;
-      color:#fff;
-      font-size:9px;
-      font-weight:900;
-      letter-spacing:1.5px;
-      cursor:pointer;
-    }
-
-    .exercise-help-button:hover {
-      border-color:#E60000;
-      color:#E60000;
-    }
-
-    .exercise-library-modal {
-      position:fixed;
-      inset:0;
-      z-index:9999;
-      background:rgba(0,0,0,.88);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      box-sizing:border-box;
-    }
-
-    .exercise-library-modal-card {
-      width:min(680px,100%);
-      max-height:90vh;
-      overflow:auto;
-      background:#090909;
-      border:1px solid #333;
-      border-left:3px solid #E60000;
-      padding:20px;
-      box-sizing:border-box;
-    }
-
-    .exercise-library-modal video,
-    .exercise-library-modal img {
-      width:100%;
-      max-height:55vh;
-      object-fit:contain;
-      background:#000;
-      border:1px solid #222;
-      margin-top:14px;
-    }
-
-    @media (max-width:600px) {
-      .exercise-library-grid {
-        grid-template-columns:1fr;
-      }
-    }
-
-
-    /* =====================================
-       FRASE
-    ====================================== */
-
-    .quote {
-      margin-top: 38px;
-      padding-left: 14px;
-      border-left: 3px solid #E60000;
-      color: #ffffff;
-      opacity: 0.55;
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-
-    /* =====================================
-       DESKTOP
-    ====================================== */
-
-    @media (min-width: 700px) {
-
-      .app {
-        padding-top: 45px;
-      }
-
-    }
-/* =====================================
+  background: #0B0B0B;
+  border: 1px solid #262626;
+  padding: 16px;
+  min-height: 130px;
+}
+
+.exercise-library-card:hover {
+  border-color: #E60000;
+}
+
+.exercise-library-media {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+  background: #111;
+  border: 1px solid #222;
+  margin-bottom: 12px;
+}
+
+.exercise-library-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.exercise-library-actions button {
+  flex: 1;
+}
+
+.exercise-help-button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  background: #111;
+  border: 1px solid #333;
+  color: #FFFFFF;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+.exercise-help-button:hover {
+  border-color: #E60000;
+  color: #E60000;
+}
+
+.exercise-library-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.exercise-library-modal-card {
+  width: min(680px,100%);
+  max-height: 90vh;
+  overflow: auto;
+  background: #090909;
+  border: 1px solid #333;
+  border-left: 3px solid #E60000;
+  padding: 20px;
+}
+
+.exercise-library-modal video,
+.exercise-library-modal img {
+  width: 100%;
+  max-height: 55vh;
+  object-fit: contain;
+  background: #000;
+  border: 1px solid #222;
+  margin-top: 14px;
+}
+
+
+/* =========================================================
    NUEVA RUTINA
-===================================== */
+========================================================= */
 
 #new-workout-screen {
   display: none;
@@ -1298,163 +980,6 @@ body {
   min-height: 100vh;
   margin: auto;
   padding: 28px 22px 50px;
-}
-
-.new-workout-header {
-  margin-bottom: 30px;
-}
-
-.new-workout-header h1 {
-  margin-bottom: 18px;
-  font-size: 48px;
-  line-height: 0.9;
-}
-
-.new-workout-header p {
-  color: #777777;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.new-workout-student {
-  position: relative;
-  background: #0b0b0b;
-  border: 1px solid #262626;
-  padding: 22px;
-  margin-bottom: 25px;
-}
-
-.new-workout-student::before {
-  content: "";
-  position: absolute;
-  width: 4px;
-  height: 100%;
-  background: #E60000;
-  left: 0;
-  top: 0;
-}
-
-.new-workout-student .menu-label {
-  margin-bottom: 8px;
-}
-
-.new-workout-student-name {
-  color: #ffffff;
-  font-family: 'Anton', sans-serif;
-  font-size: 28px;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-.new-workout-student-email {
-  color: #777777;
-  font-size: 11px;
-  margin-top: 8px;
-}
-
-#new-workout-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-#new-workout-form label {
-  display: block;
-  color: #777777;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  margin-top: 12px;
-  text-transform: uppercase;
-}
-
-#new-workout-form input,
-#new-workout-form select {
-  width: 100%;
-  min-height: 50px;
-  padding: 15px;
-  background: #111111;
-  border: 1px solid #292929;
-  color: #ffffff;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  outline: none;
-}
-
-#new-workout-form input:focus,
-#new-workout-form select:focus {
-  border-color: #E60000;
-}
-
-#new-workout-form select {
-  cursor: pointer;
-}
-
-#new-workout-form option {
-  background: #111111;
-  color: #ffffff;
-}
-
-#new-workout-form .button {
-  margin-top: 18px;
-}
-
-#cancel-new-workout {
-  margin-top: 5px;
-}
-
-#new-workout-message {
-  color: #777777;
-  font-size: 12px;
-  line-height: 1.5;
-  margin-top: 10px;
-}
-
-#new-workout-message.error {
-  color: #E60000;
-}
-
-#new-workout-message.success {
-  color: #ffffff;
-}
-
-
-/* =====================================
-   GRILLA DATOS DE RUTINA
-===================================== */
-
-.workout-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.workout-form-field.full {
-  grid-column: 1 / -1;
-}
-
-
-/* =====================================
-   MOBILE
-===================================== */
-
-@media (max-width: 500px) {
-
-  .workout-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .workout-form-field.full {
-    grid-column: auto;
-  }
-
-}
-    /* =====================================
-   NUEVA RUTINA
-===================================== */
-
-#new-workout-screen {
-  display: none;
 }
 
 .new-workout-header {
@@ -1475,7 +1000,7 @@ body {
 
 .new-workout-student {
   position: relative;
-  background: #0b0b0b;
+  background: #0B0B0B;
   border: 1px solid #262626;
   padding: 22px;
   margin-bottom: 22px;
@@ -1486,9 +1011,9 @@ body {
   position: absolute;
   width: 4px;
   height: 100%;
-  background: #E60000;
   left: 0;
   top: 0;
+  background: #E60000;
 }
 
 .new-workout-student .menu-label {
@@ -1496,7 +1021,7 @@ body {
 }
 
 .new-workout-student-name {
-  color: #ffffff;
+  color: #FFFFFF;
   font-family: 'Anton', sans-serif;
   font-size: 28px;
   text-transform: uppercase;
@@ -1525,11 +1050,11 @@ body {
 #new-workout-form input,
 #new-workout-form select {
   width: 100%;
+  min-height: 50px;
   padding: 15px;
   background: #111111;
   border: 1px solid #292929;
-  color: #ffffff;
-  font-family: 'Montserrat', sans-serif;
+  color: #FFFFFF;
   font-size: 14px;
   outline: none;
 }
@@ -1539,12 +1064,13 @@ body {
   border-color: #E60000;
 }
 
-#new-workout-form select {
-  appearance: auto;
+#new-workout-form option {
+  background: #111111;
+  color: #FFFFFF;
 }
 
-.workout-form-actions {
-  margin-top: 20px;
+#new-workout-form .button {
+  margin-top: 18px;
 }
 
 #cancel-new-workout {
@@ -1557,10 +1083,34 @@ body {
   line-height: 1.6;
   margin-top: 12px;
 }
-  
-/* =====================================
+
+#new-workout-message.error {
+  color: #E60000;
+}
+
+#new-workout-message.success {
+  color: #FFFFFF;
+}
+
+
+/* =========================================================
+   GRILLA DATOS RUTINA
+========================================================= */
+
+.workout-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.workout-form-field.full {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
    CONSTRUCTOR DE RUTINA
-===================================== */
+========================================================= */
 
 .workout-editor {
   padding-bottom: 50px;
@@ -1574,7 +1124,7 @@ body {
 }
 
 .workout-meta-card {
-  background: #0b0b0b;
+  background: #0B0B0B;
   border: 1px solid #262626;
   padding: 15px;
 }
@@ -1589,7 +1139,7 @@ body {
 }
 
 .workout-meta-value {
-  color: #ffffff;
+  color: #FFFFFF;
   font-family: 'Anton', sans-serif;
   font-size: 20px;
   margin-top: 5px;
@@ -1605,7 +1155,7 @@ body {
 
 .workout-day-card {
   position: relative;
-  background: #0b0b0b;
+  background: #0B0B0B;
   border: 1px solid #292929;
   padding: 18px;
 }
@@ -1615,9 +1165,9 @@ body {
   position: absolute;
   width: 4px;
   height: 100%;
-  background: #E60000;
   left: 0;
   top: 0;
+  background: #E60000;
 }
 
 .workout-day-head {
@@ -1629,7 +1179,7 @@ body {
 }
 
 .workout-day-title {
-  color: #ffffff;
+  color: #FFFFFF;
   font-family: 'Anton', sans-serif;
   font-size: 27px;
   line-height: 1;
@@ -1644,7 +1194,7 @@ body {
 .workout-small-button {
   border: 1px solid #292929;
   background: #111111;
-  color: #ffffff;
+  color: #FFFFFF;
   padding: 8px 10px;
   font-size: 9px;
   font-weight: 800;
@@ -1688,7 +1238,7 @@ body {
 }
 
 .workout-exercise-name {
-  color: #ffffff;
+  color: #FFFFFF;
   font-family: 'Anton', sans-serif;
   font-size: 19px;
   line-height: 1.05;
@@ -1725,7 +1275,7 @@ body {
 
 .workout-exercise-data strong {
   display: block;
-  color: #ffffff;
+  color: #FFFFFF;
   font-size: 12px;
   margin-top: 3px;
 }
@@ -1767,12 +1317,10 @@ body {
 .workout-exercise-field textarea,
 .workout-day-name-input {
   width: 100%;
-  box-sizing: border-box;
-  background: #0b0b0b;
+  background: #0B0B0B;
   border: 1px solid #292929;
-  color: #ffffff;
+  color: #FFFFFF;
   padding: 10px;
-  font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   outline: none;
 }
@@ -1802,129 +1350,63 @@ body {
   margin-top: 12px;
 }
 
-@media (max-width: 500px) {
-  .workout-editor-meta,
-  .workout-editor-actions {
-    grid-template-columns: 1fr;
-  }
 
-  .workout-exercise-data {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* =========================================================
+   FRASE
+========================================================= */
+
+.quote {
+  margin-top: 38px;
+  padding-left: 14px;
+  border-left: 3px solid #E60000;
+  color: #FFFFFF;
+  opacity: 0.55;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
-/* =====================================
-   PANTALLA ALUMNA — FORJA
-===================================== */
+
+/* =========================================================
+   =========================================================
+   PANTALLA DE ALUMNA — ÚNICA VERSIÓN
+   =========================================================
+========================================================= */
 
 #student-home-screen {
   position: relative;
-
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-
-  box-sizing: border-box;
+  padding: 0 22px 40px;
 
   background: #08090D !important;
-
-  color: #F1F0EA;
-}
-    /* =====================================
-   TARJETAS ALUMNA
-===================================== */
-
-#student-home-screen .student-card {
-  background: rgba(241, 240, 234, 0.78) !important;
-  color: #08090D !important;
-
-  border: 1px solid rgba(241, 240, 234, 0.18) !important;
-  border-left: 3px solid #E60000 !important;
-
-  border-radius: 2px !important;
-
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.18) !important;
-
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-    /* =====================================
-   ESTADO ACTUAL — SUTIL
-===================================== */
-
-#student-home-screen #student-status-card {
-  padding: 10px 14px;
-
-  transform: scale(0.96);
-
-  transform-origin: center;
+  color: #FFFFFF !important;
 }
 
 
-/* =====================================
-   ABONAR RUTINA — SUTIL
-===================================== */
-
-#student-home-screen #student-payment-card {
-  padding: 14px 16px;
-
-  transform: scale(0.96);
-
-  transform-origin: center;
-}
-    /* =====================================
-   TITULOS PRINCIPALES
-===================================== */
-
-#student-home-screen .student-section-title {
-
-  font-family: 'Anton', sans-serif;
-
-  font-size: 30px;
-
-  line-height: 1;
-
-  color: #F1F0EA;
-
-  letter-spacing: 0.5px;
-
-  text-transform: uppercase;
-
-  margin-bottom: 14px;
-}
-
-    /* =====================================
-   CONTENIDO DE PANTALLA ALUMNA
-===================================== */
+/* =========================================================
+   CONTENEDOR
+========================================================= */
 
 #student-home-screen > * {
   position: relative;
   z-index: 1;
-}
-    
-/* =========================================================
-   CONTENEDOR PRINCIPAL
-========================================================= */
-
-#student-home-screen > * {
   width: 100%;
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
-  box-sizing: border-box;
 }
 
 
 /* =========================================================
-   HEADER
+   HEADER ALUMNA
 ========================================================= */
 
 #student-home-screen .students-header {
   max-width: 1100px;
   padding: 42px 0 32px;
   margin-bottom: 8px;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
 #student-home-screen .students-header .eyebrow {
@@ -1937,8 +1419,8 @@ body {
 
 #student-home-screen #student-home-title {
   margin: 0;
-  color: #fff;
-  font-family: "Anton", sans-serif;
+  color: #FFFFFF !important;
+  font-family: 'Anton', sans-serif;
   font-size: clamp(42px, 7vw, 78px);
   line-height: .95;
   letter-spacing: 1px;
@@ -1947,7 +1429,7 @@ body {
 
 #student-home-screen .students-header p {
   margin: 14px 0 0;
-  color: #777;
+  color: #777777;
   font-size: 12px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -1955,43 +1437,23 @@ body {
 
 
 /* =========================================================
-   SECCIONES
+   TÍTULOS DE SECCIÓN
 ========================================================= */
 
-#student-home-screen .workout-section-label {
+#student-home-screen .workout-section-label,
+#student-home-screen .student-section-toggle {
   width: 100%;
-  max-width: 1100px;
-  margin: 28px auto 10px;
-  color: #777;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
+  margin: 32px auto 12px;
 
+  color: #FFFFFF !important;
 
-/* =========================================================
-   RUTINA ACTIVA
-========================================================= */
-
-#student-home-screen #student-workout-name {
-  font-family: "Anton", sans-serif;
-  font-size: clamp(28px, 4vw, 42px);
+  font-family: 'Anton', sans-serif;
+  font-size: 30px;
+  font-weight: 400;
   line-height: 1;
-  color: #fff;
-  text-transform: uppercase;
-}
 
-#student-home-screen #student-workout-weeks,
-#student-home-screen #student-workout-status {
-  font-size: 11px;
-  font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
-}
-
-#student-home-screen #student-workout-status {
-  color: #E60000;
 }
 
 
@@ -2002,24 +1464,82 @@ body {
 #student-home-screen .student-card {
   width: 100%;
   max-width: 1100px;
-  box-sizing: border-box;
+
   margin: 0 auto 12px;
   padding: 24px;
-  background: #0b0b0b;
-  border: 1px solid #242424;
-  border-left: 3px solid #E60000;
-  border-radius: 0;
-  box-shadow: none;
+
+  background: #0B0B0B !important;
+
+  border: 1px solid #262626 !important;
+  border-left: 3px solid #E60000 !important;
+
+  border-radius: 0 !important;
+
+  color: #FFFFFF !important;
+
+  box-shadow: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 
 /* =========================================================
-   PRÓXIMO ENTRENAMIENTO
+   TEXTO DENTRO DE TARJETAS
+========================================================= */
+
+#student-home-screen .student-card .eyebrow {
+  color: #E60000 !important;
+}
+
+#student-home-screen .student-card .detail-value,
+#student-home-screen .student-card strong,
+#student-home-screen .student-card #student-workout-name,
+#student-home-screen .student-card #student-workout-weeks {
+  color: #FFFFFF !important;
+}
+
+#student-home-screen .student-card span {
+  color: #777777 !important;
+}
+
+
+/* =========================================================
+   RUTINA ACTIVA
+========================================================= */
+
+#student-home-screen #student-workout-name {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1;
+  color: #FFFFFF !important;
+  text-transform: uppercase;
+}
+
+#student-home-screen #student-workout-weeks {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #FFFFFF !important;
+  text-transform: uppercase;
+}
+
+#student-home-screen #student-workout-status {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #E60000 !important;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ENTRENAMIENTO DE HOY
 ========================================================= */
 
 #student-home-screen #student-today-name {
-  color: #fff;
-  font-family: "Anton", sans-serif;
+  color: #FFFFFF !important;
+  font-family: 'Anton', sans-serif;
   font-size: clamp(30px, 5vw, 52px);
   line-height: 1;
   text-transform: uppercase;
@@ -2027,7 +1547,7 @@ body {
 }
 
 #student-home-screen #student-today-description {
-  color: #777;
+  color: #777777 !important;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -2043,27 +1563,181 @@ body {
   width: 100%;
   min-height: 62px;
   margin-top: 20px;
+
   border: 1px solid #E60000;
   border-radius: 0;
+
   background: #E60000;
-  color: #fff;
-  font-family: "Montserrat", sans-serif;
+  color: #FFFFFF;
+
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 1.2px;
   text-transform: uppercase;
+
   cursor: pointer;
-  transition:
-    background .2s ease,
-    transform .15s ease;
 }
 
 #student-home-screen #student-start-workout-button:hover {
-  background: #c90000;
+  background: #C90000;
 }
 
 #student-home-screen #student-start-workout-button:active {
   transform: scale(.99);
+}
+
+
+/* =========================================================
+   ESTADO ACTUAL — MÁS SUTIL
+========================================================= */
+
+#student-home-screen #student-status-card {
+  padding: 14px 18px !important;
+  margin-bottom: 10px !important;
+}
+
+#student-home-screen #student-status-card .detail-value {
+  font-size: 24px;
+  line-height: 1;
+}
+
+#student-home-screen #student-status-card p {
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   ABONAR RUTINA — MISMO PESO QUE ESTADO ACTUAL
+========================================================= */
+
+#student-home-screen #student-payment-card {
+  padding: 14px 18px !important;
+  margin-bottom: 10px !important;
+}
+
+
+/* Título */
+
+#student-home-screen #student-payment-card .eyebrow {
+  font-size: 10px;
+}
+
+
+/* Valor mensual */
+
+#student-home-screen #student-payment-card strong {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px !important;
+  line-height: 1;
+}
+
+
+/* Alias */
+
+#student-home-screen #student-payment-card div[style*="background:#111"],
+#student-home-screen #student-payment-card div[style*="background: #111"] {
+  margin-top: 10px;
+  padding: 12px 14px !important;
+
+  background: #111111 !important;
+
+  border: 1px solid #292929 !important;
+}
+
+#student-home-screen #student-payment-card div[style*="background:#111"] strong,
+#student-home-screen #student-payment-card div[style*="background: #111"] strong {
+  color: #FFFFFF !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 18px !important;
+}
+
+#student-home-screen #student-payment-status {
+  color: #FFFFFF !important;
+  font-size: 22px !important;
+}
+
+#student-home-screen #student-payment-message {
+  color: #777777 !important;
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   ACORDEONES
+========================================================= */
+
+#student-home-screen .student-section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  padding: 0;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+  text-align: left;
+}
+
+#student-home-screen .student-section-toggle:hover {
+  color: #E60000 !important;
+}
+
+#student-home-screen .student-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid rgba(255,255,255,.25);
+
+  color: #E60000;
+
+  font-size: 18px;
+  font-weight: 400;
+
+  transition: .2s ease;
+}
+
+#student-home-screen .student-section-toggle.is-open .student-toggle-icon {
+  background: #E60000;
+  color: #FFFFFF;
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   CONTENIDO OCULTO
+========================================================= */
+
+#student-home-screen .student-collapsible {
+  width: 100%;
+}
+
+#student-home-screen .student-collapsible.is-hidden {
+  display: none !important;
+}
+
+#student-home-screen .student-collapsible.is-open {
+  display: block !important;
+  animation: studentAccordionOpen .2s ease;
+}
+
+@keyframes studentAccordionOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -2079,27 +1753,11 @@ body {
 
 #student-home-screen #student-workout-days .student-card {
   position: relative;
-  transition:
-    border-color .2s ease,
-    transform .15s ease;
-}
-
-#student-home-screen #student-workout-days .student-card:hover {
-  border-color: #444;
-  transform: translateY(-1px);
-}
-
-#student-home-screen #student-workout-days .menu-label {
-  color: #E60000;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 2px;
 }
 
 #student-home-screen #student-workout-days .detail-value {
-  margin-top: 5px;
-  color: #fff;
-  font-family: "Anton", sans-serif;
+  color: #FFFFFF !important;
+  font-family: 'Anton', sans-serif;
   font-size: 28px;
   line-height: 1;
   text-transform: uppercase;
@@ -2107,137 +1765,107 @@ body {
 
 
 /* =========================================================
-   MI PROGRESO - ALUMNA
+   PROGRESO
 ========================================================= */
 
 #student-home-screen #student-personal-progress {
-  width:100%;
-  max-width:1100px;
-  margin:0 auto;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 #student-home-screen .student-progress-grid {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-  margin-bottom:12px;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-#student-home-screen .student-progress-stat {
-  border:1px solid #222;
-  background:#0d0d0d;
-  padding:16px;
+#student-home-screen .student-progress-stat,
+#student-home-screen .student-progress-comparison-card,
+#student-home-screen .student-progress-achievement {
+  border: 1px solid #262626;
+  background: #0B0B0B;
+  padding: 16px;
 }
 
-#student-home-screen .student-progress-stat .stat-value {
-  margin-top:7px;
-  color:#fff;
-  font-family:"Anton",sans-serif;
-  font-size:28px;
-  line-height:1;
+#student-home-screen .student-progress-stat .stat-value,
+#student-home-screen .student-progress-comparison-card .big {
+  margin-top: 7px;
+  color: #FFFFFF;
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  line-height: 1;
 }
 
-#student-home-screen .student-progress-stat .stat-note {
-  margin-top:7px;
-  color:#777;
-  font-size:9px;
-  line-height:1.5;
+#student-home-screen .student-progress-stat .stat-note,
+#student-home-screen .student-progress-achievement span {
+  margin-top: 7px;
+  color: #777777;
+  font-size: 9px;
+  line-height: 1.5;
 }
 
 #student-home-screen .student-progress-selector {
-  width:100%;
-  box-sizing:border-box;
-  margin-top:12px;
-  padding:14px;
-  border:1px solid #333;
-  border-radius:0;
-  background:#111;
-  color:#fff;
-  font-family:"Montserrat",sans-serif;
-  font-size:11px;
-  font-weight:800;
-  text-transform:uppercase;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+
+  border: 1px solid #333;
+  border-radius: 0;
+
+  background: #111;
+  color: #FFFFFF;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
 }
 
 #student-home-screen .student-progress-comparison {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  margin-top:12px;
-}
-
-#student-home-screen .student-progress-comparison-card {
-  border:1px solid #222;
-  background:#0d0d0d;
-  padding:16px;
-}
-
-#student-home-screen .student-progress-comparison-card .big {
-  margin-top:6px;
-  color:#fff;
-  font-family:"Anton",sans-serif;
-  font-size:30px;
-  line-height:1;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+  margin-top: 12px;
 }
 
 #student-home-screen .student-progress-change {
-  margin-top:8px;
-  color:#E60000;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.7px;
-  text-transform:uppercase;
+  margin-top: 8px;
+  color: #E60000;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .7px;
+  text-transform: uppercase;
 }
 
 #student-home-screen .student-progress-message {
-  margin-top:10px;
-  border-left:2px solid #E60000;
-  background:#0d0d0d;
-  padding:13px 14px;
-  color:#aaa;
-  font-size:10px;
-  line-height:1.6;
+  margin-top: 10px;
+  border-left: 2px solid #E60000;
+  background: #0B0B0B;
+  padding: 13px 14px;
+  color: #AAAAAA;
+  font-size: 10px;
+  line-height: 1.6;
 }
 
 #student-home-screen .student-progress-achievements {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-  margin-top:12px;
-}
-
-#student-home-screen .student-progress-achievement {
-  border:1px solid #222;
-  background:#0d0d0d;
-  padding:13px;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 8px;
+  margin-top: 12px;
 }
 
 #student-home-screen .student-progress-achievement strong {
-  display:block;
-  color:#fff;
-  font-size:11px;
-  line-height:1.4;
-}
-
-#student-home-screen .student-progress-achievement span {
-  display:block;
-  margin-top:4px;
-  color:#777;
-  font-size:9px;
-  line-height:1.5;
-}
-
-@media (max-width:600px) {
-  #student-home-screen .student-progress-grid,
-  #student-home-screen .student-progress-comparison,
-  #student-home-screen .student-progress-achievements {
-    grid-template-columns:1fr;
-  }
+  display: block;
+  color: #FFFFFF;
+  font-size: 11px;
+  line-height: 1.4;
 }
 
 
 /* =========================================================
-   BOTÓN CERRAR SESIÓN
+   CERRAR SESIÓN
 ========================================================= */
 
 #student-home-screen #student-logout-button {
@@ -2245,48 +1873,40 @@ body {
   width: 100%;
   max-width: 1100px;
   min-height: 52px;
+
   margin: 30px auto 0;
+
   border: 1px solid #222;
   border-radius: 0;
+
   background: transparent;
-  color: #777;
-  font-family: "Montserrat", sans-serif;
+  color: #777777;
+
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 2px;
+
   text-transform: uppercase;
   cursor: pointer;
-  transition:
-    color .2s ease,
-    border-color .2s ease;
 }
 
 #student-home-screen #student-logout-button:hover {
-  color: #fff;
+  color: #FFFFFF;
   border-color: #555;
 }
 
 
 /* =========================================================
-   ESTADOS VACÍOS / CARGANDO
+   RESPONSIVE
 ========================================================= */
 
-#student-home-screen .workouts-loading {
-  padding: 30px 0;
-  color: #777;
-  font-size: 11px;
-  text-align: center;
-  letter-spacing: 1px;
+@media (min-width: 700px) {
+
+  .app {
+    padding-top: 45px;
+  }
+
 }
-
-#student-home-screen .detail-value {
-  color: #fff;
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
 
 @media (max-width: 768px) {
 
@@ -2308,10 +1928,45 @@ body {
 
 }
 
+@media (max-width: 600px) {
 
-/* =========================================================
-   CELULAR
-========================================================= */
+  .exercise-library-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #student-home-screen .student-section-toggle,
+  #student-home-screen .workout-section-label {
+    font-size: 25px;
+  }
+
+  #student-home-screen .student-progress-grid,
+  #student-home-screen .student-progress-comparison,
+  #student-home-screen .student-progress-achievements {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .workout-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workout-form-field.full {
+    grid-column: auto;
+  }
+
+  .workout-editor-meta,
+  .workout-editor-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .workout-exercise-data {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
 
 @media (max-width: 480px) {
 
@@ -2338,9 +1993,10 @@ body {
     line-height: 1.5;
   }
 
-  #student-home-screen .workout-section-label {
+  #student-home-screen .workout-section-label,
+  #student-home-screen .student-section-toggle {
     margin-top: 22px;
-    font-size: 9px;
+    font-size: 24px;
   }
 
   #student-home-screen .student-card {
@@ -2373,11 +2029,6 @@ body {
 
 }
 
-
-/* =========================================================
-   CELULARES MUY PEQUEÑOS
-========================================================= */
-
 @media (max-width: 360px) {
 
   #student-home-screen {
@@ -2398,41 +2049,6 @@ body {
   }
 
 }
-    
-
-/* =========================================================
-   FORJA — PANTALLA ALUMNA · ESTÉTICA FINAL
-========================================================= */
-#student-home-screen{background:#08090D !important;color:#F1F0EA !important;}
-#student-home-screen .students-header{border-bottom:1px solid rgba(241,240,234,.12) !important;}
-#student-home-screen #student-home-title{color:#F1F0EA !important;}
-#student-home-screen .students-header p{color:#777 !important;}
-#student-home-screen .workout-section-label,
-#student-home-screen .student-section-toggle{color:#F1F0EA !important;font-family:'Anton',sans-serif !important;font-size:27px !important;font-weight:400 !important;line-height:1 !important;letter-spacing:1px !important;text-transform:uppercase !important;}
-#student-home-screen .workout-section-label{margin-top:32px !important;margin-bottom:13px !important;}
-#student-home-screen .student-card{background:#F1F0EA !important;color:#08090D !important;border:1px solid rgba(0,0,0,.10) !important;border-left:3px solid #E60000 !important;border-radius:2px !important;box-shadow:0 8px 24px rgba(0,0,0,.20) !important;}
-#student-home-screen .student-card .detail-value,#student-home-screen .student-card strong{color:#08090D !important;}
-#student-home-screen .student-card .eyebrow{color:#E60000 !important;}
-#student-home-screen .student-card span{color:#666 !important;}
-#student-home-screen #student-workout-name,#student-home-screen #student-workout-weeks,#student-home-screen #student-today-name{color:#08090D !important;}
-#student-home-screen #student-workout-status{color:#E60000 !important;}
-#student-home-screen #student-today-description{color:#666 !important;}
-#student-home-screen #student-start-workout-button{background:#E60000 !important;border-color:#E60000 !important;color:#fff !important;}
-#student-home-screen .student-card[style*="border-color:#222"]{padding:14px 18px !important;box-shadow:0 4px 12px rgba(0,0,0,.10) !important;}
-#student-home-screen .student-card[style*="border-color:#222"] strong{font-size:21px !important;}
-#student-home-screen .student-card[style*="border-color:#222"] div[style*="background:#111"]{background:#E7E5DD !important;border-color:rgba(0,0,0,.10) !important;}
-#student-home-screen .student-card[style*="border-color:#222"] div[style*="background:#111"] strong{color:#08090D !important;}
-#student-home-screen #student-payment-status{color:#08090D !important;font-size:22px !important;}
-#student-home-screen #student-payment-message{color:#777 !important;}
-#student-home-screen #student-workout-days .student-card,#student-home-screen #student-personal-progress .student-card{background:#F1F0EA !important;}
-#student-home-screen #student-workout-days .detail-value,#student-home-screen #student-personal-progress .detail-value{color:#08090D !important;}
-#student-home-screen .student-section-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;margin-top:32px;margin-bottom:12px;padding:0;background:transparent;border:none;cursor:pointer;text-align:left;}
-#student-home-screen .student-section-toggle:hover{color:#E60000 !important;}
-#student-home-screen .student-toggle-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(241,240,234,.25);color:#E60000;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:400;transition:.2s ease;}
-#student-home-screen .student-section-toggle.is-open .student-toggle-icon{background:#E60000;color:#fff;transform:rotate(180deg);}
-#student-home-screen .student-collapsible{width:100%;animation:studentAccordionOpen .2s ease;}
-@keyframes studentAccordionOpen{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
-@media (max-width:600px){#student-home-screen .workout-section-label,#student-home-screen .student-section-toggle{font-size:24px !important;}}
 
 </style>
 
