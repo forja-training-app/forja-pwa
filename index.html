@@ -1814,27 +1814,80 @@ body {
 }
 
 /* =====================================
-   FORJA — PANTALLA DE ALUMNA
+   PANTALLA ALUMNA — FORJA
 ===================================== */
 
 #student-home-screen {
-  position: relative !important;
+  position: relative;
 
-  width: 100% !important;
-  min-height: 100vh !important;
-  min-height: 100dvh !important;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
 
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 
-  background-color: #F2F2F0 !important;
+  background: #08090D !important;
 
-  background-image: url("./fondoalumna.png") !important;
+  color: #F1F0EA;
+}
+    /* =====================================
+   TARJETAS ALUMNA
+===================================== */
 
-  background-size: cover !important;
-  background-position: center top !important;
-  background-repeat: no-repeat !important;
+#student-home-screen .student-card {
+  background: #F1F0EA;
+  color: #08090D;
 
-  color: #111111 !important;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 2px;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.18);
+}
+    /* =====================================
+   ESTADO ACTUAL — SUTIL
+===================================== */
+
+#student-home-screen #student-status-card {
+  padding: 14px 16px;
+
+  transform: scale(0.96);
+
+  transform-origin: center;
+}
+
+
+/* =====================================
+   ABONAR RUTINA — SUTIL
+===================================== */
+
+#student-home-screen #student-payment-card {
+  padding: 14px 16px;
+
+  transform: scale(0.96);
+
+  transform-origin: center;
+}
+    /* =====================================
+   TITULOS PRINCIPALES
+===================================== */
+
+#student-home-screen .student-section-title {
+
+  font-family: 'Anton', sans-serif;
+
+  font-size: 30px;
+
+  line-height: 1;
+
+  color: #F1F0EA;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 14px;
 }
 
     /* =====================================
