@@ -3506,7 +3506,25 @@ body {
   /* =========================================================
    FORJA — NUEVA ESTÉTICA PANTALLA ALUMNA
 ========================================================= */
+/* =====================================
+   ABONAR RUTINA — TARJETA COMPACTA
+===================================== */
 
+#student-home-screen .student-card[style*="border-color:#222"] {
+  padding: 14px 18px !important;
+  min-height: 0 !important;
+}
+
+/* Evita que elementos internos vuelvan a agrandar la tarjeta */
+#student-home-screen .student-card[style*="border-color:#222"] div {
+  max-height: none;
+}
+
+/* Texto explicativo */
+#student-home-screen .student-card[style*="border-color:#222"] p {
+  font-size: 9px !important;
+  line-height: 1.4 !important;
+}
 /* -----------------------------------------
    FONDO GENERAL
 ----------------------------------------- */
@@ -16360,7 +16378,6 @@ async function openStudentTrainingSessionDetail(
 
 </div>
 
-
 <!-- =====================================
      ABONAR RUTINA
 ====================================== -->
@@ -16373,91 +16390,56 @@ async function openStudentTrainingSessionDetail(
   "
 >
 
-  <div class="eyebrow">
-    ABONAR RUTINA
-  </div>
+<div class="menu-label">
+  ABONAR RUTINA
+</div>
 
-  <div
+<div
+  style="
+    margin-top:8px;
+    font-family:'Anton',sans-serif;
+    font-size:24px;
+    line-height:1;
+    color:#08090D;
+  "
+>
+  $35.000
+</div>
+
+<div
+  style="
+    margin-top:10px;
+    font-size:9px;
+    line-height:1.4;
+    color:#666;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  "
+>
+  ALIAS MERCADO PAGO
+  <strong
     style="
-      margin-top:12px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+      color:#08090D;
+      font-size:13px;
+      margin-left:5px;
+      letter-spacing:0;
+      text-transform:none;
     "
   >
+    Celi.ls
+  </strong>
+</div>
 
-    <div>
-      <span
-        style="
-          display:block;
-          color:#666;
-          font-size:9px;
-          font-weight:900;
-          letter-spacing:1px;
-        "
-      >
-        VALOR MENSUAL
-      </span>
-
-      <strong
-        style="
-          display:block;
-          margin-top:3px;
-          font-family:'Anton',sans-serif;
-          font-size:25px;
-        "
-      >
-        $35.000
-      </strong>
-    </div>
-
-
-    <div
-      style="
-        background:#111;
-        border:1px solid #333;
-        padding:12px;
-      "
-    >
-
-      <span
-        style="
-          display:block;
-          color:#666;
-          font-size:9px;
-          font-weight:900;
-          letter-spacing:1px;
-        "
-      >
-        ALIAS MERCADO PAGO
-      </span>
-
-      <strong
-        style="
-          display:block;
-          margin-top:5px;
-          color:#fff;
-          font-size:15px;
-          letter-spacing:.5px;
-        "
-      >
-        celi.ls
-      </strong>
-
-    </div>
-
-    <div
-      style="
-        color:#777;
-        font-size:9px;
-        line-height:1.6;
-      "
-    >
-      Realizá el pago de tu rutina mediante Mercado Pago
-      utilizando este alias.
-    </div>
-
-  </div>
+<div
+  style="
+    margin-top:6px;
+    color:#777;
+    font-size:9px;
+    line-height:1.4;
+  "
+>
+  Realizá el pago de tu rutina mediante Mercado Pago utilizando este alias.
+</div>
 
 </div>
 
