@@ -3896,20 +3896,23 @@ loginForm.addEventListener(
     });
 
 
-    if (error) {
+   if (error) {
 
-      console.error(
-        "Error de login:",
-        error
-      );
+  console.error(
+    "FORJA — ERROR REAL DE LOGIN:",
+    error
+  );
 
+  console.error(
+    "FORJA — EMAIL USADO:",
+    profileByUsername.email
+  );
 
-      loginMessage.textContent =
-        "EMAIL O CONTRASEÑA INCORRECTOS.";
+  loginMessage.textContent =
+    error.message || "ERROR DE LOGIN.";
 
-
-      return;
-    }
+  return;
+}
 
 
     loginMessage.textContent =
