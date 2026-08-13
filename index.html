@@ -2906,127 +2906,139 @@ h1 {
       </h2>
 
 
-      <form id="edit-student-form">
+     <form id="edit-student-form">
 
-        <label for="edit-student-name">
-          NOMBRE COMPLETO
-        </label>
+  <label for="edit-student-name">
+    NOMBRE COMPLETO
+  </label>
 
-
-        <input
-          type="text"
-          id="edit-student-name"
-          required
-        >
-
-
-        <label for="edit-student-email">
-          EMAIL
-        </label>
+  <input
+    type="text"
+    id="edit-student-name"
+    required
+  >
 
 
-        <input
-          type="email"
-          id="edit-student-email"
-          required
-        >
+  <label for="edit-student-username">
+    USUARIO
+  </label>
+
+  <input
+    type="text"
+    id="edit-student-username"
+    required
+    autocomplete="username"
+  >
 
 
-        <label for="edit-student-objective">
-          OBJETIVO
-        </label>
+  <label for="edit-student-password">
+    NUEVA CONTRASEÑA
+  </label>
+
+  <input
+    type="password"
+    id="edit-student-password"
+    minlength="6"
+    autocomplete="new-password"
+  >
+
+  <p class="students-empty">
+    Dejá este campo vacío si no querés cambiar la contraseña.
+  </p>
 
 
-        <select id="edit-student-objective">
+  <label for="edit-student-objective">
+    OBJETIVO
+  </label>
 
-          <option value="FUERZA">
-            FUERZA
-          </option>
+  <select id="edit-student-objective">
 
-          <option value="HIPERTROFIA">
-            HIPERTROFIA
-          </option>
+    <option value="FUERZA">
+      FUERZA
+    </option>
 
-          <option value="RESISTENCIA">
-            RESISTENCIA
-          </option>
+    <option value="HIPERTROFIA">
+      HIPERTROFIA
+    </option>
 
-          <option value="RENDIMIENTO">
-            RENDIMIENTO
-          </option>
+    <option value="RESISTENCIA">
+      RESISTENCIA
+    </option>
 
-          <option value="SALUD">
-            SALUD
-          </option>
+    <option value="RENDIMIENTO">
+      RENDIMIENTO
+    </option>
 
-          <option value="OTRO">
-            OTRO
-          </option>
+    <option value="SALUD">
+      SALUD
+    </option>
 
-        </select>
+    <option value="OTRO">
+      OTRO
+    </option>
 
-
-        <label for="edit-student-days">
-          DÍAS DE ENTRENAMIENTO
-        </label>
-
-
-        <select id="edit-student-days">
-
-          <option value="2">
-            2 DÍAS
-          </option>
-
-          <option value="3">
-            3 DÍAS
-          </option>
-
-          <option value="4">
-            4 DÍAS
-          </option>
-
-          <option value="5">
-            5 DÍAS
-          </option>
-
-        </select>
+  </select>
 
 
-        <label for="edit-student-start">
-          FECHA DE INICIO
-        </label>
+  <label for="edit-student-days">
+    DÍAS DE ENTRENAMIENTO
+  </label>
+
+  <select id="edit-student-days">
+
+    <option value="2">
+      2 DÍAS
+    </option>
+
+    <option value="3">
+      3 DÍAS
+    </option>
+
+    <option value="4">
+      4 DÍAS
+    </option>
+
+    <option value="5">
+      5 DÍAS
+    </option>
+
+  </select>
 
 
-        <input
-          type="date"
-          id="edit-student-start"
-          required
-        >
+  <label for="edit-student-start">
+    FECHA DE INICIO
+  </label>
+
+  <input
+    type="date"
+    id="edit-student-start"
+    required
+  >
 
 
-        <button
-          type="submit"
-          class="button"
-        >
-          GUARDAR CAMBIOS →
-        </button>
+  <button
+    type="submit"
+    class="button"
+  >
+    GUARDAR CAMBIOS →
+  </button>
 
 
-        <button
-          type="button"
-          id="cancel-edit-student"
-          class="logout-button"
-        >
-          ← CANCELAR
-        </button>
+  <button
+    type="button"
+    id="cancel-edit-student"
+    class="logout-button"
+  >
+    ← CANCELAR
+  </button>
 
 
-        <p
-          id="edit-student-message"
-          class="students-empty"
-        ></p>
+  <p
+    id="edit-student-message"
+    class="students-empty"
+  ></p>
 
-      </form>
+</form>
 
     </div>
 
