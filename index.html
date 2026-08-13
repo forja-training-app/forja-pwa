@@ -13488,21 +13488,59 @@ function viewPublishedWorkout(
 
 }
 
-    /* =====================================
-       CERRAR SESIÓN
+/* =====================================
+   CERRAR SESIÓN — ALUMNA
+===================================== */
 
-    ====================================== */
+const studentLogoutButton =
+  document.getElementById(
+    "student-logout-button"
+  );
 
-    logoutButton.addEventListener(
-      "click",
-      async function() {
 
+if (studentLogoutButton) {
+
+  studentLogoutButton.addEventListener(
+    "click",
+    async function() {
+
+      studentLogoutButton.disabled = true;
+
+      studentLogoutButton.textContent =
+        "CERRANDO SESIÓN...";
+
+
+      const {
+        error
+      } =
         await supabaseClient.auth.signOut();
 
-        showLogin();
+
+      if (error) {
+
+        console.error(
+          "FORJA — ERROR AL CERRAR SESIÓN:",
+          error
+        );
+
+
+        studentLogoutButton.disabled =
+          false;
+
+        studentLogoutButton.textContent =
+          "CERRAR SESIÓN";
+
+        return;
 
       }
-    );
+
+
+      showLogin();
+
+    }
+  );
+
+}
 
 
     /* =====================================
