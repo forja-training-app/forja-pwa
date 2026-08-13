@@ -5176,152 +5176,163 @@ function showNewStudentForm() {
 
 
     /* =====================================
-       CREAR ALUMNA
-    ====================================== */
+   CREAR ALUMNA
+====================================== */
 
-    async function createStudent(event) {
+async function createStudent(event) {
 
-      event.preventDefault();
+  event.preventDefault();
 
 
-      const message =
-        document.getElementById(
-          "student-form-message"
-        );
+  const message =
+    document.getElementById(
+      "student-form-message"
+    );
 
+
+  message.textContent =
+    "CREANDO ALUMNA...";
+
+
+  const name =
+    document
+      .getElementById("student-name")
+      .value
+      .trim();
+
+
+  const username =
+    document
+      .getElementById("student-username")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const email =
+    document
+      .getElementById("student-email")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("student-password")
+      .value;
+
+
+  const objective =
+    document
+      .getElementById("student-objective")
+      .value;
+
+
+  const trainingDays =
+    Number(
+      document
+        .getElementById("student-days")
+        .value
+    );
+
+
+  const startDate =
+    document
+      .getElementById("student-start")
+      .value;
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.functions.invoke(
+        "create-student",
+        {
+          body: {
+
+            name: name,
+
+            username: username,
+
+            email: email,
+
+            password: password,
+
+            objective: objective,
+
+            training_days:
+              trainingDays,
+
+            start_date:
+              startDate
+
+          }
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Error create-student:",
+        error
+      );
 
       message.textContent =
-        "CREANDO ALUMNA...";
+        "NO SE PUDO CREAR LA ALUMNA.";
 
-
-      const name =
-        document
-          .getElementById("student-name")
-          .value
-          .trim();
-
-
-      const email =
-        document
-          .getElementById("student-email")
-          .value
-          .trim();
-
-
-      const password =
-        document
-          .getElementById("student-password")
-          .value;
-
-
-      const objective =
-        document
-          .getElementById("student-objective")
-          .value;
-
-
-      const trainingDays =
-        Number(
-          document
-            .getElementById("student-days")
-            .value
-        );
-
-
-      const startDate =
-        document
-          .getElementById("student-start")
-          .value;
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.functions.invoke(
-            "create-student",
-            {
-              body: {
-
-                name: name,
-
-                email: email,
-
-                password: password,
-
-                objective: objective,
-
-                training_days:
-                  trainingDays,
-
-                start_date:
-                  startDate
-
-              }
-            }
-          );
-
-
-        if (error) {
-
-          console.error(
-            "Error create-student:",
-            error
-          );
-
-          message.textContent =
-            "NO SE PUDO CREAR LA ALUMNA.";
-
-          return;
-
-        }
-
-
-        if (
-          !data ||
-          !data.success
-        ) {
-
-          message.textContent =
-            data && data.error
-              ?
-              data.error
-              :
-              "NO SE PUDO CREAR LA ALUMNA.";
-
-          return;
-
-        }
-
-
-        message.textContent =
-          "✓ ALUMNA CREADA CORRECTAMENTE.";
-
-
-        setTimeout(
-          function() {
-
-            location.reload();
-
-          },
-          900
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Error inesperado:",
-          error
-        );
-
-        message.textContent =
-          "OCURRIÓ UN ERROR.";
-
-      }
+      return;
 
     }
+
+
+    if (
+      !data ||
+      !data.success
+    ) {
+
+      message.textContent =
+        data && data.error
+          ?
+          data.error
+          :
+          "NO SE PUDO CREAR LA ALUMNA.";
+
+      return;
+
+    }
+
+
+    message.textContent =
+      "✓ ALUMNA CREADA CORRECTAMENTE.";
+
+
+    setTimeout(
+      function() {
+
+        location.reload();
+
+      },
+      900
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Error inesperado:",
+      error
+    );
+
+    message.textContent =
+      "OCURRIÓ UN ERROR.";
+
+  }
+
+}
 
 
    /* =====================================
