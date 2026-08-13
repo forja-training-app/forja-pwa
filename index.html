@@ -5873,7 +5873,7 @@ async function loadStudentTrainingHistory(student) {
         }
       );
 
-    /* =====================================
+/* =====================================
    ABRIR PANTALLA DE ALUMNA
 ===================================== */
 
@@ -5888,368 +5888,421 @@ document
     }
   );
 
-    function showEditStudentForm() {
 
-      if (!currentStudent) {
-        return;
+function showEditStudentForm() {
+
+  if (!currentStudent) {
+    return;
+  }
+
+
+  studentDetailScreen.innerHTML = `
+
+    <div class="students-header">
+
+      <button
+        id="cancel-edit"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER A LA FICHA
+      </button>
+
+      <div class="eyebrow">
+        EDITAR ALUMNA
+      </div>
+
+      <h1>
+        EDITAR<br>
+        DATOS
+      </h1>
+
+    </div>
+
+
+    <div class="student-form">
+
+      <form id="edit-student-form">
+
+
+        <label for="edit-student-name">
+          NOMBRE COMPLETO
+        </label>
+
+        <input
+          type="text"
+          id="edit-student-name"
+          value="${currentStudent.full_name || ""}"
+          required
+        >
+
+
+        <label for="edit-student-username">
+          USUARIO
+        </label>
+
+        <input
+          type="text"
+          id="edit-student-username"
+          value="${currentStudent.username || ""}"
+          required
+          autocomplete="username"
+        >
+
+
+        <label for="edit-student-password">
+          NUEVA CONTRASEÑA
+        </label>
+
+        <input
+          type="password"
+          id="edit-student-password"
+          minlength="6"
+          autocomplete="new-password"
+        >
+
+        <p class="students-empty">
+          Dejá este campo vacío si no querés cambiar la contraseña.
+        </p>
+
+
+        <label for="edit-student-objective">
+          OBJETIVO
+        </label>
+
+        <select
+          id="edit-student-objective"
+          required
+        >
+
+          <option value="FUERZA">
+            FUERZA
+          </option>
+
+          <option value="HIPERTROFIA">
+            HIPERTROFIA
+          </option>
+
+          <option value="RENDIMIENTO">
+            RENDIMIENTO
+          </option>
+
+          <option value="SALUD">
+            SALUD
+          </option>
+
+          <option value="RECOMPOSICIÓN">
+            RECOMPOSICIÓN
+          </option>
+
+          <option value="OTRO">
+            OTRO
+          </option>
+
+        </select>
+
+
+        <label for="edit-student-days">
+          DÍAS DE ENTRENAMIENTO
+        </label>
+
+        <select
+          id="edit-student-days"
+          required
+        >
+
+          <option value="2">
+            2 DÍAS
+          </option>
+
+          <option value="3">
+            3 DÍAS
+          </option>
+
+          <option value="4">
+            4 DÍAS
+          </option>
+
+          <option value="5">
+            5 DÍAS
+          </option>
+
+        </select>
+
+
+        <label for="edit-student-start">
+          FECHA DE INICIO
+        </label>
+
+        <input
+          type="date"
+          id="edit-student-start"
+          value="${currentStudent.start_date || ""}"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="button"
+        >
+          GUARDAR CAMBIOS →
+        </button>
+
+
+        <p
+          id="edit-student-message"
+          class="students-empty"
+        ></p>
+
+      </form>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("edit-student-objective")
+    .value =
+      currentStudent.objective ||
+      "";
+
+
+  document
+    .getElementById("edit-student-days")
+    .value =
+      currentStudent.training_days ||
+      "";
+
+
+  document
+    .getElementById("cancel-edit")
+    .addEventListener(
+      "click",
+      function() {
+
+        openStudentDetail(
+          currentStudent
+        );
+
       }
+    );
 
 
-      studentDetailScreen.innerHTML = `
+  document
+    .getElementById("edit-student-form")
+    .addEventListener(
+      "submit",
+      saveStudentChanges
+    );
 
-        <div class="students-header">
-
-          <button
-            id="cancel-edit"
-            class="back-button"
-            type="button"
-          >
-            ← VOLVER A LA FICHA
-          </button>
-
-          <div class="eyebrow">
-            EDITAR ALUMNA
-          </div>
-
-          <h1>
-            EDITAR<br>
-            DATOS
-          </h1>
-
-        </div>
+}
 
 
-        <div class="student-form">
+/* =====================================
+   GUARDAR CAMBIOS ALUMNA
+===================================== */
 
-          <form id="edit-student-form">
+async function saveStudentChanges(event) {
 
-            <label for="edit-student-name">
-              NOMBRE COMPLETO
-            </label>
-
-            <input
-              type="text"
-              id="edit-student-name"
-              value="${currentStudent.full_name || ""}"
-              required
-            >
+  event.preventDefault();
 
 
-            <label for="edit-student-email">
-              EMAIL
-            </label>
-
-            <input
-              type="email"
-              id="edit-student-email"
-              value="${currentStudent.email || ""}"
-              required
-            >
+  const message =
+    document.getElementById(
+      "edit-student-message"
+    );
 
 
-            <label for="edit-student-objective">
-              OBJETIVO
-            </label>
-
-            <select
-              id="edit-student-objective"
-              required
-            >
-
-              <option value="FUERZA">
-                FUERZA
-              </option>
-
-              <option value="HIPERTROFIA">
-                HIPERTROFIA
-              </option>
-
-              <option value="RENDIMIENTO">
-                RENDIMIENTO
-              </option>
-
-              <option value="SALUD">
-                SALUD
-              </option>
-
-              <option value="RECOMPOSICIÓN">
-                RECOMPOSICIÓN
-              </option>
-
-              <option value="OTRO">
-                OTRO
-              </option>
-
-            </select>
+  message.textContent =
+    "GUARDANDO CAMBIOS...";
 
 
-            <label for="edit-student-days">
-              DÍAS DE ENTRENAMIENTO
-            </label>
-
-            <select
-              id="edit-student-days"
-              required
-            >
-
-              <option value="2">
-                2 DÍAS
-              </option>
-
-              <option value="3">
-                3 DÍAS
-              </option>
-
-              <option value="4">
-                4 DÍAS
-              </option>
-
-              <option value="5">
-                5 DÍAS
-              </option>
-
-            </select>
+  const updatedName =
+    document
+      .getElementById("edit-student-name")
+      .value
+      .trim();
 
 
-            <label for="edit-student-start">
-              FECHA DE INICIO
-            </label>
-
-            <input
-              type="date"
-              id="edit-student-start"
-              value="${currentStudent.start_date || ""}"
-              required
-            >
+  const updatedUsername =
+    document
+      .getElementById("edit-student-username")
+      .value
+      .trim()
+      .toLowerCase();
 
 
-            <button
-              type="submit"
-              class="button"
-            >
-              GUARDAR CAMBIOS →
-            </button>
+  const updatedPassword =
+    document
+      .getElementById("edit-student-password")
+      .value;
 
 
-            <p
-              id="edit-student-message"
-              class="students-empty"
-            ></p>
-
-          </form>
-
-        </div>
-
-      `;
+  const updatedObjective =
+    document
+      .getElementById("edit-student-objective")
+      .value;
 
 
-      document
-        .getElementById("edit-student-objective")
-        .value =
-          currentStudent.objective ||
-          "";
-
-
+  const updatedDays =
+    Number(
       document
         .getElementById("edit-student-days")
-        .value =
-          currentStudent.training_days ||
-          "";
+        .value
+    );
 
 
-      document
-        .getElementById("cancel-edit")
-        .addEventListener(
-          "click",
-          function() {
+  const updatedStart =
+    document
+      .getElementById("edit-student-start")
+      .value;
 
-            openStudentDetail(
-              currentStudent
-            );
+
+  if (!updatedUsername) {
+
+    message.textContent =
+      "EL USUARIO ES OBLIGATORIO.";
+
+    return;
+
+  }
+
+
+  if (
+    updatedPassword &&
+    updatedPassword.length < 6
+  ) {
+
+    message.textContent =
+      "LA CONTRASEÑA DEBE TENER AL MENOS 6 CARACTERES.";
+
+    return;
+
+  }
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.functions.invoke(
+        "update-student",
+        {
+          body: {
+
+            student_id:
+              currentStudent.id,
+
+            name:
+              updatedName,
+
+            username:
+              updatedUsername,
+
+            password:
+              updatedPassword,
+
+            objective:
+              updatedObjective,
+
+            training_days:
+              updatedDays,
+
+            start_date:
+              updatedStart
 
           }
-        );
+        }
+      );
 
 
-      document
-        .getElementById("edit-student-form")
-        .addEventListener(
-          "submit",
-          saveStudentChanges
-        );
+    if (error) {
 
-    }
-
-
-    /* =====================================
-       GUARDAR CAMBIOS ALUMNA
-    ====================================== */
-
-    async function saveStudentChanges(event) {
-
-      event.preventDefault();
-
-
-      const message =
-        document.getElementById(
-          "edit-student-message"
-        );
-
+      console.error(
+        "Error update-student:",
+        error
+      );
 
       message.textContent =
-        "GUARDANDO CAMBIOS...";
+        "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
 
-
-      const updatedName =
-        document
-          .getElementById("edit-student-name")
-          .value
-          .trim();
-
-
-      const updatedEmail =
-        document
-          .getElementById("edit-student-email")
-          .value
-          .trim();
-
-
-      const updatedObjective =
-        document
-          .getElementById("edit-student-objective")
-          .value;
-
-
-      const updatedDays =
-        Number(
-          document
-            .getElementById("edit-student-days")
-            .value
-        );
-
-
-      const updatedStart =
-        document
-          .getElementById("edit-student-start")
-          .value;
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.functions.invoke(
-            "update-student",
-            {
-              body: {
-
-                student_id:
-                  currentStudent.id,
-
-                name:
-                  updatedName,
-
-                email:
-                  updatedEmail,
-
-                objective:
-                  updatedObjective,
-
-                training_days:
-                  updatedDays,
-
-                start_date:
-                  updatedStart
-
-              }
-            }
-          );
-
-
-        if (error) {
-
-          console.error(
-            "Error update-student:",
-            error
-          );
-
-          message.textContent =
-            "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
-
-          return;
-
-        }
-
-
-        if (
-          !data ||
-          !data.success
-        ) {
-
-          message.textContent =
-            data && data.error
-              ?
-              data.error
-              :
-              "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
-
-          return;
-
-        }
-
-
-        currentStudent = {
-
-          ...currentStudent,
-
-          full_name:
-            updatedName,
-
-          email:
-            updatedEmail,
-
-          objective:
-            updatedObjective,
-
-          training_days:
-            updatedDays,
-
-          start_date:
-            updatedStart
-
-        };
-
-
-        message.textContent =
-          "✓ CAMBIOS GUARDADOS.";
-
-
-        setTimeout(
-          function() {
-
-            openStudentDetail(
-              currentStudent
-            );
-
-          },
-          700
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Error inesperado:",
-          error
-        );
-
-        message.textContent =
-          "OCURRIÓ UN ERROR.";
-
-      }
+      return;
 
     }
+
+
+    if (
+      !data ||
+      !data.success
+    ) {
+
+      message.textContent =
+        data && data.error
+          ?
+          data.error
+          :
+          "NO SE PUDIERON GUARDAR LOS CAMBIOS.";
+
+      return;
+
+    }
+
+
+    currentStudent = {
+
+      ...currentStudent,
+
+      full_name:
+        updatedName,
+
+      username:
+        updatedUsername,
+
+      objective:
+        updatedObjective,
+
+      training_days:
+        updatedDays,
+
+      start_date:
+        updatedStart
+
+    };
+
+
+    message.textContent =
+      "✓ CAMBIOS GUARDADOS.";
+
+
+    setTimeout(
+      function() {
+
+        openStudentDetail(
+          currentStudent
+        );
+
+      },
+      700
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Error inesperado:",
+      error
+    );
+
+    message.textContent =
+      "OCURRIÓ UN ERROR.";
+
+  }
+
+}
 
 
 /* =====================================
