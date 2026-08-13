@@ -4919,194 +4919,215 @@ if (exerciseLibraryButton) {
     }
 
 
-    /* =====================================
-       AGREGAR ALUMNA
-    ====================================== */
+   /* =====================================
+   AGREGAR ALUMNA
+====================================== */
 
-    addStudentButton.addEventListener(
-      "click",
-      function() {
+addStudentButton.addEventListener(
+  "click",
+  function() {
 
-        showNewStudentForm();
+    showNewStudentForm();
 
-      }
-    );
-
-
-    function showNewStudentForm() {
-
-      studentsScreen.innerHTML = `
-
-        <div class="students-header">
-
-          <button
-            id="cancel-new-student-top"
-            class="back-button"
-            type="button"
-          >
-            ← VOLVER A MIS ALUMNAS
-          </button>
-
-          <div class="eyebrow">
-            GESTIÓN
-          </div>
-
-          <h1>
-            NUEVA<br>
-            ALUMNA
-          </h1>
-
-        </div>
+  }
+);
 
 
-        <div class="student-form">
+function showNewStudentForm() {
 
-          <form id="new-student-form">
+  studentsScreen.innerHTML = `
 
-            <label for="student-name">
-              NOMBRE COMPLETO
-            </label>
+    <div class="students-header">
 
-            <input
-              type="text"
-              id="student-name"
-              required
-            >
+      <button
+        id="cancel-new-student-top"
+        class="back-button"
+        type="button"
+      >
+        ← VOLVER A MIS ALUMNAS
+      </button>
 
+      <div class="eyebrow">
+        GESTIÓN
+      </div>
 
-            <label for="student-email">
-              EMAIL
-            </label>
+      <h1>
+        NUEVA<br>
+        ALUMNA
+      </h1>
 
-            <input
-              type="email"
-              id="student-email"
-              required
-            >
-
-
-            <label for="student-password">
-              CONTRASEÑA
-            </label>
-
-            <input
-              type="password"
-              id="student-password"
-              required
-              minlength="6"
-            >
+    </div>
 
 
-            <label for="student-objective">
-              OBJETIVO
-            </label>
+    <div class="student-form">
 
-            <select
-              id="student-objective"
-              required
-            >
+      <form id="new-student-form">
 
-              <option value="">
-                SELECCIONAR
-              </option>
+        <label for="student-name">
+          NOMBRE COMPLETO
+        </label>
 
-              <option value="FUERZA">
-                FUERZA
-              </option>
-
-              <option value="HIPERTROFIA">
-                HIPERTROFIA
-              </option>
-
-              <option value="RENDIMIENTO">
-                RENDIMIENTO
-              </option>
-
-              <option value="SALUD">
-                SALUD
-              </option>
-
-              <option value="RECOMPOSICIÓN">
-                RECOMPOSICIÓN
-              </option>
-
-              <option value="OTRO">
-                OTRO
-              </option>
-
-            </select>
+        <input
+          type="text"
+          id="student-name"
+          required
+        >
 
 
-            <label for="student-days">
-              DÍAS DE ENTRENAMIENTO
-            </label>
+        <!-- USUARIO -->
 
-            <select
-              id="student-days"
-              required
-            >
+        <label for="student-username">
+          USUARIO
+        </label>
 
-              <option value="">
-                SELECCIONAR
-              </option>
-
-              <option value="2">
-                2 DÍAS
-              </option>
-
-              <option value="3">
-                3 DÍAS
-              </option>
-
-              <option value="4">
-                4 DÍAS
-              </option>
-
-              <option value="5">
-                5 DÍAS
-              </option>
-
-            </select>
+        <input
+          type="text"
+          id="student-username"
+          required
+          minlength="3"
+          autocomplete="off"
+          placeholder="Ej: axelrista"
+        >
 
 
-            <label for="student-start">
-              FECHA DE INICIO
-            </label>
+        <label for="student-email">
+          EMAIL
+        </label>
 
-            <input
-              type="date"
-              id="student-start"
-              required
-            >
-
-
-            <button
-              type="submit"
-              class="button"
-            >
-              CREAR ALUMNA →
-            </button>
+        <input
+          type="email"
+          id="student-email"
+          required
+          autocomplete="email"
+        >
 
 
-            <button
-              type="button"
-              id="cancel-student"
-              class="logout-button"
-            >
-              ← CANCELAR
-            </button>
+        <label for="student-password">
+          CONTRASEÑA
+        </label>
+
+        <input
+          type="password"
+          id="student-password"
+          required
+          minlength="6"
+          autocomplete="new-password"
+        >
 
 
-            <p
-              id="student-form-message"
-              class="students-empty"
-            ></p>
+        <label for="student-objective">
+          OBJETIVO
+        </label>
 
-          </form>
+        <select
+          id="student-objective"
+          required
+        >
 
-        </div>
+          <option value="">
+            SELECCIONAR
+          </option>
 
-      `;
+          <option value="FUERZA">
+            FUERZA
+          </option>
+
+          <option value="HIPERTROFIA">
+            HIPERTROFIA
+          </option>
+
+          <option value="RENDIMIENTO">
+            RENDIMIENTO
+          </option>
+
+          <option value="SALUD">
+            SALUD
+          </option>
+
+          <option value="RECOMPOSICIÓN">
+            RECOMPOSICIÓN
+          </option>
+
+          <option value="OTRO">
+            OTRO
+          </option>
+
+        </select>
+
+
+        <label for="student-days">
+          DÍAS DE ENTRENAMIENTO
+        </label>
+
+        <select
+          id="student-days"
+          required
+        >
+
+          <option value="">
+            SELECCIONAR
+          </option>
+
+          <option value="2">
+            2 DÍAS
+          </option>
+
+          <option value="3">
+            3 DÍAS
+          </option>
+
+          <option value="4">
+            4 DÍAS
+          </option>
+
+          <option value="5">
+            5 DÍAS
+          </option>
+
+        </select>
+
+
+        <label for="student-start">
+          FECHA DE INICIO
+        </label>
+
+        <input
+          type="date"
+          id="student-start"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="button"
+        >
+          CREAR ALUMNA →
+        </button>
+
+
+        <button
+          type="button"
+          id="cancel-student"
+          class="logout-button"
+        >
+          ← CANCELAR
+        </button>
+
+
+        <p
+          id="student-form-message"
+          class="students-empty"
+        ></p>
+
+      </form>
+
+    </div>
+
+  `;
+
+}
+
 
 
       document
