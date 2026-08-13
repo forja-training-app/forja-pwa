@@ -13152,6 +13152,10 @@ async function openExerciseForm(
 
     <div class="workout-exercise-form-grid">
 
+      <!-- =====================================
+           EJERCICIO
+      ====================================== -->
+
       <div class="workout-exercise-field full">
 
         <label>
@@ -13163,14 +13167,21 @@ async function openExerciseForm(
           id="library-exercise-select-${escapeWorkoutHtml(dayId)}"
           style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:12px;"
         >
-          <option value="">SELECCIONÁ UN EJERCICIO</option>
+
+          <option value="">
+            SELECCIONÁ UN EJERCICIO
+          </option>
+
           ${library.map(function(item) {
+
             return `
               <option value="${escapeWorkoutHtml(item.id)}">
                 ${escapeWorkoutHtml(item.name)}
               </option>
             `;
+
           }).join("")}
+
         </select>
 
         <input
@@ -13181,12 +13192,108 @@ async function openExerciseForm(
         >
 
         <div style="color:#666;font-size:9px;line-height:1.5;margin-top:6px;">
-          Si elegís un ejercicio de la biblioteca, la alumna podrá abrir su video o imagen desde la rutina.
+
+          Si elegís un ejercicio de la biblioteca,
+          la alumna podrá abrir su video o imagen
+          desde la rutina.
+
         </div>
 
       </div>
 
+
+      <!-- =====================================
+           TIPO DE BLOQUE
+      ====================================== -->
+
+      <div class="workout-exercise-field">
+
+        <label>
+          TIPO DE BLOQUE
+        </label>
+
+        <select
+          name="block_type"
+          id="block-type-${escapeWorkoutHtml(dayId)}"
+          style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:12px;"
+        >
+
+          <option value="normal">
+            NORMAL
+          </option>
+
+          <option value="biserie">
+            BISERIE
+          </option>
+
+          <option value="circuito">
+            CIRCUITO
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- =====================================
+           GRUPO
+      ====================================== -->
+
+      <div class="workout-exercise-field">
+
+        <label>
+          GRUPO
+        </label>
+
+        <select
+          name="block_group"
+          id="block-group-${escapeWorkoutHtml(dayId)}"
+          disabled
+          style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:12px;opacity:.5;"
+        >
+
+          <option value="">
+            SIN GRUPO
+          </option>
+
+          <option value="A">
+            A
+          </option>
+
+          <option value="B">
+            B
+          </option>
+
+          <option value="C">
+            C
+          </option>
+
+          <option value="D">
+            D
+          </option>
+
+          <option value="E">
+            E
+          </option>
+
+          <option value="F">
+            F
+          </option>
+
+          <option value="G">
+            G
+          </option>
+
+          <option value="H">
+            H
+          </option>
+
+        </select>
+
+      </div>
+
     </div>
+
 
     <button
       type="submit"
@@ -13200,46 +13307,151 @@ async function openExerciseForm(
 
   container.appendChild(form);
 
+
+  /* =====================================
+     REFERENCIAS DEL BLOQUE
+  ====================================== */
+
+  const blockTypeSelect =
+    form.querySelector(
+      '[name="block_type"]'
+    );
+
+  const blockGroupSelect =
+    form.querySelector(
+      '[name="block_group"]'
+    );
+
+
+  /* =====================================
+     ACTIVAR / DESACTIVAR GRUPO
+  ====================================== */
+
+  blockTypeSelect.addEventListener(
+    "change",
+    function() {
+
+      const requiresGroup =
+        blockTypeSelect.value === "biserie" ||
+        blockTypeSelect.value === "circuito";
+
+      blockGroupSelect.disabled =
+        !requiresGroup;
+
+      blockGroupSelect.style.opacity =
+        requiresGroup ? "1" : ".5";
+
+      if (!requiresGroup) {
+
+        blockGroupSelect.value = "";
+
+      }
+
+    }
+  );
+
+
+  /* =====================================
+     GUARDAR EJERCICIO
+  ====================================== */
+
   form.addEventListener(
     "submit",
     function(event) {
 
       event.preventDefault();
 
-      const formData = new FormData(form);
+      const formData =
+        new FormData(form);
+
+
+      /* -------------------------------------
+         BIBLIOTECA
+      -------------------------------------- */
 
       const libraryId =
         String(
           formData.get("library_id") || ""
         ).trim() || null;
 
+
       const selectedLibraryItem =
         libraryId
           ? library.find(function(item) {
+
               return String(item.id) === String(libraryId);
+
             })
           : null;
+
+
+      /* -------------------------------------
+         NOMBRE
+      -------------------------------------- */
 
       const manualName =
         String(
           formData.get("name") || ""
         ).trim();
 
+
       const name =
         selectedLibraryItem
           ? selectedLibraryItem.name
           : manualName;
 
+
       if (!name) {
-        alert("SELECCIONÁ UN EJERCICIO DE LA BIBLIOTECA O ESCRIBÍ UN NOMBRE.");
+
+        alert(
+          "SELECCIONÁ UN EJERCICIO DE LA BIBLIOTECA O ESCRIBÍ UN NOMBRE."
+        );
+
         return;
+
       }
+
+
+      /* -------------------------------------
+         TIPO DE BLOQUE
+      -------------------------------------- */
+
+      const blockType =
+        String(
+          formData.get("block_type") || "normal"
+        ).trim();
+
+
+      /* -------------------------------------
+         GRUPO
+      -------------------------------------- */
+
+      const blockGroup =
+        (
+          blockType === "biserie" ||
+          blockType === "circuito"
+        )
+          ? String(
+              formData.get("block_group") || ""
+            ).trim()
+          : "";
+
+
+      /* -------------------------------------
+         SEMANAS
+      -------------------------------------- */
 
       const weeks =
         Number(workout.weeks) || 1;
 
+
       day.exercises =
         day.exercises || [];
+
+
+      /* =====================================
+         CREAR EJERCICIO
+      ====================================== */
 
       day.exercises.push({
 
@@ -13254,6 +13466,14 @@ async function openExerciseForm(
         library_id:
           libraryId,
 
+        /* NUEVO */
+        block_type:
+          blockType,
+
+        /* NUEVO */
+        block_group:
+          blockGroup,
+
         weeks:
           Array.from(
             {
@@ -13264,11 +13484,17 @@ async function openExerciseForm(
               return {
 
                 series: "",
+
                 reps: "",
+
                 rpe: "",
+
                 load: "",
+
                 rest: "",
+
                 tempo: "",
+
                 notes: ""
 
               };
@@ -13277,6 +13503,11 @@ async function openExerciseForm(
           )
 
       });
+
+
+      /* =====================================
+         GUARDAR Y RENDERIZAR
+      ====================================== */
 
       saveWorkoutEditorState(
         workout,
@@ -13292,8 +13523,6 @@ async function openExerciseForm(
   );
 
 }
-
-
 /* =====================================
    PUBLICAR RUTINA
 ===================================== */
