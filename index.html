@@ -13488,6 +13488,52 @@ function viewPublishedWorkout(
 
 }
 
+  /* =====================================
+   CERRAR SESIÓN — ENTRENADORA
+===================================== */
+
+if (logoutButton) {
+
+  logoutButton.addEventListener(
+    "click",
+    async function() {
+
+      logoutButton.disabled = true;
+
+      logoutButton.textContent =
+        "CERRANDO SESIÓN...";
+
+
+      const {
+        error
+      } =
+        await supabaseClient.auth.signOut();
+
+
+      if (error) {
+
+        console.error(
+          "FORJA — ERROR AL CERRAR SESIÓN:",
+          error
+        );
+
+        logoutButton.disabled =
+          false;
+
+        logoutButton.textContent =
+          "CERRAR SESIÓN";
+
+        return;
+
+      }
+
+
+      showLogin();
+
+    }
+  );
+
+}
 /* =====================================
    CERRAR SESIÓN — ALUMNA
 ===================================== */
