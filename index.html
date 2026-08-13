@@ -3849,51 +3849,99 @@ console.log("FORJA — LOGIN EJECUTADO");
        La alumna ingresa con su username y FORJA
        busca el email asociado en profiles. */
 
-    const {
-      data: profileByUsername,
-      error: usernameError
-    } = await supabaseClient
-      .from("profiles")
-      .select("email")
-      .eq("username", username)
-      .maybeSingle();
+   /* =====================================
+   OBTENER EMAIL DESDE USERNAME
+===================================== */
 
-
-    if (usernameError) {
-
-      console.error(
-        "FORJA — ERROR BUSCANDO USUARIO:",
-        usernameError
-      );
-
-      loginMessage.textContent =
-        "NO SE PUDO VALIDAR EL USUARIO.";
-
-      return;
-
+const {
+  data: loginEmailData,
+  error: loginEmailError
+} = await supabaseClient.functions.invoke(
+  "get-login-email",
+  {
+    body: {
+      username: username
     }
+  }
+);
 
 
-    if (!profileByUsername || !profileByUsername.email) {
+if (loginEmailError) {
 
-      loginMessage.textContent =
-        "USUARIO O CONTRASEÑA INCORRECTOS.";
+  console.error(
+    "FORJA — ERROR BUSCANDO EMAIL:",
+    loginEmailError
+  );
 
-      return;
+  loginMessage.textContent =
+    "NO SE PUDO VALIDAR EL USUARIO.";
 
-    }
+  return;
+
+}
 
 
-    const {
-      data,
-      error
-    } = await supabaseClient.auth.signInWithPassword({
+if (
+  !loginEmailData ||
+  !loginEmailData.email
+) {
 
-      email: profileByUsername.email,
+  loginMessage.textContent =
+    "USUARIO O CONTRASEÑA INCORRECTOS.";
 
-      password: password
+  return;
 
-    });
+}
+
+
+/* =====================================
+   INICIAR SESIÓN CON EMAIL + CONTRASEÑA
+===================================== */
+
+const {
+  data,
+  error
+} = await supabaseClient.auth.signInWithPassword({
+
+  email: loginEmailData.email,
+
+  password: password
+
+});
+
+
+if (error) {
+
+  console.error(
+    "FORJA — ERROR DE LOGIN:",
+    error
+  );
+
+  loginMessage.textContent =
+    "USUARIO O CONTRASEÑA INCORRECTOS.";
+
+  return;
+
+}
+
+
+loginMessage.textContent =
+  "INGRESANDO...";
+
+
+/*
+ * IMPORTANTE:
+ * No usamos showApp() directamente.
+ * Primero identificamos el rol.
+ */
+
+if (data && data.session) {
+
+  await routeAuthenticatedUser(
+    data.session
+  );
+
+}
 
 
    if (error) {
