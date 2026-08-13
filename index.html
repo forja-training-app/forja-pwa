@@ -9515,20 +9515,21 @@ if (shouldShowBlockHeader) {
   exercisesHtml += `
 
     <div
-      style="
-        margin-top:18px;
-        margin-bottom:10px;
-        padding:10px 12px;
-        background:#000;
-        border-left:3px solid #E60000;
-        color:#E60000;
-        font-family:'Anton',sans-serif;
-        font-size:18px;
-        letter-spacing:1.5px;
-      "
-    >
-      ${blockLabel} ${escapeWorkoutHtml(blockGroup)}
-    </div>
+  style="
+    margin-top:22px;
+    margin-bottom:4px;
+    padding:12px 14px;
+    background:#E60000;
+    color:#000;
+    font-family:'Anton',sans-serif;
+    font-size:18px;
+    letter-spacing:1.5px;
+    line-height:1;
+    text-transform:uppercase;
+  "
+>
+  ${blockLabel} ${escapeWorkoutHtml(blockGroup)}
+</div>
 
   `;
 
