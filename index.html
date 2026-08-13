@@ -11111,7 +11111,190 @@ async function openPublishedWorkoutFromDatabase(workout) {
   }).join("");
 }
 
+/* =====================================
+   AGRUPAR BLOQUES PUBLICADOS
+===================================== */
 
+function renderPublishedExerciseBlocks(
+  exercises,
+  workout
+) {
+
+  if (
+    !Array.isArray(exercises) ||
+    !exercises.length
+  ) {
+    return "";
+  }
+
+  const html = [];
+
+  let index = 0;
+
+  while (index < exercises.length) {
+
+    const exercise =
+      exercises[index];
+
+    const blockType =
+      String(
+        exercise.block_type || "normal"
+      ).toLowerCase();
+
+    const blockGroup =
+      String(
+        exercise.block_group || ""
+      ).trim().toUpperCase();
+
+
+    /* =====================================
+       EJERCICIO NORMAL
+    ====================================== */
+
+    if (
+      blockType === "normal" ||
+      !blockGroup
+    ) {
+
+      html.push(
+        renderPublishedExercise(
+          exercise,
+          workout,
+          ""
+        )
+      );
+
+      index++;
+
+      continue;
+    }
+
+
+    /* =====================================
+       BISERIE / CIRCUITO
+    ====================================== */
+
+    const blockExercises = [];
+
+    let currentIndex = index;
+
+    while (
+      currentIndex < exercises.length
+    ) {
+
+      const currentExercise =
+        exercises[currentIndex];
+
+      const currentType =
+        String(
+          currentExercise.block_type ||
+          "normal"
+        ).toLowerCase();
+
+      const currentGroup =
+        String(
+          currentExercise.block_group ||
+          ""
+        ).trim().toUpperCase();
+
+
+      if (
+        currentType !== blockType ||
+        currentGroup !== blockGroup
+      ) {
+        break;
+      }
+
+      blockExercises.push(
+        currentExercise
+      );
+
+      currentIndex++;
+
+    }
+
+
+    /* =====================================
+       NOMBRE DEL BLOQUE
+    ====================================== */
+
+    const blockLabel =
+      blockType === "biserie"
+        ? "BISERIE"
+        : "CIRCUITO";
+
+
+    let blockHtml = `
+
+      <div
+        class="workout-published-block"
+        style="
+          margin-bottom:16px;
+          padding:14px;
+          background:#0d0d0d;
+          border:1px solid #2a2a2a;
+        "
+      >
+
+        <div
+          style="
+            font-family:Anton,sans-serif;
+            font-size:18px;
+            color:#E60000;
+            letter-spacing:1px;
+            margin-bottom:12px;
+          "
+        >
+          ${blockLabel} ${escapeWorkoutHtml(blockGroup)}
+        </div>
+
+    `;
+
+
+    /* =====================================
+       EJERCICIOS DEL BLOQUE
+    ====================================== */
+
+    blockExercises.forEach(
+      function(blockExercise, blockIndex) {
+
+        const exerciseLabel =
+          blockGroup +
+          (blockIndex + 1);
+
+        blockHtml +=
+          renderPublishedExercise(
+            blockExercise,
+            workout,
+            exerciseLabel
+          );
+
+      }
+    );
+
+
+    blockHtml += `
+
+      </div>
+
+    `;
+
+
+    html.push(
+      blockHtml
+    );
+
+
+    index =
+      currentIndex;
+
+  }
+
+
+  return html.join("");
+
+}
+  
 /* =====================================
    MOSTRAR EJERCICIO PUBLICADO
 ===================================== */
