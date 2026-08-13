@@ -9817,8 +9817,13 @@ const seriesCount =
                 margin-bottom:7px;
               "
             >
-              EJERCICIO
-              ${exerciseIndex + 1}
+             ${
+  isBlock
+    ? exerciseBlockPosition
+      ? `${escapeWorkoutHtml(blockGroup)}${exerciseBlockPosition}`
+      : ""
+    : `EJERCICIO ${exerciseIndex + 1}`
+}
             </div>
 
 
