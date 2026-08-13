@@ -9796,15 +9796,28 @@ const seriesCount =
          EJERCICIO COMPLETO
       ===================================== */
 
-      exercisesHtml += `
+     exercisesHtml += `
 
-        <div
-          class="student-card"
-          style="
-            margin-bottom:14px;
-            border-left:3px solid #E60000;
-          "
-        >
+  <div
+    class="student-card"
+    style="
+      margin-bottom:${
+        isBlock ? "2px" : "14px"
+      };
+      border-left:3px solid #E60000;
+      ${
+        isBlock
+          ? `
+            border-top:1px solid #252525;
+            border-right:1px solid #252525;
+            border-bottom:1px solid #252525;
+            border-radius:0;
+            background:#0b0b0b;
+          `
+          : ""
+      }
+    "
+  >
 
           <div>
 
