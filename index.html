@@ -9448,12 +9448,101 @@ async function openStudentWorkoutDay(
           : [];
 
 
-      const firstWeek =
-        weeks[0] || {};
+     const firstWeek =
+  weeks[0] || {};
 
 
-      const seriesCount =
-        parseInt(firstWeek.series) || 1;
+/* =====================================
+   BLOQUE DE ENTRENAMIENTO
+===================================== */
+
+const blockType =
+  String(
+    exercise.block_type || "normal"
+  ).toLowerCase();
+
+const blockGroup =
+  String(
+    exercise.block_group || ""
+  ).trim().toUpperCase();
+
+const isBlock =
+  (
+    blockType === "biserie" ||
+    blockType === "circuito"
+  ) &&
+  blockGroup;
+
+const blockKey =
+  isBlock
+    ? blockType + "-" + blockGroup
+    : "";
+
+const blockLabel =
+  blockType === "biserie"
+    ? "BISERIE"
+    : "CIRCUITO";
+
+const exerciseBlockPosition =
+  isBlock
+    ? exercises
+        .slice(
+          0,
+          exerciseIndex
+        )
+        .filter(function(item) {
+
+          return (
+            String(
+              item.block_type || "normal"
+            ).toLowerCase() === blockType &&
+            String(
+              item.block_group || ""
+            ).trim().toUpperCase() === blockGroup
+          );
+
+        }).length + 1
+    : null;
+
+
+const shouldShowBlockHeader =
+  isBlock &&
+  blockKey !== lastBlockKey;
+
+
+if (shouldShowBlockHeader) {
+
+  exercisesHtml += `
+
+    <div
+      style="
+        margin-top:18px;
+        margin-bottom:10px;
+        padding:10px 12px;
+        background:#000;
+        border-left:3px solid #E60000;
+        color:#E60000;
+        font-family:'Anton',sans-serif;
+        font-size:18px;
+        letter-spacing:1.5px;
+      "
+    >
+      ${blockLabel} ${escapeWorkoutHtml(blockGroup)}
+    </div>
+
+  `;
+
+}
+
+
+lastBlockKey =
+  isBlock
+    ? blockKey
+    : "";
+
+
+const seriesCount =
+  parseInt(firstWeek.series) || 1;
 
 
       /* =====================================
