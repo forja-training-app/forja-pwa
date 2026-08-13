@@ -11097,9 +11097,10 @@ async function openPublishedWorkoutFromDatabase(workout) {
 
         ${
           Array.isArray(day.exercises) && day.exercises.length
-            ? day.exercises.map(function(exercise) {
-                return renderPublishedExercise(exercise, workout);
-              }).join("")
+            ? renderPublishedExerciseBlocks(
+                      day.exercises,
+        workout
+      )
             : `
               <div class="workout-empty-day">
                 ESTE DÍA NO TIENE EJERCICIOS.
