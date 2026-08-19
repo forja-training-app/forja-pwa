@@ -10375,7 +10375,50 @@ data-day-id="${day.id}"
 
   }).join("");
 
+  daysContainer
+    .querySelectorAll(".student-routine-view-day")
+    .forEach(function(button) {
 
+      button.addEventListener("click", function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const weekNumber =
+          Number(button.dataset.week);
+
+        const dayIndex =
+          Number(button.dataset.dayIndex);
+
+        const dayId =
+          button.dataset.dayId;
+
+        const selectedDay =
+          days[dayIndex];
+
+        console.log("FORJA - BOTÓN VER ENTRENAMIENTO", {
+          weekNumber: weekNumber,
+          dayIndex: dayIndex,
+          dayId: dayId,
+          selectedDay: selectedDay
+        });
+
+        if (!selectedDay) {
+          alert("NO SE ENCONTRÓ EL DÍA DEL ENTRENAMIENTO.");
+          return;
+        }
+
+        openStudentRoutineDayHistory(
+          workout,
+          selectedDay,
+          weekNumber,
+          dayIndex,
+          dayId
+        );
+
+      });
+
+    });
 
   const skipHomeButton = document.getElementById("student-skip-workout-button-home");
   if (skipHomeButton) {
