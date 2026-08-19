@@ -13408,12 +13408,6 @@ async function loadStudentWorkouts(student) {
         }
       );
 
-      const editButton = card.querySelector(".workout-edit-existing-button");
-      editButton.addEventListener("click", function(event) {
-        event.stopPropagation();
-        openWorkoutEditor(workout);
-      });
-
       const deleteButton = card.querySelector(".workout-delete-existing-button");
       deleteButton.addEventListener("click", async function(event) {
         event.stopPropagation();
