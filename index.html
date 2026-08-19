@@ -14564,7 +14564,7 @@ function saveWorkoutEditorState(
    ABRIR CONSTRUCTOR
 ===================================== */
 
-function openWorkoutEditor(workout) {
+async function openWorkoutEditor(workout) {
 
   if (!currentStudent) {
 
@@ -14605,23 +14605,25 @@ function openWorkoutEditor(workout) {
 
   try {
 
-    const state =
-      getWorkoutEditorState(
-        workout
-      );
+await loadExerciseLibrary(true);
 
-    state.workout =
-      workout;
+const state =
+  getWorkoutEditorState(
+    workout
+  );
 
-    saveWorkoutEditorState(
-      workout,
-      state
-    );
+state.workout =
+  workout;
 
-    renderWorkoutEditor(
-      workout,
-      state
-    );
+saveWorkoutEditorState(
+  workout,
+  state
+);
+
+renderWorkoutEditor(
+  workout,
+  state
+);
 
   } catch (editorError) {
 
