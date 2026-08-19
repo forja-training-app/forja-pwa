@@ -10284,12 +10284,37 @@ async function openStudentHome() {
             }
 
             return `
-              <div class="student-week-day ${stateClass}">
-                <div class="student-week-day-label">DÍA ${dayIndex + 1}</div>
-                <div class="student-week-day-state ${isLocked ? "lock-icon" : ""}">${icon}</div>
-                <div class="student-week-day-text">${stateText}</div>
-              </div>
-            `;
+  <div class="student-week-day ${stateClass}">
+
+    <div class="student-week-day-label">
+      DÍA ${dayIndex + 1}
+    </div>
+
+    <div class="student-week-day-state ${isLocked ? "lock-icon" : ""}">
+      ${icon}
+    </div>
+
+    <div class="student-week-day-text">
+      ${stateText}
+    </div>
+
+    ${
+      !isLocked
+        ? `
+          <button
+            type="button"
+            class="student-routine-view-day"
+            data-week="${weekNumber}"
+            data-day-index="${dayIndex}"
+          >
+            VER ENTRENAMIENTO →
+          </button>
+        `
+        : ""
+    }
+
+  </div>
+`;
           }).join("")}
         </div>
       </div>
