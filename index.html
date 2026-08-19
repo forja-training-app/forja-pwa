@@ -4850,31 +4850,26 @@ supabaseClient.auth.onAuthStateChange(
        RECUPERAR CONTRASEÑA
     ====================================== */
 
-    function showForgotPasswordPanel() {
+   function showForgotPasswordPanel() {
 
-      if (loginPanel) {
-        loginPanel.style.display = "none";
-      }
+  if (loginPanel) {
+    loginPanel.style.display = "none";
+  }
 
-      if (studentRegisterPanel) {
-        studentRegisterPanel.style.display = "none";
-      }
+  if (resetPasswordPanel) {
+    resetPasswordPanel.style.display = "none";
+  }
 
-      if (resetPasswordPanel) {
-        resetPasswordPanel.style.display = "none";
-      }
+  if (forgotPasswordPanel) {
+    forgotPasswordPanel.style.display = "block";
+  }
 
-      if (forgotPasswordPanel) {
-        forgotPasswordPanel.style.display = "block";
-      }
+  if (forgotPasswordMessage) {
+    forgotPasswordMessage.textContent = "";
+    forgotPasswordMessage.className = "";
+  }
 
-      if (forgotPasswordMessage) {
-        forgotPasswordMessage.textContent = "";
-        forgotPasswordMessage.className = "";
-      }
-
-    }
-
+}
 
     function showResetPasswordPanel() {
 
@@ -4886,10 +4881,6 @@ supabaseClient.auth.onAuthStateChange(
 
       if (forgotPasswordPanel) {
         forgotPasswordPanel.style.display = "none";
-      }
-
-      if (studentRegisterPanel) {
-        studentRegisterPanel.style.display = "none";
       }
 
       if (resetPasswordPanel) {
