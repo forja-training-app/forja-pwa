@@ -19568,7 +19568,7 @@ async function openStudentTrainingSessionDetail(
   }
 
 
- /* =====================================
+/* =====================================
    FORJA — BOTÓN ATRÁS DEL CELULAR
 ====================================== */
 
@@ -19580,7 +19580,7 @@ window.addEventListener(
 
 
     /* =====================================
-       SI ESTAMOS EN PANTALLA DE ALUMNA
+       REFERENCIAS
     ====================================== */
 
     const studentHomeScreen =
@@ -19588,19 +19588,76 @@ window.addEventListener(
         "student-home-screen"
       );
 
+    const studentWorkoutScreen =
+      document.getElementById(
+        "student-workout-screen"
+      );
+
+
+    const studentWorkoutIsVisible =
+      studentWorkoutScreen &&
+      studentWorkoutScreen.style.display !== "none";
+
 
     const studentIsVisible =
       studentHomeScreen &&
       studentHomeScreen.style.display !== "none";
 
 
+    /* =====================================
+       ALUMNA — ESTÁ VIENDO UN ENTRENAMIENTO
+    ====================================== */
+
+    if (studentWorkoutIsVisible) {
+
+      studentWorkoutScreen.style.display =
+        "none";
+
+
+      if (studentHomeScreen) {
+        studentHomeScreen.style.display =
+          "block";
+      }
+
+
+      /*
+       * Volvemos exactamente a la pestaña
+       * anterior de la alumna.
+       */
+
+      if (
+        state &&
+        state.forjaStudentNavigation &&
+        state.studentTab
+      ) {
+
+        showStudentTab(
+          state.studentTab
+        );
+
+      } else {
+
+        showStudentTab("home");
+
+      }
+
+
+      return;
+
+    }
+
+
+    /* =====================================
+       ALUMNA — PANTALLA PRINCIPAL
+    ====================================== */
+
     if (studentIsVisible) {
 
 
       /*
        * Si el historial intenta llevarnos
-       * a una pantalla de ENTRENADORA,
-       * no permitimos ese salto.
+       * al panel de entrenadora, no permitimos
+       * ese salto.
        */
 
       if (
@@ -19626,7 +19683,7 @@ window.addEventListener(
 
 
       /*
-       * Navegación normal de ALUMNA.
+       * Navegación normal entre pestañas.
        */
 
       if (
@@ -19643,47 +19700,14 @@ window.addEventListener(
 
       }
 
+
       return;
 
     }
-/* =====================================
-   SI ESTAMOS EN ENTRENAMIENTO DE ALUMNA
-====================================== */
 
-if (
-  state &&
-  state.forjaStudentNavigation &&
-  state.studentScreen === "workout"
-) {
-
-  const studentWorkoutScreen =
-    document.getElementById(
-      "student-workout-screen"
-    );
-
-
-  if (studentWorkoutScreen) {
-    studentWorkoutScreen.style.display = "none";
-  }
-
-
-  if (studentHomeScreen) {
-
-    studentHomeScreen.style.display =
-      "block";
-
-  }
-
-
-  showStudentTab("workouts");
-
-
-  return;
-
-}
 
     /* =====================================
-       SI ESTAMOS EN PANTALLA DE ENTRENADORA
+       ENTRENADORA
     ====================================== */
 
     if (
@@ -19728,7 +19752,6 @@ if (
 
   }
 );
-
   /* =====================================
      CONFIGURAR NAVEGACIÓN INICIAL
   ====================================== */
@@ -19739,13 +19762,6 @@ if (
 
     studentNavigationReady = true;
 
-
-    /*
-     * Guardamos la pantalla actual como
-     * primer estado de navegación de FORJA.
-     */
-
-   
 
     document.querySelectorAll(
       "#student-bottom-nav .student-bottom-nav-item"
@@ -19791,7 +19807,6 @@ if (
   }
 
 })();
-
 </script>
 </body>
 
