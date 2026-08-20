@@ -10480,7 +10480,14 @@ data-day-id="${day.id}"
           dayId: dayId,
           selectedDay: selectedDay
         });
-
+history.pushState(
+  {
+    forjaStudentNavigation: true,
+    studentScreen: "workout"
+  },
+  "",
+  window.location.href
+);
         if (!selectedDay) {
           alert("NO SE ENCONTRÓ EL DÍA DEL ENTRENAMIENTO.");
           return;
@@ -19639,7 +19646,41 @@ window.addEventListener(
       return;
 
     }
+/* =====================================
+   SI ESTAMOS EN ENTRENAMIENTO DE ALUMNA
+====================================== */
 
+if (
+  state &&
+  state.forjaStudentNavigation &&
+  state.studentScreen === "workout"
+) {
+
+  const studentWorkoutScreen =
+    document.getElementById(
+      "student-workout-screen"
+    );
+
+
+  if (studentWorkoutScreen) {
+    studentWorkoutScreen.style.display = "none";
+  }
+
+
+  if (studentHomeScreen) {
+
+    studentHomeScreen.style.display =
+      "block";
+
+  }
+
+
+  showStudentTab("workouts");
+
+
+  return;
+
+}
 
     /* =====================================
        SI ESTAMOS EN PANTALLA DE ENTRENADORA
