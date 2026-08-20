@@ -9469,7 +9469,7 @@ async function renderExerciseLibrary() {
    MOSTRAR PANTALLA RUTINAS
 ===================================== */
 
-function showWorkouts() {
+function showWorkouts(fromHistory) {
 
   loginScreen.style.display = "none";
   appScreen.style.display = "none";
@@ -9487,32 +9487,77 @@ function showWorkouts() {
     workoutBuilderScreen.style.display = "none";
   }
 
-  workoutsScreen = document.getElementById("workouts-screen");
+  workoutsScreen =
+    document.getElementById("workouts-screen");
 
   if (!workoutsScreen) {
     createWorkoutsScreen();
   }
 
-  workoutsScreen = document.getElementById("workouts-screen");
-  workoutStudentList = document.getElementById("workout-student-list");
+  workoutsScreen =
+    document.getElementById("workouts-screen");
+
+  workoutStudentList =
+    document.getElementById("workout-student-list");
 
   if (!workoutsScreen || !workoutStudentList) {
-    console.error("FORJA: no se pudo inicializar la pantalla de rutinas.");
+
+    console.error(
+      "FORJA: no se pudo inicializar la pantalla de rutinas."
+    );
+
     return;
+
   }
 
   workoutsScreen.style.display = "block";
 
-  const backFromWorkouts = document.getElementById("back-from-workouts");
+
+  /*
+   * Guardamos RUTINAS en el historial
+   * cuando llegamos mediante un click.
+   */
+
+  if (!fromHistory) {
+
+    history.pushState(
+      {
+        forjaTrainerNavigation: true,
+        trainerScreen: "workouts"
+      },
+      "",
+      window.location.href
+    );
+
+  }
+
+
+  const backFromWorkouts =
+    document.getElementById(
+      "back-from-workouts"
+    );
+
   if (backFromWorkouts) {
-    backFromWorkouts.onclick = function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      showApp();
-    };
+
+    backFromWorkouts.onclick =
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        /*
+         * Usamos el historial del navegador
+         * en lugar de ir directamente al panel.
+         */
+
+        history.back();
+
+      };
+
   }
 
   loadWorkoutStudents();
+
 }
 
 
