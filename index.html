@@ -4781,7 +4781,6 @@ if (data && data.session) {
 /* =====================================
    CAMBIO DE SESIÓN
 ====================================== */
-
 supabaseClient.auth.onAuthStateChange(
   function(event, session) {
 
@@ -4789,6 +4788,23 @@ supabaseClient.auth.onAuthStateChange(
       "FORJA — CAMBIO DE SESIÓN:",
       event
     );
+
+
+    /* =====================================
+       RECUPERACIÓN DE CONTRASEÑA
+    ====================================== */
+
+    if (event === "PASSWORD_RECOVERY") {
+
+      console.log(
+        "FORJA — MODO RECUPERACIÓN DE CONTRASEÑA"
+      );
+
+      showResetPasswordPanel();
+
+      return;
+
+    }
 
 
     /* =====================================
@@ -4807,28 +4823,33 @@ supabaseClient.auth.onAuthStateChange(
 
 
     /* =====================================
-       SESIÓN YA EXISTENTE
-       
-       Solo procesamos INITIAL_SESSION.
-       
-       El login normal ya llama a
-       routeAuthenticatedUser()
-       después de signInWithPassword().
+       SESIÓN INICIAL
     ====================================== */
 
-    if (
-      event === "PASSWORD_RECOVERY"
-    ) {
+    if (event === "INITIAL_SESSION") {
 
-      showResetPasswordPanel();
-      return;
+      const hash =
+        window.location.hash || "";
 
-    }
+      const search =
+        window.location.search || "";
 
+      const isRecovery =
+        hash.includes("type=recovery") ||
+        search.includes("type=recovery");
 
-    if (
-      event === "INITIAL_SESSION"
-    ) {
+      if (isRecovery) {
+
+        console.log(
+          "FORJA — RECUPERACIÓN DETECTADA EN URL"
+        );
+
+        showResetPasswordPanel();
+
+        return;
+
+      }
+
 
       setTimeout(
         function() {
@@ -4845,7 +4866,6 @@ supabaseClient.auth.onAuthStateChange(
 
   }
 );
-
     /* =====================================
        RECUPERAR CONTRASEÑA
     ====================================== */
