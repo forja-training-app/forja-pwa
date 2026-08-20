@@ -4382,36 +4382,58 @@ button[onclick*="Como"] {
 
 
     /* =====================================
-       MOSTRAR MIS ALUMNAS
-    ====================================== */
+   MOSTRAR MIS ALUMNAS
+===================================== */
 
-    function showStudents() {
+function showStudents(fromHistory) {
 
-      loginScreen.style.display = "none";
+  loginScreen.style.display = "none";
 
-      appScreen.style.display = "none";
+  appScreen.style.display = "none";
 
-      studentsScreen.style.display = "block";
+  studentsScreen.style.display = "block";
 
-      if (studentDetailScreen) {
-        studentDetailScreen.style.display = "none";
-      }
+  if (studentDetailScreen) {
+    studentDetailScreen.style.display = "none";
+  }
 
-      if (workoutsScreen) {
-        workoutsScreen.style.display = "none";
-      }
+  if (workoutsScreen) {
+    workoutsScreen.style.display = "none";
+  }
 
-      if (workoutBuilderScreen) {
-        workoutBuilderScreen.style.display = "none";
-      }
+  if (workoutBuilderScreen) {
+    workoutBuilderScreen.style.display = "none";
+  }
 
-      if (exerciseLibraryScreen) {
-        exerciseLibraryScreen.style.display = "none";
-      }
+  if (exerciseLibraryScreen) {
+    exerciseLibraryScreen.style.display = "none";
+  }
 
-      loadStudents();
+  /*
+   * Guardamos esta pantalla en el historial
+   * cuando llegamos haciendo click.
+   *
+   * Si llegamos mediante el botón Atrás,
+   * fromHistory será true y no agregamos
+   * otro estado.
+   */
 
-    }
+  if (!fromHistory) {
+
+    history.pushState(
+      {
+        forjaTrainerNavigation: true,
+        trainerScreen: "students"
+      },
+      "",
+      window.location.href
+    );
+
+  }
+
+  loadStudents();
+
+}
 
 
     /* =====================================
