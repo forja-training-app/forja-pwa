@@ -4350,35 +4350,53 @@ button[onclick*="Como"] {
     }
 
 
-    /* =====================================
-       MOSTRAR PANEL
-    ====================================== */
+   /* =====================================
+   MOSTRAR PANEL
+====================================== */
 
-    function showApp() {
+function showApp(fromHistory) {
 
-      loginScreen.style.display = "none";
+  loginScreen.style.display = "none";
 
-      appScreen.style.display = "block";
+  appScreen.style.display = "block";
 
-      studentsScreen.style.display = "none";
+  studentsScreen.style.display = "none";
 
-      if (studentDetailScreen) {
-        studentDetailScreen.style.display = "none";
-      }
+  if (studentDetailScreen) {
+    studentDetailScreen.style.display = "none";
+  }
 
-      if (workoutsScreen) {
-        workoutsScreen.style.display = "none";
-      }
+  if (workoutsScreen) {
+    workoutsScreen.style.display = "none";
+  }
 
-      if (workoutBuilderScreen) {
-        workoutBuilderScreen.style.display = "none";
-      }
+  if (workoutBuilderScreen) {
+    workoutBuilderScreen.style.display = "none";
+  }
 
-      if (exerciseLibraryScreen) {
-        exerciseLibraryScreen.style.display = "none";
-      }
+  if (exerciseLibraryScreen) {
+    exerciseLibraryScreen.style.display = "none";
+  }
 
-    }
+
+  /* =====================================
+     HISTORIAL DE ENTRENADORA
+  ====================================== */
+
+  if (!fromHistory) {
+
+    history.replaceState(
+      {
+        forjaTrainerNavigation: true,
+        trainerScreen: "home"
+      },
+      "",
+      window.location.href
+    );
+
+  }
+
+}
 
 
     /* =====================================
