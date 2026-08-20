@@ -11732,6 +11732,14 @@ async function openStudentWorkoutDay(
 
   }
 
+  history.pushState(
+  {
+    forjaStudentNavigation: true,
+    studentScreen: "workout"
+  },
+  "",
+  window.location.href
+);
 
   studentWorkoutScreen.style.display =
     "block";
