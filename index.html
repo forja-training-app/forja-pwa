@@ -4781,7 +4781,11 @@ if (data && data.session) {
 /* =====================================
    CAMBIO DE SESIÓN
 ====================================== */
-supabaseClient.auth.onAuthStateChange(
+let isPasswordRecovery = 
+  window.location.hash.includes("type=recovery") ||
+  window.location.search.includes("type=recovery");
+  
+  supabaseClient.auth.onAuthStateChange(
   function(event, session) {
 
     console.log(
@@ -4799,6 +4803,7 @@ supabaseClient.auth.onAuthStateChange(
       console.log(
         "FORJA — MODO RECUPERACIÓN DE CONTRASEÑA"
       );
+ isPasswordRecovery = true;
 
       showResetPasswordPanel();
 
@@ -4826,43 +4831,32 @@ supabaseClient.auth.onAuthStateChange(
        SESIÓN INICIAL
     ====================================== */
 
-    if (event === "INITIAL_SESSION") {
+if (event === "INITIAL_SESSION") {
 
-      const hash =
-        window.location.hash || "";
+  if (isPasswordRecovery) {
 
-      const search =
-        window.location.search || "";
+    console.log(
+      "FORJA — RECUPERACIÓN DETECTADA"
+    );
 
-      const isRecovery =
-        hash.includes("type=recovery") ||
-        search.includes("type=recovery");
+    showResetPasswordPanel();
 
-      if (isRecovery) {
+    return;
 
-        console.log(
-          "FORJA — RECUPERACIÓN DETECTADA EN URL"
-        );
+  }
 
-        showResetPasswordPanel();
+  setTimeout(
+    function() {
 
-        return;
-
-      }
-
-
-      setTimeout(
-        function() {
-
-          routeAuthenticatedUser(
-            session
-          );
-
-        },
-        0
+      routeAuthenticatedUser(
+        session
       );
 
-    }
+    },
+    0
+  );
+
+}
 
   }
 );
