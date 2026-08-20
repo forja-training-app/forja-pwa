@@ -19337,41 +19337,227 @@ async function openStudentTrainingSessionDetail(
 /* =========================================================
    FORJA — NAVEGACIÓN PANTALLA ALUMNA
 ========================================================= */
+
 (function(){
+
+  let studentNavigationReady = false;
+
+
   function showStudentTab(tabName){
-    const screen=document.getElementById("student-home-screen");
+
+    const screen =
+      document.getElementById("student-home-screen");
+
     if(!screen) return;
 
-    screen.querySelectorAll(".student-tab-panel").forEach(function(panel){
-      panel.style.display = panel.dataset.tabPanel === tabName ? "block" : "none";
+
+    screen.querySelectorAll(
+      ".student-tab-panel"
+    ).forEach(function(panel){
+
+      panel.style.display =
+        panel.dataset.tabPanel === tabName
+          ? "block"
+          : "none";
+
     });
 
-    screen.querySelectorAll(".student-bottom-nav-item").forEach(function(item){
-      item.classList.toggle("is-active", item.dataset.studentTab === tabName);
+
+    screen.querySelectorAll(
+      ".student-bottom-nav-item"
+    ).forEach(function(item){
+
+      item.classList.toggle(
+        "is-active",
+        item.dataset.studentTab === tabName
+      );
+
     });
 
-    if(tabName === "progress" && typeof loadStudentPersonalProgress === "function" && currentStudent){
-      loadStudentPersonalProgress(currentStudent);
+
+    if(
+      tabName === "progress" &&
+      typeof loadStudentPersonalProgress === "function" &&
+      currentStudent
+    ){
+
+      loadStudentPersonalProgress(
+        currentStudent
+      );
+
     }
+
   }
 
-  window.forjaShowStudentTab=showStudentTab;
+
+  window.forjaShowStudentTab =
+    showStudentTab;
+
+
+  /* =====================================
+     HISTORIAL DE NAVEGACIÓN
+  ====================================== */
+
+  function navigateStudentTab(tabName){
+
+    const currentTab =
+      document.querySelector(
+        "#student-bottom-nav .student-bottom-nav-item.is-active"
+      );
+
+
+    const currentTabName =
+      currentTab
+        ? currentTab.dataset.studentTab
+        : null;
+
+
+    if(currentTabName === tabName){
+
+      showStudentTab(tabName);
+
+      return;
+
+    }
+
+
+    history.pushState(
+      {
+        forjaStudentNavigation: true,
+        studentTab: tabName
+      },
+      "",
+      window.location.href
+    );
+
+
+    showStudentTab(tabName);
+
+  }
+
+
+  /* =====================================
+     BOTÓN ATRÁS DEL CELULAR
+  ====================================== */
+
+  window.addEventListener(
+    "popstate",
+    function(event){
+
+      const state =
+        event.state;
+
+
+      if(
+        state &&
+        state.forjaStudentNavigation &&
+        state.studentTab
+      ){
+
+        showStudentTab(
+          state.studentTab
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Si volvemos al primer estado,
+       * mostramos INICIO.
+       */
+
+      showStudentTab("home");
+
+    }
+  );
+
+
+  /* =====================================
+     CONFIGURAR NAVEGACIÓN INICIAL
+  ====================================== */
 
   function setup(){
-    document.querySelectorAll("#student-bottom-nav .student-bottom-nav-item").forEach(function(item){
-      if(item.dataset.ready === "true") return;
-      item.dataset.ready="true";
-      item.addEventListener("click",function(){
-        showStudentTab(item.dataset.studentTab);
-      });
+
+    if(studentNavigationReady) return;
+
+    studentNavigationReady = true;
+
+
+    /*
+     * Guardamos la pantalla actual como
+     * primer estado de navegación de FORJA.
+     */
+
+    const activeTab =
+      document.querySelector(
+        "#student-bottom-nav .student-bottom-nav-item.is-active"
+      );
+
+
+    const initialTab =
+      activeTab
+        ? activeTab.dataset.studentTab
+        : "home";
+
+
+    history.replaceState(
+      {
+        forjaStudentNavigation: true,
+        studentTab: initialTab
+      },
+      "",
+      window.location.href
+    );
+
+
+    document.querySelectorAll(
+      "#student-bottom-nav .student-bottom-nav-item"
+    ).forEach(function(item){
+
+      if(
+        item.dataset.ready === "true"
+      ) return;
+
+
+      item.dataset.ready = "true";
+
+
+      item.addEventListener(
+        "click",
+        function(){
+
+          navigateStudentTab(
+            item.dataset.studentTab
+          );
+
+        }
+      );
+
     });
+
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
-  else setup();
-})();
-</script>
 
+  if(
+    document.readyState === "loading"
+  ){
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      setup
+    );
+
+  } else {
+
+    setup();
+
+  }
+
+})();
+
+</script>
 </body>
 
 </html>
