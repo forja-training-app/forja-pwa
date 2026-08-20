@@ -19592,27 +19592,7 @@ async function openStudentTrainingSessionDetail(
      * primer estado de navegación de FORJA.
      */
 
-    const activeTab =
-      document.querySelector(
-        "#student-bottom-nav .student-bottom-nav-item.is-active"
-      );
-
-
-    const initialTab =
-      activeTab
-        ? activeTab.dataset.studentTab
-        : "home";
-
-
-    history.replaceState(
-      {
-        forjaStudentNavigation: true,
-        studentTab: initialTab
-      },
-      "",
-      window.location.href
-    );
-
+   
 
     document.querySelectorAll(
       "#student-bottom-nav .student-bottom-nav-item"
