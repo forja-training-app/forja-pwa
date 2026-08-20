@@ -19560,7 +19560,16 @@ async function openStudentTrainingSessionDetail(
       state &&
       state.forjaTrainerNavigation
     ){
+      
+  if(
+    state.trainerScreen === "home"
+  ){
 
+    showApp(true);
+
+    return;
+
+  }
       if(
         state.trainerScreen === "students"
       ){
