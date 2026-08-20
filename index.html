@@ -11804,50 +11804,95 @@ async function openStudentWorkoutDay(
   }
 
 
-  function studentBlockMetricGrid(exercise) {
+ function studentBlockMetricGrid(exercise) {
 
-    const week =
-      Array.isArray(exercise.weeks) &&
-      exercise.weeks[0]
-        ? exercise.weeks[0]
-        : {};
+  const week =
+    Array.isArray(exercise.weeks) &&
+    exercise.weeks[0]
+      ? exercise.weeks[0]
+      : {};
 
-    return `
+  return `
+    <div
+      style="
+        margin-top:10px;
+        border:1px solid #333;
+        border-radius:8px;
+        overflow:hidden;
+        background:#0A0A0A;
+      "
+    >
+
       <div
         style="
-          margin-top:10px;
-          border:1px solid #333;
-          border-radius:8px;
-          overflow:hidden;
-          background:#0A0A0A;
+          display:grid;
+          grid-template-columns:repeat(3,minmax(0,1fr));
         "
       >
 
+        ${studentMetric(
+          "SERIES",
+          week.series,
+          true
+        )}
+
         <div
           style="
-            display:grid;
-            grid-template-columns:repeat(3,minmax(0,1fr));
+            border-left:1px solid #333;
           "
         >
 
-          ${studentMetric("SERIES", week.series, true)}
+          ${studentMetric(
+            "REPS",
+            week.reps,
+            true
+          )}
 
-          <div style="border-left:1px solid #333;">
-            ${studentMetric("REPS", week.reps, true)}
-          </div>
+        </div>
 
-          <div style="border-left:1px solid #333;">
-            ${studentMetric("RPE", week.rpe ?? week.rir, true)}
-          </div>
+        <div
+          style="
+            border-left:1px solid #333;
+          "
+        >
+
+          ${studentMetric(
+            "RPE",
+            week.rpe ?? week.rir,
+            true
+          )}
 
         </div>
 
       </div>
-    `;
-  }
 
+    </div>
 
+    ${
+      week.notes &&
+      String(week.notes).trim()
+        ? `
+          <div
+            style="
+              margin-top:7px;
+              padding-left:2px;
+              color:#888;
+              font-size:9px;
+              line-height:1.4;
+              font-style:italic;
+            "
+          >
+            * ${escapeWorkoutHtml(
+              week.notes
+            )}
+          </div>
+        `
+        : ""
+    }
 
+  `;
+}
+  
   function studentBlockExercise(
     exercise,
     position,
