@@ -19508,38 +19508,73 @@ async function openStudentTrainingSessionDetail(
   ====================================== */
 
   window.addEventListener(
-    "popstate",
-    function(event){
+  "popstate",
+  function(event){
 
-      const state =
-        event.state;
+    const state =
+      event.state;
 
+
+    /* =====================================
+       NAVEGACIÓN ALUMNA
+    ====================================== */
+
+    if(
+      state &&
+      state.forjaStudentNavigation &&
+      state.studentTab
+    ){
+
+      showStudentTab(
+        state.studentTab
+      );
+
+      return;
+
+    }
+
+
+    /* =====================================
+       NAVEGACIÓN ENTRENADORA
+    ====================================== */
+
+    if(
+      state &&
+      state.forjaTrainerNavigation
+    ){
 
       if(
-        state &&
-        state.forjaStudentNavigation &&
-        state.studentTab
+        state.trainerScreen === "students"
       ){
 
-        showStudentTab(
-          state.studentTab
-        );
+        showStudents(true);
 
         return;
 
       }
 
 
-      /*
-       * Si volvemos al primer estado,
-       * mostramos INICIO.
-       */
+      if(
+        state.trainerScreen === "workouts"
+      ){
 
-      showStudentTab("home");
+        showWorkouts(true);
+
+        return;
+
+      }
 
     }
-  );
 
+
+    /*
+     * Si no hay un estado interno de FORJA,
+     * dejamos que el navegador continúe
+     * con su historial normal.
+     */
+
+  }
+);
 
   /* =====================================
      CONFIGURAR NAVEGACIÓN INICIAL
