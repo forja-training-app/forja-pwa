@@ -19428,56 +19428,97 @@ async function openStudentTrainingSessionDetail(
   let studentNavigationReady = false;
 
 
-  function showStudentTab(tabName){
+ function showStudentTab(tabName){
 
-    const screen =
-      document.getElementById("student-home-screen");
+  const screen =
+    document.getElementById("student-home-screen");
 
-    if(!screen) return;
-
-
-    screen.querySelectorAll(
-      ".student-tab-panel"
-    ).forEach(function(panel){
-
-      panel.style.display =
-        panel.dataset.tabPanel === tabName
-          ? "block"
-          : "none";
-
-    });
+  if(!screen) return;
 
 
-    screen.querySelectorAll(
-      ".student-bottom-nav-item"
-    ).forEach(function(item){
+  /* =====================================
+     ESTADO INICIAL DE LA ALUMNA
+  ====================================== */
 
-      item.classList.toggle(
-        "is-active",
-        item.dataset.studentTab === tabName
-      );
-
-    });
+  const currentState =
+    history.state;
 
 
-    if(
-      tabName === "progress" &&
-      typeof loadStudentPersonalProgress === "function" &&
-      currentStudent
-    ){
+  /*
+   * Si acabamos de entrar a la pantalla
+   * de alumna y todavía tenemos un estado
+   * de entrenadora, lo reemplazamos.
+   *
+   * Esto evita que el botón ATRÁS pueda
+   * llevar a la entrenadora.
+   */
 
-      loadStudentPersonalProgress(
-        currentStudent
-      );
+  if(
+    !currentState ||
+    !currentState.forjaStudentNavigation
+  ){
 
-    }
+    history.replaceState(
+      {
+        forjaStudentNavigation: true,
+        studentTab: tabName
+      },
+      "",
+      window.location.href
+    );
 
   }
 
 
-  window.forjaShowStudentTab =
-    showStudentTab;
+  /* =====================================
+     MOSTRAR PESTAÑA
+  ====================================== */
 
+  screen.querySelectorAll(
+    ".student-tab-panel"
+  ).forEach(function(panel){
+
+    panel.style.display =
+      panel.dataset.tabPanel === tabName
+        ? "block"
+        : "none";
+
+  });
+
+
+  /* =====================================
+     BOTÓN INFERIOR ACTIVO
+  ====================================== */
+
+  screen.querySelectorAll(
+    ".student-bottom-nav-item"
+  ).forEach(function(item){
+
+    item.classList.toggle(
+      "is-active",
+      item.dataset.studentTab === tabName
+    );
+
+  });
+
+
+  /* =====================================
+     PROGRESO
+  ====================================== */
+
+  if(
+    tabName === "progress" &&
+    typeof loadStudentPersonalProgress === "function" &&
+    currentStudent
+  ){
+
+    loadStudentPersonalProgress(
+      currentStudent
+    );
+
+  }
+
+}
 
   /* =====================================
      HISTORIAL DE NAVEGACIÓN
