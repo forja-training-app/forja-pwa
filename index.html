@@ -10216,55 +10216,149 @@ async function openStudentHome() {
         Number(currentStudent.training_days) || days.length || 1
       );
 
-      let completedSessionsCountForToday = 0;
+let nextWeekNumber = 1;
+let nextDayIndex = 0;
 
-      try {
-        const { data: countSessions } = await supabaseClient
-          .from("workout_sessions")
-          .select("id", { count: "exact" })
-          .eq("student_id", currentStudent.id)
-          .eq("workout_id", workout.id)
-          .in("status", ["completed", "skipped"]);
+const daysPerWeek = Math.max(
+  1,
+  Number(currentStudent.training_days) || days.length || 1
+);
 
-        completedSessionsCountForToday = Array.isArray(countSessions)
-          ? countSessions.length
-          : 0;
-      } catch (error) {
-        console.error("Error contando entrenamientos:", error);
+const totalWeeks = Math.max(
+  1,
+  Number(workout.weeks) || 1
+);
+
+try {
+  const {
+    data: sessionRows,
+    error: sessionRowsError
+  } = await supabaseClient
+    .from("workout_sessions")
+    .select("day_id, status, finished_at, week_number")
+    .eq("student_id", currentStudent.id)
+    .eq("workout_id", workout.id)
+    .in("status", ["completed", "skipped"])
+    .order("finished_at", { ascending: true });
+
+  if (sessionRowsError) {
+    console.error(
+      "Error buscando sesiones:",
+      sessionRowsError
+    );
+  } else {
+
+    const resolvedSlots = new Set();
+
+    (sessionRows || []).forEach(function(session) {
+
+      const week = Number(session.week_number);
+
+      const dayIndex = days.findIndex(function(day) {
+        return String(day.id) === String(session.day_id);
+      });
+
+      if (
+        week >= 1 &&
+        week <= totalWeeks &&
+        dayIndex >= 0
+      ) {
+        resolvedSlots.add(
+          week + "-" + dayIndex
+        );
       }
 
-      const currentWeekForToday = Math.min(
-        Number(workout.weeks) || 1,
-        Math.floor(completedSessionsCountForToday / daysPerWeekForToday) + 1
-      );
+    });
 
-      todayName.textContent =
-        "SEMANA " + currentWeekForToday + " — DÍA " + (nextDayIndex + 1);
+    let foundPending = false;
+
+    for (
+      let week = 1;
+      week <= totalWeeks && !foundPending;
+      week++
+    ) {
+
+      for (
+        let dayIndex = 0;
+        dayIndex < days.length;
+        dayIndex++
+      ) {
+
+        const slotKey =
+          week + "-" + dayIndex;
+
+        if (!resolvedSlots.has(slotKey)) {
+
+          nextWeekNumber = week;
+          nextDayIndex = dayIndex;
+
+          foundPending = true;
+          break;
+
+        }
+
+      }
 
     }
 
-    if (todayDescription) {
+    /*
+     * Si todos los entrenamientos de la rutina
+     * fueron realizados, dejamos el último día
+     * de la última semana como referencia.
+     */
+    if (!foundPending) {
 
-      const exerciseCount =
-        Array.isArray(
-          nextDay.exercises
-        )
-          ? nextDay.exercises.length
-          : 0;
-
-      todayDescription.textContent =
-        exerciseCount +
-        (
-          exerciseCount === 1
-            ? " EJERCICIO"
-            : " EJERCICIOS"
-        );
+      nextWeekNumber = totalWeeks;
+      nextDayIndex = Math.max(
+        0,
+        days.length - 1
+      );
 
     }
 
   }
 
+} catch (error) {
 
+  console.error(
+    "Error determinando próximo entrenamiento:",
+    error
+  );
+
+}
+
+const nextDay = days[nextDayIndex];
+
+if (days.length && nextDay) {
+
+  if (todayName) {
+
+    todayName.textContent =
+      "SEMANA " +
+      nextWeekNumber +
+      " — DÍA " +
+      (nextDayIndex + 1);
+
+  }
+
+  if (todayDescription) {
+
+    const exerciseCount =
+      Array.isArray(nextDay.exercises)
+        ? nextDay.exercises.length
+        : 0;
+
+    todayDescription.textContent =
+      exerciseCount +
+      (
+        exerciseCount === 1
+          ? " EJERCICIO"
+          : " EJERCICIOS"
+      );
+
+  }
+
+  }
   const daysContainer =
     document.getElementById(
       "student-workout-days"
