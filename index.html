@@ -10406,50 +10406,128 @@ if (days.length && nextDay) {
     Number(workout.weeks) || 1
   );
 
-  try {
-    const { data: sessionRows, error: sessionRowsError } =
-      await supabaseClient
-        .from("workout_sessions")
-        .select("day_id, status, finished_at")
-        .eq("student_id", currentStudent.id)
-        .eq("workout_id", workout.id)
-        .in("status", ["completed", "skipped"])
-        .order("finished_at", { ascending: true });
+try {
 
-    if (sessionRowsError) {
-      console.error("Error cargando estado de entrenamientos:", sessionRowsError);
-    } else if (sessionRows) {
-      completedSessionsCount = sessionRows.length;
+  const {
+    data: sessionRows,
+    error: sessionRowsError
+  } = await supabaseClient
+    .from("workout_sessions")
+    .select(
+      "day_id, week_number, status, finished_at"
+    )
+    .eq(
+      "student_id",
+      currentStudent.id
+    )
+    .eq(
+      "workout_id",
+      workout.id
+    )
+    .in(
+      "status",
+      ["completed", "skipped"]
+    )
+    .order(
+      "finished_at",
+      { ascending: true }
+    );
 
-      sessionRows.forEach(function(row, sessionIndex) {
-        if (row.day_id !== null && row.day_id !== undefined) {
-          completedDayIds.add(String(row.day_id));
 
-          const dayIndexForSlot = days.findIndex(function(day) {
-            return String(day.id) === String(row.day_id);
-          });
+  if (sessionRowsError) {
 
-          if (dayIndexForSlot >= 0) {
-            const weekForSlot = Math.floor(sessionIndex / daysPerWeek) + 1;
-            completedWorkoutSlots.add(weekForSlot + "-" + dayIndexForSlot);
-          }
+    console.error(
+      "Error cargando estado de entrenamientos:",
+      sessionRowsError
+    );
+
+  } else if (sessionRows) {
+
+    sessionRows.forEach(
+      function(row) {
+
+        if (
+          row.day_id === null ||
+          row.day_id === undefined
+        ) {
+          return;
         }
-      });
-    }
-  } catch (error) {
-    console.error("Error leyendo entrenamientos completados:", error);
+
+
+        const dayIndexForSlot =
+          days.findIndex(
+            function(day) {
+
+              return (
+                String(day.id) ===
+                String(row.day_id)
+              );
+
+            }
+          );
+
+
+        const weekNumber =
+          Number(row.week_number);
+
+
+        /*
+         * Las sesiones nuevas tienen
+         * semana + día.
+         *
+         * Solo esas sesiones se utilizan
+         * para marcar una posición exacta.
+         */
+
+        if (
+          dayIndexForSlot >= 0 &&
+          weekNumber >= 1 &&
+          weekNumber <= totalWeeks
+        ) {
+
+          completedWorkoutSlots.add(
+            weekNumber +
+            "-" +
+            dayIndexForSlot
+          );
+
+        }
+
+      }
+    );
+
   }
 
-  let currentDayIndex = nextDayIndex;
+} catch (error) {
 
-  /* Si ya terminó todos los días de una semana, la siguiente semana queda en curso. */
-  const completedCount = completedSessionsCount;
-
-  const completedWeeksByCount = Math.floor(completedCount / daysPerWeek);
-  const currentWeekNumber = Math.min(
-    totalWeeks,
-    completedWeeksByCount + 1
+  console.error(
+    "Error leyendo entrenamientos completados:",
+    error
   );
+
+}
+
+
+/*
+ * La semana actual es la misma semana
+ * del primer día pendiente.
+ */
+
+const currentDayIndex =
+  nextDayIndex;
+
+
+/*
+ * Si el primer día pendiente pertenece
+ * a la semana 2, la semana 2 es la actual.
+ *
+ * Si todavía queda algo pendiente
+ * en la semana 1, la semana 1 continúa
+ * siendo la actual.
+ */
+
+const currentWeekNumber =
+  nextWeekNumber;
 
   daysContainer.innerHTML = Array.from({length: totalWeeks}, function(_, weekIndex) {
 
