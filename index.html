@@ -10742,75 +10742,161 @@ openStudentWorkoutDay(
          */
         (async function() {
 
-          let startDayIndex = 0;
+                  /*
+         * Buscamos el primer entrenamiento pendiente
+         * usando SEMANA + DÍA.
+         *
+         * Tanto "completed" como "skipped"
+         * cuentan como día resuelto.
+         */
 
-          try {
+        let startWeekNumber = 1;
+        let startDayIndex = 0;
 
-            const {
-              data: latestSession
-            } =
-              await supabaseClient
-                .from("workout_sessions")
-                .select("day_id, finished_at")
-                .eq(
-                  "student_id",
-                  currentStudent.id
-                )
-                .eq(
-                  "workout_id",
-                  workout.id
-                )
-                .in(
-                  "status",
-                  ["completed", "skipped"]
-                )
-                .order(
-                  "finished_at",
-                  {
-                    ascending: false
-                  }
-                )
-                .limit(1);
+        try {
 
-            if (
-              latestSession &&
-              latestSession.length
+          const {
+            data: sessionRows,
+            error: sessionRowsError
+          } = await supabaseClient
+            .from("workout_sessions")
+            .select(
+              "day_id, week_number, status, finished_at"
+            )
+            .eq(
+              "student_id",
+              currentStudent.id
+            )
+            .eq(
+              "workout_id",
+              workout.id
+            )
+            .in(
+              "status",
+              ["completed", "skipped"]
+            )
+            .order(
+              "finished_at",
+              { ascending: true }
+            );
+
+
+          if (sessionRowsError) {
+
+            console.error(
+              "Error buscando sesiones:",
+              sessionRowsError
+            );
+
+          } else {
+
+            const resolvedSlots =
+              new Set();
+
+
+            (sessionRows || []).forEach(
+              function(session) {
+
+                const week =
+                  Number(
+                    session.week_number
+                  );
+
+
+                const dayIndex =
+                  days.findIndex(
+                    function(day) {
+
+                      return (
+                        String(day.id) ===
+                        String(session.day_id)
+                      );
+
+                    }
+                  );
+
+
+                if (
+                  week >= 1 &&
+                  week <= totalWeeks &&
+                  dayIndex >= 0
+                ) {
+
+                  resolvedSlots.add(
+                    week +
+                    "-" +
+                    dayIndex
+                  );
+
+                }
+
+              }
+            );
+
+
+            let foundPending =
+              false;
+
+
+            for (
+              let week = 1;
+              week <= totalWeeks &&
+              !foundPending;
+              week++
             ) {
 
-              const lastDayIndex =
-                days.findIndex(
-                  function(day) {
-                    return String(day.id) ===
-                      String(
-                        latestSession[0].day_id
-                      );
-                  }
-                );
+              for (
+                let dayIndex = 0;
+                dayIndex < days.length;
+                dayIndex++
+              ) {
 
-              if (lastDayIndex >= 0) {
+                const slotKey =
+                  week +
+                  "-" +
+                  dayIndex;
 
-                startDayIndex =
-                  (
-                    lastDayIndex + 1
-                  ) % days.length;
+
+                if (
+                  !resolvedSlots.has(
+                    slotKey
+                  )
+                ) {
+
+                  startWeekNumber =
+                    week;
+
+                  startDayIndex =
+                    dayIndex;
+
+                  foundPending =
+                    true;
+
+                  break;
+
+                }
 
               }
 
             }
 
-          } catch (error) {
-
-            console.error(
-              "Error determinando el día a comenzar:",
-              error
-            );
-
           }
 
-          openStudentWorkoutDay(
-            workout,
-            days[startDayIndex]
+        } catch (error) {
+
+          console.error(
+            "Error determinando el entrenamiento a comenzar:",
+            error
           );
+
+        }
+
+
+        openStudentWorkoutDay(
+          workout,
+          days[startDayIndex],
+          startWeekNumber
+        );
 
         })();
 
