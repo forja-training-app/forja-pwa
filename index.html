@@ -10618,6 +10618,7 @@ openStudentWorkoutDay(
             student_id: currentStudent.id,
             workout_id: workout.id,
             day_id: String(nextDay.id),
+            week_number: nextWeekNumber,
             started_at: new Date().toISOString(),
             finished_at: new Date().toISOString(),
             status: "skipped"
