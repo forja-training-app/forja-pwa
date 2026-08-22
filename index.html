@@ -12352,21 +12352,23 @@ async function openStudentWorkoutDay(
         !!savedLog;
         
             <input
-              type="number"
-              min="0"
-              class="student-series-reps"
-              placeholder="${escapeWorkoutHtml(firstWeek.reps || "—")}"
-              style="
-                width:100%;
-                box-sizing:border-box;
-                background:#111;
-                border:1px solid #333;
-                border-radius:5px;
-                color:#fff;
-                padding:9px 7px;
-                font-size:12px;
-              "
-            >
+  type="number"
+  min="0"
+  class="student-series-reps"
+  value="${savedSeries ? escapeWorkoutHtml(savedReps) : ""}"
+  placeholder="${escapeWorkoutHtml(firstWeek.reps || "—")}"
+  ${savedSeries ? "readonly" : ""}
+  style="
+    width:100%;
+    box-sizing:border-box;
+    background:${savedSeries ? "#181818" : "#111"};
+    border:1px solid #333;
+    border-radius:5px;
+    color:#fff;
+    padding:9px 7px;
+    font-size:12px;
+  "
+>
           </div>
 
           <div>
