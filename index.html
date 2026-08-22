@@ -12252,7 +12252,7 @@ async function openStudentWorkoutDay(
       const savedLog =
         savedLogsForExercise.find(
           function(log) {
-            return Number(log.series_number) ===
+            return Number(log.set_number) ===
               seriesIndex + 1;
           }
         );
