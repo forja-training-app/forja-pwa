@@ -12415,23 +12415,25 @@ async function openStudentWorkoutDay(
             </div>
 
             <input
-              type="number"
-              min="0"
-              max="10"
-              step="0.5"
-              class="student-series-rpe"
-              placeholder="${escapeWorkoutHtml(firstWeek.rpe || "—")}"
-              style="
-                width:100%;
-                box-sizing:border-box;
-                background:#111;
-                border:1px solid #333;
-                border-radius:5px;
-                color:#fff;
-                padding:9px 7px;
-                font-size:12px;
-              "
-            >
+  type="number"
+  min="0"
+  max="10"
+  step="0.5"
+  class="student-series-rpe"
+  value="${savedSeries ? escapeWorkoutHtml(savedRpe) : ""}"
+  placeholder="${escapeWorkoutHtml(firstWeek.rpe || "—")}"
+  ${savedSeries ? "readonly" : ""}
+  style="
+    width:100%;
+    box-sizing:border-box;
+    background:${savedSeries ? "#181818" : "#111"};
+    border:1px solid #333;
+    border-radius:5px;
+    color:#fff;
+    padding:9px 7px;
+    font-size:12px;
+  "
+>
           </div>
 
           <button
