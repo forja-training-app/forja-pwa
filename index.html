@@ -12230,7 +12230,15 @@ async function openStudentWorkoutDay(
 
     const firstWeek =
       weeks[0] || {};
-
+    
+    const savedLogsForExercise =
+      existingWorkoutLogs.filter(
+        function(log) {
+          return String(log.exercise_id) ===
+            String(exercise.id);
+        }
+      );
+    
     const seriesCount =
       parseInt(firstWeek.series) || 1;
 
