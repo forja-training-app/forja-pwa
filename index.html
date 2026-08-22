@@ -11972,7 +11972,110 @@ async function openStudentWorkoutDay(
 
   const exerciseHistory =
     await loadStudentExerciseHistory(currentStudent, workout);
+  /* =====================================
+     BUSCAR SESIÓN YA FINALIZADA
+  ====================================== */
 
+  let existingWorkoutSession = null;
+  let existingWorkoutLogs = [];
+
+  try {
+
+    const {
+      data: existingSessions,
+      error: existingSessionError
+    } = await supabaseClient
+      .from("workout_sessions")
+      .select(`
+        id,
+        day_id,
+        week_number,
+        status,
+        finished_at
+      `)
+      .eq(
+        "student_id",
+        currentStudent.id
+      )
+      .eq(
+        "workout_id",
+        workout.id
+      )
+      .eq(
+        "day_id",
+        String(day.id)
+      )
+      .in(
+        "status",
+        ["completed", "skipped"]
+      )
+      .order(
+        "finished_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1);
+
+    if (existingSessionError) {
+
+      console.error(
+        "FORJA: error buscando sesión finalizada:",
+        existingSessionError
+      );
+
+    } else if (
+      existingSessions &&
+      existingSessions.length
+    ) {
+
+      existingWorkoutSession =
+        existingSessions[0];
+
+      const {
+        data: savedLogs,
+        error: savedLogsError
+      } = await supabaseClient
+        .from("workout_set_logs")
+        .select(`
+          id,
+          exercise_id,
+          set_number,
+          reps,
+          load,
+          rpe
+        `)
+        .eq(
+          "session_id",
+          existingWorkoutSession.id
+        );
+
+      if (savedLogsError) {
+
+        console.error(
+          "FORJA: error cargando cargas guardadas:",
+          savedLogsError
+        );
+
+      } else {
+
+        existingWorkoutLogs =
+          Array.isArray(savedLogs)
+            ? savedLogs
+            : [];
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "FORJA: error recuperando entrenamiento finalizado:",
+      error
+    );
+
+  }
 
   /* =====================================
      CONSTRUIR EJERCICIOS
