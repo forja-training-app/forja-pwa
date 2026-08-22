@@ -13414,7 +13414,19 @@ if (finishButton) {
   finishButton.addEventListener(
     "click",
     async function() {
+      
+      /* =====================================
+         PROTEGER ENTRENAMIENTO YA FINALIZADO
+      ====================================== */
 
+      if (existingWorkoutSession) {
+
+        alert(
+          "ESTE ENTRENAMIENTO YA FUE FINALIZADO Y SUS CARGAS NO SE PUEDEN MODIFICAR."
+        );
+
+        return;
+  }
       /* ---------------------------------
          EVITAR DOBLE ENVÍO
       --------------------------------- */
