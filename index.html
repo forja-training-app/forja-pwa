@@ -12384,20 +12384,22 @@ async function openStudentWorkoutDay(
             </div>
 
             <input
-              type="text"
-              class="student-series-load"
-              placeholder="${escapeWorkoutHtml(firstWeek.load || "—")}"
-              style="
-                width:100%;
-                box-sizing:border-box;
-                background:#111;
-                border:1px solid #333;
-                border-radius:5px;
-                color:#fff;
-                padding:9px 7px;
-                font-size:12px;
-              "
-            >
+  type="text"
+  class="student-series-load"
+  value="${savedSeries ? escapeWorkoutHtml(savedLoad) : ""}"
+  placeholder="${escapeWorkoutHtml(firstWeek.load || "—")}"
+  ${savedSeries ? "readonly" : ""}
+  style="
+    width:100%;
+    box-sizing:border-box;
+    background:${savedSeries ? "#181818" : "#111"};
+    border:1px solid #333;
+    border-radius:5px;
+    color:#fff;
+    padding:9px 7px;
+    font-size:12px;
+  "
+>
           </div>
 
           <div>
