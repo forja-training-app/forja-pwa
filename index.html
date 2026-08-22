@@ -12249,7 +12249,37 @@ async function openStudentWorkoutDay(
       seriesIndex < seriesCount;
       seriesIndex++
     ) {
+      const savedLog =
+        savedLogsForExercise.find(
+          function(log) {
+            return Number(log.series_number) ===
+              seriesIndex + 1;
+          }
+        );
 
+      const savedReps =
+        savedLog &&
+        savedLog.reps !== null &&
+        savedLog.reps !== undefined
+          ? savedLog.reps
+          : "";
+
+      const savedLoad =
+        savedLog &&
+        savedLog.load !== null &&
+        savedLog.load !== undefined
+          ? savedLog.load
+          : "";
+
+      const savedRpe =
+        savedLog &&
+        savedLog.rpe !== null &&
+        savedLog.rpe !== undefined
+          ? savedLog.rpe
+          : "";
+
+      const savedSeries =
+        !!savedLog;
       seriesHtml += `
 
         <div
