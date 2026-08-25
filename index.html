@@ -13838,6 +13838,39 @@ data-series-index="${seriesIndex}"
 
     });
 
+  /* =====================================
+   GUARDAR REPS + CARGA + RPE
+   EN LOCALSTORAGE EN TIEMPO REAL
+===================================== */
+
+studentWorkoutScreen
+  .querySelectorAll(
+    ".student-series-reps, .student-series-load, .student-series-rpe"
+  )
+  .forEach(function(input) {
+
+    input.addEventListener(
+      "input",
+      function() {
+
+        saveStudentWorkoutValue(
+          workout,
+          day,
+          weekNumber,
+          input.dataset.exerciseId,
+          input.dataset.seriesIndex,
+          input.classList.contains("student-series-reps")
+            ? "reps"
+            : input.classList.contains("student-series-load")
+              ? "load"
+              : "rpe",
+          input.value
+        );
+
+      }
+    );
+
+  });
 
   /* =====================================
      HISTORIAL POR EJERCICIO
