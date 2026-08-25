@@ -12962,7 +12962,11 @@ data-series-index="${seriesIndex}"
             <input
   type="text"
   class="student-series-load"
-  value="${savedSeries ? escapeWorkoutHtml(savedLoad) : ""}"
+  data-exercise-id="${escapeWorkoutHtml(
+  exercise.id || globalExerciseIndex
+)}"
+data-series-index="${seriesIndex}"
+ value="${escapeWorkoutHtml(displayLoad)}"
   placeholder="${escapeWorkoutHtml(firstWeek.load || "—")}"
   ${savedSeries ? "readonly" : ""}
   style="
@@ -13511,7 +13515,7 @@ data-series-index="${seriesIndex}"
     exercise.id || globalExerciseIndex
   )}"
   data-series-index="${seriesIndex}"
-  value="${savedSeries ? escapeWorkoutHtml(savedLoad) : ""}"
+ value="${escapeWorkoutHtml(displayLoad)}"
   placeholder="${escapeWorkoutHtml(firstWeek.load || "—")}"
   ${savedSeries ? "readonly" : ""}
   style="
