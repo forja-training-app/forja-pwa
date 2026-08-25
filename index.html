@@ -4959,15 +4959,21 @@ function showStudents(fromHistory) {
       }
 
 
-      if (session) {
+     if (session) {
 
-        showApp();
+  /*
+   * No mostramos ningún panel todavía.
+   * Primero identificamos el rol del usuario.
+   */
+  await routeAuthenticatedUser(
+    session
+  );
 
-      } else {
+} else {
 
-        showLogin();
+  showLogin();
 
-      }
+}
 
     }
 
