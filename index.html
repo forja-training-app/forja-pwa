@@ -4656,6 +4656,38 @@ function saveStudentWorkoutValue(
   value
 ) {
 
+  function clearStudentWorkoutDraft(
+  workout,
+  day,
+  weekNumber
+) {
+
+  const key =
+    getStudentWorkoutDraftKey(
+      workout,
+      day,
+      weekNumber
+    );
+
+  if (!key) {
+    return;
+  }
+
+  try {
+
+    localStorage.removeItem(key);
+
+  } catch (error) {
+
+    console.error(
+      "FORJA — Error limpiando borrador local:",
+      error
+    );
+
+  }
+
+}
+  
   const key =
     getStudentWorkoutDraftKey(
       workout,
