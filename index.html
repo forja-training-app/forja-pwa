@@ -4558,7 +4558,182 @@ button[onclick*="Como"] {
 
     let currentStudent = null;
 
+/* =====================================
+   FORJA — BORRADOR LOCAL DE CARGAS
+===================================== */
 
+function getStudentWorkoutDraftKey(workout, day, weekNumber) {
+
+  if (
+    !currentStudent ||
+    !currentStudent.id ||
+    !workout ||
+    !workout.id ||
+    !day ||
+    !day.id
+  ) {
+    return null;
+  }
+
+  return (
+    "forja_student_workout_draft_v1_" +
+    String(currentStudent.id) +
+    "_" +
+    String(workout.id) +
+    "_semana_" +
+    String(weekNumber || 1) +
+    "_dia_" +
+    String(day.id)
+  );
+}
+
+
+function getStudentWorkoutDraft(
+  workout,
+  day,
+  weekNumber
+) {
+
+  const key =
+    getStudentWorkoutDraftKey(
+      workout,
+      day,
+      weekNumber
+    );
+
+  if (!key) {
+    return {
+      loads: {}
+    };
+  }
+
+  try {
+
+    const saved =
+      localStorage.getItem(key);
+
+    if (!saved) {
+      return {
+        loads: {}
+      };
+    }
+
+    const parsed =
+      JSON.parse(saved);
+
+    return {
+      loads:
+        parsed &&
+        parsed.loads &&
+        typeof parsed.loads === "object"
+          ? parsed.loads
+          : {}
+    };
+
+  } catch (error) {
+
+    console.error(
+      "FORJA — Error leyendo cargas locales:",
+      error
+    );
+
+    return {
+      loads: {}
+    };
+
+  }
+
+}
+
+
+function saveStudentWorkoutLoad(
+  workout,
+  day,
+  weekNumber,
+  exerciseId,
+  seriesIndex,
+  value
+) {
+
+  const key =
+    getStudentWorkoutDraftKey(
+      workout,
+      day,
+      weekNumber
+    );
+
+  if (!key) {
+    return;
+  }
+
+  try {
+
+    const draft =
+      getStudentWorkoutDraft(
+        workout,
+        day,
+        weekNumber
+      );
+
+    const loadKey =
+      String(exerciseId) +
+      "_" +
+      String(seriesIndex);
+
+    draft.loads[loadKey] =
+      value === undefined ||
+      value === null
+        ? ""
+        : String(value);
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(draft)
+    );
+
+  } catch (error) {
+
+    console.error(
+      "FORJA — Error guardando carga local:",
+      error
+    );
+
+  }
+
+}
+
+
+function clearStudentWorkoutDraft(
+  workout,
+  day,
+  weekNumber
+) {
+
+  const key =
+    getStudentWorkoutDraftKey(
+      workout,
+      day,
+      weekNumber
+    );
+
+  if (!key) {
+    return;
+  }
+
+  try {
+
+    localStorage.removeItem(key);
+
+  } catch (error) {
+
+    console.error(
+      "FORJA — Error limpiando borrador local:",
+      error
+    );
+
+  }
+
+}
     /* =====================================
        MOSTRAR LOGIN
     ====================================== */
