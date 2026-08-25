@@ -12840,6 +12840,50 @@ const savedLocalLoads =
 
       const savedSeries =
         !!savedLog;
+      const localDraft =
+  getStudentWorkoutDraft(
+    workout,
+    day,
+    weekNumber
+  );
+
+const localValueKey =
+  String(exercise.id) +
+  "_" +
+  String(seriesIndex);
+
+const localValues =
+  localDraft.values &&
+  localDraft.values[localValueKey]
+    ? localDraft.values[localValueKey]
+    : {};
+
+const displayReps =
+  savedSeries
+    ? savedReps
+    : (
+        localValues.reps !== undefined
+          ? localValues.reps
+          : ""
+      );
+
+const displayLoad =
+  savedSeries
+    ? savedLoad
+    : (
+        localValues.load !== undefined
+          ? localValues.load
+          : ""
+      );
+
+const displayRpe =
+  savedSeries
+    ? savedRpe
+    : (
+        localValues.rpe !== undefined
+          ? localValues.rpe
+          : ""
+      );
       seriesHtml += `
 
         <div
