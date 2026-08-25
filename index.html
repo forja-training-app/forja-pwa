@@ -13475,7 +13475,7 @@ const displayRpe =
   exercise.id || globalExerciseIndex
 )}"
 data-series-index="${seriesIndex}"
-              value="${savedSeries ? escapeWorkoutHtml(savedReps) : ""}"
+             value="${escapeWorkoutHtml(displayReps)}"
               placeholder="${escapeWorkoutHtml(firstWeek.reps || "—")}"
               ${savedSeries ? "readonly" : ""}
              
