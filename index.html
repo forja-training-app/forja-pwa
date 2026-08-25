@@ -5369,16 +5369,15 @@ if (event === "INITIAL_SESSION") {
 
   }
 
-  setTimeout(
-    function() {
+  /*
+   * La sesión inicial se procesa desde checkSession().
+   *
+   * No volvemos a ejecutar routeAuthenticatedUser()
+   * acá para evitar que la app se enrute dos veces
+   * al abrirse.
+   */
 
-      routeAuthenticatedUser(
-        session
-      );
-
-    },
-    0
-  );
+  return;
 
 }
 
