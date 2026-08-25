@@ -13361,9 +13361,14 @@ const savedLocalLoads =
               type="number"
               min="0"
               class="student-series-reps"
+               data-exercise-id="${escapeWorkoutHtml(
+  exercise.id || globalExerciseIndex
+)}"
+data-series-index="${seriesIndex}"
               value="${savedSeries ? escapeWorkoutHtml(savedReps) : ""}"
               placeholder="${escapeWorkoutHtml(firstWeek.reps || "—")}"
               ${savedSeries ? "readonly" : ""}
+             
               style="
                 width:100%;
                 box-sizing:border-box;
@@ -13389,23 +13394,27 @@ const savedLocalLoads =
               CARGA
             </div>
 
-            <input
-              type="text"
-              class="student-series-load"
-              value="${savedSeries ? escapeWorkoutHtml(savedLoad) : ""}"
-              placeholder="${escapeWorkoutHtml(firstWeek.load || "—")}"
-              ${savedSeries ? "readonly" : ""}
-              style="
-                width:100%;
-                box-sizing:border-box;
-                background:${savedSeries ? "#181818" : "#111"};
-                border:1px solid #333;
-                border-radius:5px;
-                color:#fff;
-                padding:9px 7px;
-                font-size:12px;
-              "
-            >
+          <input
+  type="text"
+  class="student-series-load"
+  data-exercise-id="${escapeWorkoutHtml(
+    exercise.id || globalExerciseIndex
+  )}"
+  data-series-index="${seriesIndex}"
+  value="${savedSeries ? escapeWorkoutHtml(savedLoad) : ""}"
+  placeholder="${escapeWorkoutHtml(firstWeek.load || "—")}"
+  ${savedSeries ? "readonly" : ""}
+  style="
+    width:100%;
+    box-sizing:border-box;
+    background:${savedSeries ? "#181818" : "#111"}; 
+    border:1px solid #333;
+    border-radius:5px;
+    color:#fff;
+    padding:9px 7px;
+    font-size:12px;
+  "
+>
           </div>
 
           <div>
@@ -13420,15 +13429,19 @@ const savedLocalLoads =
               RPE
             </div>
 
-            <input
-              type="number"
-              min="0"
-              max="10"
-              step="0.5"
-              class="student-series-rpe"
-              value="${savedSeries ? escapeWorkoutHtml(savedRpe) : ""}"
-              placeholder="${escapeWorkoutHtml(firstWeek.rpe || "—")}"
-              ${savedSeries ? "readonly" : ""}
+           <input
+  type="number"
+  min="0"
+  max="10"
+  step="0.5"
+  class="student-series-rpe"
+  data-exercise-id="${escapeWorkoutHtml(
+    exercise.id || globalExerciseIndex
+  )}"
+  data-series-index="${seriesIndex}"
+  value="${savedSeries ? escapeWorkoutHtml(savedRpe) : ""}"
+  placeholder="${escapeWorkoutHtml(firstWeek.rpe || "—")}"
+  ${savedSeries ? "readonly" : ""}
               style="
                 width:100%;
                 box-sizing:border-box;
