@@ -13000,7 +13000,11 @@ data-series-index="${seriesIndex}"
   max="10"
   step="0.5"
   class="student-series-rpe"
-  value="${savedSeries ? escapeWorkoutHtml(savedRpe) : ""}"
+  data-exercise-id="${escapeWorkoutHtml(
+  exercise.id || globalExerciseIndex
+)}"
+data-series-index="${seriesIndex}"
+  value="${escapeWorkoutHtml(displayRpe)}"
   placeholder="${escapeWorkoutHtml(firstWeek.rpe || "—")}"
   ${savedSeries ? "readonly" : ""}
   style="
@@ -13553,7 +13557,7 @@ data-series-index="${seriesIndex}"
     exercise.id || globalExerciseIndex
   )}"
   data-series-index="${seriesIndex}"
-  value="${savedSeries ? escapeWorkoutHtml(savedRpe) : ""}"
+  value="${escapeWorkoutHtml(displayRpe)}"
   placeholder="${escapeWorkoutHtml(firstWeek.rpe || "—")}"
   ${savedSeries ? "readonly" : ""}
               style="
