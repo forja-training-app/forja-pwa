@@ -12927,7 +12927,11 @@ const displayRpe =
   type="number"
   min="0"
   class="student-series-reps"
-  value="${savedSeries ? escapeWorkoutHtml(savedReps) : ""}"
+  data-exercise-id="${escapeWorkoutHtml(
+  exercise.id || globalExerciseIndex
+)}"
+data-series-index="${seriesIndex}"
+  value="${escapeWorkoutHtml(displayReps)}"
   placeholder="${escapeWorkoutHtml(firstWeek.reps || "—")}"
   ${savedSeries ? "readonly" : ""}
   style="
