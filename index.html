@@ -12426,7 +12426,7 @@ function renderStudentLastPerformance(exercise, historyMap) {
 async function openStudentWorkoutDay(
   workout,
   day,
-  weekNumber
+  weekNumber = 1
 ) {
 
   const studentHomeScreen =
@@ -12472,7 +12472,17 @@ async function openStudentWorkoutDay(
     Array.isArray(day.exercises)
       ? day.exercises
       : [];
+  
+const studentWorkoutDraft =
+  getStudentWorkoutDraft(
+    workout,
+    day,
+    weekNumber
+  );
 
+const savedLocalLoads =
+  studentWorkoutDraft.loads || {};
+  
   const exerciseLibrary =
     await loadExerciseLibrary(false);
 
