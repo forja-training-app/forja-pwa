@@ -4646,12 +4646,13 @@ function getStudentWorkoutDraft(
 }
 
 
-function saveStudentWorkoutLoad(
+function saveStudentWorkoutValue(
   workout,
   day,
   weekNumber,
   exerciseId,
   seriesIndex,
+  field,
   value
 ) {
 
@@ -4675,12 +4676,30 @@ function saveStudentWorkoutLoad(
         weekNumber
       );
 
-    const loadKey =
+    const valueKey =
       String(exerciseId) +
       "_" +
       String(seriesIndex);
 
-    draft.loads[loadKey] =
+    if (
+      !draft.values ||
+      typeof draft.values !== "object"
+    ) {
+
+      draft.values = {};
+
+    }
+
+    if (
+      !draft.values[valueKey] ||
+      typeof draft.values[valueKey] !== "object"
+    ) {
+
+      draft.values[valueKey] = {};
+
+    }
+
+    draft.values[valueKey][field] =
       value === undefined ||
       value === null
         ? ""
@@ -4694,7 +4713,7 @@ function saveStudentWorkoutLoad(
   } catch (error) {
 
     console.error(
-      "FORJA — Error guardando carga local:",
+      "FORJA — Error guardando dato local:",
       error
     );
 
