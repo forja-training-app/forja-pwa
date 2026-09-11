@@ -15638,16 +15638,20 @@ async function createWorkout(event) {
 
     if (archiveError) {
 
-      console.error(
-        "Error archivando rutina anterior:",
-        archiveError
-      );
+  console.error(
+    "ERROR COMPLETO ARCHIVANDO RUTINA:",
+    archiveError
+  );
 
-      message.textContent =
-        "NO SE PUDO ARCHIVAR LA RUTINA ANTERIOR.";
+  message.textContent =
+    "ERROR: " +
+    (
+      archiveError.message ||
+      "No se pudo archivar la rutina anterior."
+    );
 
-      return;
-    }
+  return;
+}
   }
   
   const {
