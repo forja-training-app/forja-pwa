@@ -15613,6 +15613,43 @@ async function createWorkout(event) {
 
   }
 
+/* =====================================
+     ARCHIVAR RUTINA ACTIVA ANTERIOR
+  ===================================== */
+
+  if (status === "active") {
+
+    const {
+      error: archiveError
+    } =
+      await supabaseClient
+        .from("workouts")
+        .update({
+          status: "archived"
+        })
+        .eq(
+          "student_id",
+          currentStudent.id
+        )
+        .eq(
+          "status",
+          "active"
+        );
+
+    if (archiveError) {
+
+      console.error(
+        "Error archivando rutina anterior:",
+        archiveError
+      );
+
+      message.textContent =
+        "NO SE PUDO ARCHIVAR LA RUTINA ANTERIOR.";
+
+      return;
+    }
+  }
+  
   const {
     data,
     error
