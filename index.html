@@ -15784,9 +15784,7 @@ function createWorkoutId(prefix) {
 function getWorkoutEditorState(workout) {
 
   const key =
-    getWorkoutBuilderStorageKey(
-      workout
-    );
+    getWorkoutBuilderStorageKey(workout);
 
   try {
 
@@ -15800,7 +15798,8 @@ function getWorkoutEditorState(workout) {
 
       if (
         parsed &&
-        Array.isArray(parsed.days)
+        Array.isArray(parsed.days) &&
+        parsed.days.length > 0
       ) {
 
         return normalizeWorkoutState(
@@ -15821,10 +15820,35 @@ function getWorkoutEditorState(workout) {
 
   }
 
+
+  /*
+    Si no hay estado local válido,
+    recuperamos la rutina directamente
+    desde workout.plan
+  */
+
+  if (
+    workout &&
+    workout.plan &&
+    Array.isArray(workout.plan.days)
+  ) {
+
+    return normalizeWorkoutState(
+      {
+        workout: workout,
+        days: workout.plan.days
+      },
+      workout
+    );
+
+  }
+
+
   return {
     workout: workout,
     days: []
   };
+
 }
 
 
