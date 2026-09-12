@@ -15612,47 +15612,11 @@ async function createWorkout(event) {
     return;
 
   }
-
 /* =====================================
-     ARCHIVAR RUTINA ACTIVA ANTERIOR
-  ===================================== */
+   LA NUEVA RUTINA NACE COMO BORRADOR
+===================================== */
 
-  if (status === "active") {
-
-    const {
-      error: archiveError
-    } =
-      await supabaseClient
-        .from("workouts")
-        .update({
-          status: "archived"
-        })
-        .eq(
-          "student_id",
-          currentStudent.id
-        )
-        .eq(
-          "status",
-          "active"
-        );
-
-    if (archiveError) {
-
-  console.error(
-    "ERROR COMPLETO ARCHIVANDO RUTINA:",
-    archiveError
-  );
-
-  message.textContent =
-    "ERROR: " +
-    (
-      archiveError.message ||
-      "No se pudo archivar la rutina anterior."
-    );
-
-  return;
-}
-  }
+const newWorkoutStatus = "draft";
   
   const {
     data,
@@ -15678,7 +15642,7 @@ async function createWorkout(event) {
           weeks,
 
         status:
-          status
+          newWorkoutStatus
 
       })
       .select()
