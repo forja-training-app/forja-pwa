@@ -17791,43 +17791,71 @@ async function publishWorkout(
       workout
     );
 
-    /* =====================================
-     ARCHIVAR RUTINA ACTIVA ANTERIOR
-  ===================================== */
+/* =====================================
+   ARCHIVAR RUTINA ACTIVA ANTERIOR
+===================================== */
 
-  const {
-    error: archiveError
-  } =
-    await supabaseClient
-      .from("workouts")
-      .update({
-        status: "archived"
-      })
-      .eq(
-        "student_id",
-        workout.student_id
-      )
-      .eq(
-        "status",
-        "active"
-      )
-      .neq(
-        "id",
-        workout.id
-      );
+const {
+  data: currentWorkout,
+  error: currentWorkoutError
+} =
+  await supabaseClient
+    .from("workouts")
+    .select("student_id")
+    .eq(
+      "id",
+      workout.id
+    )
+    .single();
 
-  if (archiveError) {
+if (currentWorkoutError) {
 
-    console.error(
-      "Error archivando rutina anterior:",
-      archiveError
+  console.error(
+    "Error obteniendo alumna de la rutina:",
+    currentWorkoutError
+  );
+
+  message.textContent =
+    "NO SE PUDO IDENTIFICAR LA ALUMNA DE LA RUTINA.";
+
+  return;
+
+}
+
+const {
+  error: archiveError
+} =
+  await supabaseClient
+    .from("workouts")
+    .update({
+      status: "archived"
+    })
+    .eq(
+      "student_id",
+      currentWorkout.student_id
+    )
+    .eq(
+      "status",
+      "active"
+    )
+    .neq(
+      "id",
+      workout.id
     );
 
-    message.textContent =
-      "NO SE PUDO ARCHIVAR LA RUTINA ACTIVA ANTERIOR.";
+if (archiveError) {
 
-    return;
+  console.error(
+    "Error archivando rutina anterior:",
+    archiveError
+  );
 
+  message.textContent =
+    "NO SE PUDO ARCHIVAR LA RUTINA ACTIVA ANTERIOR.";
+
+  return;
+
+}
     }
   const {
     data: updatedWorkout,
