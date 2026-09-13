@@ -5199,52 +5199,18 @@ function clearStudentWorkoutDraft(
        MOSTRAR LOGIN
     ====================================== */
 
-    function showLogin() {
+   function showLogin() {
 
-      document.body.classList.remove("forja-student-mode");
+  document.body.classList.remove(
+    "forja-student-mode",
+    "forja-trainer-mode"
+  );
 
-      loginScreen.style.display = "block";
+  document.body.classList.add(
+    "forja-login-mode"
+  );
 
-      if (loginPanel) {
-        loginPanel.style.display = "block";
-      }
-
-      if (forgotPasswordPanel) {
-        forgotPasswordPanel.style.display = "none";
-      }
-
-      if (resetPasswordPanel) {
-        resetPasswordPanel.style.display = "none";
-      }
-
-      appScreen.style.display = "none";
-
-      const studentBottomNav = document.getElementById("student-bottom-nav");
-      if (studentBottomNav) studentBottomNav.style.display = "none";
-
-      studentsScreen.style.display = "none";
-
-      const studentHomeScreen = document.getElementById("student-home-screen");
-      if (studentHomeScreen) studentHomeScreen.style.display = "none";
-
-      if (studentDetailScreen) {
-        studentDetailScreen.style.display = "none";
-      }
-
-      if (workoutsScreen) {
-        workoutsScreen.style.display = "none";
-      }
-
-      if (workoutBuilderScreen) {
-        workoutBuilderScreen.style.display = "none";
-      }
-
-      if (exerciseLibraryScreen) {
-        exerciseLibraryScreen.style.display = "none";
-      }
-
-    }
-
+}
 
    /* =====================================
    MOSTRAR PANEL
