@@ -22221,35 +22221,32 @@ window.addEventListener(
 
   function setup(){
 
-    if(studentNavigationReady) return;
+  if(studentNavigationReady) return;
 
-    studentNavigationReady = true;
+  studentNavigationReady = true;
 
+  document.addEventListener(
+    "click",
+    function(event){
 
-    document.querySelectorAll(
-      "#student-bottom-nav .student-bottom-nav-item"
-    ).forEach(function(item){
+      const item =
+        event.target.closest(
+          "#student-bottom-nav .student-bottom-nav-item"
+        );
 
-      if(
-        item.dataset.ready === "true"
-      ) return;
+      if(!item) return;
 
+      event.preventDefault();
 
-      item.dataset.ready = "true";
+      const tabName =
+        item.dataset.studentTab;
 
+      if(!tabName) return;
 
-      item.addEventListener(
-        "click",
-        function(){
+      navigateStudentTab(tabName);
 
-          navigateStudentTab(
-            item.dataset.studentTab
-          );
-
-        }
-      );
-
-    });
+    }
+  );
 
   }
 
