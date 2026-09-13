@@ -10794,9 +10794,9 @@ async function openStudentHome() {
     return;
   }
 
-  loginScreen.style.display = "none";
-  appScreen.style.display = "none";
-  studentsScreen.style.display = "none";
+  loginScreen.style.setProperty("display", "none", "important");
+appScreen.style.setProperty("display", "none", "important");
+studentsScreen.style.setProperty("display", "none", "important");
 
   if (workoutsScreen) {
     workoutsScreen.style.display = "none";
@@ -10828,7 +10828,7 @@ async function openStudentHome() {
     return;
   }
 
-  studentHomeScreen.style.display = "block";
+  studentHomeScreen.style.setProperty("display", "block", "important");
 
   if (typeof window.forjaShowStudentTab === "function") {
     window.forjaShowStudentTab("home");
