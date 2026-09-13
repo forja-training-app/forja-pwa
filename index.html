@@ -14614,73 +14614,7 @@ week_number:
 }
 }
     
-/* =====================================
-   CARGAR RUTINAS DE UNA ALUMNA
-===================================== */
 
-async function loadStudentWorkouts(student) {
-
-  const container =
-    document.getElementById(
-      "student-workouts-container"
-    );
-
-  if (!container) {
-    return;
-  }
-
-  container.innerHTML = `
-
-    <p class="workouts-loading">
-      CARGANDO RUTINAS...
-    </p>
-
-  `;
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("workouts")
-      .select("*")
-      .eq("student_id", student.id)
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      );
-
-  if (error) {
-
-    console.error(
-      "Error cargando rutinas:",
-      error
-    );
-
-    container.innerHTML = `
-
-      <div class="student-card">
-
-        <div class="detail-value">
-          NO SE PUDIERON CARGAR LAS RUTINAS.
-        </div>
-
-        <p style="color:#777;margin-top:8px;">
-          ${escapeWorkoutHtml(
-            error.message || "Error desconocido"
-          )}
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-  if (!data || data.length === 0) {
 
 
 /* =====================================
