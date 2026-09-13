@@ -3379,6 +3379,7 @@ button[onclick*="Como"] {
 
   background: #090A0D !important;
   border-top: 1px solid #292929 !important;
+  display: none !important;
 }
 
 #student-bottom-nav .student-bottom-nav-item {
@@ -21883,7 +21884,11 @@ async function openStudentTrainingSessionDetail(
     document.getElementById("student-home-screen");
 
   if(!screen) return;
-
+                
+const bottomNav = document.getElementById("student-bottom-nav");
+if (bottomNav) {
+    bottomNav.style.display = "flex";
+}
 
   /* =====================================
      ESTADO INICIAL DE LA ALUMNA
