@@ -5231,13 +5231,55 @@ function showApp(fromHistory) {
   document.body.classList.add(
     "forja-trainer-mode"
   );
-  
-loginScreen.style.display = "none";
 
-if (appScreen) {
-  appScreen.style.display = "block";
-}
-  
+  /* =====================================
+     MOSTRAR PANEL PRINCIPAL
+  ====================================== */
+
+  loginScreen.style.display = "none";
+
+  if (appScreen) {
+    appScreen.style.display = "block";
+  }
+
+  /* =====================================
+     OCULTAR TODAS LAS PANTALLAS INTERNAS
+  ====================================== */
+
+  if (studentsScreen) {
+    studentsScreen.style.display = "none";
+  }
+
+  if (studentDetailScreen) {
+    studentDetailScreen.style.display = "none";
+  }
+
+  if (workoutsScreen) {
+    workoutsScreen.style.display = "none";
+  }
+
+  if (workoutBuilderScreen) {
+    workoutBuilderScreen.style.display = "none";
+  }
+
+  if (exerciseLibraryScreen) {
+    exerciseLibraryScreen.style.display = "none";
+  }
+
+  const studentBottomNav =
+    document.getElementById("student-bottom-nav");
+
+  if (studentBottomNav) {
+    studentBottomNav.style.display = "none";
+  }
+
+  const studentHomeScreen =
+    document.getElementById("student-home-screen");
+
+  if (studentHomeScreen) {
+    studentHomeScreen.style.display = "none";
+  }
+
   /* =====================================
      HISTORIAL DE ENTRENADORA
   ====================================== */
@@ -5256,8 +5298,6 @@ if (appScreen) {
   }
 
 }
-
-
 
     /* =====================================
    MOSTRAR MIS ALUMNAS
