@@ -22275,7 +22275,7 @@ async function openStudentTrainingSessionDetail(
   window.forjaShowStudentTab=showStudentTab;
   window.forjaNavigateStudentTab=navigateStudentTab;
 
- window.addEventListener("popstate", function(event) {
+window.addEventListener("popstate", async function(event) {
 
   /* =====================================
      FORJA — NAVEGACIÓN ALUMNA
@@ -22287,10 +22287,8 @@ async function openStudentTrainingSessionDetail(
     );
 
   /*
-   * Si el historial de un ejercicio está abierto,
-   * NO cambiamos de pantalla ni renderizamos otra pestaña.
-   *
-   * El modal es independiente de la navegación.
+   * Si el historial de ejercicio está abierto,
+   * la navegación del teléfono solamente lo cierra.
    */
   if (historyModal) {
 
@@ -22299,49 +22297,173 @@ async function openStudentTrainingSessionDetail(
     return;
   }
 
+
   const screen =
     getStudentScreen();
 
+  if (!screen) {
+    return;
+  }
+
+
   const state =
-    event.state;
+    event.state || {};
+
 
   const workoutScreen =
     document.getElementById(
       "student-workout-screen"
     );
 
-  /*
-   * Al volver desde entrenamiento,
-   * cerramos la pantalla independiente.
-   */
+
+  /* =====================================
+     VOLVER AL ENTRENAMIENTO
+  ====================================== */
+
   if (
-    workoutScreen &&
-    workoutScreen.style.display !== "none" &&
-    !(
-      state &&
-      state.forjaStudentNavigation &&
-      state.studentScreen === "workout"
-    )
+    state.forjaStudentNavigation &&
+    state.studentScreen === "workout"
   ) {
 
+    if (workoutScreen) {
+      workoutScreen.style.display =
+        "block";
+    }
+
+    screen.style.display =
+      "none";
+
+    return;
+  }
+
+
+  /* =====================================
+     VOLVER AL DETALLE DE RUTINA
+  ====================================== */
+
+  if (
+    state.forjaStudentNavigation &&
+    state.studentScreen === "routine-detail"
+  ) {
+
+    /*
+     * Cerramos el entrenamiento.
+     */
+    if (workoutScreen) {
+      workoutScreen.style.display =
+        "none";
+    }
+
+
+    /*
+     * Mostramos la pestaña RUTINAS.
+     */
+    screen.style.display =
+      "block";
+
+    screen
+      .querySelectorAll(".student-tab-panel")
+      .forEach(function(panel) {
+
+        panel.style.display =
+          panel.dataset.tabPanel === "routines"
+            ? "block"
+            : "none";
+
+      });
+
+
+    screen
+      .querySelectorAll(".student-bottom-nav-item")
+      .forEach(function(item) {
+
+        item.classList.toggle(
+          "is-active",
+          item.dataset.studentTab === "routines"
+        );
+
+      });
+
+
+    /*
+     * Buscamos nuevamente la rutina
+     * que corresponde al estado.
+     */
+    if (
+      typeof currentStudent !== "undefined" &&
+      currentStudent &&
+      state.workoutId
+    ) {
+
+      const {
+        data: routines,
+        error
+      } =
+        await supabaseClient
+          .from("workouts")
+          .select("*")
+          .eq(
+            "student_id",
+            currentStudent.id
+          )
+          .eq(
+            "id",
+            state.workoutId
+          )
+          .limit(1);
+
+
+      if (
+        !error &&
+        routines &&
+        routines.length
+      ) {
+
+        showStudentRoutineDetail(
+          routines[0],
+          !!state.readOnly
+        );
+
+      }
+
+    }
+
+    return;
+  }
+
+
+  /* =====================================
+     VOLVER A UNA PESTAÑA NORMAL
+  ====================================== */
+
+  if (
+    state.forjaStudentNavigation &&
+    state.studentTab
+  ) {
+
+    if (workoutScreen) {
+      workoutScreen.style.display =
+        "none";
+    }
+
+    renderStudentTab(
+      state.studentTab
+    );
+
+    return;
+  }
+
+
+  /* =====================================
+     ESTADO SIN NAVEGACIÓN FORJA
+  ====================================== */
+
+  if (workoutScreen) {
     workoutScreen.style.display =
       "none";
   }
 
-  if (
-    !screen ||
-    screen.style.display === "none"
-  ) {
-    return;
-  }
-
-  renderStudentTab(
-    state &&
-    state.forjaStudentNavigation &&
-    state.studentTab
-      ? state.studentTab
-      : "home"
-  );
+  renderStudentTab("home");
 
 });
 
