@@ -14793,44 +14793,426 @@ async function loadStudentWorkouts(student) {
           </button>
 
           <button
-            type="button"
-            class="button workout-delete-existing-button"
-            data-workout-id="${escapeWorkoutHtml(workout.id)}"
-            style="border-color:#E60000;color:#ffffff;"
-          >
-            ELIMINAR
-          </button>
+/* =====================================
+   CARGAR RUTINAS DE UNA ALUMNA
+===================================== */
 
-        </div>
+async function loadStudentWorkouts(student) {
 
-      `;
+  const container =
+    document.getElementById(
+      "student-workouts-container"
+    );
 
-      container.appendChild(card);
+  if (!container) {
+    return;
+  }
 
-      const button =
-        card.querySelector(
-          ".workout-open-existing-button"
-        );
+  container.innerHTML = `
 
-      button.addEventListener(
-        "click",
-        async function() {
+    <p class="workouts-loading">
+      CARGANDO RUTINAS...
+    </p>
 
-          await openExistingWorkout(
-            workout
-          );
+  `;
 
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("workouts")
+      .select("*")
+      .eq(
+        "student_id",
+        student.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
         }
       );
 
-      const deleteButton = card.querySelector(".workout-delete-existing-button");
-      deleteButton.addEventListener("click", async function(event) {
-        event.stopPropagation();
-        await deleteWorkout(workout);
-      });
+  if (error) {
 
-    }
-  );
+    console.error(
+      "Error cargando rutinas:",
+      error
+    );
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO SE PUDIERON CARGAR LAS RUTINAS.
+        </div>
+
+        <p
+          style="
+            color:#777;
+            margin-top:8px;
+          "
+        >
+          ${escapeWorkoutHtml(
+            error.message ||
+            "Error desconocido"
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML = `
+
+      <div class="student-card">
+
+        <div class="menu-label">
+          RUTINAS
+        </div>
+
+        <div class="detail-value">
+          TODAVÍA NO HAY RUTINAS
+        </div>
+
+        <p
+          style="
+            color:#777;
+            font-size:11px;
+            line-height:1.6;
+            margin-top:8px;
+          "
+        >
+          Creá la primera rutina para esta alumna.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  /*
+   * =====================================
+   * SEPARAMOS LAS RUTINAS
+   * =====================================
+   */
+
+  const activeWorkouts =
+    data.filter(
+      function(workout) {
+
+        return workout.status === "active";
+
+      }
+    );
+
+  const archivedWorkouts =
+    data.filter(
+      function(workout) {
+
+        return workout.status === "archived";
+
+      }
+    );
+
+  const draftWorkouts =
+    data.filter(
+      function(workout) {
+
+        return (
+          workout.status === "draft" ||
+          workout.status === "borrador" ||
+          !workout.status
+        );
+
+      }
+    );
+
+  container.innerHTML = "";
+
+  /*
+   * =====================================
+   * FUNCIÓN PARA CREAR TARJETA
+   * =====================================
+   */
+
+  function createWorkoutCard(
+    workout,
+    statusText,
+    statusColor,
+    buttonText
+  ) {
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+    card.className =
+      "student-card";
+
+    card.innerHTML = `
+
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          align-items:flex-start;
+          gap:12px;
+        "
+      >
+
+        <div>
+
+          <div class="menu-label">
+            RUTINA
+          </div>
+
+          <div class="detail-value">
+            ${escapeWorkoutHtml(
+              workout.name ||
+              "SIN NOMBRE"
+            )}
+          </div>
+
+          <div
+            style="
+              color:#777;
+              font-size:11px;
+              margin-top:6px;
+            "
+          >
+            ${Number(workout.weeks) || 1}
+            SEMANAS
+          </div>
+
+        </div>
+
+        <div
+          style="
+            font-size:10px;
+            font-weight:800;
+            color:${statusColor};
+            white-space:nowrap;
+          "
+        >
+          ${statusText}
+        </div>
+
+      </div>
+
+      <div
+        style="
+          display:flex;
+          gap:8px;
+          margin-top:16px;
+          flex-wrap:wrap;
+        "
+      >
+
+        <button
+          type="button"
+          class="button workout-open-existing-button"
+          data-workout-id="${escapeWorkoutHtml(
+            workout.id
+          )}"
+        >
+          ${buttonText}
+        </button>
+
+        <button
+          type="button"
+          class="button workout-delete-existing-button"
+          data-workout-id="${escapeWorkoutHtml(
+            workout.id
+          )}"
+          style="
+            border-color:#E60000;
+            color:#ffffff;
+          "
+        >
+          ELIMINAR
+        </button>
+
+      </div>
+
+    `;
+
+    const button =
+      card.querySelector(
+        ".workout-open-existing-button"
+      );
+
+    button.addEventListener(
+      "click",
+      async function() {
+
+        await openExistingWorkout(
+          workout
+        );
+
+      }
+    );
+
+    const deleteButton =
+      card.querySelector(
+        ".workout-delete-existing-button"
+      );
+
+    deleteButton.addEventListener(
+      "click",
+      async function(event) {
+
+        event.stopPropagation();
+
+        await deleteWorkout(
+          workout
+        );
+
+      }
+    );
+
+    return card;
+  }
+
+  /*
+   * =====================================
+   * RUTINA ACTUAL
+   * =====================================
+   */
+
+  if (activeWorkouts.length > 0) {
+
+    const title =
+      document.createElement(
+        "div"
+      );
+
+    title.className =
+      "menu-label";
+
+    title.style.margin =
+      "20px 0 10px";
+
+    title.textContent =
+      "RUTINA ACTUAL";
+
+    container.appendChild(
+      title
+    );
+
+    activeWorkouts.forEach(
+      function(workout) {
+
+        container.appendChild(
+          createWorkoutCard(
+            workout,
+            "ACTIVA",
+            "#E60000",
+            "VER RUTINA"
+          )
+        );
+
+      }
+    );
+
+  }
+
+  /*
+   * =====================================
+   * BORRADORES
+   * =====================================
+   */
+
+  if (draftWorkouts.length > 0) {
+
+    const title =
+      document.createElement(
+        "div"
+      );
+
+    title.className =
+      "menu-label";
+
+    title.style.margin =
+      "30px 0 10px";
+
+    title.textContent =
+      "BORRADORES";
+
+    container.appendChild(
+      title
+    );
+
+    draftWorkouts.forEach(
+      function(workout) {
+
+        container.appendChild(
+          createWorkoutCard(
+            workout,
+            "BORRADOR",
+            "#777",
+            "EDITAR RUTINA"
+          )
+        );
+
+      }
+    );
+
+  }
+
+  /*
+   * =====================================
+   * HISTORIAL DE RUTINAS
+   * =====================================
+   */
+
+  if (archivedWorkouts.length > 0) {
+
+    const title =
+      document.createElement(
+        "div"
+      );
+
+    title.className =
+      "menu-label";
+
+    title.style.margin =
+      "30px 0 10px";
+
+    title.textContent =
+      "HISTORIAL DE RUTINAS";
+
+    container.appendChild(
+      title
+    );
+
+    archivedWorkouts.forEach(
+      function(workout) {
+
+        container.appendChild(
+          createWorkoutCard(
+            workout,
+            "ARCHIVADA",
+            "#777",
+            "VER RUTINA"
+          )
+        );
+
+      }
+    );
+
+  }
+
 }
 
 
