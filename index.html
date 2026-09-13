@@ -11808,6 +11808,419 @@ async function openStudentRoutine(workout) {
   }
 
   }
+
+/* =====================================
+   RUTINAS DE LA ALUMNA
+   ACTUAL + HISTORIAL ACORDEÓN
+===================================== */
+
+async function loadStudentRoutineHistory(student) {
+
+  const container =
+    document.getElementById(
+      "student-routines-list"
+    );
+
+  if (!container || !student || !student.id) {
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="student-card">
+      <div class="detail-value">
+        CARGANDO RUTINAS...
+      </div>
+    </div>
+  `;
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("workouts")
+    .select("*")
+    .eq(
+      "student_id",
+      student.id
+    )
+    .in(
+      "status",
+      ["active", "archived"]
+    )
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
+  if (error) {
+
+    console.error(
+      "FORJA — Error cargando rutinas de alumna:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="student-card">
+        <div class="detail-value">
+          NO SE PUDIERON CARGAR LAS RUTINAS.
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  const routines =
+    data || [];
+
+  const activeRoutine =
+    routines.find(
+      function(workout) {
+        return workout.status === "active";
+      }
+    );
+
+  const archivedRoutines =
+    routines.filter(
+      function(workout) {
+        return workout.status === "archived";
+      }
+    );
+
+  let html = "";
+
+
+  /* =====================================
+     RUTINA ACTUAL
+  ===================================== */
+
+  html += `
+    <div
+      class="menu-label"
+      style="
+        margin-top:10px;
+        margin-bottom:10px;
+      "
+    >
+      RUTINA ACTUAL
+    </div>
+  `;
+
+  if (activeRoutine) {
+
+    html += `
+      <div
+        class="student-card student-current-routine-card"
+      >
+
+        <div class="student-routine-card-header">
+
+          <div>
+            <div class="student-routine-card-name">
+              ${escapeWorkoutHtml(
+                activeRoutine.name || "RUTINA"
+              )}
+            </div>
+
+            <div class="student-routine-card-status active">
+              ACTIVA
+            </div>
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="button student-current-routine-button"
+          data-workout-id="${escapeWorkoutHtml(
+            activeRoutine.id
+          )}"
+        >
+          VER RUTINA →
+        </button>
+
+      </div>
+    `;
+
+  } else {
+
+    html += `
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO HAY RUTINA ACTIVA
+        </div>
+
+      </div>
+    `;
+  }
+
+
+  /* =====================================
+     HISTORIAL
+  ===================================== */
+
+  if (archivedRoutines.length) {
+
+    html += `
+      <div
+        class="menu-label"
+        style="
+          margin-top:30px;
+          margin-bottom:10px;
+        "
+      >
+        HISTORIAL DE RUTINAS
+      </div>
+    `;
+
+    archivedRoutines.forEach(
+      function(workout, index) {
+
+        const accordionId =
+          "student-history-" +
+          String(workout.id);
+
+        html += `
+          <div
+            class="student-history-accordion"
+            data-history-id="${escapeWorkoutHtml(
+              workout.id
+            )}"
+          >
+
+            <button
+              type="button"
+              class="student-history-header"
+              aria-expanded="false"
+              aria-controls="${accordionId}"
+            >
+
+              <div class="student-history-header-info">
+
+                <div class="student-history-name">
+                  ${escapeWorkoutHtml(
+                    workout.name || "RUTINA"
+                  )}
+                </div>
+
+                <div class="student-history-meta">
+                  ${Number(workout.weeks) || 1}
+                  SEMANAS · ARCHIVADA
+                </div>
+
+              </div>
+
+              <div class="student-history-arrow">
+                +
+              </div>
+
+            </button>
+
+
+            <div
+              id="${accordionId}"
+              class="student-history-content"
+              hidden
+            >
+
+              <div class="student-history-detail">
+
+                <div class="student-history-status">
+                  RUTINA ARCHIVADA
+                </div>
+
+                <div class="student-history-description">
+                  Esta rutina ya no está activa,
+                  pero podés consultar tu historial.
+                </div>
+
+                <button
+                  type="button"
+                  class="button student-archived-routine-button"
+                  data-workout-id="${escapeWorkoutHtml(
+                    workout.id
+                  )}"
+                >
+                  VER RUTINA →
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        `;
+
+      }
+    );
+
+  }
+
+
+  container.innerHTML =
+    html;
+
+
+  /* =====================================
+     VER RUTINA ACTUAL
+  ===================================== */
+
+  const currentButton =
+    container.querySelector(
+      ".student-current-routine-button"
+    );
+
+  if (currentButton) {
+
+    currentButton.addEventListener(
+      "click",
+      async function() {
+
+        const workout =
+          routines.find(
+            function(item) {
+              return String(item.id) ===
+                String(
+                  currentButton.dataset.workoutId
+                );
+            }
+          );
+
+        if (!workout) {
+          return;
+        }
+
+        /*
+         * Mostramos las semanas y días
+         * que ya fueron cargados para
+         * la rutina activa.
+         */
+
+        const routinesList =
+          document.getElementById(
+            "student-routines-list"
+          );
+
+        const daysContainer =
+          document.getElementById(
+            "student-workout-days"
+          );
+
+        if (routinesList) {
+          routinesList.style.display =
+            "none";
+        }
+
+        if (daysContainer) {
+          daysContainer.style.display =
+            "block";
+        }
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      }
+    );
+
+  }
+
+
+  /* =====================================
+     ACORDEONES DEL HISTORIAL
+  ===================================== */
+
+  container
+    .querySelectorAll(
+      ".student-history-header"
+    )
+    .forEach(
+      function(header) {
+
+        header.addEventListener(
+          "click",
+          function() {
+
+            const contentId =
+              header.getAttribute(
+                "aria-controls"
+              );
+
+            const content =
+              document.getElementById(
+                contentId
+              );
+
+            if (!content) {
+              return;
+            }
+
+            const isOpen =
+              header.getAttribute(
+                "aria-expanded"
+              ) === "true";
+
+            /*
+             * Cerramos todos los demás.
+             */
+
+            container
+              .querySelectorAll(
+                ".student-history-header"
+              )
+              .forEach(
+                function(otherHeader) {
+
+                  otherHeader.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+
+                }
+              );
+
+            container
+              .querySelectorAll(
+                ".student-history-content"
+              )
+              .forEach(
+                function(otherContent) {
+
+                  otherContent.hidden =
+                    true;
+
+                }
+              );
+
+            /*
+             * Si estaba cerrado,
+             * lo abrimos.
+             */
+
+            if (!isOpen) {
+
+              header.setAttribute(
+                "aria-expanded",
+                "true"
+              );
+
+              content.hidden =
+                false;
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  }
+  
 /* =====================================
    ESTADO DE PAGO — ALUMNA
 ===================================== */
@@ -21264,6 +21677,22 @@ if (
     );
 
   }
+
+}
+
+  /* =====================================
+   RUTINAS — ACTUAL + HISTORIAL
+===================================== */
+
+if(
+  tabName === "routines" &&
+  typeof loadStudentRoutineHistory === "function" &&
+  currentStudent
+){
+
+  loadStudentRoutineHistory(
+    currentStudent
+  );
 
 }
 
