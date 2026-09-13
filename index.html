@@ -21235,7 +21235,21 @@ async function openStudentTrainingSessionDetail(
 
   });
 
+/* =====================================
+   RUTINAS
+===================================== */
 
+if (
+  tabName === "routines" &&
+  typeof loadStudentRoutineHistory === "function" &&
+  currentStudent
+) {
+
+  loadStudentRoutineHistory(
+    currentStudent
+  );
+
+}
   /* =====================================
      PROGRESO
   ====================================== */
