@@ -11780,6 +11780,35 @@ async function loadStudentRoutineHistory(student) {
     );
 
   }
+  /* =====================================
+   ABRIR RUTINA DESDE PANTALLA ALUMNA
+===================================== */
+
+async function openStudentRoutine(workout) {
+
+  await openPublishedWorkoutFromDatabase(
+    workout
+  );
+
+  const editButton =
+    document.getElementById(
+      "edit-published-workout-button"
+    );
+
+  const deleteButton =
+    document.getElementById(
+      "delete-published-workout-button"
+    );
+
+  if (editButton) {
+    editButton.remove();
+  }
+
+  if (deleteButton) {
+    deleteButton.remove();
+  }
+
+  }
 /* =====================================
    ESTADO DE PAGO — ALUMNA
 ===================================== */
