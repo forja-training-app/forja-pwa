@@ -14758,80 +14758,382 @@ async function loadStudentWorkouts(student) {
             >
               ${Number(workout.weeks) || 1}
               SEMANAS
-            </div>
+/* =====================================
+   CARGAR RUTINAS DE UNA ALUMNA
+===================================== */
 
+async function loadStudentWorkouts(student) {
+
+  const container =
+    document.getElementById(
+      "student-workouts-container"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = `
+    <p class="workouts-loading">
+      CARGANDO RUTINAS...
+    </p>
+  `;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("workouts")
+      .select("*")
+      .eq("student_id", student.id)
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+  if (error) {
+
+    console.error(
+      "Error cargando rutinas:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO SE PUDIERON CARGAR LAS RUTINAS.
+        </div>
+
+        <p style="color:#777;margin-top:8px;">
+          ${escapeWorkoutHtml(
+            error.message || "Error desconocido"
+          )}
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML = `
+      <div class="student-card">
+
+        <div class="menu-label">
+          RUTINAS
+        </div>
+
+        <div class="detail-value">
+          TODAVÍA NO HAY RUTINAS
+        </div>
+
+        <p style="color:#777;font-size:11px;line-height:1.6;margin-top:8px;">
+          Creá la primera rutina para esta alumna.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  /* =====================================
+     SEPARAR RUTINAS
+  ===================================== */
+
+  const activeWorkouts =
+    data.filter(
+      function(workout) {
+        return workout.status === "active";
+      }
+    );
+
+  const draftWorkouts =
+    data.filter(
+      function(workout) {
+        return workout.status === "draft";
+      }
+    );
+
+  const archivedWorkouts =
+    data.filter(
+      function(workout) {
+        return workout.status === "archived";
+      }
+    );
+
+  /* =====================================
+     FUNCIÓN PARA CREAR TARJETA
+  ===================================== */
+
+  function createWorkoutCard(
+    workout,
+    type
+  ) {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "student-card";
+
+    let statusText = "BORRADOR";
+    let statusColor = "#777";
+    let buttonText = "EDITAR RUTINA";
+
+    if (type === "active") {
+
+      statusText = "ACTIVA";
+      statusColor = "#E60000";
+      buttonText = "VER RUTINA";
+
+    }
+
+    if (type === "archived") {
+
+      statusText = "ARCHIVADA";
+      statusColor = "#777";
+      buttonText = "VER RUTINA";
+
+    }
+
+    card.innerHTML = `
+
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          align-items:flex-start;
+          gap:12px;
+        "
+      >
+
+        <div>
+
+          <div class="menu-label">
+            RUTINA
+          </div>
+
+          <div class="detail-value">
+            ${escapeWorkoutHtml(
+              workout.name || "SIN NOMBRE"
+            )}
           </div>
 
           <div
             style="
-              font-size:10px;
-              font-weight:800;
-              color:${workout.status === "active" ? "#E60000" : "#777"};
-              white-space:nowrap;
+              color:#777;
+              font-size:11px;
+              margin-top:6px;
             "
           >
-            ${statusText}
+            ${Number(workout.weeks) || 1}
+            SEMANAS
           </div>
 
         </div>
 
         <div
           style="
-            display:flex;
-            gap:8px;
-            margin-top:16px;
-            flex-wrap:wrap;
+            font-size:10px;
+            font-weight:800;
+            color:${statusColor};
+            white-space:nowrap;
           "
         >
-
-          <button
-            type="button"
-            class="button workout-open-existing-button"
-            data-workout-id="${escapeWorkoutHtml(workout.id)}"
-          >
-            ${workout.status === "active" ? "VER RUTINA" : "EDITAR RUTINA"}
-          </button>
-
-          <button
-            type="button"
-            class="button workout-delete-existing-button"
-            data-workout-id="${escapeWorkoutHtml(workout.id)}"
-            style="border-color:#E60000;color:#ffffff;"
-          >
-            ELIMINAR
-          </button>
-
+          ${statusText}
         </div>
 
-      `;
+      </div>
 
-      container.appendChild(card);
+      <div
+        style="
+          display:flex;
+          gap:8px;
+          margin-top:16px;
+          flex-wrap:wrap;
+        "
+      >
 
-      const button =
-        card.querySelector(
-          ".workout-open-existing-button"
-        );
+        <button
+          type="button"
+          class="button workout-open-existing-button"
+          data-workout-id="${escapeWorkoutHtml(workout.id)}"
+        >
+          ${buttonText}
+        </button>
 
-      button.addEventListener(
-        "click",
-        async function() {
+        <button
+          type="button"
+          class="button workout-delete-existing-button"
+          data-workout-id="${escapeWorkoutHtml(workout.id)}"
+          style="
+            border-color:#E60000;
+            color:#ffffff;
+          "
+        >
+          ELIMINAR
+        </button>
 
-          await openExistingWorkout(
-            workout
-          );
+      </div>
 
-        }
+    `;
+
+    container.appendChild(card);
+
+    const button =
+      card.querySelector(
+        ".workout-open-existing-button"
       );
 
-      const deleteButton = card.querySelector(".workout-delete-existing-button");
-      deleteButton.addEventListener("click", async function(event) {
-        event.stopPropagation();
-        await deleteWorkout(workout);
-      });
+    button.addEventListener(
+      "click",
+      async function() {
 
-    }
-  );
-}
+        await openExistingWorkout(
+          workout
+        );
+
+      }
+    );
+
+    const deleteButton =
+      card.querySelector(
+        ".workout-delete-existing-button"
+      );
+
+    deleteButton.addEventListener(
+      "click",
+      async function(event) {
+
+        event.stopPropagation();
+
+        await deleteWorkout(
+          workout
+        );
+
+      }
+    );
+
+  }
+
+  /* =====================================
+     RUTINA ACTIVA
+  ===================================== */
+
+  if (activeWorkouts.length) {
+
+    const title =
+      document.createElement("div");
+
+    title.className =
+      "menu-label";
+
+    title.style.marginTop =
+      "10px";
+
+    title.style.marginBottom =
+      "10px";
+
+    title.textContent =
+      "RUTINA ACTUAL";
+
+    container.appendChild(title);
+
+    activeWorkouts.forEach(
+      function(workout) {
+
+        createWorkoutCard(
+          workout,
+          "active"
+        );
+
+      }
+    );
+
+  }
+
+  /* =====================================
+     BORRADORES
+  ===================================== */
+
+  if (draftWorkouts.length) {
+
+    const title =
+      document.createElement("div");
+
+    title.className =
+      "menu-label";
+
+    title.style.marginTop =
+      "24px";
+
+    title.style.marginBottom =
+      "10px";
+
+    title.textContent =
+      "BORRADORES";
+
+    container.appendChild(title);
+
+    draftWorkouts.forEach(
+      function(workout) {
+
+        createWorkoutCard(
+          workout,
+          "draft"
+        );
+
+      }
+    );
+
+  }
+
+  /* =====================================
+     HISTORIAL DE RUTINAS
+  ===================================== */
+
+  if (archivedWorkouts.length) {
+
+    const title =
+      document.createElement("div");
+
+    title.className =
+      "menu-label";
+
+    title.style.marginTop =
+      "30px";
+
+    title.style.marginBottom =
+      "10px";
+
+    title.textContent =
+      "HISTORIAL DE RUTINAS";
+
+    container.appendChild(title);
+
+    archivedWorkouts.forEach(
+      function(workout) {
+
+        createWorkoutCard(
+          workout,
+          "archived"
+        );
+
+      }
+    );
+
+  }
+
+  }
 
 
 /* =====================================
