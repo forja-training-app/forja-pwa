@@ -5212,9 +5212,9 @@ function clearStudentWorkoutDraft(
 
 }
 
-   /* =====================================
+/* =====================================
    MOSTRAR PANEL
-====================================== */
+===================================== */
 
 function showApp(fromHistory) {
 
@@ -5226,21 +5226,6 @@ function showApp(fromHistory) {
   document.body.classList.add(
     "forja-trainer-mode"
   );
-
-  if (!fromHistory) {
-
-    history.replaceState(
-      {
-        forjaTrainerNavigation: true,
-        trainerScreen: "home"
-      },
-      "",
-      window.location.href
-    );
-
-  }
-
-}
 
   /* =====================================
      HISTORIAL DE ENTRENADORA
@@ -5260,6 +5245,11 @@ function showApp(fromHistory) {
   }
 
 }
+
+
+/* =====================================
+   MOSTRAR MIS ALUMNAS
+===================================== */
 
 
     /* =====================================
