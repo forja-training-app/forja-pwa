@@ -17791,6 +17791,44 @@ async function publishWorkout(
       workout
     );
 
+    /* =====================================
+     ARCHIVAR RUTINA ACTIVA ANTERIOR
+  ===================================== */
+
+  const {
+    error: archiveError
+  } =
+    await supabaseClient
+      .from("workouts")
+      .update({
+        status: "archived"
+      })
+      .eq(
+        "student_id",
+        workout.student_id
+      )
+      .eq(
+        "status",
+        "active"
+      )
+      .neq(
+        "id",
+        workout.id
+      );
+
+  if (archiveError) {
+
+    console.error(
+      "Error archivando rutina anterior:",
+      archiveError
+    );
+
+    message.textContent =
+      "NO SE PUDO ARCHIVAR LA RUTINA ACTIVA ANTERIOR.";
+
+    return;
+
+    }
   const {
     data: updatedWorkout,
     error
