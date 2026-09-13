@@ -10425,24 +10425,19 @@ function showWorkouts(fromHistory) {
       "back-from-workouts"
     );
 
-  if (backFromWorkouts) {
+if (backFromWorkouts) {
 
-    backFromWorkouts.onclick =
-      function(event) {
+  backFromWorkouts.onclick =
+    function(event) {
 
-        event.preventDefault();
-        event.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
 
-        /*
-         * Usamos el historial del navegador
-         * en lugar de ir directamente al panel.
-         */
+      showApp();
 
-        history.back();
+    };
 
-      };
-
-  }
+}
 
   loadWorkoutStudents();
 
