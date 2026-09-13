@@ -10802,7 +10802,8 @@ async function showStudentWorkoutList(student) {
 ===================================== */
 
 async function openStudentHome() {
-
+document.body.classList.add("student-mode");
+  
   /* La vista de alumna es el único estado que puede mostrar
      la navegación inferior de alumna. */
   document.body.classList.add("forja-student-mode");
