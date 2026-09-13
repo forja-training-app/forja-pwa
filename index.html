@@ -5218,36 +5218,29 @@ function clearStudentWorkoutDraft(
 
 function showApp(fromHistory) {
 
-  document.body.classList.remove("forja-student-mode");
+  document.body.classList.remove(
+    "forja-login-mode",
+    "forja-student-mode"
+  );
 
-  loginScreen.style.display = "none";
+  document.body.classList.add(
+    "forja-trainer-mode"
+  );
 
-  appScreen.style.display = "block";
+  if (!fromHistory) {
 
-  studentsScreen.style.display = "none";
+    history.replaceState(
+      {
+        forjaTrainerNavigation: true,
+        trainerScreen: "home"
+      },
+      "",
+      window.location.href
+    );
 
-  const studentBottomNav = document.getElementById("student-bottom-nav");
-  if (studentBottomNav) studentBottomNav.style.display = "none";
-
-  const studentHomeScreen = document.getElementById("student-home-screen");
-  if (studentHomeScreen) studentHomeScreen.style.display = "none";
-
-  if (studentDetailScreen) {
-    studentDetailScreen.style.display = "none";
   }
 
-  if (workoutsScreen) {
-    workoutsScreen.style.display = "none";
-  }
-
-  if (workoutBuilderScreen) {
-    workoutBuilderScreen.style.display = "none";
-  }
-
-  if (exerciseLibraryScreen) {
-    exerciseLibraryScreen.style.display = "none";
-  }
-
+}
 
   /* =====================================
      HISTORIAL DE ENTRENADORA
