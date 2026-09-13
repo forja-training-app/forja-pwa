@@ -22236,12 +22236,12 @@ window.addEventListener(
 
       if(!item) return;
 
-      event.preventDefault();
-
       const tabName =
         item.dataset.studentTab;
 
       if(!tabName) return;
+
+      event.preventDefault();
 
       navigateStudentTab(tabName);
 
