@@ -10775,7 +10775,12 @@ async function openStudentHome() {
   /* La vista de alumna es el único estado que puede mostrar
      la navegación inferior de alumna. */
   document.body.classList.add("forja-student-mode");
-
+  
+document.body.classList.remove(
+  "forja-login-mode",
+  "forja-trainer-mode"
+);
+  
   if (!currentStudent || !currentStudent.id) {
 
     alert(
