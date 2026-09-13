@@ -22275,24 +22275,75 @@ async function openStudentTrainingSessionDetail(
   window.forjaShowStudentTab=showStudentTab;
   window.forjaNavigateStudentTab=navigateStudentTab;
 
-  window.addEventListener("popstate",function(event){
-    const screen=getStudentScreen();
-    const state=event.state;
-    const workoutScreen=document.getElementById("student-workout-screen");
+ window.addEventListener("popstate", function(event) {
 
-    /* Al volver desde entrenamiento, cerramos la ventana independiente. */
-    if (workoutScreen && workoutScreen.style.display !== "none" && !(state && state.forjaStudentNavigation && state.studentScreen === "workout")) {
-      workoutScreen.style.display = "none";
-    }
+  /* =====================================
+     FORJA — NAVEGACIÓN ALUMNA
+  ====================================== */
 
-    if(!screen || screen.style.display==="none") return;
-
-    renderStudentTab(
-      state && state.forjaStudentNavigation && state.studentTab
-        ? state.studentTab
-        : "home"
+  const historyModal =
+    document.getElementById(
+      "student-exercise-history-overlay"
     );
-  });
+
+  /*
+   * Si el historial de un ejercicio está abierto,
+   * NO cambiamos de pantalla ni renderizamos otra pestaña.
+   *
+   * El modal es independiente de la navegación.
+   */
+  if (historyModal) {
+
+    historyModal.remove();
+
+    return;
+  }
+
+  const screen =
+    getStudentScreen();
+
+  const state =
+    event.state;
+
+  const workoutScreen =
+    document.getElementById(
+      "student-workout-screen"
+    );
+
+  /*
+   * Al volver desde entrenamiento,
+   * cerramos la pantalla independiente.
+   */
+  if (
+    workoutScreen &&
+    workoutScreen.style.display !== "none" &&
+    !(
+      state &&
+      state.forjaStudentNavigation &&
+      state.studentScreen === "workout"
+    )
+  ) {
+
+    workoutScreen.style.display =
+      "none";
+  }
+
+  if (
+    !screen ||
+    screen.style.display === "none"
+  ) {
+    return;
+  }
+
+  renderStudentTab(
+    state &&
+    state.forjaStudentNavigation &&
+    state.studentTab
+      ? state.studentTab
+      : "home"
+  );
+
+});
 
   if(document.readyState==="loading"){
     document.addEventListener("DOMContentLoaded",setupStudentNavigation);
