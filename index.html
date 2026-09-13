@@ -15330,45 +15330,44 @@ studentWorkoutScreen
   .querySelectorAll(".student-last-performance-link")
   .forEach(function(button) {
 
-    button.addEventListener(
-      "click",
-      function(event) {
+   button.addEventListener(
+  "click",
+  function(event) {
 
-        event.preventDefault();
-        event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
 
-        const exerciseId =
-          String(
-            button.dataset.historyExerciseId || ""
-          ).trim();
+    const exerciseId =
+      String(
+        button.dataset.historyExerciseId || ""
+      ).trim();
 
-        const exercise =
-          exercises.find(function(item) {
-            return String(item.id) === exerciseId;
-          });
+    const exercise =
+      exercises.find(function(item) {
+        return String(item.id) === exerciseId;
+      });
 
-        if (!exercise) {
-          console.warn(
-            "FORJA: no se encontró el ejercicio:",
-            exerciseId
-          );
-          return;
-        }
+    if (!exercise) {
+      console.warn(
+        "FORJA: no se encontró el ejercicio:",
+        exerciseId
+      );
+      return;
+    }
 
-        const entries =
-          exerciseHistory[exerciseId] || [];
+    const entries =
+      exerciseHistory[exerciseId] || [];
 
-        openStudentExerciseHistoryModal(
-          exercise,
-          entries
-        );
-
-      },
-      false
+    openStudentExerciseHistoryModal(
+      exercise,
+      entries
     );
 
-  });
-
+  },
+  true
+);
+});
 
   /* =====================================
      VOLVER
