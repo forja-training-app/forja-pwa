@@ -11529,6 +11529,257 @@ openStudentWorkoutDay(
 
 }
 
+  /* =====================================
+   RUTINAS DE LA ALUMNA
+   ACTUAL + HISTORIAL
+===================================== */
+
+async function loadStudentRoutineHistory(student) {
+
+  const container =
+    document.getElementById(
+      "student-routines-list"
+    );
+
+  if (!container || !student || !student.id) {
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="student-card">
+      <div class="detail-value">
+        CARGANDO RUTINAS...
+      </div>
+    </div>
+  `;
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("workouts")
+    .select("*")
+    .eq(
+      "student_id",
+      student.id
+    )
+    .in(
+      "status",
+      ["active", "archived"]
+    )
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
+  if (error) {
+
+    console.error(
+      "Error cargando historial de rutinas:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="student-card">
+        <div class="detail-value">
+          NO SE PUDIERON CARGAR LAS RUTINAS.
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  const routines =
+    data || [];
+
+  const activeRoutine =
+    routines.find(
+      function(workout) {
+        return workout.status === "active";
+      }
+    );
+
+  const archivedRoutines =
+    routines.filter(
+      function(workout) {
+        return workout.status === "archived";
+      }
+    );
+
+  let html = "";
+
+  /* =====================================
+     RUTINA ACTUAL
+  ===================================== */
+
+  html += `
+    <div
+      class="menu-label"
+      style="
+        margin-top:10px;
+        margin-bottom:10px;
+      "
+    >
+      RUTINA ACTUAL
+    </div>
+  `;
+
+  if (activeRoutine) {
+
+    html += `
+      <div class="student-card">
+
+        <div class="detail-value">
+          ${escapeWorkoutHtml(
+            activeRoutine.name || "RUTINA"
+          )}
+        </div>
+
+        <div
+          style="
+            margin-top:8px;
+            font-family:'Anton',sans-serif;
+            font-size:14px;
+            letter-spacing:1px;
+            color:#E60000;
+          "
+        >
+          ACTIVA
+        </div>
+
+        <button
+          type="button"
+          class="button student-routine-view-button"
+          data-workout-id="${escapeWorkoutHtml(activeRoutine.id)}"
+          style="margin-top:16px;"
+        >
+          VER RUTINA
+        </button>
+
+      </div>
+    `;
+
+  } else {
+
+    html += `
+      <div class="student-card">
+
+        <div class="detail-value">
+          NO HAY RUTINA ACTIVA
+        </div>
+
+      </div>
+    `;
+  }
+
+
+  /* =====================================
+     HISTORIAL
+  ===================================== */
+
+  if (archivedRoutines.length) {
+
+    html += `
+      <div
+        class="menu-label"
+        style="
+          margin-top:30px;
+          margin-bottom:10px;
+        "
+      >
+        HISTORIAL DE RUTINAS
+      </div>
+    `;
+
+    archivedRoutines.forEach(
+      function(workout) {
+
+        html += `
+          <div class="student-card">
+
+            <div class="detail-value">
+              ${escapeWorkoutHtml(
+                workout.name || "RUTINA"
+              )}
+            </div>
+
+            <div
+              style="
+                margin-top:8px;
+                font-family:'Anton',sans-serif;
+                font-size:14px;
+                letter-spacing:1px;
+                color:#777777;
+              "
+            >
+              ARCHIVADA
+            </div>
+
+            <button
+              type="button"
+              class="button student-routine-view-button"
+              data-workout-id="${escapeWorkoutHtml(workout.id)}"
+              style="margin-top:16px;"
+            >
+              VER RUTINA
+            </button>
+
+          </div>
+        `;
+
+      }
+    );
+
+  }
+
+  container.innerHTML =
+    html;
+
+
+  /* =====================================
+     BOTONES VER RUTINA
+  ===================================== */
+
+  container
+    .querySelectorAll(
+      ".student-routine-view-button"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          async function() {
+
+            const workoutId =
+              button.dataset.workoutId;
+
+            const workout =
+              routines.find(
+                function(item) {
+                  return String(item.id) ===
+                    String(workoutId);
+                }
+              );
+
+            if (!workout) {
+              return;
+            }
+
+            await openStudentRoutine(
+              workout
+            );
+
+          }
+        );
+
+      }
+    );
+
+  }
 /* =====================================
    ESTADO DE PAGO — ALUMNA
 ===================================== */
