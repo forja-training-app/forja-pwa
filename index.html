@@ -3508,6 +3508,38 @@ body.forja-student-mode #student-bottom-nav{
     margin-left: auto !important;
     margin-right: auto !important;
   }
+  /* =========================================================
+   FORJA — CONTROL DE PANTALLAS
+   SOLO UNA PANTALLA PUEDE ESTAR VISIBLE A LA VEZ
+========================================================= */
+
+#login-screen,
+#trainer-panel,
+#students-screen,
+#student-detail-screen,
+#workouts-screen,
+#workout-builder-screen,
+#exercise-library-screen,
+#progress-screen,
+#student-home-screen,
+#student-workout-screen {
+  display: none !important;
+}
+
+/* LOGIN */
+body.forja-login-mode #login-screen {
+  display: block !important;
+}
+
+/* ENTRENADORA */
+body.forja-trainer-mode #trainer-panel {
+  display: block !important;
+}
+
+/* ALUMNA */
+body.forja-student-mode #student-home-screen {
+  display: block !important;
+}
 </style>
 
 </head>
