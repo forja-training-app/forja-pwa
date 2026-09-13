@@ -877,7 +877,224 @@ h1 {
   letter-spacing: 1px;
   text-transform: uppercase;
 }
+/* =====================================
+   RUTINAS — ALUMNA
+   ACTUAL + HISTORIAL
+===================================== */
 
+#student-routines-list {
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+}
+
+#student-routines-list .student-current-routine-card {
+  border-left:4px solid #E60000;
+}
+
+#student-routines-list
+.student-routine-card-name {
+
+  font-family:'Anton',sans-serif;
+  font-size:32px;
+  line-height:1;
+  color:#FFFFFF;
+  text-transform:uppercase;
+
+}
+
+#student-routines-list
+.student-routine-card-status {
+
+  margin-top:12px;
+  font-family:'Anton',sans-serif;
+  font-size:18px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+
+}
+
+#student-routines-list
+.student-routine-card-status.active {
+
+  color:#E60000;
+
+}
+
+
+/* =====================================
+   ACORDEÓN
+===================================== */
+
+#student-routines-list
+.student-history-accordion {
+
+  border:1px solid #292929;
+  border-left:4px solid #E60000;
+  background:#0A0A0A;
+  margin-bottom:10px;
+
+}
+
+
+#student-routines-list
+.student-history-header {
+
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#FFFFFF;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:20px 18px;
+
+  text-align:left;
+  cursor:pointer;
+
+}
+
+
+#student-routines-list
+.student-history-header-info {
+
+  min-width:0;
+
+}
+
+
+#student-routines-list
+.student-history-name {
+
+  font-family:'Anton',sans-serif;
+  font-size:27px;
+  line-height:1;
+  text-transform:uppercase;
+  color:#FFFFFF;
+
+}
+
+
+#student-routines-list
+.student-history-meta {
+
+  margin-top:8px;
+
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+
+  color:#777777;
+
+}
+
+
+#student-routines-list
+.student-history-arrow {
+
+  width:34px;
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px solid #444;
+
+  font-size:24px;
+  line-height:1;
+
+  color:#FFFFFF;
+
+  flex-shrink:0;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease;
+
+}
+
+
+#student-routines-list
+.student-history-header[aria-expanded="true"]
+.student-history-arrow {
+
+  transform:rotate(45deg);
+  border-color:#E60000;
+
+}
+
+
+#student-routines-list
+.student-history-content {
+
+  border-top:1px solid #292929;
+
+}
+
+
+#student-routines-list
+.student-history-detail {
+
+  padding:18px;
+
+}
+
+
+#student-routines-list
+.student-history-status {
+
+  color:#777777;
+
+  font-family:'Anton',sans-serif;
+  font-size:16px;
+  letter-spacing:1px;
+
+}
+
+
+#student-routines-list
+.student-history-description {
+
+  margin-top:8px;
+
+  color:#999999;
+
+  font-size:12px;
+  line-height:1.6;
+
+}
+
+
+#student-routines-list
+.student-history-detail .button {
+
+  width:100%;
+  margin-top:16px;
+
+}
+
+
+@media (max-width:680px) {
+
+  #student-routines-list
+  .student-routine-card-name {
+
+    font-size:30px;
+
+  }
+
+  #student-routines-list
+  .student-history-name {
+
+    font-size:25px;
+
+  }
+
+}
 
 /* =========================================================
    BIBLIOTECA DE EJERCICIOS
