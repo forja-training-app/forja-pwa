@@ -13845,7 +13845,8 @@ const savedLocalLoads =
 
   let existingWorkoutSession = null;
   let existingWorkoutLogs = [];
-
+let editingExistingWorkout = false;
+  
   try {
 
     const {
@@ -15321,6 +15322,421 @@ studentWorkoutScreen
 
   });
 
+/* =====================================
+   EDITAR ENTRENAMIENTO YA FINALIZADO
+===================================== */
+
+const editWorkoutButton =
+  document.getElementById(
+    "edit-student-workout-button"
+  );
+
+if (editWorkoutButton && existingWorkoutSession) {
+
+  editWorkoutButton.addEventListener(
+    "click",
+    async function() {
+
+      /* =====================================
+         ACTIVAR MODO EDICIÓN
+      ===================================== */
+
+      if (!editingExistingWorkout) {
+
+        editingExistingWorkout = true;
+
+        editWorkoutButton.textContent =
+          "GUARDAR CAMBIOS";
+
+        editWorkoutButton.style.background =
+          "#E60000";
+
+        editWorkoutButton.style.borderColor =
+          "#E60000";
+
+        editWorkoutButton.style.color =
+          "#FFFFFF";
+
+        studentWorkoutScreen
+          .querySelectorAll(
+            ".student-series-reps, .student-series-load, .student-series-rpe"
+          )
+          .forEach(function(input) {
+
+            input.removeAttribute("readonly");
+
+            input.style.background =
+              "#111";
+
+            input.style.cursor =
+              "text";
+
+          });
+
+        return;
+      }
+
+
+      /* =====================================
+         GUARDAR CAMBIOS
+      ===================================== */
+
+      if (
+        editWorkoutButton.dataset.saving ===
+        "true"
+      ) {
+        return;
+      }
+
+      editWorkoutButton.dataset.saving =
+        "true";
+
+      editWorkoutButton.disabled =
+        true;
+
+      editWorkoutButton.textContent =
+        "GUARDANDO CAMBIOS...";
+
+
+      try {
+
+        const seriesRows =
+          studentWorkoutScreen.querySelectorAll(
+            ".student-series-row"
+          );
+
+
+        for (
+          const row of seriesRows
+        ) {
+
+          const exerciseLog =
+            row.closest(
+              ".student-series-log"
+            );
+
+          if (!exerciseLog) {
+            continue;
+          }
+
+
+          const exerciseIndex =
+            Number(
+              exerciseLog.dataset.exerciseIndex
+            );
+
+          const exercise =
+            exercises[exerciseIndex];
+
+          if (!exercise) {
+            continue;
+          }
+
+
+          const seriesIndex =
+            Number(
+              row.dataset.seriesIndex
+            );
+
+
+          const savedLog =
+            existingWorkoutLogs.find(
+              function(log) {
+
+                return (
+                  String(log.exercise_id) ===
+                    String(exercise.id) &&
+                  Number(log.series_number) ===
+                    seriesIndex + 1
+                );
+
+              }
+            );
+
+
+          if (!savedLog) {
+            continue;
+          }
+
+
+          const repsInput =
+            row.querySelector(
+              ".student-series-reps"
+            );
+
+          const loadInput =
+            row.querySelector(
+              ".student-series-load"
+            );
+
+          const rpeInput =
+            row.querySelector(
+              ".student-series-rpe"
+            );
+
+          const completeButton =
+            row.querySelector(
+              ".student-series-complete"
+            );
+
+
+          const reps =
+            repsInput
+              ? repsInput.value.trim()
+              : "";
+
+          const load =
+            loadInput
+              ? loadInput.value.trim()
+              : "";
+
+          const rpe =
+            rpeInput
+              ? rpeInput.value.trim()
+              : "";
+
+          const completed =
+            completeButton
+              ? completeButton.classList.contains(
+                  "completed"
+                )
+              : false;
+
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .from(
+                "workout_set_logs"
+              )
+              .update({
+
+                reps:
+                  reps === ""
+                    ? null
+                    : Number(reps),
+
+                load:
+                  load === ""
+                    ? null
+                    : load,
+
+                rpe:
+                  rpe === ""
+                    ? null
+                    : Number(rpe),
+
+                completed:
+                  completed
+
+              })
+              .eq(
+                "id",
+                savedLog.id
+              );
+
+
+          if (error) {
+
+            console.error(
+              "FORJA: error actualizando serie:",
+              error
+            );
+
+            throw error;
+
+          }
+
+        }
+
+
+        /* =====================================
+           ACTUALIZAR DATOS LOCALES
+        ===================================== */
+
+        existingWorkoutLogs =
+          existingWorkoutLogs.map(
+            function(log) {
+
+              const row =
+                Array.from(
+                  seriesRows
+                ).find(
+                  function(currentRow) {
+
+                    const exerciseLog =
+                      currentRow.closest(
+                        ".student-series-log"
+                      );
+
+                    if (!exerciseLog) {
+                      return false;
+                    }
+
+                    const exerciseIndex =
+                      Number(
+                        exerciseLog.dataset.exerciseIndex
+                      );
+
+                    const exercise =
+                      exercises[exerciseIndex];
+
+                    if (!exercise) {
+                      return false;
+                    }
+
+                    return (
+                      String(log.exercise_id) ===
+                        String(exercise.id) &&
+                      Number(log.series_number) ===
+                        Number(
+                          currentRow.dataset.seriesIndex
+                        ) + 1
+                    );
+
+                  }
+                );
+
+
+              if (!row) {
+                return log;
+              }
+
+
+              const repsInput =
+                row.querySelector(
+                  ".student-series-reps"
+                );
+
+              const loadInput =
+                row.querySelector(
+                  ".student-series-load"
+                );
+
+              const rpeInput =
+                row.querySelector(
+                  ".student-series-rpe"
+                );
+
+
+              return {
+
+                ...log,
+
+                reps:
+                  repsInput &&
+                  repsInput.value.trim() !== ""
+                    ? Number(
+                        repsInput.value.trim()
+                      )
+                    : null,
+
+                load:
+                  loadInput &&
+                  loadInput.value.trim() !== ""
+                    ? loadInput.value.trim()
+                    : null,
+
+                rpe:
+                  rpeInput &&
+                  rpeInput.value.trim() !== ""
+                    ? Number(
+                        rpeInput.value.trim()
+                      )
+                    : null
+
+              };
+
+            }
+          );
+
+
+        /* =====================================
+           VOLVER A BLOQUEAR
+        ===================================== */
+
+        editingExistingWorkout =
+          false;
+
+
+        studentWorkoutScreen
+          .querySelectorAll(
+            ".student-series-reps, .student-series-load, .student-series-rpe"
+          )
+          .forEach(function(input) {
+
+            input.setAttribute(
+              "readonly",
+              "readonly"
+            );
+
+            input.style.background =
+              "#181818";
+
+            input.style.cursor =
+              "default";
+
+          });
+
+
+        editWorkoutButton.textContent =
+          "✓ CAMBIOS GUARDADOS";
+
+        editWorkoutButton.style.background =
+          "#111";
+
+        editWorkoutButton.style.borderColor =
+          "#E60000";
+
+        editWorkoutButton.style.color =
+          "#FFFFFF";
+
+
+        setTimeout(
+          function() {
+
+            editWorkoutButton.textContent =
+              "EDITAR RUTINA";
+
+            editWorkoutButton.disabled =
+              false;
+
+            editWorkoutButton.dataset.saving =
+              "false";
+
+          },
+          1200
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "FORJA: error guardando cambios:",
+          error
+        );
+
+        alert(
+          "NO SE PUDIERON GUARDAR LOS CAMBIOS."
+        );
+
+        editWorkoutButton.textContent =
+          "GUARDAR CAMBIOS";
+
+        editWorkoutButton.disabled =
+          false;
+
+        editWorkoutButton.dataset.saving =
+          "false";
+
+      }
+
+    }
+  );
+
+}
+  
   /* =====================================
      HISTORIAL POR EJERCICIO
   ===================================== */
