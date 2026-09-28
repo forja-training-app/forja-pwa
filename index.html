@@ -5018,7 +5018,7 @@ function getStudentWorkoutDraft(
 
   if (!key) {
     return {
-      loads: {}
+      values: {}
     };
   }
 
@@ -5029,7 +5029,7 @@ function getStudentWorkoutDraft(
 
     if (!saved) {
       return {
-        loads: {}
+        values: {}
       };
     }
 
@@ -5037,72 +5037,28 @@ function getStudentWorkoutDraft(
       JSON.parse(saved);
 
     return {
-      loads:
+      values:
         parsed &&
-        parsed.loads &&
-        typeof parsed.loads === "object"
-          ? parsed.loads
+        parsed.values &&
+        typeof parsed.values === "object"
+          ? parsed.values
           : {}
     };
 
   } catch (error) {
 
     console.error(
-      "FORJA — Error leyendo cargas locales:",
+      "FORJA — Error leyendo borrador local:",
       error
     );
 
     return {
-      loads: {}
+      values: {}
     };
 
   }
 
 }
-
-
-function saveStudentWorkoutValue(
-  workout,
-  day,
-  weekNumber,
-  exerciseId,
-  seriesIndex,
-  field,
-  value
-) {
-
-  function clearStudentWorkoutDraft(
-  workout,
-  day,
-  weekNumber
-) {
-
-  const key =
-    getStudentWorkoutDraftKey(
-      workout,
-      day,
-      weekNumber
-    );
-
-  if (!key) {
-    return;
-  }
-
-  try {
-
-    localStorage.removeItem(key);
-
-  } catch (error) {
-
-    console.error(
-      "FORJA — Error limpiando borrador local:",
-      error
-    );
-
-  }
-
-}
-  
   const key =
     getStudentWorkoutDraftKey(
       workout,
