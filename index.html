@@ -15443,150 +15443,227 @@ if (editWorkoutButton && existingWorkoutSession) {
           );
 
 
-        for (
-          const row of seriesRows
-        ) {
+       /* =====================================
+   CREAR NUEVA SESIÓN
+   NO MODIFICAMOS LA ANTERIOR
+===================================== */
 
-          const exerciseLog =
-            row.closest(
-              ".student-series-log"
-            );
+const {
+  data: newSession,
+  error: sessionError
+} =
+  await supabaseClient
+    .from("workout_sessions")
+    .insert({
 
-          if (!exerciseLog) {
-            continue;
-          }
+      student_id:
+        currentStudent.id,
 
+      workout_id:
+        workout.id,
 
-          const exerciseIndex =
-            Number(
-              exerciseLog.dataset.exerciseIndex
-            );
+      day_id:
+        String(day.id),
 
-          const exercise =
-            exercises[exerciseIndex];
+      week_number:
+        Number(weekNumber || 1),
 
-          if (!exercise) {
-            continue;
-          }
+      started_at:
+        new Date().toISOString(),
 
+      finished_at:
+        new Date().toISOString(),
 
-          const seriesIndex =
-            Number(
-              row.dataset.seriesIndex
-            );
+      status:
+        "completed"
 
-
-          const savedLog =
-            existingWorkoutLogs.find(
-              function(log) {
-
-                return (
-                  String(log.exercise_id) ===
-                    String(exercise.id) &&
-                  Number(log.series_number) ===
-                    seriesIndex + 1
-                );
-
-              }
-            );
+    })
+    .select()
+    .single();
 
 
-          if (!savedLog) {
-            continue;
-          }
+if (sessionError) {
+
+  console.error(
+    "FORJA: error creando nueva sesión:",
+    sessionError
+  );
+
+  throw sessionError;
+
+}
 
 
-          const repsInput =
-            row.querySelector(
-              ".student-series-reps"
-            );
-
-          const loadInput =
-            row.querySelector(
-              ".student-series-load"
-            );
-
-          const rpeInput =
-            row.querySelector(
-              ".student-series-rpe"
-            );
-
-          const completeButton =
-            row.querySelector(
-              ".student-series-complete"
-            );
+console.log(
+  "FORJA — NUEVA SESIÓN DE EDICIÓN:",
+  newSession
+);
 
 
-          const reps =
-            repsInput
-              ? repsInput.value.trim()
-              : "";
+/* =====================================
+   CREAR NUEVOS REGISTROS DE SERIES
+===================================== */
 
-          const load =
-            loadInput
-              ? loadInput.value.trim()
-              : "";
-
-          const rpe =
-            rpeInput
-              ? rpeInput.value.trim()
-              : "";
-
-          const completed =
-            completeButton
-              ? completeButton.classList.contains(
-                  "completed"
-                )
-              : false;
+const newLogs = [];
 
 
-          const {
-            error
-          } =
-            await supabaseClient
-              .from(
-                "workout_set_logs"
-              )
-              .update({
+for (
+  const row of seriesRows
+) {
 
-                reps:
-                  reps === ""
-                    ? null
-                    : Number(reps),
+  const exerciseLog =
+    row.closest(
+      ".student-series-log"
+    );
 
-                load:
-                  load === ""
-                    ? null
-                    : load,
-
-                rpe:
-                  rpe === ""
-                    ? null
-                    : Number(rpe),
-
-                completed:
-                  completed
-
-              })
-              .eq(
-                "id",
-                savedLog.id
-              );
+  if (!exerciseLog) {
+    continue;
+  }
 
 
-          if (error) {
+  const exerciseIndex =
+    Number(
+      exerciseLog.dataset.exerciseIndex
+    );
 
-            console.error(
-              "FORJA: error actualizando serie:",
-              error
-            );
+  const exercise =
+    exercises[exerciseIndex];
 
-            throw error;
+  if (!exercise) {
+    continue;
+  }
 
-          }
 
-        }
+  const seriesIndex =
+    Number(
+      row.dataset.seriesIndex
+    );
 
+
+  const repsInput =
+    row.querySelector(
+      ".student-series-reps"
+    );
+
+  const loadInput =
+    row.querySelector(
+      ".student-series-load"
+    );
+
+  const rpeInput =
+    row.querySelector(
+      ".student-series-rpe"
+    );
+
+  const completeButton =
+    row.querySelector(
+      ".student-series-complete"
+    );
+
+
+  const reps =
+    repsInput
+      ? repsInput.value.trim()
+      : "";
+
+  const load =
+    loadInput
+      ? loadInput.value.trim()
+      : "";
+
+  const rpe =
+    rpeInput
+      ? rpeInput.value.trim()
+      : "";
+
+  const completed =
+    completeButton
+      ? completeButton.classList.contains(
+          "completed"
+        )
+      : false;
+
+
+  newLogs.push({
+
+    session_id:
+      newSession.id,
+
+    exercise_id:
+      String(
+        exercise.id ||
+        exerciseIndex
+      ),
+
+    series_number:
+      seriesIndex + 1,
+
+    reps:
+      reps === ""
+        ? null
+        : Number(reps),
+
+    load:
+      load === ""
+        ? null
+        : load,
+
+    rpe:
+      rpe === ""
+        ? null
+        : Number(rpe),
+
+    completed:
+      completed
+
+  });
+
+}
+
+
+/* =====================================
+   GUARDAR NUEVAS SERIES
+===================================== */
+
+if (newLogs.length > 0) {
+
+  const {
+    error: logsError
+  } =
+    await supabaseClient
+      .from("workout_set_logs")
+      .insert(
+        newLogs
+      );
+
+
+  if (logsError) {
+
+    console.error(
+      "FORJA: error guardando nuevas series:",
+      logsError
+    );
+
+
+    /* -------------------------------
+       SI FALLAN LAS SERIES,
+       ELIMINAMOS LA NUEVA SESIÓN
+    -------------------------------- */
+
+    await supabaseClient
+      .from("workout_sessions")
+      .delete()
+      .eq(
+        "id",
+        newSession.id
+      );
+
+
+    throw logsError;
+
+  }
+
+}
 
         /* =====================================
            ACTUALIZAR DATOS LOCALES
