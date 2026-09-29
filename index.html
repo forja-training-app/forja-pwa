@@ -4118,12 +4118,45 @@ body.forja-student-mode #student-home-screen {
     
 <div class="student-card" style="margin-top:16px;">
 
-  <div class="menu-label">
-    REGISTRO DE ENTRENAMIENTOS
+  <div
+    style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    "
+  >
+
+    <div
+      class="menu-label"
+      style="margin:0;"
+    >
+      REGISTRO DE ENTRENAMIENTOS
+    </div>
+
+    <button
+      id="refresh-student-training-history"
+      type="button"
+      style="
+        border:1px solid #333;
+        background:#111;
+        color:#fff;
+        padding:8px 10px;
+        font-size:9px;
+        font-weight:900;
+        letter-spacing:1px;
+        cursor:pointer;
+      "
+    >
+      ACTUALIZAR
+    </button>
+
   </div>
 
   <div
     id="student-training-history"
+    style="margin-top:14px;"
+  >
     style="margin-top:14px;"
   >
     <p
