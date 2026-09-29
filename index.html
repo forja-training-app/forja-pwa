@@ -6696,7 +6696,7 @@ async function openStudentDetail(student) {
      HISTORIAL
   ===================================== */
 
-  loadStudentTrainingHistory(student);
+  await loadStudentTrainingHistory(student);
 
 }
 
@@ -7210,31 +7210,37 @@ async function loadStudentTrainingHistory(student) {
     return;
   }
 
-  const {
-    data: sessions,
-    error
-  } =
-    await supabaseClient
-      .from("workout_sessions")
-      .select(`
-        id,
-        workout_id,
-        day_id,
-        started_at,
-        finished_at,
-        status
-      `)
-      .eq(
-        "student_id",
-        student.id
-      )
-      .order(
-        "finished_at",
-        {
-          ascending: false
-        }
-      );
+ const {
+  data: sessions,
+  error
+} =
+  await supabaseClient
+    .from("workout_sessions")
+    .select(`
+      id,
+      workout_id,
+      day_id,
+      week_number,
+      started_at,
+      finished_at,
+      status
+    `)
+    .eq(
+      "student_id",
+      student.id
+    )
+    .order(
+      "finished_at",
+      {
+        ascending: false
+      }
+    );
 
+console.log(
+  "FORJA — SESIONES ENCONTRADAS:",
+  sessions
+);
+  
   if (error) {
 
     console.error(
