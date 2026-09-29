@@ -6731,6 +6731,42 @@ async function openStudentDetail(student) {
 
   loadStudentTrainingHistory(student);
 
+const refreshTrainingHistoryButton =
+  document.getElementById(
+    "refresh-student-training-history"
+  );
+
+if (refreshTrainingHistoryButton) {
+
+  refreshTrainingHistoryButton.onclick =
+    async function() {
+
+      refreshTrainingHistoryButton.disabled =
+        true;
+
+      refreshTrainingHistoryButton.textContent =
+        "ACTUALIZANDO...";
+
+      try {
+
+        await loadStudentTrainingHistory(
+          student
+        );
+
+      } finally {
+
+        refreshTrainingHistoryButton.disabled =
+          false;
+
+        refreshTrainingHistoryButton.textContent =
+          "ACTUALIZAR";
+
+      }
+
+    };
+
+}
+  
 }
 
 /* =====================================
