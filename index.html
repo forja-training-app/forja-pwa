@@ -6729,7 +6729,7 @@ async function openStudentDetail(student) {
      HISTORIAL
   ===================================== */
 
-  loadStudentTrainingHistory(student);
+  await loadStudentTrainingHistory(student);
 
 const refreshTrainingHistoryButton =
   document.getElementById(
