@@ -15240,23 +15240,119 @@ data-series-index="${seriesIndex}"
         exercises.length > 0
           ? `
 
-            <button
-              id="finish-student-workout-button"
-              type="button"
-              class="button"
-              style="
-                width:100%;
-                min-height:58px;
-                margin-top:8px;
-                border-color:#E60000;
-                background:#E60000;
-                color:#fff;
-                font-weight:900;
-                letter-spacing:1px;
-              "
-            >
-              FINALIZAR ENTRENAMIENTO
-            </button>
+            <div
+  style="
+    margin-top:24px;
+    padding:20px 16px;
+    border:1px solid #292929;
+    background:#0D0D0D;
+  "
+>
+
+  <div
+    style="
+      color:#FFFFFF;
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:1px;
+      text-align:center;
+      margin-bottom:16px;
+    "
+  >
+    ¿CÓMO SENTISTE EL ENTRENAMIENTO HOY?
+  </div>
+
+
+  <div
+    id="student-workout-feeling-options"
+    style="
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    "
+  >
+
+    <button
+      type="button"
+      class="student-workout-feeling-option"
+      data-feeling="ahi_te_voy_san_pedro"
+      style="
+        width:100%;
+        min-height:48px;
+        border:1px solid #333;
+        background:#111;
+        color:#FFFFFF;
+        font-weight:800;
+        letter-spacing:.5px;
+        text-align:left;
+        padding:0 14px;
+      "
+    >
+      🫠 Ahí te voy San Pedro
+    </button>
+
+
+    <button
+      type="button"
+      class="student-workout-feeling-option"
+      data-feeling="si_se_pudo_burro"
+      style="
+        width:100%;
+        min-height:48px;
+        border:1px solid #333;
+        background:#111;
+        color:#FFFFFF;
+        font-weight:800;
+        letter-spacing:.5px;
+        text-align:left;
+        padding:0 14px;
+      "
+    >
+      😮‍💨 Sí se pudo burro
+    </button>
+
+
+    <button
+      type="button"
+      class="student-workout-feeling-option"
+      data-feeling="sobrad"
+      style="
+        width:100%;
+        min-height:48px;
+        border:1px solid #333;
+        background:#111;
+        color:#FFFFFF;
+        font-weight:800;
+        letter-spacing:.5px;
+        text-align:left;
+        padding:0 14px;
+      "
+    >
+      😎 Sobrad@
+    </button>
+
+  </div>
+
+</div>
+
+
+<button
+  id="finish-student-workout-button"
+  type="button"
+  class="button"
+  style="
+    width:100%;
+    min-height:58px;
+    margin-top:8px;
+    border-color:#E60000;
+    background:#E60000;
+    color:#fff;
+    font-weight:900;
+    letter-spacing:1px;
+  "
+>
+  FINALIZAR ENTRENAMIENTO
+</button>
 
 <button
   id="edit-student-workout-button"
