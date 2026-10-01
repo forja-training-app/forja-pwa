@@ -15381,6 +15381,65 @@ data-series-index="${seriesIndex}"
 
   `;
 
+  /* =====================================
+   SELECCIÓN DE SENSACIÓN
+===================================== */
+
+studentWorkoutScreen
+  .querySelectorAll(
+    ".student-workout-feeling-option"
+  )
+  .forEach(function(button) {
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        /* -------------------------------
+           SACAR SELECCIÓN ANTERIOR
+        -------------------------------- */
+
+        studentWorkoutScreen
+          .querySelectorAll(
+            ".student-workout-feeling-option"
+          )
+          .forEach(function(option) {
+
+            option.style.background =
+              "#111";
+
+            option.style.borderColor =
+              "#333";
+
+            option.style.color =
+              "#FFFFFF";
+
+          });
+
+
+        /* -------------------------------
+           MARCAR SELECCIÓN ACTUAL
+        -------------------------------- */
+
+        button.style.background =
+          "#E60000";
+
+        button.style.borderColor =
+          "#E60000";
+
+        button.style.color =
+          "#FFFFFF";
+
+
+        console.log(
+          "FORJA — SENSACIÓN SELECCIONADA:",
+          button.dataset.feeling
+        );
+
+      }
+    );
+
+  });
 
   studentWorkoutScreen
     .querySelectorAll(".student-exercise-help-button")
