@@ -15408,6 +15408,8 @@ studentWorkoutScreen
             option.style.background =
               "#111";
 
+option.dataset.selected = "false";
+      
             option.style.borderColor =
               "#333";
 
@@ -15424,6 +15426,8 @@ studentWorkoutScreen
         button.style.background =
           "#E60000";
 
+        button.dataset.selected = "true";
+        
         button.style.borderColor =
           "#E60000";
 
@@ -15630,8 +15634,15 @@ const {
         new Date().toISOString(),
 
       status:
-        "completed"
-
+        "completed",
+      
+feeling:
+  studentWorkoutScreen
+    .querySelector(
+      ".student-workout-feeling-option[data-selected='true']"
+    )
+    ?.dataset.feeling || null
+      
     })
     .select()
     .single();
