@@ -19358,31 +19358,63 @@ async function openExerciseForm(
 
       <div class="workout-exercise-field full">
 
-        <label>
-          BIBLIOTECA DE EJERCICIOS
-        </label>
+      
+<label>
+  BUSCAR EJERCICIO
+</label>
 
-        <select
-          name="library_id"
-          id="library-exercise-select-${escapeWorkoutHtml(dayId)}"
-          style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:12px;"
-        >
+<input
+  type="search"
+  id="workout-exercise-search-${escapeWorkoutHtml(dayId)}"
+  placeholder="Escribí el nombre del ejercicio..."
+  autocomplete="off"
+  style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:12px;margin-bottom:10px;"
+>
 
-          <option value="">
-            SELECCIONÁ UN EJERCICIO
-          </option>
+<div
+  class="workout-exercise-filters"
+  style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:10px;"
+>
+  <button type="button" class="workout-small-button active" data-exercise-filter="Todos">TODOS</button>
+  <button type="button" class="workout-small-button" data-exercise-filter="Tren inferior">TREN INFERIOR</button>
+  <button type="button" class="workout-small-button" data-exercise-filter="Tren superior">TREN SUPERIOR</button>
+  <button type="button" class="workout-small-button" data-exercise-filter="Core">CORE</button>
+  <button type="button" class="workout-small-button" data-exercise-filter="Cardio" style="grid-column:1/-1;">CARDIO</button>
+</div>
 
-          ${library.map(function(item) {
+<label>
+  BIBLIOTECA DE EJERCICIOS
+</label>
 
-            return `
-              <option value="${escapeWorkoutHtml(item.id)}">
-                ${escapeWorkoutHtml(item.name)}
-              </option>
-            `;
+<select
+  name="library_id"
+  id="library-exercise-select-${escapeWorkoutHtml(dayId)}"
+  style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#fff;padding:12px;"
+>
+  <option value="">SELECCIONÁ UN EJERCICIO</option>
 
-          }).join("")}
+  ${library.map(function(item) {
+    return `
+      <option
+        value="${escapeWorkoutHtml(item.id)}"
+        data-category="${escapeWorkoutHtml(item.category || "")}"
+      >
+        ${escapeWorkoutHtml(item.name)}
+      </option>
+    `;
+  }).join("")}
+</select>
 
-        </select>
+<input
+  type="text"
+  name="name"
+  placeholder="O escribí el nombre manualmente"
+  style="margin-top:8px;"
+>
+
+<div style="color:#666;font-size:9px;line-height:1.5;margin-top:6px;">
+  Si elegís un ejercicio de la biblioteca, la alumna podrá abrir su video o imagen desde la rutina.
+</div>
 
         <input
           type="text"
@@ -19507,6 +19539,91 @@ async function openExerciseForm(
 
   container.appendChild(form);
 
+
+/* =====================================
+   BUSCADOR Y FILTROS DE EJERCICIOS
+===================================== */
+
+const exerciseSearch = form.querySelector(
+  "#workout-exercise-search-" + dayId
+);
+
+const exerciseSelect = form.querySelector(
+  '[name="library_id"]'
+);
+
+const exerciseFilterButtons = form.querySelectorAll(
+  "[data-exercise-filter]"
+);
+
+let activeExerciseFilter = "Todos";
+
+function filterWorkoutExercises() {
+  const search = String(
+    exerciseSearch.value || ""
+  ).trim().toLowerCase();
+
+  Array.from(exerciseSelect.options).forEach(
+    function(option) {
+      if (!option.value) {
+        option.hidden = false;
+        return;
+      }
+
+      const name = option.textContent
+        .trim()
+        .toLowerCase();
+
+      const category = String(
+        option.dataset.category || ""
+      ).toLowerCase();
+
+      const matchesSearch = name.includes(search);
+
+      const matchesCategory =
+        activeExerciseFilter === "Todos" ||
+        category === activeExerciseFilter.toLowerCase();
+
+      option.hidden = !(
+        matchesSearch && matchesCategory
+      );
+    });
+
+  const selectedOption =
+    exerciseSelect.selectedOptions[0];
+
+  if (
+    selectedOption &&
+    selectedOption.value &&
+    selectedOption.hidden
+  ) {
+    exerciseSelect.value = "";
+  }
+}
+
+exerciseSearch.addEventListener(
+  "input",
+  filterWorkoutExercises
+);
+
+exerciseFilterButtons.forEach(
+  function(button) {
+    button.addEventListener("click", function() {
+      activeExerciseFilter =
+        button.dataset.exerciseFilter || "Todos";
+
+      exerciseFilterButtons.forEach(
+        function(otherButton) {
+          otherButton.classList.remove("active");
+        }
+      );
+
+      button.classList.add("active");
+
+      filterWorkoutExercises();
+    });
+  }
+);
 
   /* =====================================
      REFERENCIAS DEL BLOQUE
